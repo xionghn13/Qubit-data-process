@@ -10,16 +10,16 @@ from scipy.optimize import curve_fit
 import ExtractDataFunc as edf
 
 
-DataPath = 'E:/Projects\Fluxonium\data_process/cavity/7.5GHz/'
-S11File = 'cavity Q_47.hdf5'
+DataPath = 'E:/Projects\Fluxonium\data_process/cavity/8.5GHz_2/'
+S11File = 'cavity Q_78.hdf5'
 
 
 [Freq, RComplex] = edf.readVNAS11(DataPath + S11File)
 
 TruncateFreq = False
 
-StartFreq = 7.6
-EndFreq = 7.65
+StartFreq = 8.19
+EndFreq = 8.27
 if TruncateFreq:
     FreqInd = (EndFreq >= Freq) == (Freq >= StartFreq)
     Freq = Freq[FreqInd]

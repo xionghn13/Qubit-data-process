@@ -174,6 +174,19 @@ def readRabiPowerSweepLabber(file):
     return [rabi_time, rabi_power, rabi_complex]
 
 
+def readRabiFreqSweepLabber(file):
+    # for Labber data
+    ATS_var = 'Alazar - Channel A - Average buffer demodulated values'
+    Time_var = 'Pulse Generator - Width #1'
+    Freq_var = 'Qubit - Frequency'
+    LogData = Labber.LogFile(file)
+    rabi_freq = np.unique(np.transpose(LogData.getData(Freq_var))) * 1e-9
+    rabi_time = np.transpose(LogData.getData(Time_var))[:, 0] * 1e9
+    rabi_complex = np.conj(np.transpose(LogData.getData(ATS_var)))[:, ::len(rabi_time)]
+
+    return [rabi_time, rabi_freq, rabi_complex]
+
+
 def readT1H5(file):
     # for HQC data
     f = h5py.File(file, 'r')
@@ -213,6 +226,19 @@ def readT1PowerSweepLabber(file):
     return [t1_time, t1_power, t1_complex]
 
 
+def readRepeatedT1SweepLabber(file):
+    # for Labber data
+    ATS_var = 'Alazar - Channel A - Average buffer demodulated values'
+    Time_var = 'Pulse Generator - Readout delay'
+    Counter_var = 'Counter - Number of points'
+    LogData = Labber.LogFile(file)
+    t1_counter = np.unique(np.transpose(LogData.getData(Counter_var)))
+    t1_time = np.transpose(LogData.getData(Time_var))[:, 0] * 1e9
+    t1_complex = np.conj(np.transpose(LogData.getData(ATS_var)))[:, ::len(t1_time)]
+
+    return [t1_time, t1_counter, t1_complex]
+
+
 def readT2H5(file):
     # for HQC data
     f = h5py.File(file, 'r')
@@ -237,9 +263,50 @@ def readT2Labber(file):
     return [t2_time, t2_complex]
 
 
+def readRepeatedT2SweepLabber(file):
+    # for Labber data
+    ATS_var = 'Alazar - Channel A - Average buffer demodulated values'
+    Time_var = 'Pulse Generator - Sequence duration'
+    Counter_var = 'Counter - Number of points'
+    LogData = Labber.LogFile(file)
+    t2_counter = np.unique(np.transpose(LogData.getData(Counter_var)))
+    t2_time = np.transpose(LogData.getData(Time_var))[:, 0] * 1e9
+    t2_complex = np.conj(np.transpose(LogData.getData(ATS_var)))[:, ::len(t2_time)]
+    return [t2_time, t2_counter, t2_complex]
+
+def readRepeatedT1T2InterleavedSweepLabber(file):
+    # for Labber data
+    ATS_var = 'Alazar - Channel A - Average buffer demodulated values'
+    Time_var = 'Pulse Generator - Sequence duration'
+    Counter_var = 'Counter - Number of points'
+    LogData = Labber.LogFile(file)
+    counter = np.unique(np.transpose(LogData.getData(Counter_var)))
+    num_time = int(len(np.transpose(LogData.getData(Time_var))[0, :]) / len(counter))
+    time = np.transpose(LogData.getData(Time_var))[0, :num_time] * 1e9
+    t1_t2_complex = np.conj(np.transpose(LogData.getData(ATS_var)))[:, ::len(time) * 2]
+    t1_complex = t1_t2_complex[0::2]
+    t2_complex = t1_t2_complex[1::2]
+    return [time, counter, t1_complex, t2_complex]
+
 def readVNAS11(file):
     # for Labber data
     S11_var = 'VNA - S11'
+    start_freq_var = 'VNA - Start frequency'
+    stop_freq_var = 'VNA - Stop frequency'
+    num_of_points_var = 'VNA - # of points'
+    LogData = Labber.LogFile(file)
+    S11_complex = (np.transpose(LogData.getData(S11_var)))[:, 0]
+    Start_freq = np.transpose(LogData.getData(start_freq_var))[:, 0] * 1e-9
+    Stop_freq = np.transpose(LogData.getData(stop_freq_var))[:, 0] * 1e-9
+    Num_of_points = len(S11_complex)
+    freq = np.linspace(Start_freq, Stop_freq, Num_of_points)
+
+    return [freq, S11_complex]
+
+
+def readVNAS21(file):
+    # for Labber data
+    S11_var = 'VNA - S21'
     start_freq_var = 'VNA - Start frequency'
     stop_freq_var = 'VNA - Stop frequency'
     num_of_points_var = 'VNA - # of points'

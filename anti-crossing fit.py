@@ -8,7 +8,7 @@ import pickle
 #####################################################################################
 ######################################Data###########################################
 #####################################################################################
-DataPath = 'E:/Projects\Fluxonium\data_process/Fluxonium022319/'
+DataPath = 'E:/Projects\Fluxonium\data_process/Fluxonium032619/'
 PickleFile = "SubtractBackgroundPickleDump.dat"
 
 # Read data
@@ -30,40 +30,17 @@ NumFile = len(OneCurrentUniqList)
 # plt.tick_params(axis='both', which='major', labelsize='x-large')
 
 clicked_data1 = np.array([
-    [1.810907, 7.349332],
-    [1.811955, 7.346043],
-    [1.812848, 7.344194],
-    [1.813935, 7.341727],
-    [1.815023, 7.339261],
-    [1.815838, 7.337205],
-    [1.816964, 7.335458],
-    [1.817935, 7.334019],
-    [1.819100, 7.332683],
-    [1.819954, 7.332683],
-    [1.821158, 7.332478],
-    [1.822206, 7.332067],
-    [1.823721, 7.332375],
-    [1.824692, 7.332478],
+    [2.28, 7.227],
+    [2.21, 7.177],
+    [2.17, 7.1251],
 
 ])
 
 clicked_data2 = np.array([
 
-
-    [1.810091, 7.331656],
-    [1.811411, 7.331450],
-    [1.812848, 7.331450],
-    [1.813935, 7.331450],
-    [1.814790, 7.331450],
-    [1.815644, 7.330525],
-    [1.816887, 7.328162],
-    [1.817974, 7.326312],
-    [1.818906, 7.323948],
-    [1.819915, 7.321893],
-    [1.820964, 7.319735],
-    [1.821973, 7.316754],
-    [1.822867, 7.314185],
-    [1.824109, 7.311513],
+    [2.28, 7.303],
+    [2.23, 7.2777],
+    [2.13, 7.2607],
 ])
 current1 = clicked_data1[:, 0]  # In mA
 freq1 = clicked_data1[:, 1]  # in GHz
@@ -89,14 +66,14 @@ phi_o = h / (2 * e)  # Flux quantum
 
 Na = 30
 Nr = 5
-I0_guess = 2.413835953137934
-I_period_guess = 3.444869981326494
-E_l = 0.30316786766768816
-E_c = 1.3707449371055807
-E_j = 5.081608341619772
-wr_guess = 7.331737889473601
-g_guess = .040578333146078956
-FitData = False
+I0_guess = 2.28
+I_period_guess = 5.28
+E_l = 0.4373
+E_c = 2.8894
+E_j = 6.9756
+wr_guess = 7.2582
+g_guess = .1622
+FitData = True
 
 guess = ([I0_guess, I_period_guess, g_guess, wr_guess])
 bounds = (
@@ -128,14 +105,14 @@ def single_trans_energy(current_single, E_l, E_c, E_j, I0, I_period, g, wr, leve
 
 ##################Change levels here############################
 def trans_energy_all(current, I0, I_period, g, wr):
-    energy1 = single_trans_energy(current1, E_l, E_c, E_j, I0, I_period, g, wr, 0, 4)
+    energy1 = single_trans_energy(current1, E_l, E_c, E_j, I0, I_period, g, wr, 0, 1)
     if len(clicked_data2) != 0:
-        energy2 = single_trans_energy(current2, E_l, E_c, E_j, I0, I_period, g, wr, 0, 3)
+        energy2 = single_trans_energy(current2, E_l, E_c, E_j, I0, I_period, g, wr, 0, 2)
         energy = np.concatenate([energy1, energy2], axis=0)
     else:
         energy = energy1
     print('trans_energy_all called ')
-    print('I0=' + str(I0) + '\nI_period=' + str(I_period) + '\ng = ' + str(g) + '\nwr = ' + str(wr))
+    print('I0=' + str(I0) + '\nI_period=' + str(I_period) + '\ng = ' + str(g) + '\nwr = ' + str(wr) + '\nE1 = ' + str(energy1[0]) + '\nE2 = ' + str(energy2[-1]))
     return energy
 
 

@@ -120,8 +120,8 @@ def main():
     subpath = 'Processed Data/Fluxonium Coupled to Harmonic Modes/'
     path = os.path.join(samples_path, sample, subpath)
 
-    filename_in = 'one_mode_2.hdf5'
-    filename_fit = 'one_mode_anticrossing.hdf5'
+    filename_in = 'one_mode_in_8.5GHz_cavity.hdf5'
+    filename_fit = 'one_mode_in_8.5GHz_cavity_anticrossing_2.hdf5'
 
     params = utilities.load_fit(os.path.join(path, filename_in))
 
@@ -149,12 +149,12 @@ def main():
     # params['num_tot'] = 10
     # params['num_cpl'] = 10
     # params['num_mod'] = [10, 10, 10]
-    # params['frequencies'] = np.array([7.79, 8.232, 30])
-    # params['n_couplings'] = np.array([0., 3.325, 1])
+    # params['frequencies'] = np.array([7.89])
+    params['n_couplings'] = np.array([0.1])
     # params['phi_couplings'] = np.array([0., 0, 0])
-    params['data_set'] = 'data3'
+    params['data_set'] = 'data4'
     
-    phi_ext = np.linspace(-0.1, 0.1, 201)
+    phi_ext = np.linspace(0.2, 1.2, 201)
 
     utilities.print_params(params)
     params = fit(params)
@@ -196,7 +196,7 @@ def main():
     title = ('$E_L/h=$%.3f GHz, $E_C/h=$%.3f GHz, $E_J/h=$%.3f GHz\n'
             '$f_i\in${%s} GHz\n$g_{i,n|\phi}\in${%s} GHz' % (params['E_L'],
             params['E_C'], params['E_J'], str_freq, str_coup))
-    plot_spectrum.label_axes(title, ylim=[7.1, 7.4], xlim=[-0.1, 0.1])
+    plot_spectrum.label_axes(title)
 
     plt.show()
 

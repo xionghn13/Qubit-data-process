@@ -74,4 +74,29 @@ data = {
                'frequency': 7.479  # GHz
                },
               ],
+    'data3': [{'transition': (0, 1),
+               'external flux quanta': 0.,  # \Phi_\mathrm{ext}/\Phi_0
+               'frequency': 7.227  # GHz
+               },
+              {'transition': (0, 1),
+               'external flux quanta': -0.0136,  # \Phi_\mathrm{ext}/\Phi_0
+               'frequency': 7.177  # GHz
+               },
+              {'transition': (0, 1),
+               'external flux quanta': -0.0208,  # \Phi_\mathrm{ext}/\Phi_0
+               'frequency': 7.1251  # GHz
+               },
+              {'transition': (0, 2),
+               'external flux quanta': 0.,  # \Phi_\mathrm{ext}/\Phi_0
+               'frequency': 7.303  # GHz
+               },
+              {'transition': (0, 2),
+               'external flux quanta': -0.01,  # \Phi_\mathrm{ext}/\Phi_0
+               'frequency': 7.2777  # GHz
+               },
+              {'transition': (0, 2),
+               'external flux quanta': -0.0286,  # \Phi_\mathrm{ext}/\Phi_0
+               'frequency': 7.2607  # GHz
+               },
+              ],
 }

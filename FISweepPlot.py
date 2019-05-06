@@ -166,9 +166,20 @@ OneToneFileList = [
 # OneToneFileList = [
 #     'one tone_66.hdf5'
 # ]
+OneToneFileList = [
+    'two tone_211.hdf5',
+    'two tone_212.hdf5',
+    'two tone_213.hdf5',
+    'two tone_214.hdf5',
+    'two tone_231.hdf5',
+    'two tone_215.hdf5',
+    'one tone_86.hdf5',
+    'one tone_87.hdf5',
+    'one tone_88.hdf5',
+]
 PlotSpectrum = False
-ClickForPoints = False
-PickleSave = True
+ClickForPoints = True
+PickleSave = False
 NoCalibrate = False  # for one tone at anti crossing
 SelfCalibrate = True  # use background file to calibrate
 

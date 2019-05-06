@@ -7,17 +7,19 @@ import QubitSpectrumFunc as qsf
 from scipy.optimize import curve_fit
 import ExtractDataFunc as edf
 
-
-DataPath = 'E:/Projects\Fluxonium\data_process/cavity/7.5GHz/'
-OneToneFile = 'one tone_69.hdf5'
+DataPath = 'E:/Projects\Fluxonium\data_process/cavity/8.5GHz/'
+# DataPath = 'E:/Projects\Fluxonium\data_process/Fluxonium022319/'
+OneToneFile = 'one tone_56.hdf5'
 
 TruncateFreq = True
 
-StartFreq = 7.15
-EndFreq = 7.35
+StartFreq = 7.78
+EndFreq = 7.8
 
 [Freq, Complex] = edf.readFSweepLabber(DataPath + OneToneFile)
-
+# [Freq, Complex] = edf.readVNAS21(DataPath + OneToneFile)
+# Complex = np.sqrt(Complex)
+Complex = Complex ** 2
 if TruncateFreq:
     FreqInd = (EndFreq >= Freq) == (Freq >= StartFreq)
     FreqTrunc = Freq[FreqInd]
@@ -28,6 +30,9 @@ else:
 
 AbsComplex = np.abs(ComplexTrunc)
 MaxAbs = np.max(AbsComplex)
+ComplexTrunc /= MaxAbs
+AbsComplex = np.abs(ComplexTrunc)
+MaxAbs = np.max(AbsComplex)
 MinAbs = np.min(AbsComplex)
 MaxInd = AbsComplex.argmax()
 f0_guess = FreqTrunc[MaxInd]
@@ -35,9 +40,11 @@ kappa_guess = (FreqTrunc[-1] - FreqTrunc[0]) / 4
 B_guess = MinAbs
 A_guess = (MaxAbs - MinAbs) * (kappa_guess / 2) ** 2
 
+
 def lorenztian(f, f0, kappa, A, B):
     t = A / ((f - f0) ** 2 + (kappa / 2) ** 2) + B
     return t
+
 
 guess = ([f0_guess, kappa_guess, A_guess, B_guess])
 bounds = (
