@@ -3,10 +3,10 @@ import numpy as np
 from datetime import datetime
 from Labber import ScriptTools
 
-ExperimentName = 'wg5 in 8.5GHz cavity'
-CoolDownDate = 'test'
+# ExperimentName = 'wg5 in 8.5GHz cavity'
+# CoolDownDate = 'test'
 
-ConfigName = 'two tone sweep for cavity.hdf5'
+ConfigName = 'cavity Q.hdf5'
 
 # set path to executable
 ScriptTools.setExePath('C:\Program Files (x86)\Labber\Program')
@@ -26,9 +26,10 @@ if not os.path.exists(DataPath):
 
 
 ConfigFile = ConfigPath + ConfigName
-OutputFile = DataPath + 'two tone' + TimeStr
+OutputFile = DataPath + ConfigName + TimeStr
 MeasObj = ScriptTools.MeasurementObject(ConfigFile, OutputFile)
 
-# MeasObj.updateValue('Flux bias', value_1)
+MeasObj.updateValue('Flux bias', value_1)
 # measure resonator
 MeasObj.performMeasurement(return_data=False)
+
