@@ -54,12 +54,19 @@ T = 70e-3
 freq = T * kB / h * np.log(Gamma_down / Gamma_up)
 print('f = %.3GGHz' % (freq / 1e9))
 print('--------------------freq to wavelength----------------')
-f = 1e9
+f = 0.02e9
 c = 3e8
-epsilon = 12
+epsilon = 2
 T = 1 / f
 lamb = c / np.sqrt(epsilon) * T * 1e3
 print('lambda = %.3Gmm' % lamb)
+print('--------------------wavelength to freq----------------')
+lamb = 4e-3 * 2
+c = 3e8
+epsilon = (1 + 11.9) / 2
+T = lamb * np.sqrt(epsilon) / c
+f = 1 / T * 1e-9
+print('freq = %.3GGHz' % f)
 print('---------------temp to S_ratio----------------------')
 f1 = 0.0001e9
 f2 = 1e9

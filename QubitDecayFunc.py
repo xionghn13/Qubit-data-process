@@ -7,6 +7,10 @@ def T1_curve(t, A, T1, B):
     # print('T1 = %.3Gus, A = %.3G, B = %.3G' % (T1 / 1000, A, B))
     return r
 
+def DoubleExp_curve(t, A, TR, B, Tqp, lamb):
+    r = A * np.exp(- t / TR - lamb * (np.exp(t / Tqp) - 1)) + B
+    # print('T1 = %.3Gus, A = %.3G, B = %.3G' % (T1 / 1000, A, B))
+    return r
 
 def rabi_curve(t, A, T1, B, Tpi, phi0):
     r = A * np.exp(- t / T1) * np.cos(t / Tpi * np.pi + phi0) + B

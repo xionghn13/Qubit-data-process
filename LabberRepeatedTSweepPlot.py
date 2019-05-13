@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import SubtractBackgroundFunc as sbf
 import QubitSpectrumFunc as qsf
 from scipy.optimize import curve_fit
-from QubitDecayFunc import T1_curve, rabi_curve, FitTransientTime, AutoRotate
+from QubitDecayFunc import T1_curve, DoubleExp_curve, rabi_curve, FitTransientTime, AutoRotate
 import ExtractDataFunc as edf
 import h5py
 
@@ -19,7 +19,7 @@ BackgroundFile = 'calibration_5.hdf5'
 #
 # ]
 RabiFileList = [
-    't1t2interleaved_37.hdf5',
+    't1_124.hdf5',
 ]
 
 IQModFreq = 0.05
@@ -29,10 +29,11 @@ FitCorrectedR = True
 LogScale = False
 Calibration = False
 RotateComplex = True
-PlotNumber = 3
-MaxPlotInd = 0
-PlotIndex = [4, 5, 8, 9, 36]
-T2MaxTime = 2e4 #ns
+FitDoubleExponential = False
+PlotNumber = 11
+MaxPlotInd = 11
+PlotIndex = [0, 1, 2, 3]
+T2MaxTime = 2e4  # ns
 
 PhaseSlope = 326.7041108065019
 PhaseRefrenceFreq = 4.105
@@ -108,16 +109,30 @@ for i, RabiFile in enumerate(RabiFileList):
 
         if MeasurementType in ('t1', 'transient', 't2'):
             B_guess = y_data[-1]
-            A_guess = y_data[0].real - B_guess
+            A_guess = y_data[0] - B_guess
             T1_guess = x_data[-1] / 2
             bounds = (
                 (-2, 1, -1),
                 (2, 1e6, 1)
             )
-            opt, cov = curve_fit(T1_curve, x_data, y_data, p0=[A_guess, T1_guess, B_guess], maxfev=30000)
-            A_fit, T1_fit, B_fit = opt
-            FitR = T1_curve(Time, A_fit, T1_fit, B_fit)
-            ParamList = ['A', 'Decay time/ns', 'B']
+            if FitDoubleExponential:
+                try:
+                    opt, cov = curve_fit(DoubleExp_curve, x_data, y_data, p0=[A_guess, T1_guess, B_guess, T1_guess * 0.1, 1],
+                                         maxfev=300000)
+
+                except RuntimeError:
+                    print("Error - curve_fit failed")
+                    opt = np.array([A_guess, T1_guess, B_guess, T1_guess, 1])
+                    cov = np.zeros([len(opt), len(opt)])
+
+                A_fit, TR_fit, B_fit, Tqp_fit, lamb_fit = opt
+                FitR = DoubleExp_curve(Time, A_fit, TR_fit, B_fit, Tqp_fit, lamb_fit)
+                ParamList = ['A', 'TR/ns', 'B', 'Tqp/ns', 'lambda']
+            else:
+                opt, cov = curve_fit(T1_curve, x_data, y_data, p0=[A_guess, T1_guess, B_guess], maxfev=30000)
+                A_fit, T1_fit, B_fit = opt
+                FitR = T1_curve(Time, A_fit, T1_fit, B_fit)
+                ParamList = ['A', 'Decay time/ns', 'B']
         elif MeasurementType == 't1t2interleaved':
             FitRt1t2List = []
             optList = []
@@ -305,14 +320,85 @@ if MaxPlotInd != 0:
         plt.legend(['T1', 'T2echo'])
         plt.title('T1=%.3G$\pm$%.2Gus, T2=%.3G$\pm$%.2Gus' % (avgList[0], stdList[0], avgList[1], stdList[1]))
     else:
-        ax.errorbar(CounterArray[:MaxPlotInd], OptMatrix[plotInd, :MaxPlotInd] / 1000, yerr=ErrMatrix[plotInd, :MaxPlotInd] / 1000,
+        avg = np.mean(OptMatrix[plotInd, :MaxPlotInd]) / 1000
+        std = np.std(OptMatrix[plotInd, :MaxPlotInd]) / 1000
+        ax.errorbar(CounterArray[:MaxPlotInd], OptMatrix[plotInd, :MaxPlotInd] / 1000,
+                    yerr=ErrMatrix[plotInd, :MaxPlotInd] / 1000,
                     fmt='o')
+        if FitDoubleExponential:
+            plt.title('TR=%.3G$\pm$%.2Gus' % (avg, std))
+        else:
+            plt.title('T1=%.3G$\pm$%.2Gus' % (avg, std))
+
     plt.xlabel('Trial #', fontsize='x-large')
     plt.ylabel('Decay time/us', fontsize='x-large')
     plt.tick_params(axis='both', which='major', labelsize='x-large')
     plt.tight_layout()
     if LogScale:
         ax.set_yscale('log')
+
+    if FitDoubleExponential:
+        fig, ax = plt.subplots()
+        plotInd = 3
+        # plt.plot(CounterArray, OptMatrix[plotInd, :]/1000, 'o')
+        if MeasurementType == 't1t2interleaved':
+            avgList = []
+            stdList = []
+            for ind in range(1):
+                avgList += [np.mean(OptMatrixList[ind][plotInd, :MaxPlotInd] / 1000)]
+                if NumPoints > 1:
+                    stdList += [np.std(OptMatrixList[ind][plotInd, :MaxPlotInd] / 1000)]
+                else:
+                    stdList += [ErrMatrixList[ind][plotInd, 0] / 1000]
+                ax.errorbar(CounterArray[:MaxPlotInd], OptMatrixList[ind][plotInd, :MaxPlotInd] / 1000,
+                            yerr=ErrMatrixList[ind][plotInd, :MaxPlotInd] / 1000, fmt='o')
+            # plt.legend(['T1', 'T2echo'])
+            plt.title('Tqp=%.3G$\pm$%.2Gus' % (avgList[0], stdList[0]))
+        else:
+            avg = np.mean(OptMatrix[plotInd, :MaxPlotInd]) / 1000
+            std = np.std(OptMatrix[plotInd, :MaxPlotInd]) / 1000
+            ax.errorbar(CounterArray[:MaxPlotInd], OptMatrix[plotInd, :MaxPlotInd] / 1000,
+                        yerr=ErrMatrix[plotInd, :MaxPlotInd] / 1000,
+                        fmt='o')
+            plt.title('Tqp=%.3G$\pm$%.2Gus' % (avg, std))
+
+        plt.xlabel('Trial #', fontsize='x-large')
+        plt.ylabel('Decay time/us', fontsize='x-large')
+        plt.tick_params(axis='both', which='major', labelsize='x-large')
+        plt.tight_layout()
+        if LogScale:
+            ax.set_yscale('log')
+
+        fig, ax = plt.subplots()
+        plotInd = 4
+        # plt.plot(CounterArray, OptMatrix[plotInd, :]/1000, 'o')
+        if MeasurementType == 't1t2interleaved':
+            avgList = []
+            stdList = []
+            for ind in range(1):
+                avgList += [np.mean(OptMatrixList[ind][plotInd, :MaxPlotInd])]
+                if NumPoints > 1:
+                    stdList += [np.std(OptMatrixList[ind][plotInd, :MaxPlotInd])]
+                else:
+                    stdList += [ErrMatrixList[ind][plotInd, 0]]
+                ax.errorbar(CounterArray[:MaxPlotInd], OptMatrixList[ind][plotInd, :MaxPlotInd],
+                            yerr=ErrMatrixList[ind][plotInd, :MaxPlotInd], fmt='o')
+            # plt.legend(['T1', 'T2echo'])
+            plt.title('Tqp=%.3G$\pm$%.2Gus' % (avgList[0], stdList[0]))
+        else:
+            avg = np.mean(OptMatrix[plotInd, :MaxPlotInd])
+            std = np.std(OptMatrix[plotInd, :MaxPlotInd])
+            ax.errorbar(CounterArray[:MaxPlotInd], OptMatrix[plotInd, :MaxPlotInd],
+                        yerr=ErrMatrix[plotInd, :MaxPlotInd],
+                        fmt='o')
+            plt.title('lambda=%.3G$\pm$%.2G' % (avg, std))
+
+        plt.xlabel('Trial #', fontsize='x-large')
+        plt.ylabel('lambda', fontsize='x-large')
+        plt.tick_params(axis='both', which='major', labelsize='x-large')
+        plt.tight_layout()
+        if LogScale:
+            ax.set_yscale('log')
 
 if MeasurementType == 'rabi':
     fig, ax = plt.subplots()

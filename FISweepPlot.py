@@ -178,7 +178,7 @@ OneToneFileList = [
     'one tone_88.hdf5',
 ]
 PlotSpectrum = False
-ClickForPoints = True
+ClickForPoints = False
 PickleSave = False
 NoCalibrate = False  # for one tone at anti crossing
 SelfCalibrate = True  # use background file to calibrate
