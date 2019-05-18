@@ -1,7 +1,7 @@
 import numpy as np
 
 h = 6.63e-34
-f = 3.4e9
+f = 0.5e9
 kB = 1.38e-23
 T0 = 0.07
 
@@ -9,6 +9,7 @@ P0 = 0.2
 T = h * f / kB / np.log((1 - P0) / P0)
 print('T = %.3GmK' % (T * 1000))
 print(np.exp(- h * f / kB / T0))
+print(1 / np.tanh(h * f / kB / T0))
 
 print('---------------A B to P0 P1----------------------')
 
@@ -42,8 +43,8 @@ print('T_high = %.3GmK' % (T_high * 1000))
 print('T_low = %.3GmK' % (T_low * 1000))
 print('---------------temp to Gamma----------------------')
 Gamma_down = 2 * np.pi * 5
-f = 11e9
-T = 70e-3
+f = 11.5e9
+T = 60e-3
 Gamma_up = Gamma_down * np.exp(- h * f / kB / T)
 print('Gamma_up = %.3GMHz, Gamma_down = %.3GMHz' % (Gamma_up, Gamma_down))
 print('T_2 = %.3Gus' % (1 / Gamma_up))

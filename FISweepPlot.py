@@ -17,7 +17,7 @@ profiler = pprofile.Profile()
 # DataPath = 'E:/Projects\Fluxonium\data_process/test_data/'
 # BackgroundFile = '081717_one_tone_4GHz_to_12GHz_-20dBm.dat'
 # OneToneFile = '081817_one_tone_6.4GHz_to_9.0GHz_-2.5mA_to_2.5mA_1.dat'
-DataPath = 'E:/Projects\Fluxonium\data_process/Fluxonium032619/'
+DataPath = 'E:/Projects\Fluxonium\data_process/Fluxonium042619/'
 BackgroundFile = 'one_tone_6.45GHz_to_6.6GHz_5dBm_0mA_10us integration_200Kavg_100KHz step_091918.dat'
 # BackgroundFile = 'one_tone_3.5GHz_to_12GHz_5dBm_3mA_10us integration_5Kavg_500KHz step_121018.dat'
 # OneToneFile = '110518_one_tone_4GHz_to_9GHz_-2mA_to_3mA_10us integration_3Kavg.dat'
@@ -138,45 +138,65 @@ BackgroundFile = 'one_tone_6.45GHz_to_6.6GHz_5dBm_0mA_10us integration_200Kavg_1
 #     'two tone_92.hdf5',
 # ]
 
-OneToneFileList = [
-    # 'two tone_113.hdf5',
-    'one tone_72.hdf5',
-    # 'one tone_75.hdf5',
-    # 'two tone_114.hdf5',
-    # 'two tone_115.hdf5',
-    # 'two tone_116.hdf5',
-    # 'two tone_117.hdf5',
-    # 'two tone_118.hdf5',
-    # 'two tone_119.hdf5',
-    # 'two tone_120.hdf5',
-    # 'two tone_122.hdf5',
-    # 'two tone_123.hdf5',
-    # 'two tone_124.hdf5',
-    # 'two tone_125.hdf5',
-    # 'two tone_126.hdf5',
-    # 'two tone_127.hdf5',
-    # 'two tone_141.hdf5',
-    # 'two tone_142.hdf5',
-    # 'two tone_144.hdf5',
-    # 'two tone_145.hdf5',
-    # 'two tone_146.hdf5',
-    # 'two tone_149.hdf5',
-
-]
 # OneToneFileList = [
-#     'one tone_66.hdf5'
+#     # 'two tone_113.hdf5',
+#     'one tone_72.hdf5',
+#     # 'one tone_75.hdf5',
+#     # 'two tone_114.hdf5',
+#     # 'two tone_115.hdf5',
+#     # 'two tone_116.hdf5',
+#     # 'two tone_117.hdf5',
+#     # 'two tone_118.hdf5',
+#     # 'two tone_119.hdf5',
+#     # 'two tone_120.hdf5',
+#     # 'two tone_122.hdf5',
+#     # 'two tone_123.hdf5',
+#     # 'two tone_124.hdf5',
+#     # 'two tone_125.hdf5',
+#     # 'two tone_126.hdf5',
+#     # 'two tone_127.hdf5',
+#     # 'two tone_141.hdf5',
+#     # 'two tone_142.hdf5',
+#     # 'two tone_144.hdf5',
+#     # 'two tone_145.hdf5',
+#     # 'two tone_146.hdf5',
+#     # 'two tone_149.hdf5',
+#
 # ]
+
 OneToneFileList = [
-    'two tone_211.hdf5',
-    'two tone_212.hdf5',
-    'two tone_213.hdf5',
-    'two tone_214.hdf5',
-    'two tone_231.hdf5',
-    'two tone_215.hdf5',
-    'one tone_86.hdf5',
-    'one tone_87.hdf5',
-    'one tone_88.hdf5',
+    'two tone_395.hdf5',
+    'two tone_396.hdf5',
+    'two tone_397.hdf5',
+    'two tone_398.hdf5',
+    'two tone_399.hdf5',
+    'two tone_400.hdf5',
+    'two tone_401.hdf5',
+    'two tone_402.hdf5',
+    'two tone_403.hdf5',
+    'two tone_404.hdf5',
+    'two tone_405.hdf5',
+    'two tone_410.hdf5',
+    'two tone_414.hdf5',
+    'two tone_415.hdf5',
+    'two tone_416.hdf5',
+    'two tone_417.hdf5',
+    'two tone_418.hdf5',
+    'two tone_419.hdf5',
+    'two tone_420.hdf5',
+    'two tone_424.hdf5',
+    'two tone_425.hdf5',
+    'two tone_426.hdf5',
+    'two tone_421.hdf5',
+    'two tone_428.hdf5',
+    'two tone_429.hdf5',
+    'two tone_430.hdf5',
+    'two tone_431.hdf5',
+    'two tone_432.hdf5',
+    'two tone_433.hdf5',
+    'two tone_434.hdf5',
 ]
+
 PlotSpectrum = False
 ClickForPoints = False
 PickleSave = False

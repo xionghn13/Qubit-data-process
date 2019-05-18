@@ -12,7 +12,11 @@ def FISweepSelfCalibrate(DataPath, OneToneFile):
         else:
             [OneFreq, OneCurrent, OneComplex] = edf.readFISweepTwoToneLabber(DataPath + OneToneFile)
     OneFreqUniq = np.unique(OneFreq)
+    if OneFreq[0,0] > OneFreq[-1, -1]:
+        OneFreqUniq = np.flip(OneFreqUniq, axis=0)
     OneCurrentUniq = np.unique(OneCurrent)
+    if OneCurrent[0,0] > OneCurrent[-1, -1]:
+        OneCurrentUniq = np.flip(OneCurrentUniq, axis=0)
     if OneToneFile.startswith('two tone'):
         OneComplex = (OneComplex / OneComplex.mean(axis=0))
     else:
