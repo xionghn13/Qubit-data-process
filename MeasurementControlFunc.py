@@ -25,15 +25,17 @@ def RunMeasurement(ConfigName, MeasLabel, ItemDict={}):
 
     ConfigFile = ConfigPath + ConfigName
     OutputFile = DataPath + MeasLabel + '_' + TimeStr
-    print(MeasLabel + TimeStr)
+    print(MeasLabel + '_' + TimeStr)
     MeasObj = ScriptTools.MeasurementObject(ConfigFile, OutputFile)
 
     for item, value in ItemDict.items():
         if type(value) is list:
-            MeasObj.updateValue(item, value[0], itemType=value[1])
+            for subitem in value:
+                MeasObj.updateValue(item, subitem[0], itemType=subitem[1])
         else:
             MeasObj.updateValue(item, value)
 
     # measure resonator
     MeasObj.performMeasurement(return_data=False)
+    return [DataPath, MeasLabel + '_' + TimeStr + '.hdf5']
 
