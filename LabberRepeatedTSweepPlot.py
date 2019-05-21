@@ -26,7 +26,7 @@ def plotLabberRepeatedTSweepPlot(DataPath, RabiFileList, BackgroundFile='calibra
     for i, RabiFile in enumerate(RabiFileList):
         RabiFileStrList = RabiFile[:-5].split('_')
         MeasurementType = RabiFileStrList[0]
-        if MeasurementType == 't1_t2_interleaved':
+        if MeasurementType == 't1' and RabiFileStrList[1] == 't2':
             MeasurementType = 't1t2interleaved'
         ReadoutFreq = edf.readQubitFreqLabber(DataPath + RabiFile)
         ReadoutPower = edf.readQubitPowerLabber(DataPath + RabiFile)
@@ -394,7 +394,7 @@ def plotLabberRepeatedTSweepPlot(DataPath, RabiFileList, BackgroundFile='calibra
 
 
 if __name__ == '__main__':
-    DataPath = 'E:/Projects\Fluxonium\data_process/Fluxonium032619/'
+    DataPath = 'E:/Projects\Fluxonium\data_process/Fluxonium042619/'
     BackgroundFile = 'calibration_5.hdf5'
 
     # RabiFileList = [
@@ -405,7 +405,7 @@ if __name__ == '__main__':
     #
     # ]
     RabiFileList = [
-        't1_124.hdf5',
+        't1_t2_interleaved_2019-05-21-00-38-51.hdf5',
     ]
 
     IQModFreq = 0.05
@@ -419,7 +419,7 @@ if __name__ == '__main__':
     PlotNumber = 11
     MaxPlotInd = 11
     PlotIndex = [0, 1, 2, 3]
-    T2MaxTime = 2e4  # ns
+    T2MaxTime = 20e4  # ns
 
     PhaseSlope = 326.7041108065019
     PhaseReferenceFreq = 4.105
