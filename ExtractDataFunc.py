@@ -66,6 +66,15 @@ def readFISweepTwoToneLabber(file):
     return [OneFreq, OneCurrent, OneComplex]
 
 
+def readFSweepTwoToneLabber(file):
+    ATS_var = 'Alazar - Channel A - Average demodulated value'
+    OneFreq_var = 'Pump - Frequency'
+    LogData = Labber.LogFile(file)
+    OneComplex = np.conj(np.transpose(LogData.getData(ATS_var)))
+    OneFreq = np.transpose(LogData.getData(OneFreq_var)) * 1e-9
+    return [OneFreq, OneComplex]
+
+
 def readFPSweepDat(file):
     # for HQC data
     OneTone = np.loadtxt(file, skiprows=1)
