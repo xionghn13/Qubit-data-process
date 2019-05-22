@@ -7,17 +7,17 @@ import QubitSpectrumFunc as qsf
 from scipy.optimize import curve_fit
 import ExtractDataFunc as edf
 
-DataPath = 'E:/Projects\Fluxonium\data_process/cavity/7.5GHz_5/'
-# DataPath = 'E:/Projects\Fluxonium\data_process/Fluxonium032619/'
-OneToneFile = 'cavity Q_95.hdf5'
+# DataPath = 'E:/Projects\Fluxonium\data_process/cavity/7.5GHz_5/'
+DataPath = 'E:/Projects\Fluxonium\data_process/Fluxonium042619/'
+OneToneFile = 'one tone_89.hdf5'
 
 TruncateFreq = False
 
 StartFreq = 7.78
 EndFreq = 7.8
 
-# [Freq, Complex] = edf.readFSweepLabber(DataPath + OneToneFile)
-[Freq, Complex] = edf.readVNAS21(DataPath + OneToneFile)
+[Freq, Complex] = edf.readFSweepLabber(DataPath + OneToneFile)
+# [Freq, Complex] = edf.readVNAS21(DataPath + OneToneFile)
 # Complex = np.sqrt(Complex)
 Complex = Complex ** 2
 if TruncateFreq:

@@ -418,8 +418,8 @@ if __name__ == '__main__':
     FitDoubleExponential = False
     PlotNumber = 11
     MaxPlotInd = 11
-    PlotIndex = [0, 1, 2, 3]
-    T2MaxTime = 20e4  # ns
+    PlotIndex = [0, 1]
+    T2MaxTime = 10e4  # ns
 
     PhaseSlope = 326.7041108065019
     PhaseReferenceFreq = 4.105
