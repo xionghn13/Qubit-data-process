@@ -96,9 +96,10 @@ def plotLabberRepeatedTSweepPlot(DataPath, RabiFileList, BackgroundFile='calibra
                 if FitDoubleExponential:
                     try:
                         opt, cov = curve_fit(DoubleExp_curve, x_data, y_data,
-                                             p0=[A_guess, T1_guess, B_guess, T1_guess * 0.1, 1],
+                                             p0=[A_guess, T1_guess, B_guess, T1_guess * 0.1, 0.5],
                                              maxfev=300000)
-
+                        print('guess = %s' % str([A_guess, T1_guess, B_guess, T1_guess * 0.1, 1]))
+                        print('Double exp fit opt = %s' % str(opt))
                     except RuntimeError:
                         print("Error - curve_fit failed")
                         opt = np.array([A_guess, T1_guess, B_guess, T1_guess, 1])
@@ -231,12 +232,19 @@ def plotLabberRepeatedTSweepPlot(DataPath, RabiFileList, BackgroundFile='calibra
                     plt.plot(TimeList[i], np.real(RComplexList[i][ind]))
                 plt.plot(TimeList[i], FitRList[i][ind], '--')
         else:
-            plt.plot(TimeList[i], np.real(RComplexList[i]), 'o')
-            plt.plot(TimeList[i], FitRList[i])
+            if LogScale:
+                plt.plot(TimeList[i], FitRList[i] - opt[2])
+                plt.plot(TimeList[i], np.real(RComplexList[i]) - opt[2], 'o')
+            else:
+                plt.plot(TimeList[i], FitRList[i])
+                plt.plot(TimeList[i], np.real(RComplexList[i]) - opt[2], 'o')
+
     plt.xlabel('Time/ns', fontsize='x-large')
     plt.ylabel('Re', fontsize='x-large')
     plt.tick_params(axis='both', which='major', labelsize='x-large')
     plt.tight_layout()
+    if LogScale:
+        ax.set_yscale('log')
 
     if max(PlotIndex) < NumPoints:
         for i in PlotIndex:
@@ -395,7 +403,7 @@ def plotLabberRepeatedTSweepPlot(DataPath, RabiFileList, BackgroundFile='calibra
 
 if __name__ == '__main__':
     # DataPath = 'E:/Projects\Fluxonium\data_process/Fluxonium042619/'
-    DataPath = 'C:/Users/admin\Labber\Data/2019/05\Data_0522'
+    DataPath = 'C:/Users/admin\Labber\Data/2019/05\Data_0523/'
     BackgroundFile = 'calibration_5.hdf5'
 
     # RabiFileList = [
@@ -406,7 +414,7 @@ if __name__ == '__main__':
     #
     # ]
     RabiFileList = [
-        't1_t2_interleaved_2019-05-21-00-38-51.hdf5',
+        't1_2019-05-23-16-27-00.hdf5',
     ]
 
     IQModFreq = 0.05
@@ -416,7 +424,7 @@ if __name__ == '__main__':
     LogScale = False
     Calibration = False
     RotateComplex = True
-    FitDoubleExponential = False
+    FitDoubleExponential = True
     PlotNumber = 11
     MaxPlotInd = 11
     PlotIndex = [0, 1]

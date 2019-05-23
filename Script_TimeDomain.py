@@ -37,7 +37,7 @@ def timeDomainMeasurement(Current, QubitFreq, DrivingPower, PiPulseLength, Detun
             'Pump - Power': DrivingPower,
             'Pulse Generator - Width #1': PiPulseLength,
             # 'Pulse Generator - Readout delay': [[450e-6, 'STOP']],
-            'Alazar - Number of records': 30e3,
+            'Alazar - Number of records': 200e3,
             'Pulse Generator - Pulse type': 0,  # Gaussian
             # 'Counter - Number of points': [[10, 'STOP']]
             'Counter - Number of points': 0
