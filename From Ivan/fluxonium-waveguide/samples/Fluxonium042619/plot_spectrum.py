@@ -113,7 +113,7 @@ def plot_spectrum():
         plt.pcolormesh(bias_2d, freq_2d, plot_2d, cmap='PuBu')
 
 
-def label_axes(title='', xlim=[-.0, 0.7], ylim=[3, 14],
+def label_axes(title='', xlim=[.2992, 0.3006], ylim=[3, 14],
                title_color='k'):
     labelsize = 18
     plt.xlabel('$\Phi_\mathrm{ext}/\Phi_0$', fontsize=labelsize)

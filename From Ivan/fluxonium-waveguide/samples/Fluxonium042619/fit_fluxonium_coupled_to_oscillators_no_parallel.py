@@ -123,8 +123,8 @@ def main():
     subpath = 'Processed Data/Fluxonium Coupled to Harmonic Modes/'
     path = os.path.join(samples_path, sample, subpath)
 
-    filename_in = 'one_mode_1.hdf5'
-    filename_fit = 'one_mode_2.hdf5'
+    filename_in = 'one_mode_2.hdf5'
+    filename_fit = 'one_mode_anticrossing.hdf5'
 
     params = utilities.load_fit(os.path.join(path, filename_in))
 
@@ -145,20 +145,23 @@ def main():
     #           'data_set': 'data0'
     #           }
 
-    params['E_L'] = 1.023
-    params['E_C'] = 1.478
-    params['E_J'] = 14.49
+    # params['E_L'] = 1.023
+    # params['E_C'] = 1.478
+    # params['E_J'] = 14.49
     # params['num_qbt'] = 10
     # params['num_tot'] = 10
     # params['num_cpl'] = 10
-    params['frequencies'] = np.array([7.45])
-    params['num_mod'] = [10]
-    params['n_couplings'] = np.array([0.])
-    params['phi_couplings'] = np.array([0.])
-    params['data_set'] = 'data3'
-    params['error_type'] = 'absolute_error'
+    # params['frequencies'] = np.array([7.45])
+    # params['num_mod'] = [10]
+    params['n_couplings'] = np.array([0.01])
+    # params['phi_couplings'] = np.array([0.])
+    params['data_set'] = 'data4'
+    # params['error_type'] = 'absolute_error'
 
-    phi_ext = np.linspace(0., 0.7, 101)
+    phi_ext1 = np.linspace(0.2992, 0.3006, 51)
+    phi_ext2 = np.linspace(0., 0.7, 51)
+    phi_ext = np.sort(np.concatenate((phi_ext1, phi_ext2)))
+    # phi_ext = np.linspace(0.2992, 0.3006, 51)
 
     utilities.print_params(params)
     params = fit(params)
