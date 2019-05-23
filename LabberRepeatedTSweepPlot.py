@@ -394,7 +394,8 @@ def plotLabberRepeatedTSweepPlot(DataPath, RabiFileList, BackgroundFile='calibra
 
 
 if __name__ == '__main__':
-    DataPath = 'E:/Projects\Fluxonium\data_process/Fluxonium042619/'
+    # DataPath = 'E:/Projects\Fluxonium\data_process/Fluxonium042619/'
+    DataPath = 'C:/Users/admin\Labber\Data/2019/05\Data_0522'
     BackgroundFile = 'calibration_5.hdf5'
 
     # RabiFileList = [
