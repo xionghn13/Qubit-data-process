@@ -39,9 +39,9 @@ def diagonalization(phi_ext, qubit, oscillators, params):
 
 def error_function(x, qubit, params):
     # total_time = time.time()
-    qubit.E_L = np.max([x[0], .05])
-    qubit.E_C = np.max([x[1], .05])
-    qubit.E_J = np.max([x[2], .05])
+    # qubit.E_L = np.max([x[0], .05])
+    # qubit.E_C = np.max([x[1], .05])
+    # qubit.E_J = np.max([x[2], .05])
 
     n_modes = len(params['frequencies'])
     params['frequencies'] = x[3:3 + n_modes]
@@ -145,15 +145,15 @@ def main():
     #           'data_set': 'data0'
     #           }
 
-    params['E_L'] = 1.016
-    params['E_C'] = 1.421
-    params['E_J'] = 14.858
+    # params['E_L'] = 1.016
+    # params['E_C'] = 1.421
+    # params['E_J'] = 14.858
     # params['num_qbt'] = 10
     # params['num_tot'] = 10
     # params['num_cpl'] = 10
-    params['frequencies'] = np.array([7.45])
+    params['frequencies'] = np.array([7.473])
     # params['num_mod'] = [10]
-    params['n_couplings'] = np.array([0.2])
+    params['n_couplings'] = np.array([0.4])
     # params['phi_couplings'] = np.array([0.])
     params['data_set'] = 'data5'
     # params['error_type'] = 'absolute_error'
@@ -161,10 +161,10 @@ def main():
     phi_ext1 = np.linspace(0.297, 0.2985, 51)
     phi_ext2 = np.linspace(0., 0.7, 51)
     phi_ext = np.sort(np.concatenate((phi_ext1, phi_ext2)))
-    phi_ext = np.linspace(0.297, 0.2985, 51)
+    # phi_ext = np.linspace(0.297, 0.2985, 51)
 
     utilities.print_params(params)
-    # params = fit(params)
+    params = fit(params)
     utilities.print_params(params)
     utilities.save_fit(os.path.join(path, filename_fit), params)
 

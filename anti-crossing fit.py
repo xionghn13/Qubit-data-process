@@ -30,17 +30,21 @@ NumFile = len(OneCurrentUniqList)
 # plt.tick_params(axis='both', which='major', labelsize='x-large')
 
 clicked_data1 = np.array([
-    [2.28, 7.227],
-    [2.21, 7.177],
-    [2.17, 7.1251],
+    [0.2971, 7.44821],
+    [0.29723, 7.44781],
+    [0.297490, 7.44639],
+    [0.29761, 7.44464],
+    [0.29774, 7.44155],
 
 ])
 
 clicked_data2 = np.array([
 
-    [2.28, 7.303],
-    [2.23, 7.2777],
-    [2.13, 7.2607],
+    [0.29738, 7.458],
+    [0.29761, 7.45455],
+    [0.29774, 7.45262],
+    [0.29788, 7.45269],
+    [0.29813, 7.45116],
 ])
 current1 = clicked_data1[:, 0]  # In mA
 freq1 = clicked_data1[:, 1]  # in GHz
@@ -66,19 +70,19 @@ phi_o = h / (2 * e)  # Flux quantum
 
 Na = 30
 Nr = 5
-I0_guess = 2.28
-I_period_guess = 5.28
-E_l = 0.4373
-E_c = 2.8894
-E_j = 6.9756
-wr_guess = 7.2582
-g_guess = .1622
+I0_guess = 0
+I_period_guess = 1
+E_l = 1.016
+E_c = 1.421
+E_j = 14.858
+wr_guess = 7.473
+g_guess = .4
 FitData = True
 
 guess = ([I0_guess, I_period_guess, g_guess, wr_guess])
 bounds = (
-    (I0_guess * 0.5, I_period_guess * 0.5, g_guess * 0.1, wr_guess * 0.9),
-    (I0_guess * 1.5, I_period_guess * 1.5, g_guess * 10, wr_guess * 1.1)
+    (I0_guess * 0.5 - 0.1, I_period_guess * 0.5, g_guess * 0.1, wr_guess * 0.9),
+    (I0_guess * 1.5 + 0.1, I_period_guess * 1.5, g_guess * 10, wr_guess * 1.1)
 )
 
 

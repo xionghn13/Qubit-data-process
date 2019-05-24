@@ -5,20 +5,23 @@ import QubitSpectrumFunc as qsf
 from Single_small_junction import charge_dispersive_shift as nChi
 
 N = 50
-E_l = 0.303
-E_c = 1.37
-E_j = 5.08
+E_l = 1.016
+E_c = 1.421
+E_j = 14.858
 level_num = 30
-g = 1.058
-I0 = 2.4138
-I_period = 3.4448
-w = 12.8
+g = 0.5112945051375719
+I0 = 2.351
+hI = 3.744  # mA
+w = 7.48821
 
+I_period = hI * 2
 iState = 0
 fState = 1
 
 # plot dispersive shift as a function of flux
-phi_ext = np.linspace(0, 1, 201)
+phi_ext1 = np.linspace(0.49, 0.51, 51)
+phi_ext2 = np.linspace(0., 1, 51)
+phi_ext = np.sort(np.concatenate((phi_ext1, phi_ext2)))
 
 chi = np.zeros(len(phi_ext))
 # chi1 = np.zeros(len(phi_ext))

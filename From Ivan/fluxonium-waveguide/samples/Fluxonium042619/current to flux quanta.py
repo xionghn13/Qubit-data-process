@@ -5,6 +5,6 @@ I = 4.59754
 flux = (I - I0) / (hI * 2)
 print('flux = %.5G' % flux)
 
-flux = -0.0286
+flux = 2.5
 I = flux * hI * 2 + I0
 print('I = %.3G' % I)

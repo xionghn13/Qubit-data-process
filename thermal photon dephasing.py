@@ -59,9 +59,9 @@ def cavityThermalPhotonTemperature(chi, T1, T2, kappa, f, n_eff=np.linspace(0, 0
 
 
 if __name__ == '__main__':
-    chi = 24.3 * 2 * np.pi
-    T2 = 2.05
-    T1 = 18.2
-    kappa = 25.3 * 2 * np.pi
-    f = 7.89e9
+    chi = 4.92 * 2 * np.pi
+    T2 = 6.97
+    T1 = 51.5
+    kappa = 5.47 * 2 * np.pi
+    f = 7.488e9
     cavityThermalPhotonTemperature(chi, T1, T2, kappa, f)
