@@ -22,7 +22,7 @@ def timeDomainMeasurement(Current, QubitFreq, DrivingPower, PiPulseLength, Detun
             'Yoko - Current': Current,
             'Pump - Frequency': DrivingFreq,
             'Pump - Power': DrivingPower,
-            'Pulse Generator - Width #1': [[30e-6, 'STOP']]
+            'Pulse Generator - Width #1': [[300e-9, 'STOP']]
         }
     elif MeasurementType == 't2_ramsey':
         ItemDict = {
@@ -37,7 +37,7 @@ def timeDomainMeasurement(Current, QubitFreq, DrivingPower, PiPulseLength, Detun
             'Pump - Power': DrivingPower,
             'Pulse Generator - Width #1': PiPulseLength,
             # 'Pulse Generator - Readout delay': [[450e-6, 'STOP']],
-            'Alazar - Number of records': 200e3,
+            'Alazar - Number of records': 2000e3,
             'Pulse Generator - Pulse type': 0,  # Gaussian
             # 'Counter - Number of points': [[10, 'STOP']]
             'Counter - Number of points': 0
@@ -55,21 +55,26 @@ def timeDomainMeasurement(Current, QubitFreq, DrivingPower, PiPulseLength, Detun
     ConfigName = ConfigName.replace('_', ' ')
     [OutPath, OutFile] = mcf.RunMeasurement(ConfigName, MeasLabel, ItemDict=ItemDict)
     if FitAndPlot:
-        if MeasurementType == 't1_t2_interleaved' or ItemDict['Counter - Number of points'] is list:
+        if MeasurementType == 't1_t2_interleaved' or 'Counter - Number of points' in ItemDict and ItemDict['Counter - Number of points'] is list:
             plotLabberRepeatedTSweepPlot(OutPath, OutFile)
         else:
             plotReferencedTSweep(OutPath, OutFile)
 
 
 if __name__ == '__main__':
-    Current = 6.095e-3
-    QubitFreq = 109.6e6
+    Current = 21.042e-3
+    QubitFreq = 109.8e6
     DrivingPower = 0
     PiPulseLength = 126e-9
+    # MeasTypeList = ['rabi']
+    # MeasTypeList = ['t2_ramsey', 't1', 't2_echo']
+    MeasTypeList = ['t1']
+    # MeasTypeList = ['t1_t2_interleaved']
     # MeasType = 'rabi'
-    MeasType = 't1'
+    # MeasType = 't1'
     # MeasType = 't2_echo'
     # MeasType = 't2_ramsey'
     # MeasType = 't1_t2_interleaved'
     # for PiPulseLength in np.linspace(300e-6, 350e-6, 2):
-    timeDomainMeasurement(Current, QubitFreq, DrivingPower, PiPulseLength, MeasurementType=MeasType, FitAndPlot=True)
+    for MeasType in MeasTypeList:
+        timeDomainMeasurement(Current, QubitFreq, DrivingPower, PiPulseLength, MeasurementType=MeasType, FitAndPlot=True)

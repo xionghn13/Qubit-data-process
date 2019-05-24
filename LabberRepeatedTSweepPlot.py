@@ -12,8 +12,8 @@ import h5py
 def plotLabberRepeatedTSweepPlot(DataPath, RabiFileList, BackgroundFile='calibration_5.hdf5',
                                  IQModFreq=0.05, PhaseSlope=326.7, PhaseReferenceFreq=4.105,
                                  Calibration=False, FitCorrectedR=True, RotateComplex=True,
-                                 LogScale=False, FitDoubleExponential=False, PlotNumber=11, MaxPlotInd=[0, 1, 2, 3],
-                                 T2MaxTime=2e4):
+                                 LogScale=False, FitDoubleExponential=False, PlotNumber=11, MinPlotInd=0, MaxPlotInd=11,
+                                 PlotInd=[0, 1, 2, 3], T2MaxTime=2e4):
     NumFile = len(RabiFileList)
     CounterArray = np.zeros([NumFile, ])
     # analyze background file
@@ -236,7 +236,7 @@ def plotLabberRepeatedTSweepPlot(DataPath, RabiFileList, BackgroundFile='calibra
                 plt.plot(TimeList[i], FitRList[i] - opt[2])
                 plt.plot(TimeList[i], np.real(RComplexList[i]) - opt[2], 'o')
             else:
-                plt.plot(TimeList[i], FitRList[i])
+                plt.plot(TimeList[i], FitRList[i] - opt[2])
                 plt.plot(TimeList[i], np.real(RComplexList[i]) - opt[2], 'o')
 
     plt.xlabel('Time/ns', fontsize='x-large')
@@ -290,7 +290,7 @@ def plotLabberRepeatedTSweepPlot(DataPath, RabiFileList, BackgroundFile='calibra
     if LogScale:
         ax.set_yscale('log')
 
-    if MaxPlotInd != 0:
+    if MaxPlotInd != 0 or MinPlotInd != 0:
         fig, ax = plt.subplots()
         plotInd = 1
         # plt.plot(CounterArray, OptMatrix[plotInd, :]/1000, 'o')
@@ -298,20 +298,21 @@ def plotLabberRepeatedTSweepPlot(DataPath, RabiFileList, BackgroundFile='calibra
             avgList = []
             stdList = []
             for ind in range(2):
-                avgList += [np.mean(OptMatrixList[ind][plotInd, :MaxPlotInd] / 1000)]
+                avgList += [np.mean(OptMatrixList[ind][plotInd, MinPlotInd:MaxPlotInd] / 1000)]
                 if NumPoints > 1:
-                    stdList += [np.std(OptMatrixList[ind][plotInd, :MaxPlotInd] / 1000)]
+                    stdList += [np.std(OptMatrixList[ind][plotInd, MinPlotInd:MaxPlotInd] / 1000)]
                 else:
                     stdList += [ErrMatrixList[ind][plotInd, 0] / 1000]
-                ax.errorbar(CounterArray[:MaxPlotInd], OptMatrixList[ind][plotInd, :MaxPlotInd] / 1000,
-                            yerr=ErrMatrixList[ind][plotInd, :MaxPlotInd] / 1000, fmt='o')
+                ax.errorbar(CounterArray[MinPlotInd:MaxPlotInd],
+                            OptMatrixList[ind][plotInd, MinPlotInd:MaxPlotInd] / 1000,
+                            yerr=ErrMatrixList[ind][plotInd, MinPlotInd:MaxPlotInd] / 1000, fmt='o')
             plt.legend(['T1', 'T2echo'])
             plt.title('T1=%.3G$\pm$%.2Gus, T2=%.3G$\pm$%.2Gus' % (avgList[0], stdList[0], avgList[1], stdList[1]))
         else:
-            avg = np.mean(OptMatrix[plotInd, :MaxPlotInd]) / 1000
-            std = np.std(OptMatrix[plotInd, :MaxPlotInd]) / 1000
-            ax.errorbar(CounterArray[:MaxPlotInd], OptMatrix[plotInd, :MaxPlotInd] / 1000,
-                        yerr=ErrMatrix[plotInd, :MaxPlotInd] / 1000,
+            avg = np.mean(OptMatrix[plotInd, MinPlotInd:MaxPlotInd]) / 1000
+            std = np.std(OptMatrix[plotInd, MinPlotInd:MaxPlotInd]) / 1000
+            ax.errorbar(CounterArray[MinPlotInd:MaxPlotInd], OptMatrix[plotInd, MinPlotInd:MaxPlotInd] / 1000,
+                        yerr=ErrMatrix[plotInd, MinPlotInd:MaxPlotInd] / 1000,
                         fmt='o')
             if FitDoubleExponential:
                 plt.title('TR=%.3G$\pm$%.2Gus' % (avg, std))
@@ -414,21 +415,22 @@ if __name__ == '__main__':
     #
     # ]
     RabiFileList = [
-        't1_2019-05-23-16-27-00.hdf5',
+        't1_2019-05-23-17-47-59.hdf5',
     ]
 
     IQModFreq = 0.05
     # FitForGamma = True
     Gamma_r = 2.5 * np.pi * 2
     FitCorrectedR = True
-    LogScale = False
+    LogScale = True
     Calibration = False
     RotateComplex = True
     FitDoubleExponential = True
     PlotNumber = 11
+    MinPlotInd = 0
     MaxPlotInd = 11
     PlotIndex = [0, 1]
-    T2MaxTime = 10e4  # ns
+    T2MaxTime = 50e3  # ns
 
     PhaseSlope = 326.7041108065019
     PhaseReferenceFreq = 4.105
@@ -436,4 +438,5 @@ if __name__ == '__main__':
                                  IQModFreq=IQModFreq, PhaseSlope=PhaseSlope, PhaseReferenceFreq=PhaseReferenceFreq,
                                  Calibration=Calibration, FitCorrectedR=FitCorrectedR, RotateComplex=RotateComplex,
                                  LogScale=LogScale, FitDoubleExponential=FitDoubleExponential, PlotNumber=PlotNumber,
-                                 MaxPlotInd=MaxPlotInd, T2MaxTime=T2MaxTime)
+                                 MinPlotInd=MinPlotInd, MaxPlotInd=MaxPlotInd, PlotInd=PlotIndex,
+                                 T2MaxTime=T2MaxTime)
