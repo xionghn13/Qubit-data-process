@@ -53,7 +53,7 @@ def AutoRotate(complex):
     max_disp_ind = np.argmax(np.abs(disp_complex))
     max_disp = disp_complex[max_disp_ind]
     normalized_max_disp = max_disp / np.abs(max_disp)
-    CM = np.mean(complex_out)
+    CM = np.mean(complex_out) * 0 # origin
     complex_out -= CM
     complex_out /= normalized_max_disp
     complex_out += CM

@@ -6,13 +6,13 @@ import QubitSpectrumFunc as qsf
 from scipy.optimize import curve_fit
 from QubitDecayFunc import T1_curve, rabi_curve, AutoRotate, DoubleExp_curve
 import ExtractDataFunc as edf
-import h5py
+import os
 
 
 def plotReferencedTSweep(DataPath, RabiFile, BackgroundFile='', Plus50MHzBackgroundFile='', Minus50MHzBackgroundFile='',
                          IQModFreq=0.05, PhaseSlope=326.7041108065019, PhaseReferenceFreq=4.105, Calibration=False,
                          FitCorrectedR=False, LimitTimeRange=False, RotateComplex=True, FitDoubleExponential=False,
-                         StartTime=5000, EndTime=1e8):
+                         StartTime=5000, EndTime=1e8, SaveFig=True, ShowFig=False, LogScale=False):
     if Calibration:
         if BackgroundFile == []:
             [Plus50MHzBackFreq, Plus50MHzBackComplex] = edf.readFSweepDat(DataPath + Plus50MHzBackgroundFile)
@@ -190,8 +190,8 @@ def plotReferencedTSweep(DataPath, RabiFile, BackgroundFile='', Plus50MHzBackgro
                 opt, cov = curve_fit(DoubleExp_curve, x_data, y_data,
                                      p0=[A_guess, T1_guess, B_guess, T1_guess * 0.1, 0.5],
                                      maxfev=300000)
-                print('guess = %s' % str([A_guess, T1_guess, B_guess, T1_guess * 0.1, 1]))
-                print('Double exp fit opt = %s' % str(opt))
+                # print('guess = %s' % str([A_guess, T1_guess, B_guess, T1_guess * 0.1, 1]))
+                # print('Double exp fit opt = %s' % str(opt))
             except RuntimeError:
                 print("Error - curve_fit failed")
                 opt = np.array([A_guess, T1_guess, B_guess, T1_guess, 1])
@@ -241,8 +241,9 @@ def plotReferencedTSweep(DataPath, RabiFile, BackgroundFile='', Plus50MHzBackgro
         A_std, T1_std, B_std, Tpi_std, phi0_std = np.sqrt(cov.diagonal())
         TimeFit = np.linspace(Time.min(), Time.max(), 200)
         FitR = rabi_curve(TimeFit, A_fit, T1_fit, B_fit, Tpi_fit, phi0_fit)
+        ParamList = ['A', 'Decay time/ns', 'B', 'Tpi/ns', 'pho0']
 
-    print(cov)
+    # print(cov)
     limit = 1.7
 
     fig, ax = plt.subplots()
@@ -295,18 +296,27 @@ def plotReferencedTSweep(DataPath, RabiFile, BackgroundFile='', Plus50MHzBackgro
 
     fig, ax = plt.subplots()
     if MeasurementType in ('t2', 't2echo', 'transient no ref', 't1 no ref', 'rabi no ref'):
-        plt.plot(Time, y_data, 'o')
+        if LogScale:
+            plt.plot(Time, y_data - B_fit, 'o')
+            if __name__ == '__main__':
+                print('- B_fit')
+        else:
+            plt.plot(Time, y_data, 'o')
     else:
         plt.plot(Time, np.real(RComplexLowerFreq), 'o')
         if FitCorrectedR:
             plt.plot(Time, np.real(RComplexHigherFreq), 'o')
     if not FitCorrectedR:
-        plt.plot(TimeFit, FitR)
+        if LogScale:
+            plt.plot(TimeFit, FitR - B_fit)
+        else:
+            plt.plot(TimeFit, FitR)
         if MeasurementType in ('t1', 't1 no ref'):
             if FitDoubleExponential:
                 plt.title('TR=%.3G$\pm$%.2Gus, A=%.3G, B=%.3G\n'
-                          'Tqp=%.3G$\pm$%.2Gus, lambda=%.3G$\pm$%.2G'% (
-                    TR_fit / 1000, TR_std / 1000, A_fit, B_fit, Tqp_fit / 1000, Tqp_std / 1000, lamb_fit, lamb_std))
+                          'Tqp=%.3G$\pm$%.2Gus, lambda=%.3G$\pm$%.2G' % (
+                              TR_fit / 1000, TR_std / 1000, A_fit, B_fit, Tqp_fit / 1000, Tqp_std / 1000, lamb_fit,
+                              lamb_std))
             else:
                 plt.title('T1=%.3G$\pm$%.2Gus, A=%.3G, B=%.3G' % (
                     T1_fit / 1000, T1_std / 1000, A_fit, B_fit))
@@ -329,6 +339,14 @@ def plotReferencedTSweep(DataPath, RabiFile, BackgroundFile='', Plus50MHzBackgro
     plt.tight_layout()
     if MeasurementType not in ('t2', 't2echo', 'transient no ref', 't1 no ref', 'rabi no ref') and FitCorrectedR:
         plt.legend(['%.4GGHz' % ReadoutLowerFreq, '%.4GGHz' % ReadoutHigherFreq])
+    if LogScale:
+        ax.set_yscale('log')
+    if SaveFig:
+        FigPath = DataPath + 'figures/'
+        if not os.path.exists(FigPath):
+            os.makedirs(FigPath)
+        FigName = RabiFile.split('.')[0] + '.PNG'
+        plt.savefig(FigPath + FigName)
 
     if MeasurementType not in ('t2', 't2echo', 'transient no ref', 't1 no ref', 'rabi no ref'):
         fig, ax = plt.subplots()
@@ -349,18 +367,21 @@ def plotReferencedTSweep(DataPath, RabiFile, BackgroundFile='', Plus50MHzBackgro
         plt.tick_params(axis='both', which='major', labelsize='x-large')
         plt.tight_layout()
 
-    plt.show()
+    if ShowFig:
+        plt.show()
+
+    return {'opt': opt, 'cov': cov, 'ParamList': ParamList}
 
 
 if __name__ == '__main__':
-    DataPath = 'C:/Users/admin\Labber\Data/2019/05\Data_0523/'
+    DataPath = 'C:/Users/admin\Labber\Data/2019/05\Data_0524/'
     BackgroundFile = []
     # BackgroundFile = '021219_rabi_CH2(AWG1Vpp)_no pump_readout_4.077GHz__-15dBm_qubit4.027GHz_-35dBm_0.8_mA_I cos Q sin mod true interleafing_odd readout even ref_avg100k_Rabi300_duty50000readout3us.h5'
     BackgroundFile = 'calibration_5.hdf5'
     # Plus50MHzBackgroundFile = '012819_rabi_CH2(AWG1Vpp)_no pump_readout_4.146GHz__-20dBm_qubit4.096GHz_-25dBm_4.9_mA_I cos Q sin mod true interleafing_odd readout even ref_avg100k_Rabi100000_duty150000readout3us.h5'
     Plus50MHzBackgroundFile = 'one_tone_4.05GHz_to_4.3GHz_-15dBm_4.9mA_10us integration_100Kavg_50KHz step_020419.dat'
     Minus50MHzBackgroundFile = 'one_tone_4.05GHz_to_4.3GHz_-15dBm_4.9mA_10us integration_100Kavg_50KHz step_020419.dat'
-    RabiFile = 't1_2019-05-23-17-47-59.hdf5'
+    RabiFile = 'rabi_2019-05-24-14-45-26.hdf5'
     IQModFreq = 0.05
 
     PhaseSlope = 326.7041108065019
@@ -369,13 +390,20 @@ if __name__ == '__main__':
     FitCorrectedR = False
     LimitTimeRange = False
     RotateComplex = True
-    FitDoubleExponential = True
+    FitDoubleExponential = False
+    LogScale = False
+    SaveFig = True
+    ShowFig = True
     StartTime = 5000
     EndTime = 1e8
-    plotReferencedTSweep(DataPath, RabiFile, BackgroundFile=BackgroundFile,
-                         Plus50MHzBackgroundFile=Plus50MHzBackgroundFile,
-                         Minus50MHzBackgroundFile=Minus50MHzBackgroundFile,
-                         IQModFreq=IQModFreq, PhaseSlope=PhaseSlope, PhaseReferenceFreq=PhaseReferenceFreq,
-                         Calibration=Calibration,
-                         FitCorrectedR=FitCorrectedR, LimitTimeRange=LimitTimeRange, RotateComplex=RotateComplex,
-                         StartTime=StartTime, EndTime=EndTime, FitDoubleExponential=FitDoubleExponential)
+    FitDict = plotReferencedTSweep(DataPath, RabiFile, BackgroundFile=BackgroundFile,
+                                   Plus50MHzBackgroundFile=Plus50MHzBackgroundFile,
+                                   Minus50MHzBackgroundFile=Minus50MHzBackgroundFile,
+                                   IQModFreq=IQModFreq, PhaseSlope=PhaseSlope, PhaseReferenceFreq=PhaseReferenceFreq,
+                                   Calibration=Calibration,
+                                   FitCorrectedR=FitCorrectedR, LimitTimeRange=LimitTimeRange,
+                                   RotateComplex=RotateComplex,
+                                   StartTime=StartTime, EndTime=EndTime, FitDoubleExponential=FitDoubleExponential,
+                                   SaveFig=SaveFig, ShowFig=ShowFig, LogScale=LogScale)
+    print(FitDict['opt'][3])
+    print(FitDict['ParamList'][3])
