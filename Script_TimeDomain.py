@@ -7,8 +7,9 @@ from ReferencedTSweepPlot import plotReferencedTSweep
 from LabberRepeatedTSweepPlot import plotLabberRepeatedTSweepPlot
 
 
-def timeDomainMeasurement(Current, QubitFreq, DrivingPower, PiPulseLength, Detuning=0.5e6, MeasurementType='rabi',
-                          FitAndPlot=True, ShowFig=True):
+def timeDomainMeasurement(Current, ReadoutFreq, QubitFreq, DrivingPower, PiPulseLength, Detuning=0.5e6,
+                          MeasurementType='rabi', T1MaxDelay=150e-6,
+                          PulseType=0, FitAndPlot=True, ShowFig=True):
     # ExperimentName = 'wg6 in 7.5GHz cavity'
     # CoolDownDate = 'test'
 
@@ -20,43 +21,77 @@ def timeDomainMeasurement(Current, QubitFreq, DrivingPower, PiPulseLength, Detun
     if MeasurementType == 'rabi':
         ItemDict = {
             'Yoko - Current': Current,
+            'Qubit - Frequency': ReadoutFreq,
             'Pump - Frequency': DrivingFreq,
             'Pump - Power': DrivingPower,
-            'Pulse Generator - Width #1': [[300e-9, 'STOP']]
+            'Pulse Generator - Width #1': [[1500e-9, 'STOP']],
+            'Pulse Generator - Pulse type': PulseType,  # 0 Gaussian
         }
     elif MeasurementType == 't2_ramsey':
         ItemDict = {
             'Yoko - Current': Current,
+            'Qubit - Frequency': ReadoutFreq,
             'Pump - Frequency': [[DrivingFreq, 'START'], [QubitFreq, 'STOP']],
             'Pump - Power': DrivingPower,
-            'Pulse Generator - Sequence duration': [[6e-6, 'STOP']]
+            'Pulse Generator - Sequence duration': [[60e-6, 'STOP']],
+            'Pulse Generator - Pulse type': PulseType,  # 0 Gaussian
         }
     elif MeasurementType == 't1':
         ItemDict = {
             'Yoko - Current': Current,
+            'Qubit - Frequency': ReadoutFreq,
             'Pump - Frequency': DrivingFreq,
             'Pump - Power': DrivingPower,
             'Pulse Generator - Width #1': PiPulseLength,
-            # 'Pulse Generator - Readout delay': [[450e-6, 'STOP']],
+            'Pulse Generator - Readout delay': [[T1MaxDelay, 'STOP']],
             'Alazar - Number of records': 300e3,
-            'Pulse Generator - Pulse type': 1,  # 0 Gaussian
+            'Pulse Generator - Pulse type': PulseType,  # 0 Gaussian
             # 'Counter - Number of points': [[10, 'STOP']]
             'Counter - Number of points': 0
         }
-    else:
+    elif MeasurementType == 't2_echo':
         ItemDict = {
             'Yoko - Current': Current,
+            'Qubit - Frequency': ReadoutFreq,
             'Pump - Frequency': DrivingFreq,
             'Pump - Power': DrivingPower,
-            'Pulse Generator - Width #1': PiPulseLength
+            'Pulse Generator - Width #1': PiPulseLength,
+            'Pulse Generator - Sequence duration': [[120e-6, 'STOP']],
+            'Alazar - Number of records': 300e3,
+            'Pulse Generator - Pulse type': PulseType,  # 0 Gaussian
+            # 'Counter - Number of points': [[10, 'STOP']]
+            'Counter - Number of points': 0
         }
+    elif MeasurementType == 't1_t2_interleaved':
+        ItemDict = {
+            'Yoko - Current': Current,
+            'Qubit - Frequency': ReadoutFreq,
+            'Pump - Frequency': DrivingFreq,
+            'Pump - Power': DrivingPower,
+            'Pulse Generator - Width #1': PiPulseLength,
+            'Pulse Generator - Sequence duration': [[240e-6, 'STOP']],
+            'Alazar - Number of records': 300e3,
+            'Pulse Generator - Pulse type': PulseType,  # 0 Gaussian
+            'Counter - Number of points': [[10, 'STOP']]
+            # 'Counter - Number of points': 0
+        }
+    # else:
+    #     ItemDict = {
+    #         'Yoko - Current': Current,
+    #         'Qubit - Frequency': ReadoutFreq,
+    #         'Pump - Frequency': DrivingFreq,
+    #         'Pump - Power': DrivingPower,
+    #         'Pulse Generator - Width #1': PiPulseLength,
+    #         'Pulse Generator - Pulse type': PulseType,  # 0 Gaussian
+    #     }
 
     MeasLabel = MeasurementType
     ConfigName = MeasLabel + '.hdf5'
     ConfigName = ConfigName.replace('_', ' ')
     [OutPath, OutFile] = mcf.RunMeasurement(ConfigName, MeasLabel, ItemDict=ItemDict)
     if FitAndPlot:
-        if MeasurementType == 't1_t2_interleaved' or 'Counter - Number of points' in ItemDict and ItemDict['Counter - Number of points'] is list:
+        if MeasurementType == 't1_t2_interleaved' or (
+                'Counter - Number of points' in ItemDict and ItemDict['Counter - Number of points'] is list):
             plotLabberRepeatedTSweepPlot(OutPath, OutFile)
         else:
             FitDict = plotReferencedTSweep(OutPath, OutFile, ShowFig=ShowFig)
@@ -64,25 +99,30 @@ def timeDomainMeasurement(Current, QubitFreq, DrivingPower, PiPulseLength, Detun
 
 
 if __name__ == '__main__':
-    Current = 50.787e-3
-    QubitFreq = 109.6e6
-    DrivingPower = 0
-    PiPulseLength = 126e-9
+    Current = 6.35e-3
+    QubitFreq = 514.85e6
+    DrivingPower = 13
+    PiPulseLength = 657e-9
+    ReadoutFreq = 8.4205e9
+    T1MaxDelay = 150e-6
+    PulseType = 1  # 0 Gaussian, 1 Square
     # PiPulseLength = 500e-6
     # MeasTypeList = ['rabi']
-    MeasTypeList = ['t2_ramsey', 't1', 't2_echo']
+    # MeasTypeList = ['t2_ramsey', 't1', 't2_echo']
     # MeasTypeList = ['t1']
     # MeasTypeList = ['t2echo']
     # MeasTypeList = ['rabi', 't1', 't2_ramsey', 't2_echo']
     # MeasTypeList = ['t1_t2_interleaved']
-    # MeasType = 'rabi'
-    # MeasType = 't1'
-    # MeasType = 't2_echo'
-    # MeasType = 't2_ramsey'
-    # MeasType = 't1_t2_interleaved'
-    # for PiPulseLength in np.linspace(300e-6, 350e-6, 2):
-    for MeasType in MeasTypeList:
-        FitDict = timeDomainMeasurement(Current, QubitFreq, DrivingPower, PiPulseLength, MeasurementType=MeasType, FitAndPlot=True, ShowFig=False)
+    # MeasTypeList = ['rabi', 't2_ramsey', 't1_t2_interleaved']
+    MeasType = 't1'
+    for PiPulseLength in np.linspace(50e-6, 500e-6, 10):
+    # for MeasType in MeasTypeList:
+        FitDict = timeDomainMeasurement(Current, ReadoutFreq, QubitFreq, DrivingPower, PiPulseLength, T1MaxDelay=T1MaxDelay,
+                                        PulseType=PulseType, MeasurementType=MeasType, FitAndPlot=True, ShowFig=False)
         if MeasType == 'rabi':
             PiPulseLength = round(FitDict['opt'][3]) * 1e-9
             print('PiPulseLength now is %.3Gs' % PiPulseLength)
+        elif MeasType == 't1':
+            T1MaxDelay = round(FitDict['opt'][1] * 5 / 1e3) * 1e-6
+            print('T1MaxDelay now is %.3Gs' % T1MaxDelay)
+

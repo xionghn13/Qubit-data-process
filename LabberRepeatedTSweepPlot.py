@@ -295,6 +295,8 @@ def plotLabberRepeatedTSweepPlot(DataPath, RabiFileList, BackgroundFile='calibra
         plotInd = 1
         # plt.plot(CounterArray, OptMatrix[plotInd, :]/1000, 'o')
         if MeasurementType == 't1t2interleaved':
+            if  FitDoubleExponential:
+                print('Error: t1t2interleaved with double exponential fit has not been completed yet.')
             avgList = []
             stdList = []
             for ind in range(2):
@@ -404,7 +406,7 @@ def plotLabberRepeatedTSweepPlot(DataPath, RabiFileList, BackgroundFile='calibra
 
 if __name__ == '__main__':
     # DataPath = 'E:/Projects\Fluxonium\data_process/Fluxonium042619/'
-    DataPath = 'C:/Users/admin\Labber\Data/2019/05\Data_0523/'
+    DataPath = 'C:/Users/admin\Labber\Data/2019/06\Data_0603/'
     BackgroundFile = 'calibration_5.hdf5'
 
     # RabiFileList = [
@@ -415,22 +417,22 @@ if __name__ == '__main__':
     #
     # ]
     RabiFileList = [
-        't1_2019-05-23-17-47-59.hdf5',
+        't1_t2_interleaved_2019-06-03-09-47-59.hdf5',
     ]
 
     IQModFreq = 0.05
     # FitForGamma = True
     Gamma_r = 2.5 * np.pi * 2
     FitCorrectedR = True
-    LogScale = True
+    LogScale = False
     Calibration = False
     RotateComplex = True
-    FitDoubleExponential = True
+    FitDoubleExponential = False
     PlotNumber = 11
     MinPlotInd = 0
-    MaxPlotInd = 11
+    MaxPlotInd = 0
     PlotIndex = [0, 1]
-    T2MaxTime = 50e3  # ns
+    T2MaxTime = 200e3  # ns
 
     PhaseSlope = 326.7041108065019
     PhaseReferenceFreq = 4.105
