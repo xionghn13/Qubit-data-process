@@ -1,9 +1,9 @@
 import numpy as np
 
 h = 6.63e-34
-f = 7.875e9
+f = 20e9
 kB = 1.38e-23
-T0 = 0.3
+T0 = 1
 
 P0 = 0.2
 T = h * f / kB / np.log((1 - P0) / P0)

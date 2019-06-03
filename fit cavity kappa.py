@@ -8,8 +8,8 @@ from scipy.optimize import curve_fit
 import ExtractDataFunc as edf
 
 # DataPath = 'E:/Projects\Fluxonium\data_process/cavity/7.5GHz_5/'
-DataPath = 'E:/Projects\Fluxonium\data_process/Fluxonium042619/'
-OneToneFile = 'one tone_89.hdf5'
+DataPath = 'E:/Projects\Fluxonium\data_process/Fluxonium032619/'
+OneToneFile = 'one tone_110.hdf5'
 
 TruncateFreq = False
 

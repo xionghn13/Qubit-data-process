@@ -73,6 +73,19 @@ def phase_matrix_element(N, E_l, E_c, E_j, phi_ext, iState, fState):
     return element
 
 
+def phase_matrix_element_freq(N, E_l, E_c, E_j, phi_ext, iState, fState):
+    a = tensor(destroy(N))
+    phi = (a + a.dag()) * (8.0 * E_c / E_l) ** (0.25) / np.sqrt(2.0)
+    na = 1.0j * (a.dag() - a) * (E_l / (8 * E_c)) ** (0.25) / np.sqrt(2.0)
+    ope = 1.0j * (phi + phi_ext)
+    H = 4.0 * E_c * na ** 2.0 + 0.5 * E_l * phi ** 2.0 - 0.5 * E_j * (ope.expm() + (-ope).expm())
+
+    eigen_energies, eigen_states = H.eigenstates()
+    element = phi.matrix_element(eigen_states[iState], eigen_states[fState])
+    freq = eigen_energies[fState] - eigen_energies[iState]
+    return [element, freq]
+
+
 def qp_matrix_element(N, E_l, E_c, E_j, phi_ext, iState, fState):
     a = tensor(destroy(N))
     phi = (a + a.dag()) * (8.0 * E_c / E_l) ** (0.25) / np.sqrt(2.0)

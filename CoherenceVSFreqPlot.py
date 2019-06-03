@@ -1,6 +1,18 @@
 from QubitDataProcessPackages import *
+import Single_small_junction as ssj
+
 I0 = 2.199
 I_period = 2.469 * 2
+PlotT1diel = True
+
+N = 50
+EL = 0.437
+EC = 2.265
+EJ = 6.487
+loss_tan = 3.33e-6
+Q_cap = 1 / loss_tan
+T = 1e-3
+f01 = 0.4864
 
 FreqSingle = np.array(
     [6.6199, 4.5596, 4.2657, 3.9635, 3.6598, 3.3561, 1.8472, 1.5516, 1.2614, 0.9822, 0.7298, 0.54, 0.4864])
@@ -30,6 +42,18 @@ FluxMerge = FluxMerge[SortInd]
 T1Merge = T1Merge[SortInd]
 T2Merge = T2Merge[SortInd]
 
+if PlotT1diel:
+    MinFlux = np.min(FluxMerge)
+    MaxFlux = np.max(FluxMerge)
+    FluxPlot = np.linspace(MinFlux, MaxFlux, 21)
+    T1diel = FluxPlot * 0
+    for i, flux in enumerate(FluxPlot):
+        [pem, freq] = np.abs(ssj.phase_matrix_element_freq(N, EL, EC, EJ, flux * 2 * np.pi, 0, 1))
+        # print('flux=%.3G, pem=%.3G, freq=%.3G' % (flux, pem, freq))
+        T1diel[i] = 10e6 / ssj.relaxation_rate_cap(EL, EC, EJ, Q_cap, freq, pem, T)
+        qsf.printPercent(i, 21)
+
+
 fig, ax = plt.subplots()
 ax.errorbar(FreqSingle, T1Single, yerr=T1ErrSingle, fmt='bo')
 ax.errorbar(FreqSingle, T2Single, yerr=T2ErrSingle, fmt='b^')
@@ -54,7 +78,10 @@ ax.errorbar(FluxSingle, T2Single, yerr=T2ErrSingle, fmt='b^')
 ax.errorbar(FluxRepeated, T1Repeated, yerr=T1ErrRepeated, fmt='ro')
 ax.errorbar(FluxRepeated, T2Repeated, yerr=T2ErrRepeated, fmt='r^')
 
-plt.legend(['T1 - Single', 'T2echo - Single', 'T1 - Averge', 'T2echo - Averge'])
+if PlotT1diel:
+    plt.plot(FluxPlot, T1diel)
+
+plt.legend(['Dielectric loss tangent = %.3G' % loss_tan, 'T1 - Single', 'T2echo - Single', 'T1 - Averge', 'T2echo - Averge'])
 
 plt.plot(FluxMerge, T1Merge, ':')
 plt.plot(FluxMerge, T2Merge, ':')
@@ -62,5 +89,5 @@ plt.xlabel('Flux/Phi_0', fontsize='x-large')
 plt.ylabel('Decay time(us)', fontsize='x-large')
 plt.tick_params(axis='both', which='major', labelsize='x-large')
 plt.tight_layout()
-
+ax.set_yscale('log')
 plt.show()

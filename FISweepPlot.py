@@ -17,7 +17,7 @@ profiler = pprofile.Profile()
 # DataPath = 'E:/Projects\Fluxonium\data_process/test_data/'
 # BackgroundFile = '081717_one_tone_4GHz_to_12GHz_-20dBm.dat'
 # OneToneFile = '081817_one_tone_6.4GHz_to_9.0GHz_-2.5mA_to_2.5mA_1.dat'
-DataPath = 'E:/Projects\Fluxonium\data_process/Fluxonium042619/'
+DataPath = 'E:/Projects\Fluxonium\data_process/Fluxonium032619/'
 BackgroundFile = 'one_tone_6.45GHz_to_6.6GHz_5dBm_0mA_10us integration_200Kavg_100KHz step_091918.dat'
 # BackgroundFile = 'one_tone_3.5GHz_to_12GHz_5dBm_3mA_10us integration_5Kavg_500KHz step_121018.dat'
 # OneToneFile = '110518_one_tone_4GHz_to_9GHz_-2mA_to_3mA_10us integration_3Kavg.dat'
@@ -165,36 +165,13 @@ BackgroundFile = 'one_tone_6.45GHz_to_6.6GHz_5dBm_0mA_10us integration_200Kavg_1
 # ]
 
 OneToneFileList = [
-    'two tone_395.hdf5',
-    'two tone_396.hdf5',
-    'two tone_397.hdf5',
-    'two tone_398.hdf5',
-    'two tone_399.hdf5',
-    'two tone_400.hdf5',
-    'two tone_401.hdf5',
-    'two tone_402.hdf5',
-    'two tone_403.hdf5',
-    'two tone_404.hdf5',
-    'two tone_405.hdf5',
-    'two tone_410.hdf5',
-    'two tone_414.hdf5',
-    'two tone_415.hdf5',
-    'two tone_416.hdf5',
-    'two tone_417.hdf5',
-    'two tone_418.hdf5',
-    'two tone_419.hdf5',
-    'two tone_420.hdf5',
-    'two tone_424.hdf5',
-    'two tone_425.hdf5',
-    'two tone_426.hdf5',
-    'two tone_421.hdf5',
-    'two tone_428.hdf5',
-    'two tone_429.hdf5',
-    'two tone_430.hdf5',
-    'two tone_431.hdf5',
-    'two tone_432.hdf5',
-    'two tone_433.hdf5',
-    'two tone_434.hdf5',
+    'two tone_553_1.hdf5',
+    'two tone_553.hdf5',
+    'one tone_112.hdf5',
+    'one tone_113.hdf5',
+    'one tone_114.hdf5',
+    'one tone_113_1.hdf5',
+    'two tone_554.hdf5'
 ]
 
 PlotSpectrum = False
