@@ -245,54 +245,73 @@ def plotReferencedTSweep(DataPath, RabiFile, BackgroundFile='', Plus50MHzBackgro
 
     # print(cov)
     limit = 1.7
+    if ShowFig:
+        fig, ax = plt.subplots()
+        if MeasurementType in ('t2', 't2echo', 'transient no ref', 't1 no ref', 'rabi no ref'):
+            plt.plot(np.real(RComplex), np.imag(RComplex))
+        else:
+            plt.plot(np.real(RComplexLowerFreq), np.imag(RComplexLowerFreq))
+            plt.plot(np.real(RComplexHigherFreq), np.imag(RComplexHigherFreq))
+        if Calibration:
+            plt.plot([-2, 2], [0, 0], '--')
+            plt.plot([1], [0], 'ro')
+        plt.xlabel('Re', fontsize='x-large')
+        plt.ylabel('Im', fontsize='x-large')
+        plt.tick_params(axis='both', which='major', labelsize='x-large')
+        if MeasurementType not in ('t2', 't2echo', 'transient no ref', 't1 no ref', 'rabi no ref'):
+            plt.legend(['%.4GGHz' % ReadoutLowerFreq, '%.4GGHz' % ReadoutHigherFreq])
+        plt.tight_layout()
+        if Calibration:
+            plt.xlim(-limit, limit)
+            plt.ylim(-limit, limit)
+        ax.set_aspect('equal')
 
-    fig, ax = plt.subplots()
-    if MeasurementType in ('t2', 't2echo', 'transient no ref', 't1 no ref', 'rabi no ref'):
-        plt.plot(np.real(RComplex), np.imag(RComplex))
-    else:
-        plt.plot(np.real(RComplexLowerFreq), np.imag(RComplexLowerFreq))
-        plt.plot(np.real(RComplexHigherFreq), np.imag(RComplexHigherFreq))
-    if Calibration:
-        plt.plot([-2, 2], [0, 0], '--')
-        plt.plot([1], [0], 'ro')
-    plt.xlabel('Re', fontsize='x-large')
-    plt.ylabel('Im', fontsize='x-large')
-    plt.tick_params(axis='both', which='major', labelsize='x-large')
-    if MeasurementType not in ('t2', 't2echo', 'transient no ref', 't1 no ref', 'rabi no ref'):
-        plt.legend(['%.4GGHz' % ReadoutLowerFreq, '%.4GGHz' % ReadoutHigherFreq])
-    plt.tight_layout()
-    if Calibration:
-        plt.xlim(-limit, limit)
-        plt.ylim(-limit, limit)
-    ax.set_aspect('equal')
+        fig, ax = plt.subplots()
+        if MeasurementType in ('t2', 't2echo', 'transient no ref', 't1 no ref', 'rabi no ref'):
+            plt.plot(Time, np.abs(ComplexNormalized), 'o')
+        else:
+            plt.plot(Time, np.abs(ComplexLowerFreqNormalized), 'o')
+            plt.plot(Time, np.abs(ComplexHigherFreqNormalized), 'o')
+        plt.xlabel('Time/ns', fontsize='x-large')
+        plt.ylabel('Abs', fontsize='x-large')
+        plt.tick_params(axis='both', which='major', labelsize='x-large')
+        if MeasurementType not in ('t2', 't2echo', 'transient no ref', 't1 no ref', 'rabi no ref'):
+            plt.legend(['%.4GGHz' % ReadoutLowerFreq, '%.4GGHz' % ReadoutHigherFreq])
+        plt.tight_layout()
 
-    fig, ax = plt.subplots()
-    if MeasurementType in ('t2', 't2echo', 'transient no ref', 't1 no ref', 'rabi no ref'):
-        plt.plot(Time, np.abs(ComplexNormalized), 'o')
-    else:
-        plt.plot(Time, np.abs(ComplexLowerFreqNormalized), 'o')
-        plt.plot(Time, np.abs(ComplexHigherFreqNormalized), 'o')
-    plt.xlabel('Time/ns', fontsize='x-large')
-    plt.ylabel('Abs', fontsize='x-large')
-    plt.tick_params(axis='both', which='major', labelsize='x-large')
-    if MeasurementType not in ('t2', 't2echo', 'transient no ref', 't1 no ref', 'rabi no ref'):
-        plt.legend(['%.4GGHz' % ReadoutLowerFreq, '%.4GGHz' % ReadoutHigherFreq])
-    plt.tight_layout()
+        fig, ax = plt.subplots()
+        if MeasurementType in ('t2', 't2echo', 'transient no ref', 't1 no ref', 'rabi no ref'):
+            plt.plot(Time, (np.angle(ComplexNormalized) - PhaseSlope * (ReadoutFreq - 4.105)) % (2 * np.pi), 'o')
+        else:
+            plt.plot(Time, (np.angle(ComplexLowerFreqNormalized) - PhaseSlope * (ReadoutLowerFreq - 4.105)) % (2 * np.pi),
+                     'o')
+            plt.plot(Time, (np.angle(ComplexHigherFreqNormalized) - PhaseSlope * (ReadoutHigherFreq - 4.105)) % (2 * np.pi),
+                     'o')
+        plt.xlabel('Time/ns', fontsize='x-large')
+        plt.ylabel('Phase', fontsize='x-large')
+        plt.tick_params(axis='both', which='major', labelsize='x-large')
+        if MeasurementType not in ('t2', 't2echo', 'transient no ref', 't1 no ref', 'rabi no ref'):
+            plt.legend(['%.4GGHz' % ReadoutLowerFreq, '%.4GGHz' % ReadoutHigherFreq])
+        plt.tight_layout()
 
-    fig, ax = plt.subplots()
-    if MeasurementType in ('t2', 't2echo', 'transient no ref', 't1 no ref', 'rabi no ref'):
-        plt.plot(Time, (np.angle(ComplexNormalized) - PhaseSlope * (ReadoutFreq - 4.105)) % (2 * np.pi), 'o')
-    else:
-        plt.plot(Time, (np.angle(ComplexLowerFreqNormalized) - PhaseSlope * (ReadoutLowerFreq - 4.105)) % (2 * np.pi),
-                 'o')
-        plt.plot(Time, (np.angle(ComplexHigherFreqNormalized) - PhaseSlope * (ReadoutHigherFreq - 4.105)) % (2 * np.pi),
-                 'o')
-    plt.xlabel('Time/ns', fontsize='x-large')
-    plt.ylabel('Phase', fontsize='x-large')
-    plt.tick_params(axis='both', which='major', labelsize='x-large')
-    if MeasurementType not in ('t2', 't2echo', 'transient no ref', 't1 no ref', 'rabi no ref'):
-        plt.legend(['%.4GGHz' % ReadoutLowerFreq, '%.4GGHz' % ReadoutHigherFreq])
-    plt.tight_layout()
+        if MeasurementType not in ('t2', 't2echo', 'transient no ref', 't1 no ref', 'rabi no ref'):
+            fig, ax = plt.subplots()
+            plt.plot(Time, np.real(RComplexLowerFreq / RComplexHigherFreq), 'o')
+            if FitCorrectedR:
+                plt.plot(TimeFit, FitR)
+                if MeasurementType == 't1':
+                    plt.title('T1=%.3G$\pm$%.2Gus, A=%.3G, B=%.3G' % (
+                        T1_fit / 1000, T1_std / 1000, A_fit, B_fit))
+                elif MeasurementType == 'transient':
+                    plt.title('T_transient=%.3G$\pm$%.2Gus, A=%.3G, B=%.3G' % (
+                        T1_fit / 1000, T1_std / 1000, A_fit, B_fit))
+                elif MeasurementType in ('rabi', 'Ch1 rabi', 'Ch1 pump rabi'):
+                    plt.title('Tpi=%.3Gus, T1=%.3Gus, A=%.3G, B=%.3G, phi0=%.3G' % (
+                        Tpi_fit / 1000, T1_fit / 1000, A_fit, B_fit, phi0_fit))
+            plt.xlabel('Time/ns', fontsize='x-large')
+            plt.ylabel('Re', fontsize='x-large')
+            plt.tick_params(axis='both', which='major', labelsize='x-large')
+            plt.tight_layout()
 
     fig, ax = plt.subplots()
     if MeasurementType in ('t2', 't2echo', 'transient no ref', 't1 no ref', 'rabi no ref'):
@@ -348,27 +367,12 @@ def plotReferencedTSweep(DataPath, RabiFile, BackgroundFile='', Plus50MHzBackgro
         FigName = RabiFile.split('.')[0] + '.PNG'
         plt.savefig(FigPath + FigName)
 
-    if MeasurementType not in ('t2', 't2echo', 'transient no ref', 't1 no ref', 'rabi no ref'):
-        fig, ax = plt.subplots()
-        plt.plot(Time, np.real(RComplexLowerFreq / RComplexHigherFreq), 'o')
-        if FitCorrectedR:
-            plt.plot(TimeFit, FitR)
-            if MeasurementType == 't1':
-                plt.title('T1=%.3G$\pm$%.2Gus, A=%.3G, B=%.3G' % (
-                    T1_fit / 1000, T1_std / 1000, A_fit, B_fit))
-            elif MeasurementType == 'transient':
-                plt.title('T_transient=%.3G$\pm$%.2Gus, A=%.3G, B=%.3G' % (
-                    T1_fit / 1000, T1_std / 1000, A_fit, B_fit))
-            elif MeasurementType in ('rabi', 'Ch1 rabi', 'Ch1 pump rabi'):
-                plt.title('Tpi=%.3Gus, T1=%.3Gus, A=%.3G, B=%.3G, phi0=%.3G' % (
-                    Tpi_fit / 1000, T1_fit / 1000, A_fit, B_fit, phi0_fit))
-        plt.xlabel('Time/ns', fontsize='x-large')
-        plt.ylabel('Re', fontsize='x-large')
-        plt.tick_params(axis='both', which='major', labelsize='x-large')
-        plt.tight_layout()
+
 
     if ShowFig:
         plt.show()
+    else:
+        plt.close('all')
 
     return {'opt': opt, 'cov': cov, 'ParamList': ParamList}
 

@@ -14,6 +14,8 @@ def plotLabberRepeatedTSweepPlot(DataPath, RabiFileList, BackgroundFile='calibra
                                  Calibration=False, FitCorrectedR=True, RotateComplex=True,
                                  LogScale=False, FitDoubleExponential=False, PlotNumber=11, MinPlotInd=0, MaxPlotInd=11,
                                  PlotInd=[0, 1, 2, 3], T2MaxTime=2e4):
+    if RabiFileList is not list:
+        RabiFileList = [RabiFileList]
     NumFile = len(RabiFileList)
     CounterArray = np.zeros([NumFile, ])
     # analyze background file
@@ -406,7 +408,7 @@ def plotLabberRepeatedTSweepPlot(DataPath, RabiFileList, BackgroundFile='calibra
 
 if __name__ == '__main__':
     # DataPath = 'E:/Projects\Fluxonium\data_process/Fluxonium042619/'
-    DataPath = 'C:/Users/admin\Labber\Data/2019/06\Data_0603/'
+    DataPath = 'C:/Users/admin\Labber\Data/2019/06\Data_0604/'
     BackgroundFile = 'calibration_5.hdf5'
 
     # RabiFileList = [
@@ -417,7 +419,7 @@ if __name__ == '__main__':
     #
     # ]
     RabiFileList = [
-        't1_t2_interleaved_2019-06-03-09-47-59.hdf5',
+        't1_t2_interleaved_2019-06-04-23-38-55.hdf5',
     ]
 
     IQModFreq = 0.05
