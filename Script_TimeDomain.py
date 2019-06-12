@@ -24,8 +24,9 @@ def timeDomainMeasurement(Current, ReadoutFreq, QubitFreq, DrivingPower, PiPulse
             'Qubit - Frequency': ReadoutFreq,
             'Pump - Frequency': DrivingFreq,
             'Pump - Power': DrivingPower,
-            'Pulse Generator - Width #1': [[1500e-9, 'STOP']],
+            'Pulse Generator - Width #1': [[300e-9, 'STOP']],
             'Pulse Generator - Pulse type': PulseType,  # 0 Gaussian
+            # 'Pulse Generator - Number of points': 20e3,
         }
     elif MeasurementType == 't2_ramsey':
         ItemDict = {
@@ -56,7 +57,7 @@ def timeDomainMeasurement(Current, ReadoutFreq, QubitFreq, DrivingPower, PiPulse
             'Pump - Frequency': DrivingFreq,
             'Pump - Power': DrivingPower,
             'Pulse Generator - Width #1': PiPulseLength,
-            'Pulse Generator - Sequence duration': [[100e-6, 'STOP']],
+            'Pulse Generator - Sequence duration': [[600e-6, 'STOP']],
             'Alazar - Number of records': 300e3,
             'Pulse Generator - Pulse type': PulseType,  # 0 Gaussian
             # 'Counter - Number of points': [[10, 'STOP']]
@@ -100,24 +101,25 @@ def timeDomainMeasurement(Current, ReadoutFreq, QubitFreq, DrivingPower, PiPulse
 
 
 if __name__ == '__main__':
-    Current = 6.27e-3
-    QubitFreq = 541.6e6
-    print('Current = %.3GmA\nQubitFreq = %.4GGHz' % (Current * 1e3, QubitFreq / 1e9))
+    Current = 2.7e-3
+    QubitFreq = 6.96206e9
+    print('Current = %.4GmA\nQubitFreq = %.5GGHz' % (Current * 1e3, QubitFreq / 1e9))
     # Current = 6.35e-3
     # QubitFreq = 514.9e6
-    DrivingPower = 13
-    PiPulseLength = 657e-9
-    ReadoutFreq = 8.4205e9
-    T1MaxDelay = 500e-6
+    DrivingPower = -10
+    PiPulseLength = 668e-9
+    ReadoutFreq = 8.4195e9
+    T1MaxDelay = 20e-6
     PulseType = 0  # 0 Gaussian, 1 Square
     # PiPulseLength = 500e-6
     # MeasTypeList = ['rabi']
-    # MeasTypeList = ['t2_ramsey', 't1', 't2_echo']
+    # MeasTypeList = ['t1', 't2_echo']
     # MeasTypeList = ['t1']
     # MeasTypeList = ['t2_echo']
-    MeasTypeList = ['rabi', 't1', 't2_ramsey', 't2_echo']
+    # MeasTypeList = ['rabi', 't1', 't2_ramsey', 't2_echo']
     # MeasTypeList = ['t1_t2_interleaved']
     # MeasTypeList = ['rabi', 't2_ramsey', 't1_t2_interleaved']
+    MeasTypeList = ['rabi', 't1']
     # MeasType = 't1'
     # for PiPulseLength in np.linspace(600e-6, 1000e-6, 5):
     for MeasType in MeasTypeList:

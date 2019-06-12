@@ -10,7 +10,7 @@ from scipy.optimize import curve_fit
 
 
 
-def FindQubitFreqTwoTone(Current, Anchor1, Anchor2, Power=0, Span=10e6, SaveFig=True):
+def FindQubitFreqTwoTone(Current, Anchor1, Anchor2, Avg=500e3, Power=0, Span=10e6, SeqLen=1e4, SaveFig=True):
     ConfigName = 'two tone sweep for cavity.hdf5'
     MeasLabel = 'two tone'
 
@@ -20,7 +20,10 @@ def FindQubitFreqTwoTone(Current, Anchor1, Anchor2, Power=0, Span=10e6, SaveFig=
     ItemDict = {
         'Pump - Frequency': [[PredictFreq - Span / 2, 'START'], [PredictFreq + Span / 2, 'STOP']],
         'Pump - Power': Power,
+        'Alazar - Number of records': Avg,
         'Yoko - Current': Current,
+        'Counter - Number of points': 0,
+        'Pulse Generator - Number of points': SeqLen,
     }
 
     [OutPath, OutFile] = mcf.RunMeasurement(ConfigName, MeasLabel, ItemDict=ItemDict)
@@ -29,35 +32,37 @@ def FindQubitFreqTwoTone(Current, Anchor1, Anchor2, Power=0, Span=10e6, SaveFig=
     [Freq, Complex] = edf.readFSweepTwoToneLabber(OutPath + OutFile)
 
     y_data = np.angle(Complex)
-    f0_guess = PredictFreq / 1e9
     kappa_guess = Span / 4 / 1e9
-    B_guess = y_data[0] / 2 + y_data[-1] / 2
-    Ind = np.argmax(np.abs(y_data - B_guess))
+    C_guess = (y_data[-1] - y_data[0]) / (Freq[-1] - Freq[0])
+    Ind = np.argmax(np.abs(y_data - C_guess * (Freq - Freq[0]) - y_data[0]))
+    f0_guess = Freq[Ind]
+    B_guess = y_data[0] + C_guess * (f0_guess - Freq[0])
     A_guess = (y_data[Ind] - B_guess) * (kappa_guess / 2) ** 2
 
-    def lorenztian(f, f0, kappa, A, B):
-        t = A / ((f - f0) ** 2 + (kappa / 2) ** 2) + B
+
+    def lorenztian(f, f0, kappa, A, B, C):
+        t = A / ((f - f0) ** 2 + (kappa / 2) ** 2) + B + C * (f - f0)
         return t
 
-    guess = ([f0_guess, kappa_guess, A_guess, B_guess])
+    guess = ([f0_guess, kappa_guess, A_guess, B_guess, C_guess])
     bounds = (
-        (Freq[0], 0, - A_guess.__abs__() * 10, - B_guess.__abs__() * 10),
-        (Freq[-1], kappa_guess * 4, A_guess.__abs__() * 10, B_guess.__abs__() * 10)
+        (Freq[0], 0, - A_guess.__abs__() * 10, - B_guess.__abs__() * 10, - np.abs(C_guess) * 10),
+        (Freq[-1], kappa_guess * 4, A_guess.__abs__() * 10, B_guess.__abs__() * 10, np.abs(C_guess) * 10)
     )
     # print(guess)
     # print(bounds)
     qopt, qcov = curve_fit(lorenztian, Freq, y_data, guess, bounds=bounds)
-    f0_fit, kappa_fit, A_fit, B_fit = qopt
+    f0_fit, kappa_fit, A_fit, B_fit, C_fit = qopt
 
-    CurveGuess = lorenztian(Freq, f0_guess, kappa_guess, A_guess, B_guess)
-    CurveFit = lorenztian(Freq, f0_fit, kappa_fit, A_fit, B_fit)
+    CurveGuess = lorenztian(Freq, f0_guess, kappa_guess, A_guess, B_guess, C_guess)
+    CurveFit = lorenztian(Freq, f0_fit, kappa_fit, A_fit, B_fit, C_fit)
 
     fig, ax = plt.subplots()
     plt.plot(Freq, y_data)
     plt.plot(Freq, CurveFit, 'r.')
     plt.plot(Freq, CurveGuess, 'y.')
     plt.xlabel('freq/GHz', fontsize='x-large')
-    plt.ylabel('Im', fontsize='x-large')
+    plt.ylabel('angle', fontsize='x-large')
     plt.tick_params(axis='both', which='major', labelsize='x-large')
     plt.title('f0=%.4GGHz, kappa/2pi=%.3GMHz, A=%.3G, B=%.3G' % (f0_fit, kappa_fit * 1e3, A_fit, B_fit))
     plt.tight_layout()
@@ -75,11 +80,13 @@ def FindQubitFreqTwoTone(Current, Anchor1, Anchor2, Power=0, Span=10e6, SaveFig=
 if __name__ == '__main__':
     # ExperimentName = 'wg6 in 7.5GHz cavity'
     # CoolDownDate = 'test'
-    Current = 6.2e-3
-    Anchor1 = [6.22e-3, 581e6]
-    Anchor2 = [6.23e-3, 572.2e6]
+    Current = 5.8e-3
+    Anchor2 = [6.18e-3, 614.9e6]
+    Anchor1 = [6.183e-3, 611.4e6]
     SaveFig = False
-    Span = 10e6
-    Power = 0
-    f0 = FindQubitFreqTwoTone(Current, Anchor1, Anchor2, Power=Power, Span=Span, SaveFig=SaveFig)
+    Span = 20e6
+    Power = 5
+    Avg = 100e3
+    SeqLen = 10e3
+    f0 = FindQubitFreqTwoTone(Current, Anchor1, Anchor2, Avg=Avg, Power=Power, Span=Span, SeqLen=SeqLen, SaveFig=SaveFig)
     print(f0)
