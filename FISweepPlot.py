@@ -165,13 +165,11 @@ BackgroundFile = 'one_tone_6.45GHz_to_6.6GHz_5dBm_0mA_10us integration_200Kavg_1
 # ]
 
 OneToneFileList = [
-    'two tone_553_1.hdf5',
-    'two tone_553.hdf5',
-    'one tone_112.hdf5',
-    'one tone_113.hdf5',
-    'one tone_114.hdf5',
-    'one tone_113_1.hdf5',
-    'two tone_554.hdf5'
+    'two tone_588.hdf5',
+    'two tone_588_1.hdf5',
+    'two tone_587.hdf5',
+    'two tone_589.hdf5',
+
 ]
 
 PlotSpectrum = False

@@ -65,6 +65,6 @@ def show_labels(points, offset=.1):
 
 if __name__ == '__main__':
     plot_spectrum.plot_spectrum()
-    plot_anchor_points('data0')
-    plot_spectrum.label_axes(ylim=[0, 10])
+    plot_anchor_points('data3')
+    plot_spectrum.label_axes()
     plt.show()

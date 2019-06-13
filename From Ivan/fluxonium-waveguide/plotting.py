@@ -66,16 +66,21 @@ def colored_lines(x, levels, weights, initial, final, num_photons=1):
     return lines
 
 def correct_grid(xx, yy):
+    xx = xx.T
+    yy = yy.T
     dxx = np.diff(xx, axis=1)
+    print(dxx)
     xx = .5 * (np.concatenate([np.array([xx[:,0]-dxx[:,0]]).T, xx],
                                axis=1)
              + np.concatenate([xx, np.array([xx[:,-1]+dxx[:,-1]]).T],
                                axis=1))
     xx = np.concatenate([np.array([xx[0]]), xx], axis=0)
 
-    dyy = np.diff(yy, axis=0)    
+    dyy = np.diff(yy, axis=0)
     yy = .5 * (np.concatenate([np.array([yy[0]-dyy[0]]), yy], axis=0)
              + np.concatenate([yy, np.array([yy[-1]+dyy[-1]])], axis=0))
     yy = np.concatenate([yy, np.array([yy[:,-1]]).T], axis=1)
 
+    xx = xx.T
+    yy = yy.T
     return xx, yy

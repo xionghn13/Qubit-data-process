@@ -25,7 +25,7 @@ def main():
     pltpath = os.path.join(samples_path, sample,
             'Plots/Fits/Fluxonium Coupled to Harmonic Modes')
 
-    filename_in = 'one_mode_in_8.5GHz_cavity.hdf5'
+    filename_in = 'one_mode_in_8.5GHz_cavity_off_center.hdf5'
     
     filename_out = os.path.splitext(filename_in)[0]
 
@@ -64,9 +64,9 @@ def main():
     for idx in range(params['num_tot']-2):
         plt.gca().add_collection(lines[idx], '-')
 
-    # lines = colored_lines(phi_ext, levels, weights, 2, num_tot)
-    # for idx in range(params['num_tot']-3):
-    #     plt.gca().add_collection(lines[idx], '-')
+    lines = colored_lines(phi_ext, levels, weights, 2, num_tot)
+    for idx in range(params['num_tot']-3):
+        plt.gca().add_collection(lines[idx], '-')
     #
     # lines = colored_lines(phi_ext, levels, weights, 3, num_tot)
     # for idx in range(params['num_tot']-4):

@@ -9,7 +9,7 @@ import ExtractDataFunc as edf
 
 # DataPath = 'E:/Projects\Fluxonium\data_process/cavity/7.5GHz_5/'
 DataPath = 'E:/Projects\Fluxonium\data_process/Fluxonium032619/'
-OneToneFile = 'one tone_110.hdf5'
+OneToneFile = 'one tone_118.hdf5'
 
 TruncateFreq = False
 
@@ -58,7 +58,7 @@ kappa_fit = np.abs(kappa_fit)
 
 AbsGuess = lorenztian(FreqTrunc, f0_guess, kappa_guess, A_guess, B_guess)
 AbsFit = lorenztian(FreqTrunc, f0_fit, kappa_fit, A_fit, B_fit)
-print('f0=%.3GGHz, kappa/2pi=%.3GMHz, A=%.3G, B=%.3G' % (f0_guess, kappa_guess * 1e3, MaxAbs, MinAbs))
+print('f0=%.5GGHz, kappa/2pi=%.3GMHz, A=%.3G, B=%.3G' % (f0_guess, kappa_guess * 1e3, MaxAbs, MinAbs))
 
 fig, ax = plt.subplots()
 leg = ()

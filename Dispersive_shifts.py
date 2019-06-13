@@ -5,23 +5,23 @@ import QubitSpectrumFunc as qsf
 from Single_small_junction import charge_dispersive_shift as nChi
 
 N = 50
-E_l = 1.016
-E_c = 1.421
-E_j = 14.858
+E_l = 0.426
+E_c = 2.289
+E_j = 6.303
 level_num = 30
-g = 0.5112945051375719
-I0 = 2.351
-hI = 3.744  # mA
-w = 7.48821
+g = 0.0834
+I0 = 2.65
+hI = 3.7  # mA
+w = 8.421
 
 I_period = hI * 2
 iState = 0
 fState = 1
 
 # plot dispersive shift as a function of flux
-phi_ext1 = np.linspace(0.49, 0.51, 51)
-phi_ext2 = np.linspace(0., 1, 51)
-phi_ext = np.sort(np.concatenate((phi_ext1, phi_ext2)))
+# phi_ext1 = np.linspace(0.49, 0.51, 51)
+phi_ext = np.linspace(0., 1, 51)
+# phi_ext = np.sort(np.concatenate((phi_ext1, phi_ext2)))
 
 chi = np.zeros(len(phi_ext))
 # chi1 = np.zeros(len(phi_ext))
@@ -36,7 +36,11 @@ for idx, phi in enumerate(phi_ext):
     qsf.printPercent(idx, len(phi_ext))
 # chi is in GHz
 # chi_angle is in degree
-
+Ind0 = phi_ext == 0
+chi0 = chi[Ind0] * 1e3
+Indh = phi_ext == 0.5
+chih = chi[Indh]  * 1e3
+print('At 0 flux, chi/2pi=%.3GMHz. At half flux quanta, chi/2pi=%.3GMHz.' % (chi0, chih))
 # chi_angle = chi*1e3/(kappa/2) *180/np.pi
 # chi1_angle = chi1*1e3/(kappa/2) *180/np.pi
 # chi2_angle = chi2*1e3/(kappa/2) *180/np.pi

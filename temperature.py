@@ -63,9 +63,9 @@ T = 1 / f
 lamb = c / np.sqrt(epsilon) * T * 1e3
 print('lambda = %.3Gmm' % lamb)
 print('--------------------wavelength to freq----------------')
-lamb = 4e-3 * 2
+lamb = 10e-3 * 4
 c = 3e8
-epsilon = (1 + 11.9) / 2
+epsilon = (1 + 1) / 2
 T = lamb * np.sqrt(epsilon) / c
 f = 1 / T * 1e-9
 print('freq = %.3GGHz' % f)
@@ -80,3 +80,12 @@ n = 0.016
 f = 7.79e9
 T = h * f / kB / np.log(1 + 1 / n)
 print('T = %.3GmK' % (T * 1e3))
+print('--------------------n to temp------------------')
+g = 511
+fc = 7.45e3
+fq = 109
+kappa = 5.47 * 2 * np.pi
+Delta = fc - fq
+Gamma_purcell = kappa * (g / Delta) ** 2
+T1_purcell = 1 / Gamma_purcell
+print('T1_purcell=%.3Gus' % T1_purcell)

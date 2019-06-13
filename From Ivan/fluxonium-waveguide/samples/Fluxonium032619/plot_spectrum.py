@@ -22,31 +22,32 @@ sample = 'fluxonium032619'
 
 def plot_spectrum():
     # I0 = -0.36  # mA
-    I0 = 2.28
+    I0 = 2.274
+    # I0 = 4.6
     hI = 2.64  # mA
 
 
     path_filenames = [
-        'two tone_113.hdf5',
-        'two tone_114.hdf5',
-        'two tone_115.hdf5',
-        'two tone_116.hdf5',
-        'two tone_117.hdf5',
-        'two tone_118.hdf5',
-        'two tone_119.hdf5',
-        'two tone_120.hdf5',
-        'two tone_122.hdf5',
-        'two tone_123.hdf5',
-        'two tone_124.hdf5',
-        'two tone_125.hdf5',
-        'two tone_126.hdf5',
-        'two tone_127.hdf5',
-        'two tone_141.hdf5',
-        'two tone_142.hdf5',
-        'two tone_144.hdf5',
+        # 'two tone_113.hdf5',
+        # 'two tone_114.hdf5',
+        # 'two tone_115.hdf5',
+        # 'two tone_116.hdf5',
+        # 'two tone_117.hdf5',
+        # 'two tone_118.hdf5',
+        # 'two tone_119.hdf5',
+        # 'two tone_120.hdf5',
+        # 'two tone_122.hdf5',
+        # 'two tone_123.hdf5',
+        # 'two tone_124.hdf5',
+        # 'two tone_125.hdf5',
+        # 'two tone_126.hdf5',
+        # 'two tone_127.hdf5',
+        # 'two tone_141.hdf5',
+        # 'two tone_142.hdf5',
+        # 'two tone_144.hdf5',
         'two tone_145.hdf5',
-        'two tone_146.hdf5',
-        'two tone_149.hdf5',
+        # 'two tone_146.hdf5',
+        # 'two tone_149.hdf5',
     ]
 
     path_filenames = [os.path.join(samples_path, sample, pf)
@@ -105,6 +106,7 @@ def plot_spectrum():
         # plot_2d = 1. - np.abs(plot_2d)
 
         bias_2d, freq_2d = correct_grid(bias_2d, freq_2d)
+        print(bias_2d)
         plt.pcolormesh(bias_2d, freq_2d, plot_2d, cmap='PuBu')
 
 

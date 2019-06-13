@@ -15,7 +15,7 @@ def lorenztian(f, f0, kappa, A, B):
 
 # DataPath = 'E:/Projects\Fluxonium\data_process/cavity/8.5GHz/'
 DataPath = 'E:/Projects\Fluxonium\data_process/Fluxonium032619/'
-OneToneFile = 'rabi_112.hdf5'
+OneToneFile = 'rabi_175.hdf5'
 
 TruncateFreq = False
 
@@ -74,6 +74,7 @@ MaxInd = f0Array.argmax()
 MinInd = f0Array.argmin()
 Maxf0 = np.max(f0Array)
 Minf0 = np.min(f0Array)
+print('Min f0=%.5GGHz, max f0=%.5GGHz, difference=%.5GMHz' % (Minf0, Maxf0, (Maxf0 - Minf0) * 1e3))
 
 fig, ax = plt.subplots()
 leg = []

@@ -22,16 +22,17 @@ sample = 'fluxonium032619'
 
 def plot_spectrum():
     # I0 = -0.36  # mA
-    I0 = 2.199
-    hI = 2.469  # mA
+    I0 = 2.65
+    I0 = 2.65 - 3.7
+    hI = 3.7  # mA
 
     path_filenames = [
-        'two tone_211.hdf5',
-        'two tone_212.hdf5',
-        'two tone_213.hdf5',
-        'two tone_214.hdf5',
-        'two tone_231.hdf5',
-        'two tone_215.hdf5',
+        'two tone_553_1.hdf5',
+        'two tone_553.hdf5',
+        'two tone_554.hdf5',
+        'two tone_554.hdf5',
+        'two tone_583.hdf5',
+
     ]
 
     path_filenames = [os.path.join(samples_path, sample, pf)
@@ -93,7 +94,7 @@ def plot_spectrum():
         plt.pcolormesh(bias_2d, freq_2d, plot_2d, cmap='PuBu')
 
 
-def label_axes(title='', xlim=[0.2, 1.2], ylim=[3, 15],
+def label_axes(title='', xlim=[0.1, 1.1], ylim=[6, 10],
                title_color='k'):
     labelsize = 18
     plt.xlabel('$\Phi_\mathrm{ext}/\Phi_0$', fontsize=labelsize)
@@ -114,7 +115,7 @@ def label_axes(title='', xlim=[0.2, 1.2], ylim=[3, 15],
 if __name__ == '__main__':
     filename = os.path.join(samples_path, sample, 'Plots', 'spectrum.png')
     plot_spectrum()
-    label_axes(ylim=[0, 10])
+    label_axes()
     plt.tight_layout()
     plt.savefig(filename, dpi=600)
     plt.show()
