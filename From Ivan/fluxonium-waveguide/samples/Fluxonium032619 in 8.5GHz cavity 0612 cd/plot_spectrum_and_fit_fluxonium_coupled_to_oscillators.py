@@ -20,17 +20,18 @@ import plot_anchor_points
 
 
 def main():
-    sample = 'fluxonium022319'
+    sample = 'fluxonium032619'
     fitpath = 'Processed Data/Fluxonium Coupled to Harmonic Modes/'
     pltpath = os.path.join(samples_path, sample,
             'Plots/Fits/Fluxonium Coupled to Harmonic Modes')
 
-    filename_in = 'one_mode_6.hdf5'
+    filename_in = 'one_mode_in_8.5GHz_cavity_0612cd_4.hdf5'
     
     filename_out = os.path.splitext(filename_in)[0]
 
     filename = os.path.join(samples_path, sample, fitpath, filename_in)
     params = utilities.load_fit(filename)
+
     utilities.print_params(params)
 
     plot_spectrum.plot_spectrum()
@@ -46,7 +47,7 @@ def main():
             params['E_C'], params['E_J'], str_freq, str_coup))
 
     # plt.xlim(-.05, 0.525)
-    plot_spectrum.label_axes(title, title_color='w')
+    plot_spectrum.label_axes(title, title_color='w', ylim=[0, 10], xlim=[-0.5, 0.6])
     fig_path = os.path.join(pltpath, '%s_spectrum.png' % filename_out)
     plt.savefig(fig_path, dpi=600)
 
@@ -59,15 +60,22 @@ def main():
     for idx in range(params['num_tot']-1):
         plt.gca().add_collection(lines[idx])
 
-    # lines = colored_lines(phi_ext, levels, weights, 1, num_tot)
-    # for idx in range(params['num_tot']-2):
+    lines = colored_lines(phi_ext, levels, weights, 1, num_tot)
+    for idx in range(params['num_tot']-2):
+        plt.gca().add_collection(lines[idx], '-')
+
+    # lines = colored_lines(phi_ext, levels, weights, 2, num_tot)
+    # for idx in range(params['num_tot']-3):
     #     plt.gca().add_collection(lines[idx], '-')
-        
+    #
+    # lines = colored_lines(phi_ext, levels, weights, 3, num_tot)
+    # for idx in range(params['num_tot']-4):
+    #     plt.gca().add_collection(lines[idx], '-')
     # lines = colored_lines(phi_ext, levels, weights, 0, num_tot, 2)
     # for idx in range(params['num_tot']-1):
         # plt.gca().add_collection(lines[idx])
 
-    plot_spectrum.label_axes(title, title_color='k', ylim=[0, 10], xlim=[-0.25, 0.75])
+    plot_spectrum.label_axes(title, title_color='k')
     plt.tight_layout()
     fig_path = os.path.join(pltpath, '%s_spectrum_fit.png' % filename_out)
     plt.savefig(fig_path, dpi=600)

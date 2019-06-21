@@ -22,17 +22,17 @@ sample = 'fluxonium032619'
 
 def plot_spectrum():
     # I0 = -0.36  # mA
-    I0 = 2.65
-    # I0 = 2.65 - 3.7
-    hI = 3.7  # mA
+    I0 = 5.27
+    hI = 2.57  # mA
 
     path_filenames = [
-        'two tone_553_1.hdf5',
-        'two tone_553.hdf5',
-        'two tone_554.hdf5',
-        'two tone_554.hdf5',
-        'two tone_583.hdf5',
-
+        'two tone_588.hdf5',
+        'two tone_588_1.hdf5',
+        'two tone_587.hdf5',
+        'two tone_613.hdf5',
+        'two tone_590.hdf5',
+        'two tone_597.hdf5',
+        'two tone_608.hdf5',
     ]
 
     path_filenames = [os.path.join(samples_path, sample, pf)
@@ -94,7 +94,7 @@ def plot_spectrum():
         plt.pcolormesh(bias_2d, freq_2d, plot_2d, cmap='PuBu')
 
 
-def label_axes(title='', xlim=[-0.4, 0.6], ylim=[6, 10],
+def label_axes(title='', xlim=[-0.1, 0.6], ylim=[0, 9],
                title_color='k'):
     labelsize = 18
     plt.xlabel('$\Phi_\mathrm{ext}/\Phi_0$', fontsize=labelsize)

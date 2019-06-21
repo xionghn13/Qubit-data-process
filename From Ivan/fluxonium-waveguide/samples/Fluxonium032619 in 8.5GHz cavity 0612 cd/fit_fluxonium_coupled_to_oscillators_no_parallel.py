@@ -116,30 +116,30 @@ def fit(params):
     return params
 
 def main():
-    sample = 'fluxonium022319'
+    sample = 'fluxonium032619'
     subpath = 'Processed Data/Fluxonium Coupled to Harmonic Modes/'
     path = os.path.join(samples_path, sample, subpath)
 
-    filename_in = 'one_mode_6.hdf5'
-    filename_fit = 'one_mode_6_test.hdf5'
+    filename_in = 'one_mode_in_8.5GHz_cavity_0612cd_3.hdf5'
+    filename_fit = 'one_mode_in_8.5GHz_cavity_0612cd_4.hdf5'
 
     params = utilities.load_fit(os.path.join(path, filename_in))
 
     # Initial guess for the qubit parameters.
-    # params = {'E_L': 0.30316786766768816, # The inductive energy.
-    #           'E_C': 1.3707449371055807, # The charging energy.
-    #           'E_J': 5.081608341619772, # The Josephson energy.
+    # params = {'E_L': 0.505, # The inductive energy.
+    #           'E_C': 3, # The charging energy.
+    #           'E_J': 8, # The Josephson energy.
     #           'phi_ext': [0.],
-    #           'frequencies': [5.979, 8.548, 9.823], # Single mode frequencies.
-    #           'n_couplings': [0., 5.397, 2.667], # Charge couplings.
-    #           'phi_couplings': [0.153, 0., 0.], # Flux couplings.
-    #           'num_mod': [10, 7, 7],
+    #           'frequencies': [7.25], # Single mode frequencies.
+    #           'n_couplings': [0.], # Charge couplings.
+    #           'phi_couplings': [0], # Flux couplings.
+    #           'num_mod': [10],
     #           'num_osc': 100,
-    #           'num_qbt': 15,
-    #           'num_tot': 21,
-    #           'num_cpl': 50,
+    #           'num_qbt': 10,
+    #           'num_tot': 10,
+    #           'num_cpl': 10,
     #           'error_type': 'relative_error',
-    #           'data_set': 'data4'
+    #           'data_set': 'data0'
     #          }
 
     # params['E_L'] = 0.30316786766768816
@@ -149,16 +149,16 @@ def main():
     # params['num_tot'] = 10
     # params['num_cpl'] = 10
     # params['num_mod'] = [10, 10, 10]
-    # params['frequencies'] = np.array([7.79, 8.232, 30])
-    # params['n_couplings'] = np.array([0., 2.573, 0])
+    # params['frequencies'] = np.array([7.89])
+    # params['n_couplings'] = np.array([0.171])
+    params['error_type'] = 'absolute_error'
     # params['phi_couplings'] = np.array([0., 0, 0])
-    # params['data_set'] = 'data3'
-    params['n_couplings'][2] = 0
-
-    phi_ext = np.linspace(-0.25, 0.75, 501)
+    params['data_set'] = 'data3'
+    
+    phi_ext = np.linspace(-0.1, 0.6, 201)
 
     utilities.print_params(params)
-    # params = fit(params)
+    params = fit(params)
     utilities.print_params(params)
     utilities.save_fit(os.path.join(path, filename_fit), params)
     
@@ -197,7 +197,7 @@ def main():
     title = ('$E_L/h=$%.3f GHz, $E_C/h=$%.3f GHz, $E_J/h=$%.3f GHz\n'
             '$f_i\in${%s} GHz\n$g_{i,n|\phi}\in${%s} GHz' % (params['E_L'],
             params['E_C'], params['E_J'], str_freq, str_coup))
-    plot_spectrum.label_axes(title, ylim=[0, 10])
+    plot_spectrum.label_axes(title)
 
     plt.show()
 

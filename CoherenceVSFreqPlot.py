@@ -22,8 +22,8 @@ def getRowData(sheet, rowInd, length=None):
     return RowData
 
 
-I0 = 2.199
-I_period = 2.469 * 2
+I0 = 2.65
+I_period = 3.7 * 2  # mA
 PlotT1diel = False
 
 N = 50
@@ -134,5 +134,6 @@ plt.xlabel('Flux/Phi_0', fontsize='x-large')
 plt.ylabel('Decay time(us)', fontsize='x-large')
 plt.tick_params(axis='both', which='major', labelsize='x-large')
 plt.tight_layout()
-ax.set_yscale('log')
+if PlotT1diel:
+    ax.set_yscale('log')
 plt.show()

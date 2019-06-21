@@ -69,7 +69,7 @@ def correct_grid(xx, yy):
     xx = xx.T
     yy = yy.T
     dxx = np.diff(xx, axis=1)
-    print(dxx)
+    # print(dxx)
     xx = .5 * (np.concatenate([np.array([xx[:,0]-dxx[:,0]]).T, xx],
                                axis=1)
              + np.concatenate([xx, np.array([xx[:,-1]+dxx[:,-1]]).T],

@@ -6,15 +6,26 @@ from Single_small_junction import charge_dispersive_shift as nChi
 
 N = 50
 E_l = 0.426
-E_c = 2.289
-E_j = 6.303
+E_c = 2.274
+E_j = 6.196
 level_num = 30
-g = 0.0834
+g = 0.137
+I0 = 5.27
+hI = 2.57  # mA
+w = 7.828
+
+E_l = 0.437
+E_c = 2.265
+E_j = 6.487
+level_num = 30
+g = 0.165
 I0 = 2.65
-hI = 3.7  # mA
-w = 8.421
+hI = 3.7 # mA
+w = 7.893
 
 I_period = hI * 2
+I0 = 2.199
+I_period = 2.469 * 2
 iState = 0
 fState = 1
 
@@ -39,7 +50,7 @@ for idx, phi in enumerate(phi_ext):
 Ind0 = phi_ext == 0
 chi0 = chi[Ind0] * 1e3
 Indh = phi_ext == 0.5
-chih = chi[Indh]  * 1e3
+chih = chi[Indh] * 1e3
 print('At 0 flux, chi/2pi=%.3GMHz. At half flux quanta, chi/2pi=%.3GMHz.' % (chi0, chih))
 # chi_angle = chi*1e3/(kappa/2) *180/np.pi
 # chi1_angle = chi1*1e3/(kappa/2) *180/np.pi
