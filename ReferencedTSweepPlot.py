@@ -203,6 +203,7 @@ def plotReferencedTSweep(DataPath, RabiFile, BackgroundFile='', Plus50MHzBackgro
             TimeFit = np.linspace(Time.min(), Time.max(), 200)
 
             FitR = DoubleExp_curve(TimeFit, A_fit, TR_fit, B_fit, Tqp_fit, lamb_fit)
+            y_pred = DoubleExp_curve(Time, A_fit, TR_fit, B_fit, Tqp_fit, lamb_fit)
             ParamList = ['A', 'TR/ns', 'B', 'Tqp/ns', 'lambda']
         else:
             opt, cov = curve_fit(T1_curve, x_data, y_data, p0=[A_guess, T1_guess, B_guess], maxfev=30000)
@@ -212,6 +213,7 @@ def plotReferencedTSweep(DataPath, RabiFile, BackgroundFile='', Plus50MHzBackgro
             TimeFit = np.linspace(Time.min(), Time.max(), 200)
 
             FitR = T1_curve(TimeFit, A_fit, T1_fit, B_fit)
+            y_pred = T1_curve(Time, A_fit, T1_fit, B_fit)
             ParamList = ['A', 'Decay time/ns', 'B']
 
     elif MeasurementType in ('rabi', 'Ch1 rabi', 'Ch1 pump rabi', 't2', 'rabi no ref'):
@@ -317,8 +319,6 @@ def plotReferencedTSweep(DataPath, RabiFile, BackgroundFile='', Plus50MHzBackgro
     if MeasurementType in ('t2', 't2echo', 'transient no ref', 't1 no ref', 'rabi no ref'):
         if LogScale:
             plt.plot(Time, y_data - B_fit, 'o')
-            if __name__ == '__main__':
-                print('- B_fit')
         else:
             plt.plot(Time, y_data, 'o')
     else:
@@ -367,7 +367,13 @@ def plotReferencedTSweep(DataPath, RabiFile, BackgroundFile='', Plus50MHzBackgro
         FigName = RabiFile.split('.')[0] + '.PNG'
         plt.savefig(FigPath + FigName)
 
-
+    if MeasurementType in ('t1', 't1 no ref'):
+        fig, ax = plt.subplots()
+        plt.plot(Time, y_data - y_pred, 'o--')
+        plt.xlabel('Time/ns', fontsize='x-large')
+        plt.ylabel('Residual', fontsize='x-large')
+        plt.tick_params(axis='both', which='major', labelsize='x-large')
+        plt.tight_layout()
 
     if ShowFig:
         plt.show()
@@ -378,14 +384,14 @@ def plotReferencedTSweep(DataPath, RabiFile, BackgroundFile='', Plus50MHzBackgro
 
 
 if __name__ == '__main__':
-    DataPath = 'C:/Users/admin\Labber\Data/2019/05\Data_0524/'
+    DataPath = 'C:/Users/admin\Labber\Data/2019/06\Data_0620/'
     BackgroundFile = []
     # BackgroundFile = '021219_rabi_CH2(AWG1Vpp)_no pump_readout_4.077GHz__-15dBm_qubit4.027GHz_-35dBm_0.8_mA_I cos Q sin mod true interleafing_odd readout even ref_avg100k_Rabi300_duty50000readout3us.h5'
     BackgroundFile = 'calibration_5.hdf5'
     # Plus50MHzBackgroundFile = '012819_rabi_CH2(AWG1Vpp)_no pump_readout_4.146GHz__-20dBm_qubit4.096GHz_-25dBm_4.9_mA_I cos Q sin mod true interleafing_odd readout even ref_avg100k_Rabi100000_duty150000readout3us.h5'
     Plus50MHzBackgroundFile = 'one_tone_4.05GHz_to_4.3GHz_-15dBm_4.9mA_10us integration_100Kavg_50KHz step_020419.dat'
     Minus50MHzBackgroundFile = 'one_tone_4.05GHz_to_4.3GHz_-15dBm_4.9mA_10us integration_100Kavg_50KHz step_020419.dat'
-    RabiFile = 't1_2019-05-24-16-46-45.hdf5'
+    RabiFile = 't1_2019-06-20-13-59-41.hdf5'
     IQModFreq = 0.05
 
     PhaseSlope = 326.7041108065019
@@ -395,8 +401,8 @@ if __name__ == '__main__':
     LimitTimeRange = False
     RotateComplex = True
     FitDoubleExponential = True
-    LogScale = False
-    SaveFig = True
+    LogScale = True
+    SaveFig = False
     ShowFig = True
     StartTime = 5000
     EndTime = 1e8

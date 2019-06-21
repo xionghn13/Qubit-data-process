@@ -2,21 +2,22 @@ import Script_TwoTone
 import Script_TimeDomain
 from QubitDataProcessPackages import *
 
-CurrentList = np.linspace(5.9e-3, 5.9e-3, 1)
+# CurrentList = np.linspace(7.835e-3, 7.81e-3, 6)
+CurrentList = np.linspace(7.84e-3, 7.84e-3, 1)
 # CurrentList = np.insert(CurrentList, 0, 6.18e-3)
 print(CurrentList)
-Anchor1 = [5.9e-3, 1041e6]
-Anchor2 = [6.35e-3, 609.2e6]
+Anchor1 = [7.83e-3, 514.75e6]
+Anchor2 = [7.85e-3, 514.75e6]
 SaveFig = True
-Span = 20e6
-DrivingPower = 13
-PiPulseLength = 657e-9
-ReadoutFreq = 8.4205e9
-T1MaxDelay = 300e-6
+Span = 10e6
+DrivingPower = 10
+PiPulseLength = 217e-9
+ReadoutFreq = 7.8305e9
+T1MaxDelay = 400e-6
 PulseType = 0  # 0 Gaussian, 1 Square
-TwoTonePower = 5
+TwoTonePower = -10
 TwoToneAvg = 100e3
-TwoToneSeqLen = 10e3
+TwoToneSeqLen = 100e3
 # PiPulseLength = 500e-6
 # MeasTypeList = ['rabi']
 # MeasTypeList = ['t2_ramsey', 't1', 't2_echo']

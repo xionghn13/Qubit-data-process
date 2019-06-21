@@ -7,14 +7,14 @@ from scipy.optimize import curve_fit
 from QubitDecayFunc import T1_curve, DoubleExp_curve, rabi_curve, FitTransientTime, AutoRotate
 import ExtractDataFunc as edf
 import h5py
-
+import sklearn.metrics
 
 def plotLabberRepeatedTSweepPlot(DataPath, RabiFileList, BackgroundFile='calibration_5.hdf5',
                                  IQModFreq=0.05, PhaseSlope=326.7, PhaseReferenceFreq=4.105,
                                  Calibration=False, FitCorrectedR=True, RotateComplex=True,
                                  LogScale=False, FitDoubleExponential=False, PlotNumber=11, MinPlotInd=0, MaxPlotInd=11,
                                  PlotInd=[0, 1, 2, 3], T2MaxTime=2e4):
-    if RabiFileList is not list:
+    if not isinstance(RabiFileList, list):
         RabiFileList = [RabiFileList]
     NumFile = len(RabiFileList)
     CounterArray = np.zeros([NumFile, ])
@@ -25,6 +25,7 @@ def plotLabberRepeatedTSweepPlot(DataPath, RabiFileList, BackgroundFile='calibra
         BackPower = edf.readQubitPowerLabber(DataPath + BackgroundFile)
         BackPowerStr = str(BackPower)
 
+    LastCount = 0
     for i, RabiFile in enumerate(RabiFileList):
         RabiFileStrList = RabiFile[:-5].split('_')
         MeasurementType = RabiFileStrList[0]
@@ -44,7 +45,8 @@ def plotLabberRepeatedTSweepPlot(DataPath, RabiFileList, BackgroundFile='calibra
         elif MeasurementType == 't1t2interleaved':
             [Time, Counter, ComplexVoltageT1, ComplexVoltageT2] = edf.readRepeatedT1T2InterleavedSweepLabber(
                 DataPath + RabiFile)
-
+        Counter += LastCount + 1
+        LastCount = Counter[-1]
         if MeasurementType == 't1t2interleaved':
             ComplexVoltageT1Normalized = ComplexVoltageT1 * 10 ** (- ReadoutPower / 20)
             ComplexVoltageT2Normalized = ComplexVoltageT2 * 10 ** (- ReadoutPower / 20)
@@ -115,6 +117,7 @@ def plotLabberRepeatedTSweepPlot(DataPath, RabiFileList, BackgroundFile='calibra
                     A_fit, T1_fit, B_fit = opt
                     FitR = T1_curve(Time, A_fit, T1_fit, B_fit)
                     ParamList = ['A', 'Decay time/ns', 'B']
+                R2 = sklearn.metrics.r2_score(y_data, FitR)
             elif MeasurementType == 't1t2interleaved':
                 FitRt1t2List = []
                 optList = []
@@ -160,6 +163,7 @@ def plotLabberRepeatedTSweepPlot(DataPath, RabiFileList, BackgroundFile='calibra
                 RComplexList = []
                 FitRList = []
                 CounterArray = np.array([trial])
+                R2Array = np.array([R2])
                 if MeasurementType == 't1t2interleaved':
                     OptMatrixList = [np.reshape(optList[0], (len(optList[0]), 1)),
                                      np.reshape(optList[1], (len(optList[1]), 1))]
@@ -180,6 +184,7 @@ def plotLabberRepeatedTSweepPlot(DataPath, RabiFileList, BackgroundFile='calibra
                     OptMatrix = np.concatenate((OptMatrix, np.reshape(opt, (len(opt), 1))), axis=1)
                     ErrMatrix = np.concatenate((ErrMatrix, np.reshape(np.sqrt(cov.diagonal()), (len(opt), 1))), axis=1)
                 CounterArray = np.concatenate((CounterArray, np.array([trial])))
+                R2Array = np.concatenate((R2Array, np.array([R2])))
 
             TimeList.append(Time)
             if MeasurementType == 't1t2interleaved':
@@ -297,7 +302,7 @@ def plotLabberRepeatedTSweepPlot(DataPath, RabiFileList, BackgroundFile='calibra
         plotInd = 1
         # plt.plot(CounterArray, OptMatrix[plotInd, :]/1000, 'o')
         if MeasurementType == 't1t2interleaved':
-            if  FitDoubleExponential:
+            if FitDoubleExponential:
                 print('Error: t1t2interleaved with double exponential fit has not been completed yet.')
             avgList = []
             stdList = []
@@ -310,6 +315,7 @@ def plotLabberRepeatedTSweepPlot(DataPath, RabiFileList, BackgroundFile='calibra
                 ax.errorbar(CounterArray[MinPlotInd:MaxPlotInd],
                             OptMatrixList[ind][plotInd, MinPlotInd:MaxPlotInd] / 1000,
                             yerr=ErrMatrixList[ind][plotInd, MinPlotInd:MaxPlotInd] / 1000, fmt='o')
+                plt.plot(CounterArray[MinPlotInd:MaxPlotInd], OptMatrix[plotInd, MinPlotInd:MaxPlotInd] / 1000, '--')
             plt.legend(['T1', 'T2echo'])
             plt.title('T1=%.3G$\pm$%.2Gus, T2=%.3G$\pm$%.2Gus' % (avgList[0], stdList[0], avgList[1], stdList[1]))
         else:
@@ -318,6 +324,7 @@ def plotLabberRepeatedTSweepPlot(DataPath, RabiFileList, BackgroundFile='calibra
             ax.errorbar(CounterArray[MinPlotInd:MaxPlotInd], OptMatrix[plotInd, MinPlotInd:MaxPlotInd] / 1000,
                         yerr=ErrMatrix[plotInd, MinPlotInd:MaxPlotInd] / 1000,
                         fmt='o')
+            plt.plot(CounterArray[MinPlotInd:MaxPlotInd], OptMatrix[plotInd, MinPlotInd:MaxPlotInd] / 1000, '--')
             if FitDoubleExponential:
                 plt.title('TR=%.3G$\pm$%.2Gus' % (avg, std))
             else:
@@ -345,6 +352,7 @@ def plotLabberRepeatedTSweepPlot(DataPath, RabiFileList, BackgroundFile='calibra
                         stdList += [ErrMatrixList[ind][plotInd, 0] / 1000]
                     ax.errorbar(CounterArray[:MaxPlotInd], OptMatrixList[ind][plotInd, :MaxPlotInd] / 1000,
                                 yerr=ErrMatrixList[ind][plotInd, :MaxPlotInd] / 1000, fmt='o')
+                    plt.plot(CounterArray[MinPlotInd:MaxPlotInd], OptMatrix[plotInd, MinPlotInd:MaxPlotInd] / 1000, '--')
                 # plt.legend(['T1', 'T2echo'])
                 plt.title('Tqp=%.3G$\pm$%.2Gus' % (avgList[0], stdList[0]))
             else:
@@ -353,6 +361,7 @@ def plotLabberRepeatedTSweepPlot(DataPath, RabiFileList, BackgroundFile='calibra
                 ax.errorbar(CounterArray[:MaxPlotInd], OptMatrix[plotInd, :MaxPlotInd] / 1000,
                             yerr=ErrMatrix[plotInd, :MaxPlotInd] / 1000,
                             fmt='o')
+                plt.plot(CounterArray[MinPlotInd:MaxPlotInd], OptMatrix[plotInd, MinPlotInd:MaxPlotInd] / 1000, '--')
                 plt.title('Tqp=%.3G$\pm$%.2Gus' % (avg, std))
 
             plt.xlabel('Trial #', fontsize='x-large')
@@ -376,15 +385,17 @@ def plotLabberRepeatedTSweepPlot(DataPath, RabiFileList, BackgroundFile='calibra
                         stdList += [ErrMatrixList[ind][plotInd, 0]]
                     ax.errorbar(CounterArray[:MaxPlotInd], OptMatrixList[ind][plotInd, :MaxPlotInd],
                                 yerr=ErrMatrixList[ind][plotInd, :MaxPlotInd], fmt='o')
+                    plt.plot(CounterArray[MinPlotInd:MaxPlotInd], OptMatrix[plotInd, MinPlotInd:MaxPlotInd], '--')
                 # plt.legend(['T1', 'T2echo'])
-                plt.title('Tqp=%.3G$\pm$%.2Gus' % (avgList[0], stdList[0]))
+                plt.title('nqp=%.3G$\pm$%.2G' % (avgList[0], stdList[0]))
             else:
                 avg = np.mean(OptMatrix[plotInd, :MaxPlotInd])
                 std = np.std(OptMatrix[plotInd, :MaxPlotInd])
                 ax.errorbar(CounterArray[:MaxPlotInd], OptMatrix[plotInd, :MaxPlotInd],
                             yerr=ErrMatrix[plotInd, :MaxPlotInd],
                             fmt='o')
-                plt.title('lambda=%.3G$\pm$%.2G' % (avg, std))
+                plt.plot(CounterArray[MinPlotInd:MaxPlotInd], OptMatrix[plotInd, MinPlotInd:MaxPlotInd], '--')
+                plt.title('nqp=%.3G$\pm$%.2G' % (avg, std))
 
             plt.xlabel('Trial #', fontsize='x-large')
             plt.ylabel('lambda', fontsize='x-large')
@@ -392,6 +403,17 @@ def plotLabberRepeatedTSweepPlot(DataPath, RabiFileList, BackgroundFile='calibra
             plt.tight_layout()
             if LogScale:
                 ax.set_yscale('log')
+
+        fig, ax = plt.subplots()
+        if MeasurementType == 't1t2interleaved':
+            print('Not done yet for t1 t2 R^2')
+        else:
+            plt.plot(CounterArray, R2Array, 'o')
+        plt.xlabel('Trial #', fontsize='x-large')
+        plt.ylabel('R^2', fontsize='x-large')
+        plt.tick_params(axis='both', which='major', labelsize='x-large')
+        plt.tight_layout()
+
 
     if MeasurementType == 'rabi':
         fig, ax = plt.subplots()
@@ -408,7 +430,7 @@ def plotLabberRepeatedTSweepPlot(DataPath, RabiFileList, BackgroundFile='calibra
 
 if __name__ == '__main__':
     # DataPath = 'E:/Projects\Fluxonium\data_process/Fluxonium042619/'
-    DataPath = 'C:/Users/admin\Labber\Data/2019/06\Data_0604/'
+    DataPath = 'C:/Users/admin\Labber\Data/2019/06\Data_0617/'
     BackgroundFile = 'calibration_5.hdf5'
 
     # RabiFileList = [
@@ -419,7 +441,8 @@ if __name__ == '__main__':
     #
     # ]
     RabiFileList = [
-        't1_t2_interleaved_2019-06-04-23-38-55.hdf5',
+        't1_2019-06-17-16-23-34.hdf5',
+        't1_2019-06-17-20-53-22.hdf5',
     ]
 
     IQModFreq = 0.05
@@ -430,9 +453,9 @@ if __name__ == '__main__':
     Calibration = False
     RotateComplex = True
     FitDoubleExponential = False
-    PlotNumber = 11
+    PlotNumber = 52
     MinPlotInd = 0
-    MaxPlotInd = 0
+    MaxPlotInd = 100
     PlotIndex = [0, 1]
     T2MaxTime = 200e3  # ns
 

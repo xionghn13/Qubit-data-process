@@ -20,6 +20,7 @@ def FindQubitFreqTwoTone(Current, Anchor1, Anchor2, Avg=500e3, Power=0, Span=10e
     ItemDict = {
         'Pump - Frequency': [[PredictFreq - Span / 2, 'START'], [PredictFreq + Span / 2, 'STOP']],
         'Pump - Power': Power,
+        'Qubit - Power': -5,
         'Alazar - Number of records': Avg,
         'Yoko - Current': Current,
         'Counter - Number of points': 0,
@@ -32,6 +33,7 @@ def FindQubitFreqTwoTone(Current, Anchor1, Anchor2, Avg=500e3, Power=0, Span=10e
     [Freq, Complex] = edf.readFSweepTwoToneLabber(OutPath + OutFile)
 
     y_data = np.angle(Complex)
+    y_data = np.abs(Complex)
     kappa_guess = Span / 4 / 1e9
     C_guess = (y_data[-1] - y_data[0]) / (Freq[-1] - Freq[0])
     Ind = np.argmax(np.abs(y_data - C_guess * (Freq - Freq[0]) - y_data[0]))
@@ -80,12 +82,12 @@ def FindQubitFreqTwoTone(Current, Anchor1, Anchor2, Avg=500e3, Power=0, Span=10e
 if __name__ == '__main__':
     # ExperimentName = 'wg6 in 7.5GHz cavity'
     # CoolDownDate = 'test'
-    Current = 5.8e-3
-    Anchor2 = [6.18e-3, 614.9e6]
-    Anchor1 = [6.183e-3, 611.4e6]
+    Current = 7.854e-3
+    Anchor2 = [7.83e-3, 515e6]
+    Anchor1 = [7.85e-3, 515e6]
     SaveFig = False
-    Span = 20e6
-    Power = 5
+    Span = 10e6
+    Power = -10
     Avg = 100e3
     SeqLen = 10e3
     f0 = FindQubitFreqTwoTone(Current, Anchor1, Anchor2, Avg=Avg, Power=Power, Span=Span, SeqLen=SeqLen, SaveFig=SaveFig)
