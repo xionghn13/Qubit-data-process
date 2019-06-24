@@ -8,7 +8,7 @@ from LabberRepeatedTSweepPlot import plotLabberRepeatedTSweepPlot
 
 
 def timeDomainMeasurement(Current, ReadoutFreq, QubitFreq, DrivingPower, PiPulseLength, Detuning=0.5e6,
-                          MeasurementType='rabi', T1MaxDelay=150e-6, Avg=300e3,
+                          MeasurementType='rabi', T1MaxDelay=150e-6, Avg=300e3, DutyCyclePoints=400e3,
                           PulseType=0, FitAndPlot=True, ShowFig=True):
     # ExperimentName = 'wg6 in 7.5GHz cavity'
     # CoolDownDate = 'test'
@@ -24,7 +24,8 @@ def timeDomainMeasurement(Current, ReadoutFreq, QubitFreq, DrivingPower, PiPulse
             'Qubit - Frequency': ReadoutFreq,
             'Pump - Frequency': DrivingFreq,
             'Pump - Power': DrivingPower,
-            'Pulse Generator - Width #1': [[1200e-9, 'STOP']],
+            'Pulse Generator - Width #1': [[450e-9, 'STOP']],
+            'Pulse Generator - Number of points': DutyCyclePoints,
             'Alazar - Number of records': Avg,
             'Pulse Generator - Pulse type': PulseType,  # 0 Gaussian
             # 'Pulse Generator - Number of points': 20e3,
@@ -36,6 +37,7 @@ def timeDomainMeasurement(Current, ReadoutFreq, QubitFreq, DrivingPower, PiPulse
             'Pump - Frequency': [[DrivingFreq, 'START'], [QubitFreq, 'STOP']],
             'Pump - Power': DrivingPower,
             'Pulse Generator - Sequence duration': [[10e-6, 'STOP']],
+            'Pulse Generator - Number of points': DutyCyclePoints,
             'Alazar - Number of records': Avg,
             'Pulse Generator - Pulse type': PulseType,  # 0 Gaussian
         }
@@ -47,6 +49,7 @@ def timeDomainMeasurement(Current, ReadoutFreq, QubitFreq, DrivingPower, PiPulse
             'Pump - Power': DrivingPower,
             'Pulse Generator - Width #1': PiPulseLength,
             'Pulse Generator - Readout delay': [[T1MaxDelay, 'STOP']],
+            # 'Pulse Generator - Number of points': DutyCyclePoints,
             'Alazar - Number of records': Avg,
             'Pulse Generator - Pulse type': PulseType,  # 0 Gaussian
             # 'Counter - Number of points': [[40, 'STOP']]
@@ -60,6 +63,7 @@ def timeDomainMeasurement(Current, ReadoutFreq, QubitFreq, DrivingPower, PiPulse
             'Pump - Power': DrivingPower,
             'Pulse Generator - Width #1': PiPulseLength,
             'Pulse Generator - Sequence duration': [[45e-6, 'STOP']],
+            'Pulse Generator - Number of points': DutyCyclePoints,
             'Alazar - Number of records': Avg * 4,
             'Pulse Generator - Pulse type': PulseType,  # 0 Gaussian
             # 'Counter - Number of points': [[10, 'STOP']]
@@ -73,6 +77,7 @@ def timeDomainMeasurement(Current, ReadoutFreq, QubitFreq, DrivingPower, PiPulse
             'Pump - Power': DrivingPower,
             'Pulse Generator - Width #1': PiPulseLength,
             'Pulse Generator - Sequence duration': [[240e-6, 'STOP']],
+            'Pulse Generator - Number of points': DutyCyclePoints,
             'Alazar - Number of records': Avg,
             'Pulse Generator - Pulse type': PulseType,  # 0 Gaussian
             'Counter - Number of points': [[10, 'STOP']]
@@ -103,18 +108,19 @@ def timeDomainMeasurement(Current, ReadoutFreq, QubitFreq, DrivingPower, PiPulse
 
 
 if __name__ == '__main__':
-    Current = 7.854e-3
-    QubitFreq = 0.51473e9
+    Current = 7.855e-3
+    QubitFreq = 0.5148e9
     print('Current = %.4GmA\nQubitFreq = %.5GGHz' % (Current * 1e3, QubitFreq / 1e9))
     # Current = 6.35e-3
     # QubitFreq = 514.9e6
-    DrivingPower = 0
-    PiPulseLength = 221e-9
+    DrivingPower = 10
+    PiPulseLength = 8000e-9
     ReadoutFreq = 7.8305e9
     T1MaxDelay = 60e-6
     PulseType = 0  # 0 Gaussian, 1 Square
     Avg = 100e3
     T2RamseyDetuning = 0.5e6
+    CyclePoints = 400e3
     # PiPulseLength = 500e-6
     # MeasTypeList = ['rabi']
     # MeasTypeList = ['t1', 't2_echo']
@@ -130,7 +136,7 @@ if __name__ == '__main__':
     # PiPulseLength = 300e-6
     # for DrivingPower in [5, 10, 15]:
         FitDict = timeDomainMeasurement(Current, ReadoutFreq, QubitFreq, DrivingPower, PiPulseLength,
-                                        T1MaxDelay=T1MaxDelay, Detuning=T2RamseyDetuning,
+                                        T1MaxDelay=T1MaxDelay, Detuning=T2RamseyDetuning, DutyCyclePoints=CyclePoints,
                                         Avg=Avg, PulseType=PulseType, MeasurementType=MeasType, FitAndPlot=True,
                                         ShowFig=False)
         if MeasType == 'rabi':

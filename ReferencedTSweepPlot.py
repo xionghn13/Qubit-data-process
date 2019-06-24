@@ -175,7 +175,7 @@ def plotReferencedTSweep(DataPath, RabiFile, BackgroundFile='', Plus50MHzBackgro
     if MeasurementType in ('t1', 'transient', 't2echo', 'transient no ref', 't1 no ref'):
         B_guess = y_data[-1]
         A_guess = y_data[0].real - B_guess
-        T1_guess = x_data[-1] / 2
+        T1_guess = x_data[-1] / 10
         # bounds = (
         #     (-2, 1, -1),
         #     (2, 1e6, 1)
@@ -214,6 +214,7 @@ def plotReferencedTSweep(DataPath, RabiFile, BackgroundFile='', Plus50MHzBackgro
 
             FitR = T1_curve(TimeFit, A_fit, T1_fit, B_fit)
             y_pred = T1_curve(Time, A_fit, T1_fit, B_fit)
+            y_guess = T1_curve(Time, A_guess, T1_guess, B_guess)
             ParamList = ['A', 'Decay time/ns', 'B']
 
     elif MeasurementType in ('rabi', 'Ch1 rabi', 'Ch1 pump rabi', 't2', 'rabi no ref'):
@@ -337,6 +338,7 @@ def plotReferencedTSweep(DataPath, RabiFile, BackgroundFile='', Plus50MHzBackgro
                               TR_fit / 1000, TR_std / 1000, A_fit, B_fit, Tqp_fit / 1000, Tqp_std / 1000, lamb_fit,
                               lamb_std))
             else:
+                plt.plot(Time, y_guess, ':')
                 plt.title('T1=%.3G$\pm$%.2Gus, A=%.3G, B=%.3G' % (
                     T1_fit / 1000, T1_std / 1000, A_fit, B_fit))
         elif MeasurementType in ('transient', 'transient no ref'):
@@ -384,14 +386,14 @@ def plotReferencedTSweep(DataPath, RabiFile, BackgroundFile='', Plus50MHzBackgro
 
 
 if __name__ == '__main__':
-    DataPath = 'C:/Users/admin\Labber\Data/2019/06\Data_0620/'
+    DataPath = 'C:/Users/admin\Labber\Data/2019/06\Data_0622/'
     BackgroundFile = []
     # BackgroundFile = '021219_rabi_CH2(AWG1Vpp)_no pump_readout_4.077GHz__-15dBm_qubit4.027GHz_-35dBm_0.8_mA_I cos Q sin mod true interleafing_odd readout even ref_avg100k_Rabi300_duty50000readout3us.h5'
     BackgroundFile = 'calibration_5.hdf5'
     # Plus50MHzBackgroundFile = '012819_rabi_CH2(AWG1Vpp)_no pump_readout_4.146GHz__-20dBm_qubit4.096GHz_-25dBm_4.9_mA_I cos Q sin mod true interleafing_odd readout even ref_avg100k_Rabi100000_duty150000readout3us.h5'
     Plus50MHzBackgroundFile = 'one_tone_4.05GHz_to_4.3GHz_-15dBm_4.9mA_10us integration_100Kavg_50KHz step_020419.dat'
     Minus50MHzBackgroundFile = 'one_tone_4.05GHz_to_4.3GHz_-15dBm_4.9mA_10us integration_100Kavg_50KHz step_020419.dat'
-    RabiFile = 't1_2019-06-20-13-59-41.hdf5'
+    RabiFile = 't1_2019-06-22-18-00-18.hdf5'
     IQModFreq = 0.05
 
     PhaseSlope = 326.7041108065019
@@ -400,8 +402,8 @@ if __name__ == '__main__':
     FitCorrectedR = False
     LimitTimeRange = False
     RotateComplex = True
-    FitDoubleExponential = True
-    LogScale = True
+    FitDoubleExponential = False
+    LogScale = False
     SaveFig = False
     ShowFig = True
     StartTime = 5000

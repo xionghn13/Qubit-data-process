@@ -14,7 +14,10 @@ def FindQubitFreqTwoTone(Current, Anchor1, Anchor2, Avg=500e3, Power=0, Span=10e
     ConfigName = 'two tone sweep for cavity.hdf5'
     MeasLabel = 'two tone'
 
-    slope = (Anchor1[1] - Anchor2[1]) / (Anchor1[0] - Anchor2[0])
+    if (Anchor1[0] - Anchor2[0]) == 0:
+        slope = 0
+    else:
+        slope = (Anchor1[1] - Anchor2[1]) / (Anchor1[0] - Anchor2[0])
     PredictFreq = slope * (Current - Anchor1[0]) + Anchor1[1]
 
     ItemDict = {
@@ -64,7 +67,7 @@ def FindQubitFreqTwoTone(Current, Anchor1, Anchor2, Avg=500e3, Power=0, Span=10e
     plt.plot(Freq, CurveFit, 'r.')
     plt.plot(Freq, CurveGuess, 'y.')
     plt.xlabel('freq/GHz', fontsize='x-large')
-    plt.ylabel('angle', fontsize='x-large')
+    # plt.ylabel('Arb.', fontsize='x-large')
     plt.tick_params(axis='both', which='major', labelsize='x-large')
     plt.title('f0=%.4GGHz, kappa/2pi=%.3GMHz, A=%.3G, B=%.3G' % (f0_fit, kappa_fit * 1e3, A_fit, B_fit))
     plt.tight_layout()
