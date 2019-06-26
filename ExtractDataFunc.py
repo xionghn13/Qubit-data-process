@@ -144,6 +144,15 @@ def readPumpFreqLabber(file):
     return Freq
 
 
+def readCurrentLabber(file):
+    Cur_var = 'Yoko - Current'
+    LogData = Labber.LogFile(file)
+    Cur = np.unique(np.transpose(LogData.getData(Cur_var))) * 1e3
+    if len(Cur) == 1:
+        Cur = Cur[0]
+    return Cur
+
+
 def readRabiH5(file):
     # for HQC data
     f = h5py.File(file, 'r')

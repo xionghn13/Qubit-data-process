@@ -22,6 +22,8 @@ def getRowData(sheet, rowInd, length=None):
     return RowData
 
 
+
+
 I0 = 2.65
 I_period = 3.7 * 2  # mA
 PlotT1diel = False
