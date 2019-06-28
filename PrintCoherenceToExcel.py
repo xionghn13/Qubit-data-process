@@ -15,7 +15,7 @@ def printCoherenceFromFileList(FileList, OutputFolder, OutputFile, FixedFolder=N
     T2SL = []
     T2errSL = []
 
-    for t1t2 in FileList:
+    for ind, t1t2 in enumerate(FileList):
         for i, file in enumerate(t1t2):
             name_str_list = file.split('_')
             type_str = name_str_list[0]
@@ -42,9 +42,12 @@ def printCoherenceFromFileList(FileList, OutputFolder, OutputFile, FixedFolder=N
             else:
                 T2 = FitDict['opt'][1] / 1e3
                 T2err = np.sqrt(FitDict['cov'][1, 1]) / 1e3
+                if T2err > T2:
+                    T2 = np.nan
+                    T2err = np.nan
         T2SL += [T2]
         T2errSL += [T2err]
-        printPercent(i, FileList.__len__())
+        printPercent(ind, FileList.__len__())
     table = [
         ['FreqSingle'] + freqSL,
         ['CurrentSingle'] + CurSL,

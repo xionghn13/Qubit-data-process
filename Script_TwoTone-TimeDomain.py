@@ -3,11 +3,11 @@ import Script_TimeDomain
 from QubitDataProcessPackages import *
 
 # CurrentList = np.linspace(7.835e-3, 7.81e-3, 6)
-CurrentList = np.linspace(7.841e-3, 7.818e-3, 24)
+CurrentList = np.linspace(7.821e-3, 7.82e-3, 2)
 # CurrentList = np.insert(CurrentList, 0, 6.18e-3)
 print(CurrentList)
-Anchor1 = [7.842e-3, 515.7e6]
-Anchor2 = [7.843e-3, 515.5e6]
+Anchor1 = [7.819e-3, 522.2e6]
+Anchor2 = [7.822e-3, 516.5e6]
 SaveFig = True
 Span = 10e6
 DrivingPower = 10
