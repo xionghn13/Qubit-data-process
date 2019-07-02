@@ -7,7 +7,7 @@ from ReferencedTSweepPlot import plotReferencedTSweep
 from LabberRepeatedTSweepPlot import plotLabberRepeatedTSweepPlot
 
 
-def timeDomainMeasurement(Current, ReadoutFreq, QubitFreq, DrivingPower, PiPulseLength, Detuning=0.5e6,
+def timeDomainMeasurement(Current, ReadoutFreq, QubitFreq, DrivingPower, PiPulseLength, ReadoutPower=-5, Detuning=0.5e6,
                           MeasurementType='rabi', T1MaxDelay=150e-6, Avg=300e3, DutyCyclePoints=400e3,
                           PulseType=0, FitAndPlot=True, ShowFig=True):
     # ExperimentName = 'wg6 in 7.5GHz cavity'
@@ -22,9 +22,10 @@ def timeDomainMeasurement(Current, ReadoutFreq, QubitFreq, DrivingPower, PiPulse
         ItemDict = {
             'Yoko - Current': Current,
             'Qubit - Frequency': ReadoutFreq,
+            'Qubit - Power': ReadoutPower,
             'Pump - Frequency': DrivingFreq,
             'Pump - Power': DrivingPower,
-            'Pulse Generator - Width #1': [[450e-9, 'STOP']],
+            'Pulse Generator - Width #1': [[450e-9, 'STOP'], [31, 'N_PTS']],
             'Pulse Generator - Number of points': DutyCyclePoints,
             'Alazar - Number of records': Avg,
             'Pulse Generator - Pulse type': PulseType,  # 0 Gaussian
@@ -34,6 +35,7 @@ def timeDomainMeasurement(Current, ReadoutFreq, QubitFreq, DrivingPower, PiPulse
         ItemDict = {
             'Yoko - Current': Current,
             'Qubit - Frequency': ReadoutFreq,
+            'Qubit - Power': ReadoutPower,
             'Pump - Frequency': [[DrivingFreq, 'START'], [QubitFreq, 'STOP']],
             'Pump - Power': DrivingPower,
             'Pulse Generator - Sequence duration': [[10e-6, 'STOP']],
@@ -45,6 +47,7 @@ def timeDomainMeasurement(Current, ReadoutFreq, QubitFreq, DrivingPower, PiPulse
         ItemDict = {
             'Yoko - Current': Current,
             'Qubit - Frequency': ReadoutFreq,
+            'Qubit - Power': ReadoutPower,
             'Pump - Frequency': DrivingFreq,
             'Pump - Power': DrivingPower,
             'Pulse Generator - Width #1': PiPulseLength,
@@ -59,6 +62,7 @@ def timeDomainMeasurement(Current, ReadoutFreq, QubitFreq, DrivingPower, PiPulse
         ItemDict = {
             'Yoko - Current': Current,
             'Qubit - Frequency': ReadoutFreq,
+            'Qubit - Power': ReadoutPower,
             'Pump - Frequency': DrivingFreq,
             'Pump - Power': DrivingPower,
             'Pulse Generator - Width #1': PiPulseLength,
@@ -73,6 +77,7 @@ def timeDomainMeasurement(Current, ReadoutFreq, QubitFreq, DrivingPower, PiPulse
         ItemDict = {
             'Yoko - Current': Current,
             'Qubit - Frequency': ReadoutFreq,
+            'Qubit - Power': ReadoutPower,
             'Pump - Frequency': DrivingFreq,
             'Pump - Power': DrivingPower,
             'Pulse Generator - Width #1': PiPulseLength,
@@ -108,8 +113,9 @@ def timeDomainMeasurement(Current, ReadoutFreq, QubitFreq, DrivingPower, PiPulse
 
 
 if __name__ == '__main__':
-    Current = 7.855e-3
-    QubitFreq = 0.5148e9
+    Current = 7.596e-3
+    QubitFreq = 0.515e9
+    ReadoutPower = -15
     print('Current = %.4GmA\nQubitFreq = %.5GGHz' % (Current * 1e3, QubitFreq / 1e9))
     # Current = 6.35e-3
     # QubitFreq = 514.9e6
@@ -135,7 +141,7 @@ if __name__ == '__main__':
     for MeasType in MeasTypeList:
     # PiPulseLength = 300e-6
     # for DrivingPower in [5, 10, 15]:
-        FitDict = timeDomainMeasurement(Current, ReadoutFreq, QubitFreq, DrivingPower, PiPulseLength,
+        FitDict = timeDomainMeasurement(Current, ReadoutFreq, QubitFreq, DrivingPower, PiPulseLength, ReadoutPower=ReadoutPower,
                                         T1MaxDelay=T1MaxDelay, Detuning=T2RamseyDetuning, DutyCyclePoints=CyclePoints,
                                         Avg=Avg, PulseType=PulseType, MeasurementType=MeasType, FitAndPlot=True,
                                         ShowFig=False)

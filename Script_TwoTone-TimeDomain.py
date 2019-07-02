@@ -3,32 +3,32 @@ import Script_TimeDomain
 from QubitDataProcessPackages import *
 
 # CurrentList = np.linspace(7.835e-3, 7.81e-3, 6)
-CurrentList = np.linspace(7.821e-3, 7.82e-3, 2)
+CurrentList = np.linspace(7.648e-3, 7.542e-3, 107)
 # CurrentList = np.insert(CurrentList, 0, 6.18e-3)
 print(CurrentList)
-Anchor1 = [7.819e-3, 522.2e6]
-Anchor2 = [7.822e-3, 516.5e6]
+Anchor1 = [7.649e-3, 537e6]
+Anchor2 = [7.650e-3, 537e6]
 SaveFig = True
-Span = 10e6
+Span = 20e6
 DrivingPower = 10
 PiPulseLength = 217e-9
 ReadoutFreq = 7.8305e9
 T1MaxDelay = 60e-6
 PulseType = 0  # 0 Gaussian, 1 Square
-Avg = 100e3
+Avg = 50e3
 T2RamseyDetuning = 0.5e6
 CyclePoints = 400e3
 TwoTonePower = -10
-TwoToneAvg = 100e3
-TwoToneSeqLen = 100e3
+TwoToneAvg = 50e3
+TwoToneSeqLen = 10e3
 # PiPulseLength = 500e-6
 # MeasTypeList = ['rabi']
 # MeasTypeList = ['t2_ramsey', 't1', 't2_echo']
 # MeasTypeList = ['t1']
 # MeasTypeList = ['t2_echo']
 # MeasTypeList = ['rabi', 't1', 't2_ramsey', 't2_echo']
-MeasTypeList = ['rabi', 't1', 't2_echo']
-# MeasTypeList = ['rabi', 't1']
+# MeasTypeList = ['rabi', 't1', 't2_echo']
+MeasTypeList = ['rabi', 't1']
 # MeasTypeList = ['t1_t2_interleaved']
 # MeasTypeList = ['rabi', 't2_ramsey', 't1_t2_interleaved']
 for i, cur in enumerate(CurrentList):

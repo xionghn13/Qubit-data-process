@@ -85,13 +85,13 @@ def FindQubitFreqTwoTone(Current, Anchor1, Anchor2, Avg=500e3, Power=0, Span=10e
 if __name__ == '__main__':
     # ExperimentName = 'wg6 in 7.5GHz cavity'
     # CoolDownDate = 'test'
-    Current = 7.854e-3
-    Anchor2 = [7.83e-3, 515e6]
-    Anchor1 = [7.85e-3, 515e6]
+    Current = 7.842e-3
+    Anchor1 = [7.808e-3, 518.9e6]
+    Anchor2 = [7.844e-3, 515e6]
     SaveFig = False
     Span = 10e6
     Power = -10
-    Avg = 100e3
+    Avg = 50e3
     SeqLen = 10e3
     f0 = FindQubitFreqTwoTone(Current, Anchor1, Anchor2, Avg=Avg, Power=Power, Span=Span, SeqLen=SeqLen, SaveFig=SaveFig)
     print(f0)

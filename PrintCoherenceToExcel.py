@@ -4,7 +4,7 @@ from ReferencedTSweepPlot import plotReferencedTSweep
 from QubitSpectrumFunc import printPercent
 
 
-def printCoherenceFromFileList(FileList, OutputFolder, OutputFile, FixedFolder=None,
+def printCoherenceFromFileList(FileList, OutputFolder, OutputFile, FixedFolder=None, FitDoubleExp=False,
                                LabberFolder='C:\\Users/admin\Labber\Data/'):
     wb = Workbook()
     ws = wb.active
@@ -14,9 +14,19 @@ def printCoherenceFromFileList(FileList, OutputFolder, OutputFile, FixedFolder=N
     T1errSL = []
     T2SL = []
     T2errSL = []
-
+    TRSL = []
+    TRerrSL = []
+    TqpSL = []
+    TqperrSL = []
+    nqpSL = []
+    nqperrSL = []
+    'A', 'TR/ns', 'B', 'Tqp/ns', 'lambda'
     for ind, t1t2 in enumerate(FileList):
         for i, file in enumerate(t1t2):
+            if i == 0:
+                fit_double = FitDoubleExp
+            else:
+                fit_double = False
             name_str_list = file.split('_')
             type_str = name_str_list[0]
             date_str_lsit = name_str_list[-1].split('-')
@@ -26,16 +36,30 @@ def printCoherenceFromFileList(FileList, OutputFolder, OutputFile, FixedFolder=N
             file_folder = LabberFolder + year + '\\' + month + '\\' + 'Data_' + month + day + '\\'
             if not file.endswith('hdf5'):
                 file += '.hdf5'
-            FitDict = plotReferencedTSweep(file_folder, file, ShowFig=False, SaveFig=False)
+            FitDict = plotReferencedTSweep(file_folder, file, FitDoubleExponential=fit_double, ShowFig=False, SaveFig=False)
             if i == 0:
                 freq = edf.readPumpFreqLabber(file_folder + file)
                 cur = edf.readCurrentLabber(file_folder + file)
-                T1 = FitDict['opt'][1] / 1e3
-                T1err = np.sqrt(FitDict['cov'][1, 1]) / 1e3
                 freqSL += [freq]
                 CurSL += [cur]
-                T1SL += [T1]
-                T1errSL += [T1err]
+                if FitDoubleExp:
+                    TR = FitDict['opt'][1] / 1e3
+                    TRerr = np.sqrt(FitDict['cov'][1, 1]) / 1e3
+                    Tqp = FitDict['opt'][3] / 1e3
+                    Tqperr = np.sqrt(FitDict['cov'][3, 3]) / 1e3
+                    nqp = FitDict['opt'][4]
+                    nqperr = np.sqrt(FitDict['cov'][4, 4])
+                    TRSL += [TR]
+                    TRerrSL += [TRerr]
+                    TqpSL += [Tqp]
+                    TqperrSL += [Tqperr]
+                    nqpSL += [nqp]
+                    nqperrSL += [nqperr]
+                else:
+                    T1 = FitDict['opt'][1] / 1e3
+                    T1err = np.sqrt(FitDict['cov'][1, 1]) / 1e3
+                    T1SL += [T1]
+                    T1errSL += [T1err]
                 if t1t2.__len__() == 1:
                     T2 = np.nan
                     T2err = np.nan
@@ -48,20 +72,44 @@ def printCoherenceFromFileList(FileList, OutputFolder, OutputFile, FixedFolder=N
         T2SL += [T2]
         T2errSL += [T2err]
         printPercent(ind, FileList.__len__())
-    table = [
-        ['FreqSingle'] + freqSL,
-        ['CurrentSingle'] + CurSL,
-        ['T1Single'] + T1SL,
-        ['T1ErrSingle'] + T1errSL,
-        ['T2Single'] + T2SL,
-        ['T2ErrSingle'] + T2errSL,
-        ['FreqRepeated'],
-        ['CurrentRepeated'],
-        ['T1Repeated'],
-        ['T1ErrRepeated'],
-        ['T2Repeated'],
-        ['T2ErrRepeated'],
-    ]
+    if FitDoubleExp:
+        table = [
+            ['FreqSingle'] + freqSL,
+            ['CurrentSingle'] + CurSL,
+            ['TRSingle'] + TRSL,
+            ['TRErrSingle'] + TRerrSL,
+            ['TqpSingle'] + TqpSL,
+            ['TqperrSingle'] + TqperrSL,
+            ['nqpSingle'] + nqpSL,
+            ['nqperrSingle'] + nqperrSL,
+            ['T2Single'] + T2SL,
+            ['T2ErrSingle'] + T2errSL,
+            ['FreqRepeated'],
+            ['CurrentRepeated'],
+            ['TRDouble'],
+            ['TRErrDouble'],
+            ['TqpDouble'],
+            ['TqperrDouble'],
+            ['nqpDouble'],
+            ['nqperrDouble'],
+            ['T2Repeated'],
+            ['T2ErrRepeated'],
+        ]
+    else:
+        table = [
+            ['FreqSingle'] + freqSL,
+            ['CurrentSingle'] + CurSL,
+            ['T1Single'] + T1SL,
+            ['T1ErrSingle'] + T1errSL,
+            ['T2Single'] + T2SL,
+            ['T2ErrSingle'] + T2errSL,
+            ['FreqRepeated'],
+            ['CurrentRepeated'],
+            ['T1Repeated'],
+            ['T1ErrRepeated'],
+            ['T2Repeated'],
+            ['T2ErrRepeated'],
+        ]
     for row in table:
         ws.append(row)
 
@@ -94,5 +142,6 @@ if __name__ == '__main__':
     FixedFolder = None
     LabberFolder = 'C:\\Users/admin\Labber\Data/'
     OutputFolder = 'E:\\Projects\\Fluxonium\\data_process\\Fluxonium032619/'
-    OutputFile = 'wg5 in 8.5GHz cavity 0612 cd.xlsx'
-    printCoherenceFromFileList(FileList, OutputFolder, OutputFile)
+    FitDoubleExp = True
+    OutputFile = 'wg5 in 8.5GHz cavity 0612 cd double exp.xlsx'
+    printCoherenceFromFileList(FileList, OutputFolder, OutputFile, FitDoubleExp=FitDoubleExp)
