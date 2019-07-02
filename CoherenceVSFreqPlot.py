@@ -54,6 +54,7 @@ ReadDataFromExcel = True
 # T1ErrRepeated = np.array([0.22, 0.4, 0.068, 1.1, 1.3, 4.6, 0.78, 0.82, 0.68, 1, 2.5, 3.1, 5.3])
 # T2Repeated = np.array([4.34, 3.62, 2.05, 3.01, 3.77, 3.56, 3.85, 3.17, 2.97, 3.24, 3.6, 2.72, 3.46])
 # T2ErrRepeated = np.array([0.32, 0.41, 0.075, 0.76, 0.072, 0.17, 0.088, 0.11, 0.075, 0.4, 0.07, 0.32, 0.077])
+FitDoubleExp = File.endswith('double exp')
 SpuriousMode = np.array([])
 if ReadDataFromExcel:
     book = open_workbook(Folder + File, on_demand=True)
@@ -61,9 +62,12 @@ if ReadDataFromExcel:
     FSrow = sheet.row(0)[1:]
     FreqSingle = getRowData(sheet, 0)
     Len = len(FreqSingle)
+
     CurrentSingle = getRowData(sheet, 1, Len)
     T1Single = getRowData(sheet, 2, Len)
     T1ErrSingle = getRowData(sheet, 3, Len)
+    if FitDoubleExp:
+
     T2Single = getRowData(sheet, 4, Len)
     T2ErrSingle = getRowData(sheet, 5, Len)
 
