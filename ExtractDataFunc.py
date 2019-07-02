@@ -257,6 +257,19 @@ def readRepeatedT1SweepLabber(file):
     return [t1_time, t1_counter, t1_complex]
 
 
+def readRepeatedFSweepTwoToneLabber(file):
+    # for Labber data
+    ATS_var = 'Alazar - Channel A - Average demodulated value'
+    Freq_var = 'Pump - Frequency'
+    Counter_var = 'Counter - Number of points'
+    LogData = Labber.LogFile(file)
+    complex = np.conj(np.transpose(LogData.getData(ATS_var)))
+    freq = np.transpose(LogData.getData(Freq_var)) * 1e-9
+    counter = np.transpose(LogData.getData(Counter_var))
+
+    return [freq, counter, complex]
+
+
 def readT2H5(file):
     # for HQC data
     f = h5py.File(file, 'r')
