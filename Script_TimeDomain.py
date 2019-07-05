@@ -124,7 +124,7 @@ if __name__ == '__main__':
     ReadoutFreq = 7.8305e9
     T1MaxDelay = 60e-6
     PulseType = 0  # 0 Gaussian, 1 Square
-    Avg = 100e3
+    Avg = 400e3
     T2RamseyDetuning = 0.5e6
     CyclePoints = 400e3
     # PiPulseLength = 500e-6
@@ -132,10 +132,10 @@ if __name__ == '__main__':
     # MeasTypeList = ['t1', 't2_echo']
     # MeasTypeList = ['t1']
     # MeasTypeList = ['t2_echo']
-    MeasTypeList = ['rabi', 't1', 't2_ramsey', 't2_echo']
+    # MeasTypeList = ['rabi', 't1', 't2_ramsey', 't2_echo']
     # MeasTypeList = ['t1_t2_interleaved']
     # MeasTypeList = ['rabi', 't2_ramsey', 't1_t2_interleaved']
-    # MeasTypeList = ['rabi', 't1']
+    MeasTypeList = ['rabi', 't1']
     # MeasType = 't1'
     # for PiPulseLength in np.linspace(400e-6, 1000e-6, 7):
     for MeasType in MeasTypeList:
