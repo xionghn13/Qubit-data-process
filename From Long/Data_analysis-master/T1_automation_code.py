@@ -73,7 +73,7 @@ with h5py.File(path,'r') as hf:
         flux = np.append(flux, flux_raw[idx])
         freq = np.append(freq, freq_raw[idx])
         RabiA = np.append(RabiA, a)
-        print T1, T1_err
+        # print T1, T1_err
         plt.plot(time,phase)
         # if b*1e6 > 20:
         #     plt.plot(time/1e3, phase, time/1e3, phase_fit)
@@ -89,8 +89,8 @@ data[:,1] = freq
 data[:,2] = T1_array
 data[:,3] = T1_err_array
 data[:,4] = RabiA
-print 'Total points taken ' + str(total_count)
-print 'pts fitted well ' + str(len(T1_array))
+# print 'Total points taken ' + str(total_count)
+# print 'pts fitted well ' + str(len(T1_array))
 #Check
 np.savetxt(path_s, data, delimiter =',', header='YOKO, Freq, T1, T1_err, Amp')
 # data = np.genfromtxt(path_s)
