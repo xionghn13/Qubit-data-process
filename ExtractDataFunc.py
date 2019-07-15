@@ -257,11 +257,9 @@ def readRepeatedT1SweepLabber(file):
     return [t1_time, t1_counter, t1_complex]
 
 
-def readRepeatedFSweepTwoToneLabber(file):
+def readRepeatedFSweepTwoToneLabber(file, ATS_var='Alazar - Channel A - Average demodulated value',
+                                    Freq_var='Pump - Frequency', Counter_var='Counter - Number of points'):
     # for Labber data
-    ATS_var = 'Alazar - Channel A - Average demodulated value'
-    Freq_var = 'Pump - Frequency'
-    Counter_var = 'Counter - Number of points'
     LogData = Labber.LogFile(file)
     complex = np.conj(np.transpose(LogData.getData(ATS_var)))
     freq = np.transpose(LogData.getData(Freq_var)) * 1e-9
@@ -305,6 +303,7 @@ def readRepeatedT2SweepLabber(file):
     t2_complex = np.conj(np.transpose(LogData.getData(ATS_var)))[:, ::len(t2_time)]
     return [t2_time, t2_counter, t2_complex]
 
+
 def readRepeatedT1T2InterleavedSweepLabber(file):
     # for Labber data
     ATS_var = 'Alazar - Channel A - Average buffer demodulated values'
@@ -318,6 +317,7 @@ def readRepeatedT1T2InterleavedSweepLabber(file):
     t1_complex = t1_t2_complex[0::2]
     t2_complex = t1_t2_complex[1::2]
     return [time, counter, t1_complex, t2_complex]
+
 
 def readVNAS11(file):
     # for Labber data
