@@ -453,7 +453,7 @@ if __name__ == '__main__':
     Calibration = False
     RotateComplex = True
     FitDoubleExponential = False
-    PlotNumber = 52
+    PlotNumber = 10  # fit plot
     MinPlotInd = 0
     MaxPlotInd = 100
     PlotIndex = [0, 1]

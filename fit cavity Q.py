@@ -10,16 +10,16 @@ from scipy.optimize import curve_fit
 import ExtractDataFunc as edf
 
 
-DataPath = 'E:/Projects\Fluxonium\data_process/cavity/7.5GHz_4/'
-S11File = 'cavity Q_92.hdf5'
+DataPath = 'E:/Projects\Fluxonium\data_process/cavity/8.5GHz_3/'
+S11File = 'cavity Q_102.hdf5'
 
 
 [Freq, RComplex] = edf.readVNAS11(DataPath + S11File)
 
 TruncateFreq = False
 
-StartFreq = 8.19
-EndFreq = 8.27
+StartFreq = 8.54
+EndFreq = 8.545
 if TruncateFreq:
     FreqInd = (EndFreq >= Freq) == (Freq >= StartFreq)
     Freq = Freq[FreqInd]
@@ -76,6 +76,7 @@ print(phase_cal)
 #    index = index+1
 indexo = np.argmin(mag_data)
 fo = freq[indexo]
+
 print(fo)
 # offset=phase_data[indexo]
 # phase_data = phase_data - offset
@@ -105,7 +106,7 @@ def S_11(f, q_ext1, q_ext2, q_int, tau1, tau2, tau3):
 # Make a guess here for the values of Q_ext, Q_int,
 # tau1 (magnitude offset), tau2 (linear phase offset), tau3 (freq dependent phase offset)
 
-guess = ([1e3, -1e3, 1e4, 0, 0, 0])
+guess = ([5e3, -1e3, 1e4, 0, 0, 0])
 
 qopt, qcov = curve_fit(S_11, freq, all_data, guess)
 q_external1 = qopt[0]

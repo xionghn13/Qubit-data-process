@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import filedialog
 import os
 
-DataPath = 'E:/Projects\Fluxonium\data_process/Fluxonium032619/'
+DataPath = 'C:\\Users\\admin\Labber\Data\\2019\\07\Data_0706\\figures/'
 
 root = tk.Tk()
 root.withdraw()

@@ -386,14 +386,14 @@ def plotReferencedTSweep(DataPath, RabiFile, BackgroundFile='', Plus50MHzBackgro
 
 
 if __name__ == '__main__':
-    DataPath = 'C:/Users/admin\Labber\Data/2019/06\Data_0622/'
+    DataPath = 'C:/Users/admin\Labber\Data/2019/07\Data_0705/'
     BackgroundFile = []
     # BackgroundFile = '021219_rabi_CH2(AWG1Vpp)_no pump_readout_4.077GHz__-15dBm_qubit4.027GHz_-35dBm_0.8_mA_I cos Q sin mod true interleafing_odd readout even ref_avg100k_Rabi300_duty50000readout3us.h5'
     BackgroundFile = 'calibration_5.hdf5'
     # Plus50MHzBackgroundFile = '012819_rabi_CH2(AWG1Vpp)_no pump_readout_4.146GHz__-20dBm_qubit4.096GHz_-25dBm_4.9_mA_I cos Q sin mod true interleafing_odd readout even ref_avg100k_Rabi100000_duty150000readout3us.h5'
     Plus50MHzBackgroundFile = 'one_tone_4.05GHz_to_4.3GHz_-15dBm_4.9mA_10us integration_100Kavg_50KHz step_020419.dat'
     Minus50MHzBackgroundFile = 'one_tone_4.05GHz_to_4.3GHz_-15dBm_4.9mA_10us integration_100Kavg_50KHz step_020419.dat'
-    RabiFile = 't1_2019-06-22-18-00-18.hdf5'
+    RabiFile = 't1_2019-07-05-12-34-14.hdf5'
     IQModFreq = 0.05
 
     PhaseSlope = 326.7041108065019
@@ -404,7 +404,7 @@ if __name__ == '__main__':
     RotateComplex = True
     FitDoubleExponential = False
     LogScale = False
-    SaveFig = False
+    SaveFig = True
     ShowFig = True
     StartTime = 5000
     EndTime = 1e8
@@ -417,5 +417,6 @@ if __name__ == '__main__':
                                    RotateComplex=RotateComplex,
                                    StartTime=StartTime, EndTime=EndTime, FitDoubleExponential=FitDoubleExponential,
                                    SaveFig=SaveFig, ShowFig=ShowFig, LogScale=LogScale)
-    print(FitDict['opt'][3])
-    print(FitDict['ParamList'][3])
+    print(FitDict)
+    # print(FitDict['opt'][3])
+    # print(FitDict['ParamList'][3])

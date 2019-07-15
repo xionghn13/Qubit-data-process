@@ -4,6 +4,12 @@ from ReferencedTSweepPlot import plotReferencedTSweep
 from QubitSpectrumFunc import printPercent
 
 
+def checkBadFit(val, err):
+    if err > abs(val) * 0.4:
+        err = np.nan
+        val = np.nan
+    return [val, err]
+
 def printCoherenceFromFileList(FileList, OutputFolder, OutputFile, FixedFolder=None, FitDoubleExp=False,
                                LabberFolder='C:\\Users/admin\Labber\Data/'):
     wb = Workbook()
@@ -20,7 +26,6 @@ def printCoherenceFromFileList(FileList, OutputFolder, OutputFile, FixedFolder=N
     TqperrSL = []
     nqpSL = []
     nqperrSL = []
-    'A', 'TR/ns', 'B', 'Tqp/ns', 'lambda'
     for ind, t1t2 in enumerate(FileList):
         for i, file in enumerate(t1t2):
             if i == 0:
@@ -45,10 +50,13 @@ def printCoherenceFromFileList(FileList, OutputFolder, OutputFile, FixedFolder=N
                 if FitDoubleExp:
                     TR = FitDict['opt'][1] / 1e3
                     TRerr = np.sqrt(FitDict['cov'][1, 1]) / 1e3
+                    [TR, TRerr] = checkBadFit(TR, TRerr)
                     Tqp = FitDict['opt'][3] / 1e3
                     Tqperr = np.sqrt(FitDict['cov'][3, 3]) / 1e3
+                    [Tqp, Tqperr] = checkBadFit(Tqp, Tqperr)
                     nqp = FitDict['opt'][4]
                     nqperr = np.sqrt(FitDict['cov'][4, 4])
+                    [nqp, nqperr] = checkBadFit(nqp, nqperr)
                     TRSL += [TR]
                     TRerrSL += [TRerr]
                     TqpSL += [Tqp]
@@ -58,6 +66,7 @@ def printCoherenceFromFileList(FileList, OutputFolder, OutputFile, FixedFolder=N
                 else:
                     T1 = FitDict['opt'][1] / 1e3
                     T1err = np.sqrt(FitDict['cov'][1, 1]) / 1e3
+                    [T1, T1err] = checkBadFit(T1, T1err)
                     T1SL += [T1]
                     T1errSL += [T1err]
                 if t1t2.__len__() == 1:
@@ -130,7 +139,7 @@ def getT1T2NameList(NameFolder, NameFile):
 
 if __name__ == '__main__':
     NameFolder = 'E:\\Projects\\Fluxonium\\data_process\\Fluxonium032619/'
-    NameFile = 'filenames0626'
+    NameFile = 'filename0705.txt'
     FileList = getT1T2NameList(NameFolder, NameFile)
     # print(FileList)
     # FileList = [
@@ -142,6 +151,11 @@ if __name__ == '__main__':
     FixedFolder = None
     LabberFolder = 'C:\\Users/admin\Labber\Data/'
     OutputFolder = 'E:\\Projects\\Fluxonium\\data_process\\Fluxonium032619/'
-    FitDoubleExp = True
-    OutputFile = 'wg5 in 8.5GHz cavity 0612 cd double exp.xlsx'
-    printCoherenceFromFileList(FileList, OutputFolder, OutputFile, FitDoubleExp=FitDoubleExp)
+    OutputFileTag = 'wg5 in 8.5GHz cavity 0628 cd_3'
+
+    for FitDoubleExp in [False, True]:
+        OutputFile = OutputFileTag
+        if FitDoubleExp:
+            OutputFile += ' double exp'
+        OutputFile += '.xlsx'
+        printCoherenceFromFileList(FileList, OutputFolder, OutputFile, FitDoubleExp=FitDoubleExp)
