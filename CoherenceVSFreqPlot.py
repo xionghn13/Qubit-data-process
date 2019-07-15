@@ -22,7 +22,7 @@ def getRowData(sheet, rowInd, length=None):
     return RowData
 
 
-I0 = 5.285
+I0 = 5.035
 hI = 2.57  # mA
 I_period = hI * 2  # mA
 SortWithFlux = False
@@ -37,7 +37,7 @@ Q_cap = 1 / loss_tan
 T = 0e-3
 f01 = 0.4864
 Folder = 'E:\Projects\Fluxonium\data_process\Fluxonium032619/'
-File = 'wg5 in 8.5GHz cavity 0612 cd.xlsx'
+File = 'wg5 in 8.5GHz cavity 0628 cd_2 double exp.xlsx'
 ReadDataFromExcel = True
 
 # I0 = 2.199
@@ -62,7 +62,7 @@ ReadDataFromExcel = True
 
 FitDoubleExp = File.endswith('double exp.xlsx')
 SpuriousMode = [0.51373, 0.51491, 0.51508, 0.51596, 0.51883, 0.52205, 0.52262]
-PlotSpuriousMode = True
+PlotSpuriousMode = False
 
 if ReadDataFromExcel:
     book = open_workbook(Folder + File, on_demand=True)
@@ -85,8 +85,8 @@ if ReadDataFromExcel:
         FreqRepeated = getRowData(sheet, 10, Len)
         Len = len(FreqRepeated)
         CurrentRepeated = getRowData(sheet, 11, Len)
-        TRRepeated = getRowData(sheet, 12, Len)
-        TRErrRepeated = getRowData(sheet, 13, Len)
+        T1Repeated = getRowData(sheet, 12, Len)
+        T1ErrRepeated = getRowData(sheet, 13, Len)
         TqpRepeated = getRowData(sheet, 14, Len)
         TqpErrRepeated = getRowData(sheet, 15, Len)
         nqpRepeated = getRowData(sheet, 16, Len)
@@ -151,7 +151,7 @@ ax.errorbar(FreqRepeated, T2Repeated, yerr=T2ErrRepeated, fmt='r^')
 
 if FitDoubleExp:
     ax.errorbar(FreqRepeated, TqpRepeated, yerr=TqpErrRepeated, fmt='rs')
-    if FreqRepeated.__len__() == 0:
+    if FreqRepeated.__len__() == 0 or np.all(FluxRepeated != FluxRepeated):
         legR = []
     else:
         legR = ['TR - Averge', 'T2echo - Averge', 'Tqp - Average']
@@ -192,7 +192,7 @@ ax.errorbar(FluxRepeated, T1Repeated, yerr=T1ErrRepeated, fmt='ro')
 ax.errorbar(FluxRepeated, T2Repeated, yerr=T2ErrRepeated, fmt='r^')
 if FitDoubleExp:
     ax.errorbar(FluxRepeated, TqpRepeated, yerr=TqpErrRepeated, fmt='rs')
-    if FluxRepeated.__len__() == 0:
+    if FluxRepeated.__len__() == 0 or np.all(FluxRepeated != FluxRepeated):  # check if no data or array of nan
         legR = []
     else:
         legR = ['TR - Averge', 'T2echo - Averge', 'Tqp - Average']
@@ -219,14 +219,34 @@ if FitDoubleExp:
     ax.errorbar(FreqSingle, nqpSingle, yerr=nqpErrSingle, fmt='bo')
     ax.errorbar(FreqRepeated, nqpRepeated, yerr=nqpErrRepeated, fmt='ro')
 
-    plt.legend(['nqp - Single', 'nqp - Averge'])
+    if FluxRepeated.__len__() == 0 or np.all(FluxRepeated != FluxRepeated):  # check if no data or array of nan
+        legR = []
+    else:
+        legR = ['nqp - Average']
+    plt.legend(['nqp - Single'] + legR)
 
     plt.plot(FreqMerge, nqpMerge, ':')
+    plt.xlabel('Freq(GHz)', fontsize='x-large')
+    plt.ylabel('nqp', fontsize='x-large')
+    plt.tick_params(axis='both', which='major', labelsize='x-large')
+    plt.tight_layout()
+
+    fig, ax = plt.subplots()
+    ax.errorbar(FluxSingle, nqpSingle, yerr=nqpErrSingle, fmt='bo')
+    ax.errorbar(FluxRepeated, nqpRepeated, yerr=nqpErrRepeated, fmt='ro')
+
+    if FluxRepeated.__len__() == 0 or np.all(FluxRepeated != FluxRepeated):  # check if no data or array of nan
+        legR = []
+    else:
+        legR = ['nqp - Average']
+    plt.legend(['nqp - Single'] + legR)
+
+    plt.plot(FluxMerge, nqpMerge, ':')
     if PlotSpuriousMode:
         for mode in SpuriousMode:
             plt.axvline(x=mode, color='g', linestyle='--')
-    plt.xlabel('Freq(GHz)', fontsize='x-large')
-    plt.ylabel('Decay time(us)', fontsize='x-large')
+    plt.xlabel('Flux/Phi_0', fontsize='x-large')
+    plt.ylabel('nqp', fontsize='x-large')
     plt.tick_params(axis='both', which='major', labelsize='x-large')
     plt.tight_layout()
 
