@@ -26,11 +26,13 @@ slope = (Anchor1[1] - Anchor2[1]) / (Anchor1[0] - Anchor2[0])
 hI = 2.57e-3  # A
 Area = 459.7e-12 # m^2
 PlotFreq = True
+TimeLimit = (0, 8.7)
 
 FreqList = []
 TimeList = []
 ComplexList = []
-fig, ax = plt.subplots()
+fig = plt.figure()
+ax = plt.subplot(211)
 for i, file in enumerate(FileList):
     [Freq, Count, Complex] = edf.readRepeatedFSweepTwoToneLabber(DataPath + file)
     TimeStamp = TimeStartStop[i]
@@ -67,7 +69,7 @@ else:
     plt.ylabel("B(nT)", fontsize='x-large')
 plt.tick_params(axis='both', which='major', labelsize='x-large')
 plt.tight_layout()
-
+plt.xlim(TimeLimit)
 
 # Long's data
 FileList = [
@@ -78,7 +80,7 @@ TimeStartStop = [
     {'start': [6, 10, 0], 'stop': [11, 45, 0]},
 ]
 
-fig, ax1 = plt.subplots(211)
+ax2 = plt.subplot(212)
 for i, file in enumerate(FileList):
     [Freq, Count, Complex] = edf.readRepeatedFSweepTwoToneLabber(DataPath + file, ATS_var='Signal Demodulation - Value',
                                                                  Freq_var='Qubit RF - Frequency',
@@ -102,7 +104,7 @@ for i, file in enumerate(FileList):
     Flux = Current / hI / 2 * Phi0
     B_field = Flux / Area * 1e8
     # B_field = Current / 50e-3 * 0.91e-4
-    pcm = plt.pcolormesh(time, FreqUniq, np.abs(Complex))
+    pcm = plt.pcolormesh(time, FreqUniq, np.angle(Complex))
     FreqList += [FreqUniq]
     TimeList += [time]
     ComplexList += [Complex]
@@ -111,5 +113,6 @@ plt.xlabel('Time(hr)', fontsize='x-large')
 plt.ylabel("Freq(GHz)", fontsize='x-large')
 plt.tick_params(axis='both', which='major', labelsize='x-large')
 plt.tight_layout()
-
+plt.xlim(TimeLimit)
+plt.ylim((4.307, 4.318))
 plt.show()
