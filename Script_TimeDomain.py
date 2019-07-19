@@ -25,7 +25,7 @@ def timeDomainMeasurement(Current, ReadoutFreq, QubitFreq, DrivingPower, PiPulse
             'Qubit - Power': ReadoutPower,
             'Pump - Frequency': DrivingFreq,
             'Pump - Power': DrivingPower,
-            'Pulse Generator - Width #1': [[30e-9, 'STOP'], [31, 'N_PTS']],
+            'Pulse Generator - Width #1': [[1200e-9, 'STOP'], [31, 'N_PTS']],
             'Pulse Generator - Number of points': DutyCyclePoints,
             'Alazar - Number of records': Avg,
             'Pulse Generator - Pulse type': PulseType,  # 0 Gaussian

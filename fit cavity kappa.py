@@ -9,12 +9,12 @@ import ExtractDataFunc as edf
 
 # DataPath = 'E:/Projects\Fluxonium\data_process/cavity/7.5GHz_5/'
 DataPath = 'E:/Projects\Fluxonium\data_process/Fluxonium032619/'
-OneToneFile = 'one tone_118.hdf5'
+OneToneFile = 'one tone_132.hdf5'
 
 TruncateFreq = False
 
-StartFreq = 7.78
-EndFreq = 7.8
+StartFreq = 7.922
+EndFreq = 8.022
 
 [Freq, Complex] = edf.readFSweepLabber(DataPath + OneToneFile)
 # [Freq, Complex] = edf.readVNAS21(DataPath + OneToneFile)
