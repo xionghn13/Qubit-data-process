@@ -139,7 +139,7 @@ def getT1T2NameList(NameFolder, NameFile):
 
 if __name__ == '__main__':
     NameFolder = 'E:\\Projects\\Fluxonium\\data_process\\Fluxonium032619/'
-    NameFile = 'filename0705.txt'
+    NameFile = 'filename0720_2.txt'
     FileList = getT1T2NameList(NameFolder, NameFile)
     # print(FileList)
     # FileList = [

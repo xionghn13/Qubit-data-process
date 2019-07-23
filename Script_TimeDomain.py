@@ -25,7 +25,7 @@ def timeDomainMeasurement(Current, ReadoutFreq, QubitFreq, DrivingPower, PiPulse
             'Qubit - Power': ReadoutPower,
             'Pump - Frequency': DrivingFreq,
             'Pump - Power': DrivingPower,
-            'Pulse Generator - Width #1': [[1200e-9, 'STOP'], [31, 'N_PTS']],
+            'Pulse Generator - Width #1': [[60e-9, 'STOP'], [31, 'N_PTS']],
             'Pulse Generator - Number of points': DutyCyclePoints,
             'Alazar - Number of records': Avg,
             'Pulse Generator - Pulse type': PulseType,  # 0 Gaussian
@@ -113,18 +113,18 @@ def timeDomainMeasurement(Current, ReadoutFreq, QubitFreq, DrivingPower, PiPulse
 
 
 if __name__ == '__main__':
-    Current = 7.596e-3
-    QubitFreq = 0.515e9
-    ReadoutPower = -15
+    Current = 2.5e-3
+    QubitFreq = 0.5164e9
+    ReadoutPower = -5
     print('Current = %.4GmA\nQubitFreq = %.5GGHz' % (Current * 1e3, QubitFreq / 1e9))
     # Current = 6.35e-3
     # QubitFreq = 514.9e6
-    DrivingPower = 10
+    DrivingPower = 5
     PiPulseLength = 8000e-9
-    ReadoutFreq = 7.8305e9
+    ReadoutFreq = 7.974e9
     T1MaxDelay = 60e-6
-    PulseType = 0  # 0 Gaussian, 1 Square
-    Avg = 400e3
+    PulseType = 1  # 0 Gaussian, 1 Square
+    Avg = 100e3
     T2RamseyDetuning = 0.5e6
     CyclePoints = 400e3
     # PiPulseLength = 500e-6
@@ -135,10 +135,10 @@ if __name__ == '__main__':
     # MeasTypeList = ['rabi', 't1', 't2_ramsey', 't2_echo']
     # MeasTypeList = ['t1_t2_interleaved']
     # MeasTypeList = ['rabi', 't2_ramsey', 't1_t2_interleaved']
-    MeasTypeList = ['rabi', 't1']
-    # MeasType = 't1'
-    # for PiPulseLength in np.linspace(400e-6, 1000e-6, 7):
-    for MeasType in MeasTypeList:
+    # MeasTypeList = ['rabi', 't1']
+    MeasType = 't1'
+    for PiPulseLength in np.linspace(100e-6, 1000e-6, 10):
+    # for MeasType in MeasTypeList:
     # PiPulseLength = 300e-6
     # for DrivingPower in [5, 10, 15]:
         FitDict = timeDomainMeasurement(Current, ReadoutFreq, QubitFreq, DrivingPower, PiPulseLength, ReadoutPower=ReadoutPower,
