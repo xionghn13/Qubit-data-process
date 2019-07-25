@@ -55,8 +55,8 @@ def timeDomainMeasurement(Current, ReadoutFreq, QubitFreq, DrivingPower, PiPulse
             # 'Pulse Generator - Number of points': DutyCyclePoints,
             'Alazar - Number of records': Avg,
             'Pulse Generator - Pulse type': PulseType,  # 0 Gaussian
-            # 'Counter - Number of points': [[40, 'STOP']]
-            'Counter - Number of points': 0
+            'Counter - Number of points': [[40, 'STOP']]
+            # 'Counter - Number of points': 0
         }
     elif MeasurementType == 't2_echo':
         ItemDict = {
@@ -124,7 +124,7 @@ if __name__ == '__main__':
     ReadoutFreq = 7.974e9
     T1MaxDelay = 60e-6
     PulseType = 1  # 0 Gaussian, 1 Square
-    Avg = 100e3
+    Avg = 50e3
     T2RamseyDetuning = 0.5e6
     CyclePoints = 400e3
     # PiPulseLength = 500e-6
@@ -135,10 +135,10 @@ if __name__ == '__main__':
     # MeasTypeList = ['rabi', 't1', 't2_ramsey', 't2_echo']
     # MeasTypeList = ['t1_t2_interleaved']
     # MeasTypeList = ['rabi', 't2_ramsey', 't1_t2_interleaved']
-    # MeasTypeList = ['rabi', 't1']
-    MeasType = 't1'
-    for PiPulseLength in np.linspace(100e-6, 1000e-6, 10):
-    # for MeasType in MeasTypeList:
+    MeasTypeList = ['rabi', 't1']
+    # MeasType = 't1'
+    # for PiPulseLength in np.linspace(100e-6, 1000e-6, 10):
+    for MeasType in MeasTypeList:
     # PiPulseLength = 300e-6
     # for DrivingPower in [5, 10, 15]:
         FitDict = timeDomainMeasurement(Current, ReadoutFreq, QubitFreq, DrivingPower, PiPulseLength, ReadoutPower=ReadoutPower,

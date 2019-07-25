@@ -22,12 +22,13 @@ def getRowData(sheet, rowInd, length=None):
     return RowData
 
 
-I0 = 5.035
-hI = 2.57  # mA
+I0 = -82.5e-3  # mA
+hI = 2.571  # mA
 I_period = hI * 2  # mA
 SortWithFlux = False
 PlotT1diel = False
 
+# for dielectric loss estimation
 N = 50
 EL = 0.437
 EC = 2.265
@@ -36,8 +37,9 @@ loss_tan = 3.33e-6
 Q_cap = 1 / loss_tan
 T = 0e-3
 f01 = 0.4864
+
 Folder = 'E:\Projects\Fluxonium\data_process\Fluxonium032619/'
-File = 'wg5 in 8.5GHz cavity 0628 cd_2 double exp.xlsx'
+File = 'wg5 in 8.5GHz cavity 0710 cd double exp.xlsx'
 ReadDataFromExcel = True
 
 # I0 = 2.199

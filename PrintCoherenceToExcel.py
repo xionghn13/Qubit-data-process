@@ -132,7 +132,10 @@ def getT1T2NameList(NameFolder, NameFile):
     FileList = []
     for n in names:
         if n.startswith('t1'):
-            FileList += [[n[:-1]]]
+            if n.endswith('\n'):
+                FileList += [[n[:-1]]]
+            else:
+                FileList += [[n]]
         elif n.startswith('t2'):
             FileList[-1] += [n[:-1]]
     return FileList
@@ -151,7 +154,7 @@ if __name__ == '__main__':
     FixedFolder = None
     LabberFolder = 'C:\\Users/admin\Labber\Data/'
     OutputFolder = 'E:\\Projects\\Fluxonium\\data_process\\Fluxonium032619/'
-    OutputFileTag = 'wg5 in 8.5GHz cavity 0628 cd_3'
+    OutputFileTag = 'wg5 in 8.5GHz cavity 0710 cd'
 
     for FitDoubleExp in [False, True]:
         OutputFile = OutputFileTag
