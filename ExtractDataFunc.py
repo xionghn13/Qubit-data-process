@@ -153,6 +153,15 @@ def readCurrentLabber(file):
     return Cur
 
 
+def readDrivingPulseLenLabber(file):
+    PulseLen_var = 'Pulse Generator - Width #1'
+    LogData = Labber.LogFile(file)
+    PulseLen = np.unique(np.transpose(LogData.getData(PulseLen_var)))
+    if len(PulseLen) == 1:
+        PulseLen = PulseLen[0]
+    return PulseLen
+
+
 def readRabiH5(file):
     # for HQC data
     f = h5py.File(file, 'r')
