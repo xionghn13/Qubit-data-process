@@ -8,8 +8,8 @@ from QubitDecayFunc import T1_curve, rabi_curve, FitTransientTime, AutoRotate
 import ExtractDataFunc as edf
 import h5py
 
-DataPath = 'E:/Projects\Fluxonium\data_process/Fluxonium032619/'
-
+FixedFolder = 'E:/Projects\Fluxonium\data_process/Fluxonium032619/'
+FixedFolder = ''
 T1FileList = [
     't1_2019-07-23-18-15-23.hdf5',
     't1_2019-07-23-16-56-18.hdf5',
@@ -31,6 +31,10 @@ PulseLengthArray = np.zeros([NumFile, ])
 
 
 for i, T1File in enumerate(T1FileList):
+    if FixedFolder == '':
+        DataPath = edf.getFolder(T1File)
+    else:
+        DataPath = FixedFolder
     T1FileStrList = T1File[:-5].split('_')
     MeasurementType = T1FileStrList[0]
 
@@ -43,8 +47,8 @@ for i, T1File in enumerate(T1FileList):
     [Time, Complex] = edf.readT1Labber(DataPath + T1File)
 
     if RotateComplex:
-        Complex[:, j] = AutoRotate(Complex[:, j])
-    y_data = np.array(Complex[:, j].real, dtype='float64')
+        Complex = AutoRotate(Complex)
+    y_data = np.array(Complex.real, dtype='float64')
     x_data = np.array(Time, dtype='float64')
     B_guess = y_data[-1]
     A_guess = y_data[0].real - B_guess
@@ -83,16 +87,10 @@ limit = 1.7
 fig, ax = plt.subplots()
 for i in range(NumFile):
     plt.plot(np.real(ComplexList[i]), np.imag(ComplexList[i]))
-if Calibration:
-    plt.plot([-2, 2], [0, 0], '--')
-    plt.plot([1], [0], 'ro')
 plt.xlabel('Re', fontsize='x-large')
 plt.ylabel('Im', fontsize='x-large')
 plt.tick_params(axis='both', which='major', labelsize='x-large')
 plt.tight_layout()
-if Calibration:
-    plt.xlim(-limit, limit)
-    plt.ylim(-limit, limit)
 ax.set_aspect('equal')
 
 fig, ax = plt.subplots()

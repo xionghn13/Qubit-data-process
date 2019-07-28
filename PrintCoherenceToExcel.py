@@ -10,6 +10,7 @@ def checkBadFit(val, err):
         val = np.nan
     return [val, err]
 
+
 def printCoherenceFromFileList(FileList, OutputFolder, OutputFile, FixedFolder=None, FitDoubleExp=False,
                                LabberFolder='C:\\Users/admin\Labber\Data/'):
     wb = Workbook()
@@ -32,13 +33,7 @@ def printCoherenceFromFileList(FileList, OutputFolder, OutputFile, FixedFolder=N
                 fit_double = FitDoubleExp
             else:
                 fit_double = False
-            name_str_list = file.split('_')
-            type_str = name_str_list[0]
-            date_str_lsit = name_str_list[-1].split('-')
-            year = date_str_lsit[0]
-            month = date_str_lsit[1]
-            day = date_str_lsit[2]
-            file_folder = LabberFolder + year + '\\' + month + '\\' + 'Data_' + month + day + '\\'
+            file_folder = edf.getFolder(file)
             if not file.endswith('hdf5'):
                 file += '.hdf5'
             FitDict = plotReferencedTSweep(file_folder, file, FitDoubleExponential=fit_double, ShowFig=False, SaveFig=False)

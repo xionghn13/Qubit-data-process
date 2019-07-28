@@ -128,7 +128,7 @@ def plotLabberRepeatedTSweepPlot(DataPath, RabiFileList, BackgroundFile='calibra
                     y_data = y_dataList[ind]
                     B_guess = y_data[-1]
                     A_guess = y_data[0].real - B_guess
-                    T1_guess = x_data[-1] / 2
+                    T1_guess = x_data[-1] / 10
                     bounds = (
                         (-2, 1, -1),
                         (2, 1e6, 1)
@@ -163,13 +163,13 @@ def plotLabberRepeatedTSweepPlot(DataPath, RabiFileList, BackgroundFile='calibra
                 RComplexList = []
                 FitRList = []
                 CounterArray = np.array([trial])
-                R2Array = np.array([R2])
                 if MeasurementType == 't1t2interleaved':
                     OptMatrixList = [np.reshape(optList[0], (len(optList[0]), 1)),
                                      np.reshape(optList[1], (len(optList[1]), 1))]
                     ErrMatrixList = [np.reshape(np.sqrt(covList[0].diagonal()), (len(optList[0]), 1)),
                                      np.reshape(np.sqrt(covList[1].diagonal()), (len(optList[0]), 1))]
                 else:
+                    R2Array = np.array([R2])
                     OptMatrix = np.reshape(opt, (len(opt), 1))
                     ErrMatrix = np.reshape(np.sqrt(cov.diagonal()), (len(opt), 1))
             else:
@@ -183,8 +183,9 @@ def plotLabberRepeatedTSweepPlot(DataPath, RabiFileList, BackgroundFile='calibra
                 else:
                     OptMatrix = np.concatenate((OptMatrix, np.reshape(opt, (len(opt), 1))), axis=1)
                     ErrMatrix = np.concatenate((ErrMatrix, np.reshape(np.sqrt(cov.diagonal()), (len(opt), 1))), axis=1)
+                    R2Array = np.concatenate((R2Array, np.array([R2])))
                 CounterArray = np.concatenate((CounterArray, np.array([trial])))
-                R2Array = np.concatenate((R2Array, np.array([R2])))
+
 
             TimeList.append(Time)
             if MeasurementType == 't1t2interleaved':
@@ -315,8 +316,9 @@ def plotLabberRepeatedTSweepPlot(DataPath, RabiFileList, BackgroundFile='calibra
                 ax.errorbar(CounterArray[MinPlotInd:MaxPlotInd],
                             OptMatrixList[ind][plotInd, MinPlotInd:MaxPlotInd] / 1000,
                             yerr=ErrMatrixList[ind][plotInd, MinPlotInd:MaxPlotInd] / 1000, fmt='o')
-                plt.plot(CounterArray[MinPlotInd:MaxPlotInd], OptMatrix[plotInd, MinPlotInd:MaxPlotInd] / 1000, '--')
             plt.legend(['T1', 'T2echo'])
+            for ind in range(2):
+                plt.plot(CounterArray[MinPlotInd:MaxPlotInd], OptMatrixList[ind][plotInd, MinPlotInd:MaxPlotInd] / 1000, '--')
             plt.title('T1=%.3G$\pm$%.2Gus, T2=%.3G$\pm$%.2Gus' % (avgList[0], stdList[0], avgList[1], stdList[1]))
         else:
             avg = np.mean(OptMatrix[plotInd, MinPlotInd:MaxPlotInd]) / 1000
@@ -404,15 +406,16 @@ def plotLabberRepeatedTSweepPlot(DataPath, RabiFileList, BackgroundFile='calibra
             if LogScale:
                 ax.set_yscale('log')
 
-        fig, ax = plt.subplots()
-        if MeasurementType == 't1t2interleaved':
-            print('Not done yet for t1 t2 R^2')
-        else:
-            plt.plot(CounterArray, R2Array, 'o')
-        plt.xlabel('Trial #', fontsize='x-large')
-        plt.ylabel('R^2', fontsize='x-large')
-        plt.tick_params(axis='both', which='major', labelsize='x-large')
-        plt.tight_layout()
+        if not MeasurementType == 't1t2interleaved':
+            fig, ax = plt.subplots()
+            if MeasurementType == 't1t2interleaved':
+                print('Not done yet for t1 t2 R^2')
+            else:
+                plt.plot(CounterArray, R2Array, 'o')
+            plt.xlabel('Trial #', fontsize='x-large')
+            plt.ylabel('R^2', fontsize='x-large')
+            plt.tick_params(axis='both', which='major', labelsize='x-large')
+            plt.tight_layout()
 
 
     if MeasurementType == 'rabi':
@@ -430,7 +433,7 @@ def plotLabberRepeatedTSweepPlot(DataPath, RabiFileList, BackgroundFile='calibra
 
 if __name__ == '__main__':
     # DataPath = 'E:/Projects\Fluxonium\data_process/Fluxonium042619/'
-    DataPath = 'C:/Users/admin\Labber\Data/2019/06\Data_0617/'
+    DataPath = 'C:/Users/admin\Labber\Data/2019/07\Data_0727/'
     BackgroundFile = 'calibration_5.hdf5'
 
     # RabiFileList = [
@@ -441,8 +444,8 @@ if __name__ == '__main__':
     #
     # ]
     RabiFileList = [
-        't1_2019-06-17-16-23-34.hdf5',
-        't1_2019-06-17-20-53-22.hdf5',
+        't1_t2_interleaved_2019-07-27-09-44-39.hdf5',
+        # 't1_2019-06-17-20-53-22.hdf5',
     ]
 
     IQModFreq = 0.05
@@ -453,9 +456,9 @@ if __name__ == '__main__':
     Calibration = False
     RotateComplex = True
     FitDoubleExponential = False
-    PlotNumber = 10  # fit plot
+    PlotNumber = 50  # fit plot
     MinPlotInd = 0
-    MaxPlotInd = 100
+    MaxPlotInd = 50
     PlotIndex = [0, 1]
     T2MaxTime = 200e3  # ns
 

@@ -152,6 +152,15 @@ def readCurrentLabber(file):
         Cur = Cur[0]
     return Cur
 
+def getFolder(file, LabberFolder='C:\\Users/admin\Labber\Data/'):
+    name_str_list = file.split('_')
+    type_str = name_str_list[0]
+    date_str_lsit = name_str_list[-1].split('-')
+    year = date_str_lsit[0]
+    month = date_str_lsit[1]
+    day = date_str_lsit[2]
+    file_folder = LabberFolder + year + '\\' + month + '\\' + 'Data_' + month + day + '\\'
+    return file_folder
 
 def readDrivingPulseLenLabber(file):
     PulseLen_var = 'Pulse Generator - Width #1'

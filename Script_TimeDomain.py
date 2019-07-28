@@ -55,8 +55,8 @@ def timeDomainMeasurement(Current, ReadoutFreq, QubitFreq, DrivingPower, PiPulse
             # 'Pulse Generator - Number of points': DutyCyclePoints,
             'Alazar - Number of records': Avg,
             'Pulse Generator - Pulse type': PulseType,  # 0 Gaussian
-            'Counter - Number of points': [[40, 'STOP']]
-            # 'Counter - Number of points': 0
+            # 'Counter - Number of points': [[40, 'STOP']]
+            'Counter - Number of points': 0
         }
     elif MeasurementType == 't2_echo':
         ItemDict = {
@@ -81,11 +81,11 @@ def timeDomainMeasurement(Current, ReadoutFreq, QubitFreq, DrivingPower, PiPulse
             'Pump - Frequency': DrivingFreq,
             'Pump - Power': DrivingPower,
             'Pulse Generator - Width #1': PiPulseLength,
-            'Pulse Generator - Sequence duration': [[240e-6, 'STOP']],
+            'Pulse Generator - Sequence duration': [[60e-6, 'STOP']],
             'Pulse Generator - Number of points': DutyCyclePoints,
             'Alazar - Number of records': Avg,
             'Pulse Generator - Pulse type': PulseType,  # 0 Gaussian
-            'Counter - Number of points': [[10, 'STOP']]
+            'Counter - Number of points': [[100, 'STOP']]
             # 'Counter - Number of points': 0
         }
     # else:
