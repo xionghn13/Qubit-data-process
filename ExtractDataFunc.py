@@ -339,10 +339,10 @@ def readRepeatedT1T2InterleavedSweepLabber(file):
 
 def readVNAS11(file):
     # for Labber data
-    S11_var = 'VNA - S11'
-    start_freq_var = 'VNA - Start frequency'
-    stop_freq_var = 'VNA - Stop frequency'
-    num_of_points_var = 'VNA - # of points'
+    S11_var = 'VNA-4port - S11'
+    start_freq_var = 'VNA-4port - Start frequency'
+    stop_freq_var = 'VNA-4port - Stop frequency'
+    num_of_points_var = 'VNA-4port - # of points'
     LogData = Labber.LogFile(file)
     S11_complex = (np.transpose(LogData.getData(S11_var)))[:, 0]
     Start_freq = np.transpose(LogData.getData(start_freq_var))[:, 0] * 1e-9
@@ -355,10 +355,10 @@ def readVNAS11(file):
 
 def readVNAS21(file):
     # for Labber data
-    S11_var = 'VNA - S21'
-    start_freq_var = 'VNA - Start frequency'
-    stop_freq_var = 'VNA - Stop frequency'
-    num_of_points_var = 'VNA - # of points'
+    S11_var = 'VNA-4port - S21'
+    start_freq_var = 'VNA-4port - Start frequency'
+    stop_freq_var = 'VNA-4port - Stop frequency'
+    num_of_points_var = 'VNA-4port - # of points'
     LogData = Labber.LogFile(file)
     S11_complex = (np.transpose(LogData.getData(S11_var)))[:, 0]
     Start_freq = np.transpose(LogData.getData(start_freq_var))[:, 0] * 1e-9

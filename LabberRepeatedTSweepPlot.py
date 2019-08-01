@@ -459,7 +459,7 @@ if __name__ == '__main__':
     PlotNumber = 50  # fit plot
     MinPlotInd = 0
     MaxPlotInd = 50
-    PlotIndex = [0, 1]
+    PlotIndex = [0, 9]
     T2MaxTime = 200e3  # ns
 
     PhaseSlope = 326.7041108065019
