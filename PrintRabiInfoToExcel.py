@@ -11,8 +11,7 @@ def checkBadFit(val, err):
     return [val, err]
 
 
-def printRabiInfoFromFileList(FileList, OutputFolder, OutputFile, FixedFolder=None, FitDoubleExp=False,
-                               LabberFolder='C:\\Users/admin\Labber\Data/'):
+def printRabiInfoFromFileList(FileList, OutputFolder, OutputFile, FixedFolder=None, LabberFolder='C:\\Users/admin\Labber\Data/'):
     wb = Workbook()
     ws = wb.active
     freqSL = []
@@ -24,24 +23,15 @@ def printRabiInfoFromFileList(FileList, OutputFolder, OutputFile, FixedFolder=No
         if not file.endswith('hdf5'):
             file += '.hdf5'
         FitDict = plotReferencedTSweep(file_folder, file, FitDoubleExponential=fit_double, ShowFig=False, SaveFig=False)
-        if i == 0:
-            freq = edf.readPumpFreqLabber(file_folder + file)
-            cur = edf.readCurrentLabber(file_folder + file)
-            freqSL += [freq]
-            CurSL += [cur]
-            A = FitDict['opt'][0]
-            Aerr = np.sqrt(FitDict['cov'][0, 0])
-            [A, Aerr] = checkBadFit(A, Aerr)
-            ASL += [A]
-            AerrSL += [Aerr]
-        else:
-            T2 = FitDict['opt'][1] / 1e3
-            T2err = np.sqrt(FitDict['cov'][1, 1]) / 1e3
-            if T2err > T2:
-                T2 = np.nan
-                T2err = np.nan
-        T2SL += [T2]
-        T2errSL += [T2err]
+        freq = edf.readPumpFreqLabber(file_folder + file)
+        cur = edf.readCurrentLabber(file_folder + file)
+        freqSL += [freq]
+        CurSL += [cur]
+        A = FitDict['opt'][0]
+        Aerr = np.sqrt(FitDict['cov'][0, 0])
+        [A, Aerr] = checkBadFit(A, Aerr)
+        ASL += [A]
+        AerrSL += [Aerr]
         printPercent(ind, FileList.__len__())
 
     table = [
@@ -82,11 +72,8 @@ if __name__ == '__main__':
     FixedFolder = None
     LabberFolder = 'C:\\Users/admin\Labber\Data/'
     OutputFolder = 'E:\\Projects\\Fluxonium\\data_process\\Fluxonium032619/'
-    OutputFileTag = 'wg5 in 8.5GHz cavity 0710 cd'
+    OutputFileTag = 'wg5 in 8.5GHz cavity rabi 0710 cd'
 
-    for FitDoubleExp in [False, True]:
-        OutputFile = OutputFileTag
-        if FitDoubleExp:
-            OutputFile += ' double exp'
-        OutputFile += '.xlsx'
-        printCoherenceFromFileList(FileList, OutputFolder, OutputFile, FitDoubleExp=FitDoubleExp)
+    OutputFile = OutputFileTag
+    OutputFile += '.xlsx'
+    printCoherenceFromFileList(FileList, OutputFolder, OutputFile)
