@@ -22,7 +22,7 @@ def printRabiInfoFromFileList(FileList, OutputFolder, OutputFile, FixedFolder=No
         file_folder = edf.getFolder(file)
         if not file.endswith('hdf5'):
             file += '.hdf5'
-        FitDict = plotReferencedTSweep(file_folder, file, FitDoubleExponential=fit_double, ShowFig=False, SaveFig=False)
+        FitDict = plotReferencedTSweep(file_folder, file, ShowFig=False, SaveFig=False)
         freq = edf.readPumpFreqLabber(file_folder + file)
         cur = edf.readCurrentLabber(file_folder + file)
         freqSL += [freq]
@@ -76,4 +76,4 @@ if __name__ == '__main__':
 
     OutputFile = OutputFileTag
     OutputFile += '.xlsx'
-    printCoherenceFromFileList(FileList, OutputFolder, OutputFile)
+    printRabiInfoFromFileList(FileList, OutputFolder, OutputFile)

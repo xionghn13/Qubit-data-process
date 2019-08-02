@@ -30,7 +30,7 @@ PlotT1diel = False
 
 
 Folder = 'E:\Projects\Fluxonium\data_process\Fluxonium032619/'
-File = 'wg5 in 8.5GHz cavity rabi 0710 cd .xlsx'
+File = 'wg5 in 8.5GHz cavity rabi 0710 cd.xlsx'
 ReadDataFromExcel = True
 
 SpuriousMode = [0.51373, 0.51491, 0.51508, 0.51596, 0.51883, 0.52205, 0.52262]
@@ -61,7 +61,7 @@ FluxSort_A = A[FluxSort_Ind]
 
 fig, ax = plt.subplots()
 ax.errorbar(Freq, A, yerr=AErr, fmt='bo')
-plt.plot(FreqSort_Ind, FreqSort_A, ':')
+plt.plot(FreqSort_Freq, FreqSort_A, ':')
 if PlotSpuriousMode:
     for mode in SpuriousMode:
         plt.axvline(x=mode, color='g', linestyle='--')
@@ -73,7 +73,7 @@ plt.tight_layout()
 fig, ax = plt.subplots()
 leg = []
 ax.errorbar(Flux, A, yerr=AErr, fmt='bo')
-plt.plot(FluxSort_Ind, FluxSort_A, ':')
+plt.plot(FluxSort_Flux, FluxSort_A, ':')
 plt.xlabel('Flux/Phi_0', fontsize='x-large')
 plt.ylabel('Rabi Amplitude', fontsize='x-large')
 plt.tick_params(axis='both', which='major', labelsize='x-large')
