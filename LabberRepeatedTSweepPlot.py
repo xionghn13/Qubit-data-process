@@ -433,7 +433,7 @@ def plotLabberRepeatedTSweepPlot(DataPath, RabiFileList, BackgroundFile='calibra
 
 if __name__ == '__main__':
     # DataPath = 'E:/Projects\Fluxonium\data_process/Fluxonium042619/'
-    DataPath = 'C:/Users/admin\Labber\Data/2019/07\Data_0727/'
+    DataPath = 'C:/Users/admin\Labber\Data/2019/08\Data_0807/'
     BackgroundFile = 'calibration_5.hdf5'
 
     # RabiFileList = [
@@ -444,7 +444,7 @@ if __name__ == '__main__':
     #
     # ]
     RabiFileList = [
-        't1_t2_interleaved_2019-07-27-09-44-39.hdf5',
+        't1_t2_interleaved_2019-08-07-15-50-58.hdf5',
         # 't1_2019-06-17-20-53-22.hdf5',
     ]
 

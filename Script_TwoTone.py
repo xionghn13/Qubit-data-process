@@ -10,7 +10,7 @@ from scipy.optimize import curve_fit
 
 
 
-def FindQubitFreqTwoTone(Current, Anchor1, Anchor2, Avg=500e3, Power=0, ReadoutFreq=7.292e9, Span=10e6, SeqLen=1e4, SaveFig=True):
+def FindQubitFreqTwoTone(Current, Anchor1, Anchor2, Avg=500e3, Power=0, ReadoutFreq=7.292e9, ReadoutPower=0, Span=10e6, SeqLen=1e4, SaveFig=True):
     ConfigName = 'two tone sweep for cavity.hdf5'
     MeasLabel = 'two tone'
 
@@ -23,7 +23,7 @@ def FindQubitFreqTwoTone(Current, Anchor1, Anchor2, Avg=500e3, Power=0, ReadoutF
     ItemDict = {
         'Pump - Frequency': [[PredictFreq - Span / 2, 'START'], [PredictFreq + Span / 2, 'STOP']],
         'Pump - Power': Power,
-        'Qubit - Power': -5,
+        'Qubit - Power': ReadoutPower,
         'Qubit - Frequency': ReadoutFreq,
         'Alazar - Number of records': Avg,
         'Yoko - Current': Current,

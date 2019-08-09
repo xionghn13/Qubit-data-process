@@ -25,7 +25,7 @@ def timeDomainMeasurement(Current, ReadoutFreq, QubitFreq, DrivingPower, PiPulse
             'Qubit - Power': ReadoutPower,
             'Pump - Frequency': DrivingFreq,
             'Pump - Power': DrivingPower,
-            'Pulse Generator - Width #1': [[60e-9, 'STOP'], [31, 'N_PTS']],
+            'Pulse Generator - Width #1': [[900e-9, 'STOP'], [31, 'N_PTS']],
             'Pulse Generator - Number of points': DutyCyclePoints,
             'Alazar - Number of records': Avg,
             'Pulse Generator - Pulse type': PulseType,  # 0 Gaussian
@@ -113,15 +113,15 @@ def timeDomainMeasurement(Current, ReadoutFreq, QubitFreq, DrivingPower, PiPulse
 
 
 if __name__ == '__main__':
-    Current = 2.5e-3
-    QubitFreq = 0.5164e9
-    ReadoutPower = -5
+    Current = 2.55e-3
+    QubitFreq = 0.524014e9
+    ReadoutPower = 5
     print('Current = %.4GmA\nQubitFreq = %.5GGHz' % (Current * 1e3, QubitFreq / 1e9))
     # Current = 6.35e-3
     # QubitFreq = 514.9e6
     DrivingPower = 5
-    PiPulseLength = 8000e-9
-    ReadoutFreq = 7.974e9
+    PiPulseLength = 25e-9
+    ReadoutFreq = 7.9683e9
     T1MaxDelay = 60e-6
     PulseType = 1  # 0 Gaussian, 1 Square
     Avg = 50e3
