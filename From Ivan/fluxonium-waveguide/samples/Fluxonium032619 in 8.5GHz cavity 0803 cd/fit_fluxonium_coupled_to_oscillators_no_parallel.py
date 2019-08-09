@@ -120,8 +120,8 @@ def main():
     subpath = 'Processed Data/Fluxonium Coupled to Harmonic Modes/'
     path = os.path.join(samples_path, sample, subpath)
 
-    filename_in = 'one_mode_in_8.5GHz_cavity_0612cd_5.hdf5'
-    filename_fit = 'one_mode_in_8.5GHz_cavity_0710cd.hdf5'
+    filename_in = 'one_mode_in_8.5GHz_cavity_0803cd.hdf5'
+    filename_fit = 'one_mode_in_8.5GHz_cavity_0803cd.hdf5'
 
     params = utilities.load_fit(os.path.join(path, filename_in))
 

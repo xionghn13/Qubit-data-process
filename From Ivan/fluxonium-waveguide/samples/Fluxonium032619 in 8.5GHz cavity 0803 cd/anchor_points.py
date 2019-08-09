@@ -52,6 +52,10 @@ data = {
                'frequency': 7.9256  # GHz
                },
               {'transition': (0, 2),
+               'external flux quanta': 0.172,  # \Phi_\mathrm{ext}/\Phi_0
+               'frequency': 7.9473  # GHz
+               },
+              {'transition': (0, 2),
                'external flux quanta': 0.232,  # \Phi_\mathrm{ext}/\Phi_0
                'frequency': 7.9266  # GHz
                },
