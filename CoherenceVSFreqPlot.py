@@ -118,12 +118,13 @@ if FitDoubleExp:
     TqpMerge = np.concatenate((TqpRepeated, TqpSingle))
     nqpMerge = np.concatenate((nqpRepeated, nqpSingle))
 
-if SortWithFlux:
-    SortInd = FluxMerge.argsort()
-else:
-    SortInd = FreqMerge.argsort()
-FreqMerge = FreqMerge[SortInd]
-FluxMerge = FluxMerge[SortInd]
+FluxSortInd = FluxMerge.argsort()
+FreqSortInd = FreqMerge.argsort()
+FluxSort_FreqMerge = FreqMerge[FluxSortInd]
+FreqSort_FreqMerge = FreqMerge[FreqSortInd]
+FluxSort_FluxMerge = FluxMerge[FluxSortInd]
+FluxSort_T1Merge = T1Merge[FluxSortInd]
+FluxSort_T2Merge = T2Merge[FluxSortInd]
 T1Merge = T1Merge[SortInd]
 T2Merge = T2Merge[SortInd]
 if FitDoubleExp:
