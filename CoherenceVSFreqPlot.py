@@ -21,6 +21,11 @@ def getRowData(sheet, rowInd, length=None):
             RowData = np.insert(RowData, len(RowData), data)
     return RowData
 
+def sortPlot(x, y, spec):
+    ind = x.argsort()
+    x_sort = x[ind]
+    y_sort = y[ind]
+    plt.plot(x_sort, y_sort, spec)
 
 I0 = -82.5e-3  # mA
 hI = 2.571  # mA
@@ -118,18 +123,18 @@ if FitDoubleExp:
     TqpMerge = np.concatenate((TqpRepeated, TqpSingle))
     nqpMerge = np.concatenate((nqpRepeated, nqpSingle))
 
-FluxSortInd = FluxMerge.argsort()
-FreqSortInd = FreqMerge.argsort()
-FluxSort_FreqMerge = FreqMerge[FluxSortInd]
-FreqSort_FreqMerge = FreqMerge[FreqSortInd]
-FluxSort_FluxMerge = FluxMerge[FluxSortInd]
-FluxSort_T1Merge = T1Merge[FluxSortInd]
-FluxSort_T2Merge = T2Merge[FluxSortInd]
-T1Merge = T1Merge[SortInd]
-T2Merge = T2Merge[SortInd]
-if FitDoubleExp:
-    TqpMerge = TqpMerge[SortInd]
-    nqpMerge = nqpMerge[SortInd]
+# FluxSortInd = FluxMerge.argsort()
+# FreqSortInd = FreqMerge.argsort()
+# FluxSort_FreqMerge = FreqMerge[FluxSortInd]
+# FreqSort_FreqMerge = FreqMerge[FreqSortInd]
+# FluxSort_FluxMerge = FluxMerge[FluxSortInd]
+# FluxSort_T1Merge = T1Merge[FluxSortInd]
+# FluxSort_T2Merge = T2Merge[FluxSortInd]
+# T1Merge = T1Merge[SortInd]
+# T2Merge = T2Merge[SortInd]
+# if FitDoubleExp:
+#     TqpMerge = TqpMerge[SortInd]
+#     nqpMerge = nqpMerge[SortInd]
 
 if PlotT1diel:
     MinFlux = np.min(FluxMerge)
@@ -168,10 +173,10 @@ else:
         legR = ['TR - Averge', 'T2echo - Averge']
     plt.legend(['T1 - Single', 'T2echo - Single'] + legR)
 
-plt.plot(FreqMerge, T1Merge, ':')
-plt.plot(FreqMerge, T2Merge, ':')
+sortPlot(FreqMerge, T1Merge, ':')
+sortPlot(FreqMerge, T2Merge, ':')
 if FitDoubleExp:
-    plt.plot(FreqMerge, TqpMerge, ':')
+    sortPlot(FreqMerge, TqpMerge, ':')
 if PlotSpuriousMode:
     for mode in SpuriousMode:
         plt.axvline(x=mode, color='g', linestyle='--')
@@ -184,7 +189,7 @@ plt.tight_layout()
 fig, ax = plt.subplots()
 leg = []
 if PlotT1diel:
-    plt.plot(FluxPlot, T1diel)
+    sortPlot(FluxPlot, T1diel)
     leg = ['Dielectric loss tangent = %.3G' % loss_tan]
 ax.errorbar(FluxSingle, T1Single, yerr=T1ErrSingle, fmt='bo')
 ax.errorbar(FluxSingle, T2Single, yerr=T2ErrSingle, fmt='b^')
@@ -206,10 +211,10 @@ else:
     else:
         legR = ['TR - Averge', 'T2echo - Averge']
     plt.legend(leg + ['T1 - Single', 'T2echo - Single'] + legR)
-plt.plot(FluxMerge, T1Merge, ':')
-plt.plot(FluxMerge, T2Merge, ':')
+sortPlot(FluxMerge, T1Merge, ':')
+sortPlot(FluxMerge, T2Merge, ':')
 if FitDoubleExp:
-    plt.plot(FluxMerge, TqpMerge, ':')
+    sortPlot(FluxMerge, TqpMerge, ':')
 plt.xlabel('Flux/Phi_0', fontsize='x-large')
 plt.ylabel('Decay time(us)', fontsize='x-large')
 plt.tick_params(axis='both', which='major', labelsize='x-large')
@@ -228,7 +233,7 @@ if FitDoubleExp:
         legR = ['nqp - Average']
     plt.legend(['nqp - Single'] + legR)
 
-    plt.plot(FreqMerge, nqpMerge, ':')
+    sortPlot(FreqMerge, nqpMerge, ':')
     plt.xlabel('Freq(GHz)', fontsize='x-large')
     plt.ylabel('nqp', fontsize='x-large')
     plt.tick_params(axis='both', which='major', labelsize='x-large')
@@ -244,7 +249,7 @@ if FitDoubleExp:
         legR = ['nqp - Average']
     plt.legend(['nqp - Single'] + legR)
 
-    plt.plot(FluxMerge, nqpMerge, ':')
+    sortPlot(FluxMerge, nqpMerge, ':')
     if PlotSpuriousMode:
         for mode in SpuriousMode:
             plt.axvline(x=mode, color='g', linestyle='--')
@@ -254,7 +259,7 @@ if FitDoubleExp:
     plt.tight_layout()
 
 fig, ax = plt.subplots()
-plt.plot(FluxMerge, FreqMerge, 'o:')
+sortPlot(FluxMerge, FreqMerge, 'o:')
 plt.xlabel('Flux/Phi_0', fontsize='x-large')
 plt.ylabel('Freq(GHz)', fontsize='x-large')
 plt.tick_params(axis='both', which='major', labelsize='x-large')
