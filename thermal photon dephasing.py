@@ -34,7 +34,7 @@ def cavityThermalPhotonTemperature(chi, T1, T2, kappa, f, n_eff=np.linspace(0, 0
     plt.tick_params(axis='both', which='major', labelsize='x-large')
     plt.tight_layout()
 
-    kappa_array = np.linspace(0.1, 1000, 1001) * kappa
+    kappa_array = np.linspace(0.1, 10, 1001) * kappa
 
     fig, ax = plt.subplots()
     plt.plot(kappa_array / 2 / np.pi, gamma_n_kappa_chi(n_sol, kappa_array, chi))
