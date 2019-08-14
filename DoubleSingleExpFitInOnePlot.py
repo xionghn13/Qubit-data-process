@@ -8,8 +8,11 @@ from QubitDecayFunc import T1_curve, rabi_curve, AutoRotate, DoubleExp_curve
 import ExtractDataFunc as edf
 import os
 
+DataPath = 'C:\\Users/admin\Labber\Data/2019/07/Data_0718/'
+T1File = 't1_2019-07-18-11-00-56.hdf5'
+
 [Time, Complex] = edf.readT1Labber(DataPath + T1File)
-ReadoutPower = edf.readQubitPowerLabber(DataPath + RabiFile)
+ReadoutPower = edf.readQubitPowerLabber(DataPath + T1File)
 RComplex = Complex * 10 ** (- ReadoutPower / 20)
 RComplex = AutoRotate(RComplex)
 y_data = np.array(RComplex.real, dtype='float64')
