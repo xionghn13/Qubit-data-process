@@ -97,7 +97,7 @@ def timeDomainMeasurement(Current, ReadoutFreq, QubitFreq, DrivingPower, PiPulse
     #         'Pulse Generator - Width #1': PiPulseLength,
     #         'Pulse Generator - Pulse type': PulseType,  # 0 Gaussian
     #     }
-
+    ItemDict['Alazar - Channel B - Range'] = 5  #100mV
     MeasLabel = MeasurementType
     ConfigName = MeasLabel + '.hdf5'
     ConfigName = ConfigName.replace('_', ' ')

@@ -26,7 +26,8 @@ def plot_spectrum():
     hI = 2.5975  # mA
 
     path_filenames = [
-        'one tone_165.hdf5',
+        'one tone_165_0.hdf5',
+        'one tone_165_1.hdf5',
         'two tone_675.hdf5',
         'two tone_680.hdf5',
 

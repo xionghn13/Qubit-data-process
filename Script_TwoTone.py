@@ -8,9 +8,8 @@ import matplotlib.pyplot as plt
 from scipy.optimize import curve_fit
 
 
-
-
-def FindQubitFreqTwoTone(Current, Anchor1, Anchor2, Avg=500e3, Power=0, ReadoutFreq=7.292e9, ReadoutPower=0, Span=10e6, SeqLen=1e4, SaveFig=True):
+def FindQubitFreqTwoTone(Current, Anchor1, Anchor2, Avg=500e3, Power=0, ReadoutFreq=7.292e9, ReadoutPower=0, Span=10e6,
+                         SeqLen=1e4, SaveFig=True):
     ConfigName = 'two tone sweep for cavity.hdf5'
     MeasLabel = 'two tone'
 
@@ -29,8 +28,8 @@ def FindQubitFreqTwoTone(Current, Anchor1, Anchor2, Avg=500e3, Power=0, ReadoutF
         'Yoko - Current': Current,
         'Counter - Number of points': 0,
         'Pulse Generator - Number of points': SeqLen,
+        'Alazar - Channel B - Range': 5  # 100mV
     }
-
     [OutPath, OutFile] = mcf.RunMeasurement(ConfigName, MeasLabel, ItemDict=ItemDict)
     # OutFile = 'two tone_2019-06-04-22-34-04.hdf5'
     # OutPath = 'C:/Users/admin\\Labber\\Data/2019/06\\Data_0604/'
@@ -44,7 +43,6 @@ def FindQubitFreqTwoTone(Current, Anchor1, Anchor2, Avg=500e3, Power=0, ReadoutF
     f0_guess = Freq[Ind]
     B_guess = y_data[0] + C_guess * (f0_guess - Freq[0])
     A_guess = (y_data[Ind] - B_guess) * (kappa_guess / 2) ** 2
-
 
     def lorenztian(f, f0, kappa, A, B, C):
         t = A / ((f - f0) ** 2 + (kappa / 2) ** 2) + B + C * (f - f0)
@@ -83,6 +81,7 @@ def FindQubitFreqTwoTone(Current, Anchor1, Anchor2, Avg=500e3, Power=0, ReadoutF
 
     return f0_fit
 
+
 if __name__ == '__main__':
     # ExperimentName = 'wg6 in 7.5GHz cavity'
     # CoolDownDate = 'test'
@@ -94,5 +93,6 @@ if __name__ == '__main__':
     Power = -10
     Avg = 50e3
     SeqLen = 10e3
-    f0 = FindQubitFreqTwoTone(Current, Anchor1, Anchor2, Avg=Avg, Power=Power, Span=Span, SeqLen=SeqLen, SaveFig=SaveFig)
+    f0 = FindQubitFreqTwoTone(Current, Anchor1, Anchor2, Avg=Avg, Power=Power, Span=Span, SeqLen=SeqLen,
+                              SaveFig=SaveFig)
     print(f0)
