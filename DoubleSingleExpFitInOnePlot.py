@@ -14,7 +14,7 @@ T1File = 't1_2019-07-18-11-00-56.hdf5'
 [Time, Complex] = edf.readT1Labber(DataPath + T1File)
 ReadoutPower = edf.readQubitPowerLabber(DataPath + T1File)
 RComplex = Complex * 10 ** (- ReadoutPower / 20)
-RComplex = AutoRotate(RComplex)
+RComplex = - AutoRotate(RComplex)
 y_data = np.array(RComplex.real, dtype='float64')
 x_data = np.array(Time, dtype='float64')
 
@@ -53,9 +53,10 @@ FitR_single = T1_curve(TimeFit, A_single_fit, T1_fit, B_single_fit)
 # y_pred = T1_curve(Time, A_fit, T1_fit, B_fit)
 # y_guess = T1_curve(Time, A_guess, T1_guess, B_guess)
 # ParamList = ['A', 'Decay time/ns', 'B']
-
+print('double offset: %.3G, single offset: %.3G' % (B_double_fit, B_single_fit))
+B_fit = (B_double_fit + B_single_fit) / 2
 fig, ax = plt.subplots()
-plt.plot(Time / 1000, y_data - B_fit, 'o')
+plt.plot(Time / 1000, y_data - B_double_fit, 'o')
 plt.plot(TimeFit / 1000, FitR_double - B_double_fit)
 plt.plot(TimeFit / 1000, FitR_single - B_single_fit)
 
@@ -66,6 +67,7 @@ plt.title('Double Exp Fit: TR=%.3G$\pm$%.2Gus, Tqp=%.3G$\pm$%.2Gus, nqp=%.3G$\pm
 
 plt.xlabel('Time/us', fontsize='x-large')
 plt.ylabel('Re', fontsize='x-large')
+plt.ylim([1e-6, 1e-3])
 plt.tick_params(axis='both', which='major', labelsize='x-large')
 plt.tight_layout()
 ax.set_yscale('log')
