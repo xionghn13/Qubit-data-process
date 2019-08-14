@@ -197,6 +197,7 @@ def plotLabberRepeatedTSweepPlot(DataPath, RabiFileList, BackgroundFile='calibra
                             OptMatrixList[ind][i_p, -1] = np.nan
                         else:
                             OptMatrixList[ind][i_p, -1] = par
+                return [CounterArray, OptMatrixList, ErrMatrixList]
             else:
                 RComplexList.append(RComplex[:, j])
                 FitRList.append(FitR)
@@ -205,7 +206,7 @@ def plotLabberRepeatedTSweepPlot(DataPath, RabiFileList, BackgroundFile='calibra
                         OptMatrix[i_p, -1] = np.nan
                     else:
                         OptMatrix[i_p, -1] = par
-
+                return [CounterArray, OptMatrix, ErrMatrix]
     limit = 1.7
 
     NumPoints = len(TimeList)
