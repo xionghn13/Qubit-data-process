@@ -1,6 +1,6 @@
 from QubitDataProcessPackages import *
 from datetime import timedelta
-
+from LabberRepeatedTSweepPlot import plotLabberRepeatedTSweepPlot
 
 DataPath = 'E:\Projects\Fluxonium\data_process\Fluxonium032619\\'
 FileList = [
@@ -8,13 +8,13 @@ FileList = [
 ]
 
 TimeStartStop = [
-    {'start': [11, 55, 8], 'stop': [5, 18, 44]},
+    {'start': [11, 55, 8], 'stop': [54, 57, 2]},
 ]
 
-time_origin = [11, 55, 8]
+time_origin = [11, 0, 0]
 time_origin_sec = timedelta(hours=time_origin[0], minutes=time_origin[1], seconds=time_origin[2]).total_seconds()
 
-TimeLimit = (0, 8.7)
+TimeLimit = (0, 45)
 
 CountList = []
 OptList = []
@@ -23,7 +23,9 @@ ErrList = []
 # ax = plt.subplot(211)
 fig, ax = plt.subplots()
 for i, file in enumerate(FileList):
-    [Count, Opt, Err] = edf.readRepeatedFSweepTwoToneLabber(DataPath + file)
+    [Count, Opt, Err] = plotLabberRepeatedTSweepPlot(DataPath, file, Calibration=False, FitCorrectedR=True, RotateComplex=True,
+                                 LogScale=False, FitDoubleExponential=False, PlotNumber=10, MinPlotInd=0, MaxPlotInd=50,
+                                 PlotInd=[0, 1, 2, 3], T2MaxTime=3e5, ShowFig=False)
     TimeStamp = TimeStartStop[i]
     start_sec = timedelta(hours=TimeStamp['start'][0], minutes=TimeStamp['start'][1],
                           seconds=TimeStamp['start'][2]).total_seconds()
@@ -34,9 +36,12 @@ for i, file in enumerate(FileList):
     time = np.linspace(start_sec, stop_sec, len(Count)) / 3600
     fmt_list = ['bo', 'ro']
     for ind in range(2):
-        ax.errorbar(CounterArray, OptMatrixList[ind][1, :] / 1000, yerr=ErrMatrixList[ind][1, :] / 1000, fmt=fmt_list[ind])
+        ax.errorbar(time, Opt[ind][1, :] / 1000, yerr=Err[ind][1, :] / 1000, fmt=fmt_list[ind])
     if i == 0:
         plt.legend(['T1', 'T2echo'])
+    fmt_list = ['b--', 'r--']
+    for ind in range(2):
+        plt.plot(time, Opt[ind][1, :] / 1000, fmt_list[ind])
     CountList += [Count]
     OptList += [Opt]
     ErrList += [Err]
@@ -46,3 +51,4 @@ plt.ylabel("Decay time(us)", fontsize='x-large')
 plt.tick_params(axis='both', which='major', labelsize='x-large')
 plt.tight_layout()
 plt.xlim(TimeLimit)
+plt.show()

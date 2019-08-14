@@ -13,7 +13,7 @@ def plotLabberRepeatedTSweepPlot(DataPath, RabiFileList, BackgroundFile='calibra
                                  IQModFreq=0.05, PhaseSlope=326.7, PhaseReferenceFreq=4.105,
                                  Calibration=False, FitCorrectedR=True, RotateComplex=True,
                                  LogScale=False, FitDoubleExponential=False, PlotNumber=11, MinPlotInd=0, MaxPlotInd=11,
-                                 PlotInd=[0, 1, 2, 3], T2MaxTime=2e4):
+                                 PlotInd=[0, 1, 2, 3], T2MaxTime=2e4, ShowFig=True):
     if not isinstance(RabiFileList, list):
         RabiFileList = [RabiFileList]
     NumFile = len(RabiFileList)
@@ -197,7 +197,6 @@ def plotLabberRepeatedTSweepPlot(DataPath, RabiFileList, BackgroundFile='calibra
                             OptMatrixList[ind][i_p, -1] = np.nan
                         else:
                             OptMatrixList[ind][i_p, -1] = par
-                return [CounterArray, OptMatrixList, ErrMatrixList]
             else:
                 RComplexList.append(RComplex[:, j])
                 FitRList.append(FitR)
@@ -206,9 +205,11 @@ def plotLabberRepeatedTSweepPlot(DataPath, RabiFileList, BackgroundFile='calibra
                         OptMatrix[i_p, -1] = np.nan
                     else:
                         OptMatrix[i_p, -1] = par
-                return [CounterArray, OptMatrix, ErrMatrix]
     limit = 1.7
-
+    if MeasurementType == 't1t2interleaved':
+        return [CounterArray, OptMatrixList, ErrMatrixList]
+    else:
+        return [CounterArray, OptMatrix, ErrMatrix]
     NumPoints = len(TimeList)
     fig, ax = plt.subplots()
     for i in range(NumPoints):
@@ -429,7 +430,11 @@ def plotLabberRepeatedTSweepPlot(DataPath, RabiFileList, BackgroundFile='calibra
         plt.tick_params(axis='both', which='major', labelsize='x-large')
         plt.tight_layout()
         # plt.ylim(0, 20000)
-    plt.show()
+
+    if ShowFig:
+        plt.show()
+    else:
+        plt.close('all')
 
 
 if __name__ == '__main__':
