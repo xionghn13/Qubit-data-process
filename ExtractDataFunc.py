@@ -262,6 +262,19 @@ def readT1PowerSweepLabber(file):
     return [t1_time, t1_power, t1_complex]
 
 
+def readT1ReadoutPowerSweepLabber(file):
+    # for Labber data
+    ATS_var = 'Alazar - Channel A - Average buffer demodulated values'
+    Time_var = 'Pulse Generator - Readout delay'
+    Power_var = 'Qubit - Power'
+    LogData = Labber.LogFile(file)
+    t1_power = np.unique(np.transpose(LogData.getData(Power_var)))
+    t1_time = np.transpose(LogData.getData(Time_var))[:, 0] * 1e9
+    t1_complex = np.conj(np.transpose(LogData.getData(ATS_var)))[:, ::len(t1_time)]
+
+    return [t1_time, t1_power, t1_complex]
+
+
 def readRepeatedT1SweepLabber(file):
     # for Labber data
     ATS_var = 'Alazar - Channel A - Average buffer demodulated values'
