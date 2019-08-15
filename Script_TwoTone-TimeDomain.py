@@ -34,9 +34,9 @@ TwoToneSeqLen = 10e3
 # MeasTypeList = ['rabi', 't1', 't2_ramsey', 't2_echo']
 # MeasTypeList = ['rabi', 't2_ramsey', 't2_echo']
 # MeasTypeList = ['rabi', 't1', 't2_echo']
-# MeasTypeList = ['rabi', 't1']
+MeasTypeList = ['rabi', 't1']
 # MeasTypeList = ['rabi', 't1_t2_interleaved']
-MeasTypeList = ['rabi', 't2_ramsey', 't1_t2_interleaved']
+# MeasTypeList = ['rabi', 't2_ramsey', 't1_t2_interleaved']
 for i, cur in enumerate(CurrentList):
     f0 = 1e9 * Script_TwoTone.FindQubitFreqTwoTone(cur, Anchor1, Anchor2, Power=TwoTonePower, ReadoutFreq=ReadoutFreq,
                                                    ReadoutPower=ReadoutPower, Avg=TwoToneAvg, Span=Span,

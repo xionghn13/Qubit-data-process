@@ -8,13 +8,13 @@ FileList = [
 ]
 
 TimeStartStop = [
-    {'start': [11, 55, 8], 'stop': [54, 57, 2]},
+    {'start': [11, 55, 8], 'stop': [56, 17, 43]},
 ]
 
 time_origin = [11, 0, 0]
 time_origin_sec = timedelta(hours=time_origin[0], minutes=time_origin[1], seconds=time_origin[2]).total_seconds()
 
-TimeLimit = (0, 45)
+TimeLimit = (0, 46)
 
 CountList = []
 OptList = []
@@ -25,7 +25,8 @@ fig, ax = plt.subplots()
 for i, file in enumerate(FileList):
     [Count, Opt, Err] = plotLabberRepeatedTSweepPlot(DataPath, file, Calibration=False, FitCorrectedR=True, RotateComplex=True,
                                  LogScale=False, FitDoubleExponential=False, PlotNumber=10, MinPlotInd=0, MaxPlotInd=50,
-                                 PlotInd=[0, 1, 2, 3], T2MaxTime=3e5, ShowFig=False)
+                                 PlotIndex=[0, 3], T2MaxTime=3e5, ShowFig=False)
+    # print(Err)
     TimeStamp = TimeStartStop[i]
     start_sec = timedelta(hours=TimeStamp['start'][0], minutes=TimeStamp['start'][1],
                           seconds=TimeStamp['start'][2]).total_seconds()
@@ -36,6 +37,8 @@ for i, file in enumerate(FileList):
     time = np.linspace(start_sec, stop_sec, len(Count)) / 3600
     fmt_list = ['bo', 'ro']
     for ind in range(2):
+        # print(Opt[ind][1, :] / 1000)
+        # print(Err[ind][1, :] / 1000)
         ax.errorbar(time, Opt[ind][1, :] / 1000, yerr=Err[ind][1, :] / 1000, fmt=fmt_list[ind])
     if i == 0:
         plt.legend(['T1', 'T2echo'])

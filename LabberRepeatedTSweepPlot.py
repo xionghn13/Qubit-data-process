@@ -13,7 +13,7 @@ def plotLabberRepeatedTSweepPlot(DataPath, RabiFileList, BackgroundFile='calibra
                                  IQModFreq=0.05, PhaseSlope=326.7, PhaseReferenceFreq=4.105,
                                  Calibration=False, FitCorrectedR=True, RotateComplex=True,
                                  LogScale=False, FitDoubleExponential=False, PlotNumber=11, MinPlotInd=0, MaxPlotInd=11,
-                                 PlotInd=[0, 1, 2, 3], T2MaxTime=2e4, ShowFig=True):
+                                 PlotIndex=[0, 1, 2, 3], T2MaxTime=2e4, ShowFig=True):
     if not isinstance(RabiFileList, list):
         RabiFileList = [RabiFileList]
     NumFile = len(RabiFileList)
@@ -74,7 +74,7 @@ def plotLabberRepeatedTSweepPlot(DataPath, RabiFileList, BackgroundFile='calibra
                                                           BackPower)
             else:
                 RComplex = ComplexVoltageNormalized
-
+        TimeFit = np.linspace(Time.min(), Time.max(), 200)
         for j, trial in enumerate(Counter):
             if RotateComplex:
                 if MeasurementType == 't1t2interleaved':
@@ -110,12 +110,12 @@ def plotLabberRepeatedTSweepPlot(DataPath, RabiFileList, BackgroundFile='calibra
                         cov = np.zeros([len(opt), len(opt)])
 
                     A_fit, TR_fit, B_fit, Tqp_fit, lamb_fit = opt
-                    FitR = DoubleExp_curve(Time, A_fit, TR_fit, B_fit, Tqp_fit, lamb_fit)
+                    FitR = DoubleExp_curve(TimeFit, A_fit, TR_fit, B_fit, Tqp_fit, lamb_fit)
                     ParamList = ['A', 'TR/ns', 'B', 'Tqp/ns', 'lambda']
                 else:
                     opt, cov = curve_fit(T1_curve, x_data, y_data, p0=[A_guess, T1_guess, B_guess], maxfev=30000)
                     A_fit, T1_fit, B_fit = opt
-                    FitR = T1_curve(Time, A_fit, T1_fit, B_fit)
+                    FitR = T1_curve(TimeFit, A_fit, T1_fit, B_fit)
                     ParamList = ['A', 'Decay time/ns', 'B']
                 R2 = sklearn.metrics.r2_score(y_data, FitR)
             elif MeasurementType == 't1t2interleaved':
@@ -129,17 +129,35 @@ def plotLabberRepeatedTSweepPlot(DataPath, RabiFileList, BackgroundFile='calibra
                     B_guess = y_data[-1]
                     A_guess = y_data[0].real - B_guess
                     T1_guess = x_data[-1] / 10
-                    bounds = (
-                        (-2, 1, -1),
-                        (2, 1e6, 1)
-                    )
-                    opt, cov = curve_fit(T1_curve, x_data, y_data, p0=[A_guess, T1_guess, B_guess], maxfev=30000)
-                    A_fit, T1_fit, B_fit = opt
-                    FitR = T1_curve(Time, A_fit, T1_fit, B_fit)
-                    FitRt1t2List += [FitR]
-                    optList += [opt]
-                    covList += [cov]
-                ParamList = ['A', 'Decay time/ns', 'B']
+                    Tqp_guess = T1_guess / 10
+                    T1_guess = 16e3
+                    Tqp_guess = T1_guess
+                    if ind == 0 and FitDoubleExponential:
+                        try:
+                            opt, cov = curve_fit(DoubleExp_curve, x_data, y_data,
+                                                 p0=[A_guess, T1_guess, B_guess, Tqp_guess, 0.5],
+                                                 maxfev=300000)
+                            print('guess = %s' % str([A_guess, T1_guess, B_guess, Tqp_guess, 0.5]))
+                            print('Double exp fit opt = %s' % str(opt))
+                        except RuntimeError:
+                            print("Error - curve_fit failed")
+                            opt = np.array([A_guess, T1_guess, B_guess, T1_guess, 1])
+                            cov = np.zeros([len(opt), len(opt)])
+
+                        A_fit, TR_fit, B_fit, Tqp_fit, lamb_fit = opt
+                        FitR = DoubleExp_curve(TimeFit, A_fit, TR_fit, B_fit, Tqp_fit, lamb_fit)
+                        FitRt1t2List += [FitR]
+                        optList += [opt]
+                        covList += [cov]
+                        ParamList = ['A', 'TR/ns', 'B', 'Tqp/ns', 'lambda']
+                    if ind == 1 or not FitDoubleExponential:
+                        opt, cov = curve_fit(T1_curve, x_data, y_data, p0=[A_guess, T1_guess, B_guess], maxfev=30000)
+                        A_fit, T1_fit, B_fit = opt
+                        FitR = T1_curve(TimeFit, A_fit, T1_fit, B_fit)
+                        FitRt1t2List += [FitR]
+                        optList += [opt]
+                        covList += [cov]
+                        ParamList = ['A', 'Decay time/ns', 'B']
             elif MeasurementType in ('rabi'):
                 B_guess = y_data.mean()
                 A_guess = y_data[0] - B_guess
@@ -155,11 +173,12 @@ def plotLabberRepeatedTSweepPlot(DataPath, RabiFileList, BackgroundFile='calibra
                 )
                 opt, cov = curve_fit(rabi_curve, x_data, y_data, p0=guess, bounds=bounds)
                 A_fit, T1_fit, B_fit, Tpi_fit, phi0_fit = opt
-                FitR = rabi_curve(Time, A_fit, T1_fit, B_fit, Tpi_fit, phi0_fit)
+                FitR = rabi_curve(TimeFit, A_fit, T1_fit, B_fit, Tpi_fit, phi0_fit)
                 ParamList = ['A', 'Decay time/ns', 'B', 'Tpi', 'phi0']
 
             if i == 0 and j == 0:
                 TimeList = []
+                TimeFitList = []
                 RComplexList = []
                 FitRList = []
                 CounterArray = np.array([trial])
@@ -167,7 +186,7 @@ def plotLabberRepeatedTSweepPlot(DataPath, RabiFileList, BackgroundFile='calibra
                     OptMatrixList = [np.reshape(optList[0], (len(optList[0]), 1)),
                                      np.reshape(optList[1], (len(optList[1]), 1))]
                     ErrMatrixList = [np.reshape(np.sqrt(covList[0].diagonal()), (len(optList[0]), 1)),
-                                     np.reshape(np.sqrt(covList[1].diagonal()), (len(optList[0]), 1))]
+                                     np.reshape(np.sqrt(covList[1].diagonal()), (len(optList[1]), 1))]
                 else:
                     R2Array = np.array([R2])
                     OptMatrix = np.reshape(opt, (len(opt), 1))
@@ -176,10 +195,10 @@ def plotLabberRepeatedTSweepPlot(DataPath, RabiFileList, BackgroundFile='calibra
                 if MeasurementType == 't1t2interleaved':
                     for ind in range(2):
                         OptMatrixList[ind] = np.concatenate(
-                            (OptMatrixList[ind], np.reshape(optList[ind], (len(opt), 1))),
+                            (OptMatrixList[ind], np.reshape(optList[ind], (len(optList[ind]), 1))),
                             axis=1)
                         ErrMatrixList[ind] = np.concatenate(
-                            (ErrMatrixList[ind], np.reshape(np.sqrt(covList[ind].diagonal()), (len(opt), 1))), axis=1)
+                            (ErrMatrixList[ind], np.reshape(np.sqrt(covList[ind].diagonal()), (len(optList[ind]), 1))), axis=1)
                 else:
                     OptMatrix = np.concatenate((OptMatrix, np.reshape(opt, (len(opt), 1))), axis=1)
                     ErrMatrix = np.concatenate((ErrMatrix, np.reshape(np.sqrt(cov.diagonal()), (len(opt), 1))), axis=1)
@@ -188,6 +207,7 @@ def plotLabberRepeatedTSweepPlot(DataPath, RabiFileList, BackgroundFile='calibra
 
 
             TimeList.append(Time)
+            TimeFitList.append(TimeFit)
             if MeasurementType == 't1t2interleaved':
                 RComplexList.append([RComplexT1[:, j], RComplexT2[:, j]])
                 FitRList.append(FitRt1t2List)
@@ -195,6 +215,7 @@ def plotLabberRepeatedTSweepPlot(DataPath, RabiFileList, BackgroundFile='calibra
                     for i_p, par in enumerate(optList[ind]):
                         if np.abs(ErrMatrixList[ind][i_p, -1]) > np.abs(par) or optList[ind][1] > 5 * Time[-1]:
                             OptMatrixList[ind][i_p, -1] = np.nan
+                            OptMatrixList[ind][i_p, -1] = par
                         else:
                             OptMatrixList[ind][i_p, -1] = par
             else:
@@ -203,137 +224,115 @@ def plotLabberRepeatedTSweepPlot(DataPath, RabiFileList, BackgroundFile='calibra
                 for i_p, par in enumerate(opt):
                     if np.abs(ErrMatrix[i_p, -1]) > np.abs(par) or opt[1] > 5 * Time[-1]:
                         OptMatrix[i_p, -1] = np.nan
+                        # OptMatrix[i_p, -1] = par
                     else:
                         OptMatrix[i_p, -1] = par
     limit = 1.7
-    if MeasurementType == 't1t2interleaved':
-        return [CounterArray, OptMatrixList, ErrMatrixList]
-    else:
-        return [CounterArray, OptMatrix, ErrMatrix]
+
     NumPoints = len(TimeList)
-    fig, ax = plt.subplots()
-    for i in range(NumPoints):
-        if MeasurementType == 't1t2interleaved':
-            sym = ['-', '--']
-            for ind in range(2):
-                plt.plot(np.real(RComplexList[i][ind]), np.imag(RComplexList[i][ind]), sym[ind])
-        else:
-            plt.plot(np.real(RComplexList[i]), np.imag(RComplexList[i]))
-    if Calibration:
-        plt.plot([-2, 2], [0, 0], '--')
-        plt.plot([1], [0], 'ro')
-    plt.xlabel('Re', fontsize='x-large')
-    plt.ylabel('Im', fontsize='x-large')
-    plt.tick_params(axis='both', which='major', labelsize='x-large')
-    plt.tight_layout()
-    if Calibration:
-        plt.xlim(-limit, limit)
-        plt.ylim(-limit, limit)
-    ax.set_aspect('equal')
-
-    fig, ax = plt.subplots()
-    for i in np.linspace(0, NumPoints - 1, min(PlotNumber, NumPoints)):
-        i = int(i)
-        if MeasurementType == 't1t2interleaved':
-            for ind in range(2):
-                if ind == 1 and T2MaxTime > 0:
-                    plt.plot(TimeT2, np.real(RComplexList[i][ind]))
-                else:
-                    plt.plot(TimeList[i], np.real(RComplexList[i][ind]))
-                plt.plot(TimeList[i], FitRList[i][ind], '--')
-        else:
-            if LogScale:
-                plt.plot(TimeList[i], FitRList[i] - opt[2])
-                plt.plot(TimeList[i], np.real(RComplexList[i]) - opt[2], 'o')
+    if ShowFig:
+        fig, ax = plt.subplots()
+        for i in range(NumPoints):
+            if MeasurementType == 't1t2interleaved':
+                sym = ['-', '--']
+                for ind in range(2):
+                    plt.plot(np.real(RComplexList[i][ind]), np.imag(RComplexList[i][ind]), sym[ind])
             else:
-                plt.plot(TimeList[i], FitRList[i] - opt[2])
-                plt.plot(TimeList[i], np.real(RComplexList[i]) - opt[2], 'o')
+                plt.plot(np.real(RComplexList[i]), np.imag(RComplexList[i]))
+        if Calibration:
+            plt.plot([-2, 2], [0, 0], '--')
+            plt.plot([1], [0], 'ro')
+        plt.xlabel('Re', fontsize='x-large')
+        plt.ylabel('Im', fontsize='x-large')
+        plt.tick_params(axis='both', which='major', labelsize='x-large')
+        plt.tight_layout()
+        if Calibration:
+            plt.xlim(-limit, limit)
+            plt.ylim(-limit, limit)
+        ax.set_aspect('equal')
 
-    plt.xlabel('Time/ns', fontsize='x-large')
-    plt.ylabel('Re', fontsize='x-large')
-    plt.tick_params(axis='both', which='major', labelsize='x-large')
-    plt.tight_layout()
-    if LogScale:
-        ax.set_yscale('log')
-
-    if max(PlotIndex) < NumPoints:
-        for i in PlotIndex:
-            fig, ax = plt.subplots()
+        fig, ax = plt.subplots()
+        for i in np.linspace(0, NumPoints - 1, min(PlotNumber, NumPoints)):
+            i = int(i)
             if MeasurementType == 't1t2interleaved':
                 for ind in range(2):
                     if ind == 1 and T2MaxTime > 0:
                         plt.plot(TimeT2, np.real(RComplexList[i][ind]))
                     else:
                         plt.plot(TimeList[i], np.real(RComplexList[i][ind]))
-                    plt.plot(TimeList[i], FitRList[i][ind], '--')
+                    plt.plot(TimeFitList[i], FitRList[i][ind], '--')
             else:
-                plt.plot(TimeList[i], np.real(RComplexList[i]), 'o')
-                plt.plot(TimeList[i], FitRList[i])
-            plt.xlabel('Time/ns', fontsize='x-large')
-            plt.ylabel('Re', fontsize='x-large')
-            plt.title('Plot index=%d' % i)
-            plt.tick_params(axis='both', which='major', labelsize='x-large')
-            plt.tight_layout()
+                if LogScale:
+                    plt.plot(TimeFitList[i], FitRList[i] - opt[2])
+                    plt.plot(TimeList[i], np.real(RComplexList[i]) - opt[2], 'o')
+                else:
+                    plt.plot(TimeFitList[i], FitRList[i] - opt[2])
+                    plt.plot(TimeList[i], np.real(RComplexList[i]) - opt[2], 'o')
 
-    fig, ax = plt.subplots()
-    plotInd = 1
-    # plt.plot(CounterArray, OptMatrix[plotInd, :]/1000, 'o')
-    if MeasurementType == 't1t2interleaved':
-        avgList = []
-        stdList = []
-        for ind in range(2):
-            avgList += [np.mean(OptMatrixList[ind][plotInd, :] / 1000)]
-            if NumPoints > 1:
-                stdList += [np.std(OptMatrixList[ind][plotInd, :] / 1000)]
-            else:
-                stdList += [ErrMatrixList[ind][plotInd, 0] / 1000]
-            ax.errorbar(CounterArray, OptMatrixList[ind][plotInd, :] / 1000, yerr=ErrMatrixList[ind][plotInd, :] / 1000,
-                        fmt='o')
-        plt.legend(['T1', 'T2echo'])
-        plt.title('T1=%.3G$\pm$%.2Gus, T2=%.3G$\pm$%.2Gus' % (avgList[0], stdList[0], avgList[1], stdList[1]))
-    else:
-        ax.errorbar(CounterArray, OptMatrix[plotInd, :] / 1000, yerr=ErrMatrix[plotInd, :] / 1000, fmt='o')
-    plt.xlabel('Trial #', fontsize='x-large')
-    plt.ylabel('Decay time/us', fontsize='x-large')
-    plt.tick_params(axis='both', which='major', labelsize='x-large')
-    plt.tight_layout()
-    if LogScale:
-        ax.set_yscale('log')
+        plt.xlabel('Time(ns)', fontsize='x-large')
+        plt.ylabel('Re', fontsize='x-large')
+        plt.tick_params(axis='both', which='major', labelsize='x-large')
+        plt.tight_layout()
+        if LogScale:
+            ax.set_yscale('log')
 
-    if MaxPlotInd != 0 or MinPlotInd != 0:
+        fig, ax = plt.subplots()
+        for i in np.linspace(0, NumPoints - 1, min(PlotNumber, NumPoints)):
+            i = int(i)
+            if MeasurementType == 't1t2interleaved':
+                ind = 0
+                plt.plot(TimeList[i] / 1000, np.real(RComplexList[i][ind]) / 10 ** (- ReadoutPower / 20) * 1e3, 'o')
+        plt.legend(['base temperature', '50mK'])
+        for i in np.linspace(0, NumPoints - 1, min(PlotNumber, NumPoints)):
+            i = int(i)
+            if MeasurementType == 't1t2interleaved':
+                ind = 0
+                plt.plot(TimeFitList[i] / 1000, FitRList[i][ind] / 10 ** (- ReadoutPower / 20) * 1e3, '--')
+                print(OptMatrixList[ind][:, i])
+        plt.xlabel('Time(us)', fontsize='x-large')
+        plt.ylabel('Re(mV)', fontsize='x-large')
+        plt.tick_params(axis='both', which='major', labelsize='x-large')
+        plt.tight_layout()
+        if LogScale:
+            ax.set_yscale('log')
+
+        if max(PlotIndex) < NumPoints:
+            for i in PlotIndex:
+                fig, ax = plt.subplots()
+                if MeasurementType == 't1t2interleaved':
+                    for ind in range(2):
+                        if ind == 1 and T2MaxTime > 0:
+                            plt.plot(TimeT2, np.real(RComplexList[i][ind]))
+                        else:
+                            plt.plot(TimeList[i], np.real(RComplexList[i][ind]))
+                        plt.plot(TimeFitList[i], FitRList[i][ind], '--')
+                else:
+                    plt.plot(TimeList[i], np.real(RComplexList[i]), 'o')
+                    plt.plot(TimeFitList[i], FitRList[i])
+                plt.xlabel('Time/ns', fontsize='x-large')
+                plt.ylabel('Re', fontsize='x-large')
+                plt.title('Plot index=%d' % i)
+                plt.tick_params(axis='both', which='major', labelsize='x-large')
+                plt.tight_layout()
+
         fig, ax = plt.subplots()
         plotInd = 1
         # plt.plot(CounterArray, OptMatrix[plotInd, :]/1000, 'o')
         if MeasurementType == 't1t2interleaved':
-            if FitDoubleExponential:
-                print('Error: t1t2interleaved with double exponential fit has not been completed yet.')
             avgList = []
             stdList = []
             for ind in range(2):
-                avgList += [np.mean(OptMatrixList[ind][plotInd, MinPlotInd:MaxPlotInd] / 1000)]
+                avgList += [np.mean(OptMatrixList[ind][plotInd, :] / 1000)]
                 if NumPoints > 1:
-                    stdList += [np.std(OptMatrixList[ind][plotInd, MinPlotInd:MaxPlotInd] / 1000)]
+                    stdList += [np.std(OptMatrixList[ind][plotInd, :] / 1000)]
                 else:
                     stdList += [ErrMatrixList[ind][plotInd, 0] / 1000]
-                ax.errorbar(CounterArray[MinPlotInd:MaxPlotInd],
-                            OptMatrixList[ind][plotInd, MinPlotInd:MaxPlotInd] / 1000,
-                            yerr=ErrMatrixList[ind][plotInd, MinPlotInd:MaxPlotInd] / 1000, fmt='o')
+                ax.errorbar(CounterArray, OptMatrixList[ind][plotInd, :] / 1000, yerr=ErrMatrixList[ind][plotInd, :] / 1000,
+                            fmt='o')
             plt.legend(['T1', 'T2echo'])
-            for ind in range(2):
-                plt.plot(CounterArray[MinPlotInd:MaxPlotInd], OptMatrixList[ind][plotInd, MinPlotInd:MaxPlotInd] / 1000, '--')
             plt.title('T1=%.3G$\pm$%.2Gus, T2=%.3G$\pm$%.2Gus' % (avgList[0], stdList[0], avgList[1], stdList[1]))
         else:
-            avg = np.mean(OptMatrix[plotInd, MinPlotInd:MaxPlotInd]) / 1000
-            std = np.std(OptMatrix[plotInd, MinPlotInd:MaxPlotInd]) / 1000
-            ax.errorbar(CounterArray[MinPlotInd:MaxPlotInd], OptMatrix[plotInd, MinPlotInd:MaxPlotInd] / 1000,
-                        yerr=ErrMatrix[plotInd, MinPlotInd:MaxPlotInd] / 1000,
-                        fmt='o')
-            plt.plot(CounterArray[MinPlotInd:MaxPlotInd], OptMatrix[plotInd, MinPlotInd:MaxPlotInd] / 1000, '--')
-            if FitDoubleExponential:
-                plt.title('TR=%.3G$\pm$%.2Gus' % (avg, std))
-            else:
-                plt.title('T1=%.3G$\pm$%.2Gus' % (avg, std))
-
+            ax.errorbar(CounterArray, OptMatrix[plotInd, :] / 1000, yerr=ErrMatrix[plotInd, :] / 1000, fmt='o')
         plt.xlabel('Trial #', fontsize='x-large')
         plt.ylabel('Decay time/us', fontsize='x-large')
         plt.tick_params(axis='both', which='major', labelsize='x-large')
@@ -341,32 +340,39 @@ def plotLabberRepeatedTSweepPlot(DataPath, RabiFileList, BackgroundFile='calibra
         if LogScale:
             ax.set_yscale('log')
 
-        if FitDoubleExponential:
+        if MaxPlotInd != 0 or MinPlotInd != 0:
             fig, ax = plt.subplots()
-            plotInd = 3
+            plotInd = 1
             # plt.plot(CounterArray, OptMatrix[plotInd, :]/1000, 'o')
             if MeasurementType == 't1t2interleaved':
+                if FitDoubleExponential:
+                    print('Error: t1t2interleaved with double exponential fit has not been completed yet.')
                 avgList = []
                 stdList = []
-                for ind in range(1):
-                    avgList += [np.mean(OptMatrixList[ind][plotInd, :MaxPlotInd] / 1000)]
+                for ind in range(2):
+                    avgList += [np.mean(OptMatrixList[ind][plotInd, MinPlotInd:MaxPlotInd] / 1000)]
                     if NumPoints > 1:
-                        stdList += [np.std(OptMatrixList[ind][plotInd, :MaxPlotInd] / 1000)]
+                        stdList += [np.std(OptMatrixList[ind][plotInd, MinPlotInd:MaxPlotInd] / 1000)]
                     else:
                         stdList += [ErrMatrixList[ind][plotInd, 0] / 1000]
-                    ax.errorbar(CounterArray[:MaxPlotInd], OptMatrixList[ind][plotInd, :MaxPlotInd] / 1000,
-                                yerr=ErrMatrixList[ind][plotInd, :MaxPlotInd] / 1000, fmt='o')
-                    plt.plot(CounterArray[MinPlotInd:MaxPlotInd], OptMatrix[plotInd, MinPlotInd:MaxPlotInd] / 1000, '--')
-                # plt.legend(['T1', 'T2echo'])
-                plt.title('Tqp=%.3G$\pm$%.2Gus' % (avgList[0], stdList[0]))
+                    ax.errorbar(CounterArray[MinPlotInd:MaxPlotInd],
+                                OptMatrixList[ind][plotInd, MinPlotInd:MaxPlotInd] / 1000,
+                                yerr=ErrMatrixList[ind][plotInd, MinPlotInd:MaxPlotInd] / 1000, fmt='o')
+                plt.legend(['T1', 'T2echo'])
+                for ind in range(2):
+                    plt.plot(CounterArray[MinPlotInd:MaxPlotInd], OptMatrixList[ind][plotInd, MinPlotInd:MaxPlotInd] / 1000, '--')
+                plt.title('T1=%.3G$\pm$%.2Gus, T2=%.3G$\pm$%.2Gus' % (avgList[0], stdList[0], avgList[1], stdList[1]))
             else:
-                avg = np.mean(OptMatrix[plotInd, :MaxPlotInd]) / 1000
-                std = np.std(OptMatrix[plotInd, :MaxPlotInd]) / 1000
-                ax.errorbar(CounterArray[:MaxPlotInd], OptMatrix[plotInd, :MaxPlotInd] / 1000,
-                            yerr=ErrMatrix[plotInd, :MaxPlotInd] / 1000,
+                avg = np.mean(OptMatrix[plotInd, MinPlotInd:MaxPlotInd]) / 1000
+                std = np.std(OptMatrix[plotInd, MinPlotInd:MaxPlotInd]) / 1000
+                ax.errorbar(CounterArray[MinPlotInd:MaxPlotInd], OptMatrix[plotInd, MinPlotInd:MaxPlotInd] / 1000,
+                            yerr=ErrMatrix[plotInd, MinPlotInd:MaxPlotInd] / 1000,
                             fmt='o')
                 plt.plot(CounterArray[MinPlotInd:MaxPlotInd], OptMatrix[plotInd, MinPlotInd:MaxPlotInd] / 1000, '--')
-                plt.title('Tqp=%.3G$\pm$%.2Gus' % (avg, std))
+                if FitDoubleExponential:
+                    plt.title('TR=%.3G$\pm$%.2Gus' % (avg, std))
+                else:
+                    plt.title('T1=%.3G$\pm$%.2Gus' % (avg, std))
 
             plt.xlabel('Trial #', fontsize='x-large')
             plt.ylabel('Decay time/us', fontsize='x-large')
@@ -375,71 +381,108 @@ def plotLabberRepeatedTSweepPlot(DataPath, RabiFileList, BackgroundFile='calibra
             if LogScale:
                 ax.set_yscale('log')
 
+            if FitDoubleExponential:
+                fig, ax = plt.subplots()
+                plotInd = 3
+                # plt.plot(CounterArray, OptMatrix[plotInd, :]/1000, 'o')
+                if MeasurementType == 't1t2interleaved':
+                    avgList = []
+                    stdList = []
+                    for ind in range(1):
+                        avgList += [np.mean(OptMatrixList[ind][plotInd, MinPlotInd:MaxPlotInd] / 1000)]
+                        if NumPoints > 1:
+                            stdList += [np.std(OptMatrixList[ind][plotInd, MinPlotInd:MaxPlotInd] / 1000)]
+                        else:
+                            stdList += [ErrMatrixList[ind][plotInd, 0] / 1000]
+                        ax.errorbar(CounterArray[:MaxPlotInd], OptMatrixList[ind][plotInd, MinPlotInd:MaxPlotInd] / 1000,
+                                    yerr=ErrMatrixList[ind][plotInd, MinPlotInd:MaxPlotInd] / 1000, fmt='o')
+                        plt.plot(CounterArray[MinPlotInd:MaxPlotInd], OptMatrixList[ind][plotInd, MinPlotInd:MaxPlotInd] / 1000, '--')
+                    # plt.legend(['T1', 'T2echo'])
+                    plt.title('Tqp=%.3G$\pm$%.2Gus' % (avgList[0], stdList[0]))
+                else:
+                    avg = np.mean(OptMatrix[plotInd, MinPlotInd:MaxPlotInd]) / 1000
+                    std = np.std(OptMatrix[plotInd, MinPlotInd:MaxPlotInd]) / 1000
+                    ax.errorbar(CounterArray[:MaxPlotInd], OptMatrix[plotInd, MinPlotInd:MaxPlotInd] / 1000,
+                                yerr=ErrMatrix[plotInd, MinPlotInd:MaxPlotInd] / 1000,
+                                fmt='o')
+                    plt.plot(CounterArray[MinPlotInd:MaxPlotInd], OptMatrixList[ind][plotInd, MinPlotInd:MaxPlotInd] / 1000, '--')
+                    plt.title('Tqp=%.3G$\pm$%.2Gus' % (avg, std))
+
+                plt.xlabel('Trial #', fontsize='x-large')
+                plt.ylabel('Decay time/us', fontsize='x-large')
+                plt.tick_params(axis='both', which='major', labelsize='x-large')
+                plt.tight_layout()
+                if LogScale:
+                    ax.set_yscale('log')
+
+                fig, ax = plt.subplots()
+                plotInd = 4
+                # plt.plot(CounterArray, OptMatrix[plotInd, :]/1000, 'o')
+                if MeasurementType == 't1t2interleaved':
+                    avgList = []
+                    stdList = []
+                    for ind in range(1):
+                        avgList += [np.mean(OptMatrixList[ind][plotInd, MinPlotInd:MaxPlotInd])]
+                        if NumPoints > 1:
+                            stdList += [np.std(OptMatrixList[ind][plotInd, MinPlotInd:MaxPlotInd])]
+                        else:
+                            stdList += [ErrMatrixList[ind][plotInd, 0]]
+                        ax.errorbar(CounterArray[:MaxPlotInd], OptMatrixList[ind][plotInd, MinPlotInd:MaxPlotInd],
+                                    yerr=ErrMatrixList[ind][plotInd, MinPlotInd:MaxPlotInd], fmt='o')
+                        plt.plot(CounterArray[MinPlotInd:MaxPlotInd], OptMatrixList[ind][plotInd, MinPlotInd:MaxPlotInd], '--')
+                    # plt.legend(['T1', 'T2echo'])
+                    plt.title('nqp=%.3G$\pm$%.2G' % (avgList[0], stdList[0]))
+                else:
+                    avg = np.mean(OptMatrix[plotInd, MinPlotInd:MaxPlotInd])
+                    std = np.std(OptMatrix[plotInd, MinPlotInd:MaxPlotInd])
+                    ax.errorbar(CounterArray[:MaxPlotInd], OptMatrix[plotInd, MinPlotInd:MaxPlotInd],
+                                yerr=ErrMatrix[plotInd, MinPlotInd:MaxPlotInd],
+                                fmt='o')
+                    plt.plot(CounterArray[MinPlotInd:MaxPlotInd], OptMatrixList[ind][plotInd, MinPlotInd:MaxPlotInd], '--')
+                    plt.title('nqp=%.3G$\pm$%.2G' % (avg, std))
+
+                plt.xlabel('Trial #', fontsize='x-large')
+                plt.ylabel('lambda', fontsize='x-large')
+                plt.tick_params(axis='both', which='major', labelsize='x-large')
+                plt.tight_layout()
+                if LogScale:
+                    ax.set_yscale('log')
+
+            if not MeasurementType == 't1t2interleaved':
+                fig, ax = plt.subplots()
+                if MeasurementType == 't1t2interleaved':
+                    print('Not done yet for t1 t2 R^2')
+                else:
+                    plt.plot(CounterArray, R2Array, 'o')
+                plt.xlabel('Trial #', fontsize='x-large')
+                plt.ylabel('R^2', fontsize='x-large')
+                plt.tick_params(axis='both', which='major', labelsize='x-large')
+                plt.tight_layout()
+
+
+        if MeasurementType == 'rabi':
             fig, ax = plt.subplots()
-            plotInd = 4
+            plotInd = 2
             # plt.plot(CounterArray, OptMatrix[plotInd, :]/1000, 'o')
-            if MeasurementType == 't1t2interleaved':
-                avgList = []
-                stdList = []
-                for ind in range(1):
-                    avgList += [np.mean(OptMatrixList[ind][plotInd, :MaxPlotInd])]
-                    if NumPoints > 1:
-                        stdList += [np.std(OptMatrixList[ind][plotInd, :MaxPlotInd])]
-                    else:
-                        stdList += [ErrMatrixList[ind][plotInd, 0]]
-                    ax.errorbar(CounterArray[:MaxPlotInd], OptMatrixList[ind][plotInd, :MaxPlotInd],
-                                yerr=ErrMatrixList[ind][plotInd, :MaxPlotInd], fmt='o')
-                    plt.plot(CounterArray[MinPlotInd:MaxPlotInd], OptMatrix[plotInd, MinPlotInd:MaxPlotInd], '--')
-                # plt.legend(['T1', 'T2echo'])
-                plt.title('nqp=%.3G$\pm$%.2G' % (avgList[0], stdList[0]))
-            else:
-                avg = np.mean(OptMatrix[plotInd, :MaxPlotInd])
-                std = np.std(OptMatrix[plotInd, :MaxPlotInd])
-                ax.errorbar(CounterArray[:MaxPlotInd], OptMatrix[plotInd, :MaxPlotInd],
-                            yerr=ErrMatrix[plotInd, :MaxPlotInd],
-                            fmt='o')
-                plt.plot(CounterArray[MinPlotInd:MaxPlotInd], OptMatrix[plotInd, MinPlotInd:MaxPlotInd], '--')
-                plt.title('nqp=%.3G$\pm$%.2G' % (avg, std))
-
+            ax.errorbar(CounterArray, OptMatrix[plotInd, :], yerr=ErrMatrix[plotInd, :], fmt='o')
             plt.xlabel('Trial #', fontsize='x-large')
-            plt.ylabel('lambda', fontsize='x-large')
+            plt.ylabel('T_pi (ns)', fontsize='x-large')
             plt.tick_params(axis='both', which='major', labelsize='x-large')
             plt.tight_layout()
-            if LogScale:
-                ax.set_yscale('log')
+            # plt.ylim(0, 20000)
 
-        if not MeasurementType == 't1t2interleaved':
-            fig, ax = plt.subplots()
-            if MeasurementType == 't1t2interleaved':
-                print('Not done yet for t1 t2 R^2')
-            else:
-                plt.plot(CounterArray, R2Array, 'o')
-            plt.xlabel('Trial #', fontsize='x-large')
-            plt.ylabel('R^2', fontsize='x-large')
-            plt.tick_params(axis='both', which='major', labelsize='x-large')
-            plt.tight_layout()
-
-
-    if MeasurementType == 'rabi':
-        fig, ax = plt.subplots()
-        plotInd = 2
-        # plt.plot(CounterArray, OptMatrix[plotInd, :]/1000, 'o')
-        ax.errorbar(CounterArray, OptMatrix[plotInd, :], yerr=ErrMatrix[plotInd, :], fmt='o')
-        plt.xlabel('Trial #', fontsize='x-large')
-        plt.ylabel('T_pi (ns)', fontsize='x-large')
-        plt.tick_params(axis='both', which='major', labelsize='x-large')
-        plt.tight_layout()
-        # plt.ylim(0, 20000)
-
-    if ShowFig:
         plt.show()
+
+
+    if MeasurementType == 't1t2interleaved':
+        return [CounterArray, OptMatrixList, ErrMatrixList]
     else:
-        plt.close('all')
+        return [CounterArray, OptMatrix, ErrMatrix]
 
 
 if __name__ == '__main__':
     # DataPath = 'E:/Projects\Fluxonium\data_process/Fluxonium042619/'
-    DataPath = 'C:/Users/admin\Labber\Data/2019/08\Data_0812/'
+    DataPath = 'C:/Users/admin\Labber\Data/2019/07\Data_0727/'
     BackgroundFile = 'calibration_5.hdf5'
 
     # RabiFileList = [
@@ -450,7 +493,7 @@ if __name__ == '__main__':
     #
     # ]
     RabiFileList = [
-        't1_t2_interleaved_2019-08-12-11-55-08.hdf5',
+        't1_t2_interleaved_2019-07-27-09-44-39.hdf5',
         # 't1_2019-06-17-20-53-22.hdf5',
     ]
 
@@ -461,8 +504,8 @@ if __name__ == '__main__':
     LogScale = False
     Calibration = False
     RotateComplex = True
-    FitDoubleExponential = False
-    PlotNumber = 50  # fit plot
+    FitDoubleExponential = True
+    PlotNumber = 2  # fit plot
     MinPlotInd = 0
     MaxPlotInd = 50
     PlotIndex = [0, 9]
@@ -474,5 +517,5 @@ if __name__ == '__main__':
                                  IQModFreq=IQModFreq, PhaseSlope=PhaseSlope, PhaseReferenceFreq=PhaseReferenceFreq,
                                  Calibration=Calibration, FitCorrectedR=FitCorrectedR, RotateComplex=RotateComplex,
                                  LogScale=LogScale, FitDoubleExponential=FitDoubleExponential, PlotNumber=PlotNumber,
-                                 MinPlotInd=MinPlotInd, MaxPlotInd=MaxPlotInd, PlotInd=PlotIndex,
+                                 MinPlotInd=MinPlotInd, MaxPlotInd=MaxPlotInd, PlotIndex=PlotIndex,
                                  T2MaxTime=T2MaxTime)
