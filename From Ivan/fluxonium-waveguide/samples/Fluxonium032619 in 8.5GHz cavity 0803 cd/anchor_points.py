@@ -44,70 +44,70 @@ data = {
                'frequency': 7.97297  # GHz
                },
               {'transition': (0, 2),
-               'external flux quanta': 0.518mA,  # \Phi_\mathrm{ext}/\Phi_0
+               'external flux quanta': 0.109,  # \Phi_\mathrm{ext}/\Phi_0
                'frequency': 7.909  # GHz
                },
-{'transition': (0, 3),
-               'external flux quanta': 0.518mA,  # \Phi_\mathrm{ext}/\Phi_0
+              {'transition': (0, 3),
+               'external flux quanta': 0.109,  # \Phi_\mathrm{ext}/\Phi_0
                'frequency': 8.0148  # GHz
                },
               {'transition': (0, 2),
-               'external flux quanta': 0.562mA,  # \Phi_\mathrm{ext}/\Phi_0
+               'external flux quanta': 0.117,  # \Phi_\mathrm{ext}/\Phi_0
                'frequency': 7.9176  # GHz
                },
-{'transition': (0, 3),
-               'external flux quanta': 0.562mA,  # \Phi_\mathrm{ext}/\Phi_0
+              {'transition': (0, 3),
+               'external flux quanta': 0.117,  # \Phi_\mathrm{ext}/\Phi_0
                'frequency': 8.0238  # GHz
                },
               {'transition': (0, 2),
-               'external flux quanta': 0.633mA,  # \Phi_\mathrm{ext}/\Phi_0
+               'external flux quanta': 0.131,  # \Phi_\mathrm{ext}/\Phi_0
                'frequency': 7.9242  # GHz
                },
-{'transition': (0, 3),
-               'external flux quanta': 0.633mA,  # \Phi_\mathrm{ext}/\Phi_0
+              {'transition': (0, 3),
+               'external flux quanta': 0.131,  # \Phi_\mathrm{ext}/\Phi_0
                'frequency': 8.0369  # GHz
                },
               {'transition': (0, 2),
-               'external flux quanta': 0.718mA,  # \Phi_\mathrm{ext}/\Phi_0
+               'external flux quanta': 0.147,  # \Phi_\mathrm{ext}/\Phi_0
                'frequency': 7.9283  # GHz
                },
-{'transition': (0, 3),
-               'external flux quanta': 0.718mA,  # \Phi_\mathrm{ext}/\Phi_0
+              {'transition': (0, 3),
+               'external flux quanta': 0.147,  # \Phi_\mathrm{ext}/\Phi_0
                'frequency': 8.0501  # GHz
                },
               {'transition': (0, 2),
-               'external flux quanta': 0.824mA,  # \Phi_\mathrm{ext}/\Phi_0
+               'external flux quanta': 0.168,  # \Phi_\mathrm{ext}/\Phi_0
                'frequency': 7.9292  # GHz
                },
-{'transition': (0, 3),
-               'external flux quanta': 0.824mA,  # \Phi_\mathrm{ext}/\Phi_0
+              {'transition': (0, 3),
+               'external flux quanta': 0.168,  # \Phi_\mathrm{ext}/\Phi_0
                'frequency': 8.056  # GHz
                },
-{'transition': (0, 2),
-               'external flux quanta': 0.979mA,  # \Phi_\mathrm{ext}/\Phi_0
+              {'transition': (0, 2),
+               'external flux quanta': 0.198,  # \Phi_\mathrm{ext}/\Phi_0
                'frequency': 7.9273  # GHz
                },
-{'transition': (0, 3),
-               'external flux quanta': 0.979mA,  # \Phi_\mathrm{ext}/\Phi_0
+              {'transition': (0, 3),
+               'external flux quanta': 0.198,  # \Phi_\mathrm{ext}/\Phi_0
                'frequency': 8.051  # GHz
                },
-{'transition': (0, 2),
-               'external flux quanta': 1.11mA,  # \Phi_\mathrm{ext}/\Phi_0
+              {'transition': (0, 2),
+               'external flux quanta': 0.223,  # \Phi_\mathrm{ext}/\Phi_0
                'frequency': 7.922  # GHz
                },
-{'transition': (0, 3),
-               'external flux quanta': 1.11mA,  # \Phi_\mathrm{ext}/\Phi_0
+              {'transition': (0, 3),
+               'external flux quanta': 0.223,  # \Phi_\mathrm{ext}/\Phi_0
                'frequency': 8.0377  # GHz
                },
-{'transition': (0, 2),
-               'external flux quanta': 1.24mA,  # \Phi_\mathrm{ext}/\Phi_0
+              {'transition': (0, 2),
+               'external flux quanta': 0.248,  # \Phi_\mathrm{ext}/\Phi_0
                'frequency': 7.9095  # GHz
                },
-{'transition': (0, 2),
-               'external flux quanta': 1.24mA,  # \Phi_\mathrm{ext}/\Phi_0
+              {'transition': (0, 2),
+               'external flux quanta': 0.248,  # \Phi_\mathrm{ext}/\Phi_0
                'frequency': 8.0241  # GHz
                },
-{'transition': (0, 2),
+              {'transition': (0, 2),
                'external flux quanta': 0.265,  # \Phi_\mathrm{ext}/\Phi_0
                'frequency': 7.9113  # GHz
                },

@@ -1,6 +1,6 @@
 I0 = -47.5e-3  # mA
 hI = 2.5975  # mA
-I = 0.518
+I = 1.24
 flux = (I - I0) / (hI * 2)
 print('flux = %.3G' % flux)
 
