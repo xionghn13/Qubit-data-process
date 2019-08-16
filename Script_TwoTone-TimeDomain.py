@@ -33,8 +33,8 @@ TwoToneSeqLen = 10e3
 # MeasTypeList = ['t2_ramsey', 't2_echo']
 # MeasTypeList = ['rabi', 't1', 't2_ramsey', 't2_echo']
 # MeasTypeList = ['rabi', 't2_ramsey', 't2_echo']
-# MeasTypeList = ['rabi', 't1', 't2_echo']
-MeasTypeList = ['rabi', 't1']
+MeasTypeList = ['rabi', 't1', 't2_echo']
+# MeasTypeList = ['rabi', 't1']
 # MeasTypeList = ['rabi', 't1_t2_interleaved']
 # MeasTypeList = ['rabi', 't2_ramsey', 't1_t2_interleaved']
 for i, cur in enumerate(CurrentList):
