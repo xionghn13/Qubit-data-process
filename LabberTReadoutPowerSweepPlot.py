@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import SubtractBackgroundFunc as sbf
 import QubitSpectrumFunc as qsf
 from scipy.optimize import curve_fit
-from QubitDecayFunc import T1_curve, rabi_curve, FitTransientTime, AutoRotate
+from QubitDecayFunc import T1_curve, rabi_curve, DoubleExp_curve, FitTransientTime, AutoRotate
 import ExtractDataFunc as edf
 import h5py
 
@@ -21,16 +21,16 @@ FitCorrectedR = True
 LogScale = False
 Calibration = False
 RotateComplex = True
-
+FitDoubleExp = True
 PhaseSlope = 326.7041108065019
 PhaseRefrenceFreq = 4.105
 
 NumFile = len(LabberFileList)
 # analyze background file
-
-[BackFreq, BackComplex] = edf.readFSweepLabber(DataPath + BackgroundFile)
-BackPower = edf.readQubitPowerLabber(DataPath + BackgroundFile)
-BackPowerStr = str(BackPower)
+if Calibration:
+    [BackFreq, BackComplex] = edf.readFSweepLabber(DataPath + BackgroundFile)
+    BackPower = edf.readQubitPowerLabber(DataPath + BackgroundFile)
+    BackPowerStr = str(BackPower)
 
 for i, RabiFile in enumerate(LabberFileList):
     RabiFileStrList = RabiFile[:-5].split('_')
@@ -44,6 +44,7 @@ for i, RabiFile in enumerate(LabberFileList):
         [Time, DrivePower, ComplexRabi] = edf.readRabiPowerSweepLabber(DataPath + RabiFile)
     elif MeasurementType == 't1':
         [Time, ReadoutPower, ComplexRabi] = edf.readT1ReadoutPowerSweepLabber(DataPath + RabiFile)
+    # print(ReadoutPower)
     TimeFit = np.linspace(Time.min(), Time.max(), 200)
     ComplexRabiNormalized = ComplexRabi * 10 ** (- ReadoutPower / 20)
     if Calibration:
@@ -61,14 +62,27 @@ for i, RabiFile in enumerate(LabberFileList):
             B_guess = y_data[-1]
             A_guess = y_data[0].real - B_guess
             T1_guess = x_data[-1] / 2
-            bounds = (
-                (-2, 1, -1),
-                (2, 1e6, 1)
-            )
-            opt, cov = curve_fit(T1_curve, x_data, y_data, p0=[A_guess, T1_guess, B_guess], maxfev=30000)
-            A_fit, T1_fit, B_fit = opt
-            FitR = T1_curve(TimeFit, A_fit, T1_fit, B_fit)
-            ParamList = ['A', 'Decay time/ns', 'B']
+            if FitDoubleExp:
+                Tqp_guess = 0.1 * T1_guess
+                try:
+                    opt, cov = curve_fit(DoubleExp_curve, x_data, y_data,
+                                         p0=[A_guess, T1_guess, B_guess, Tqp_guess, 0.5],
+                                         maxfev=300000)
+                    print('guess = %s' % str([A_guess, T1_guess, B_guess, Tqp_guess, 0.5]))
+                    print('Double exp fit opt = %s' % str(opt))
+                except RuntimeError:
+                    print("Error - curve_fit failed")
+                    opt = np.array([A_guess, T1_guess, B_guess, T1_guess, 1])
+                    cov = np.zeros([len(opt), len(opt)])
+
+                A_fit, TR_fit, B_fit, Tqp_fit, lamb_fit = opt
+                FitR = DoubleExp_curve(TimeFit, A_fit, TR_fit, B_fit, Tqp_fit, lamb_fit)
+                ParamList = ['A', 'TR/ns', 'B', 'Tqp/ns', 'lambda']
+            else:
+                opt, cov = curve_fit(T1_curve, x_data, y_data, p0=[A_guess, T1_guess, B_guess], maxfev=30000)
+                A_fit, T1_fit, B_fit = opt
+                FitR = T1_curve(TimeFit, A_fit, T1_fit, B_fit)
+                ParamList = ['A', 'Decay time/ns', 'B']
         elif MeasurementType in ('rabi'):
             B_guess = y_data.mean()
             A_guess = y_data[0] - B_guess
@@ -91,14 +105,15 @@ for i, RabiFile in enumerate(LabberFileList):
             TimeFitList = [TimeFit]
             RComplexList = [RComplex]
             FitRList = [FitR]
-            ReadoutPowerArray = ReadoutPower
+            ReadoutPowerArray = np.array([power])
             OptMatrix = np.reshape(opt, (len(opt), 1))
             ErrMatrix = np.reshape(np.sqrt(cov.diagonal()), (len(opt), 1))
         else:
             OptMatrix = np.concatenate((OptMatrix, np.reshape(opt, (len(opt), 1))), axis=1)
             ErrMatrix = np.concatenate((ErrMatrix, np.reshape(np.sqrt(cov.diagonal()), (len(opt), 1))), axis=1)
-            ReadoutPowerArray = np.concatenate((ReadoutPowerArray, ReadoutPowerArray))
+            ReadoutPowerArray = np.concatenate((ReadoutPowerArray, np.array([power])))
             TimeList.append(Time)
+            TimeFitList.append(TimeFit)
             RComplexList.append(RComplex)
             FitRList.append(FitR)
         for i_p, par in enumerate(opt):
@@ -107,11 +122,11 @@ for i, RabiFile in enumerate(LabberFileList):
             else:
                 OptMatrix[i_p, -1] = par
 
-
+NumPower = len(TimeList)
 limit = 1.7
-
+print(ReadoutPowerArray)
 fig, ax = plt.subplots()
-for i in range(NumFile):
+for i in range(NumPower):
     plt.plot(np.real(RComplexList[i]), np.imag(RComplexList[i]))
 if Calibration:
     plt.plot([-2, 2], [0, 0], '--')
@@ -126,7 +141,7 @@ if Calibration:
 ax.set_aspect('equal')
 
 fig, ax = plt.subplots()
-for i in range(NumFile):
+for i in range(NumPower):
     plt.plot(TimeList[i], np.real(RComplexList[i]), 'o')
     plt.plot(TimeFitList[i], FitRList[i])
 plt.xlabel('Time(ns)', fontsize='x-large')
@@ -134,16 +149,52 @@ plt.ylabel('Re', fontsize='x-large')
 plt.tick_params(axis='both', which='major', labelsize='x-large')
 plt.tight_layout()
 
-fig, ax = plt.subplots()
-plotInd = 1
-# plt.plot(DrivePowerArray, OptMatrix[plotInd, :]/1000, 'o')
-ax.errorbar(ReadoutPowerArray, OptMatrix[plotInd, :] / 1000, yerr=ErrMatrix[plotInd, :] / 1000, fmt='o')
-plt.xlabel('Power(dBm)', fontsize='x-large')
-plt.ylabel('Decay time(us)', fontsize='x-large')
-plt.tick_params(axis='both', which='major', labelsize='x-large')
-plt.tight_layout()
-if LogScale:
-    ax.set_yscale('log')
+if FitDoubleExp:
+    fig, ax = plt.subplots()
+    plotInd = 1
+    # plt.plot(DrivePowerArray, OptMatrix[plotInd, :]/1000, 'o')
+    ax.errorbar(ReadoutPowerArray, OptMatrix[plotInd, :] / 1000, yerr=ErrMatrix[plotInd, :] / 1000, fmt='o')
+    plt.plot(ReadoutPowerArray, OptMatrix[plotInd, :] / 1000, '--')
+    plt.xlabel('Power(dBm)', fontsize='x-large')
+    plt.ylabel('TR(us)', fontsize='x-large')
+    plt.tick_params(axis='both', which='major', labelsize='x-large')
+    plt.tight_layout()
+    if LogScale:
+        ax.set_yscale('log')
+    fig, ax = plt.subplots()
+    plotInd = 3
+    # plt.plot(DrivePowerArray, OptMatrix[plotInd, :]/1000, 'o')
+    ax.errorbar(ReadoutPowerArray, OptMatrix[plotInd, :] / 1000, yerr=ErrMatrix[plotInd, :] / 1000, fmt='o')
+    plt.plot(ReadoutPowerArray, OptMatrix[plotInd, :] / 1000, '--')
+    plt.xlabel('Power(dBm)', fontsize='x-large')
+    plt.ylabel('Tqp(us)', fontsize='x-large')
+    plt.tick_params(axis='both', which='major', labelsize='x-large')
+    plt.tight_layout()
+    if LogScale:
+        ax.set_yscale('log')
+    fig, ax = plt.subplots()
+    plotInd = 4
+    # plt.plot(DrivePowerArray, OptMatrix[plotInd, :]/1000, 'o')
+    ax.errorbar(ReadoutPowerArray, OptMatrix[plotInd, :] / 1000, yerr=ErrMatrix[plotInd, :] / 1000, fmt='o')
+    plt.plot(ReadoutPowerArray, OptMatrix[plotInd, :] / 1000, '--')
+    plt.xlabel('Power(dBm)', fontsize='x-large')
+    plt.ylabel('nqp', fontsize='x-large')
+    plt.tick_params(axis='both', which='major', labelsize='x-large')
+    plt.tight_layout()
+    if LogScale:
+        ax.set_yscale('log')
+else:
+    fig, ax = plt.subplots()
+    plotInd = 1
+    # plt.plot(DrivePowerArray, OptMatrix[plotInd, :]/1000, 'o')
+    ax.errorbar(ReadoutPowerArray, OptMatrix[plotInd, :] / 1000, yerr=ErrMatrix[plotInd, :] / 1000, fmt='o')
+    plt.plot(ReadoutPowerArray, OptMatrix[plotInd, :] / 1000, '--')
+    plt.xlabel('Power(dBm)', fontsize='x-large')
+    plt.ylabel('Decay time(us)', fontsize='x-large')
+    plt.tick_params(axis='both', which='major', labelsize='x-large')
+    plt.tight_layout()
+    if LogScale:
+        ax.set_yscale('log')
 
 if MeasurementType == 'rabi':
     fig, ax = plt.subplots()
