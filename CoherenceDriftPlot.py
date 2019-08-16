@@ -7,6 +7,8 @@ FileList = [
     't1_t2_interleaved_2019-08-12-11-55-08.hdf5',
 ]
 
+FitDoubleExp = True
+
 TimeStartStop = [
     {'start': [11, 55, 8], 'stop': [56, 17, 43]},
 ]
@@ -24,7 +26,7 @@ ErrList = []
 fig, ax = plt.subplots()
 for i, file in enumerate(FileList):
     [Count, Opt, Err] = plotLabberRepeatedTSweepPlot(DataPath, file, Calibration=False, FitCorrectedR=True, RotateComplex=True,
-                                 LogScale=False, FitDoubleExponential=False, PlotNumber=10, MinPlotInd=0, MaxPlotInd=50,
+                                 LogScale=False, FitDoubleExponential=FitDoubleExp, PlotNumber=10, MinPlotInd=0, MaxPlotInd=50,
                                  PlotIndex=[0, 3], T2MaxTime=3e5, ShowFig=False)
     # print(Err)
     TimeStamp = TimeStartStop[i]
@@ -40,8 +42,13 @@ for i, file in enumerate(FileList):
         # print(Opt[ind][1, :] / 1000)
         # print(Err[ind][1, :] / 1000)
         ax.errorbar(time, Opt[ind][1, :] / 1000, yerr=Err[ind][1, :] / 1000, fmt=fmt_list[ind])
+        if FitDoubleExp and ind == 0:
+            ax.errorbar(time, Opt[ind][3, :] / 1000, yerr=Err[ind][3, :] / 1000, fmt=fmt_list[ind])
     if i == 0:
-        plt.legend(['T1', 'T2echo'])
+        if FitDoubleExp:
+            plt.legend(['TR', 'Tqp', 'T2echo'])
+        else:
+            plt.legend(['T1', 'T2echo'])
     fmt_list = ['b--', 'r--']
     for ind in range(2):
         plt.plot(time, Opt[ind][1, :] / 1000, fmt_list[ind])
@@ -54,4 +61,6 @@ plt.ylabel("Decay time(us)", fontsize='x-large')
 plt.tick_params(axis='both', which='major', labelsize='x-large')
 plt.tight_layout()
 plt.xlim(TimeLimit)
+if FitDoubleExp:
+    ax.set_yscale('log')
 plt.show()
