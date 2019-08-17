@@ -103,14 +103,14 @@ data = {
                'external flux quanta': 0.248,  # \Phi_\mathrm{ext}/\Phi_0
                'frequency': 7.9095  # GHz
                },
-              {'transition': (0, 2),
+              {'transition': (0, 3),
                'external flux quanta': 0.248,  # \Phi_\mathrm{ext}/\Phi_0
                'frequency': 8.0241  # GHz
                },
-              {'transition': (0, 2),
-               'external flux quanta': 0.265,  # \Phi_\mathrm{ext}/\Phi_0
-               'frequency': 7.9113  # GHz
-               },
+              # {'transition': (0, 2),
+              #  'external flux quanta': 0.265,  # \Phi_\mathrm{ext}/\Phi_0
+              #  'frequency': 7.9113  # GHz
+              #  },
               {'transition': (0, 3),
                'external flux quanta': 0.315,  # \Phi_\mathrm{ext}/\Phi_0
                'frequency': 7.9893  # GHz

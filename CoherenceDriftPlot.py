@@ -43,7 +43,7 @@ for i, file in enumerate(FileList):
         # print(Err[ind][1, :] / 1000)
         ax.errorbar(time, Opt[ind][1, :] / 1000, yerr=Err[ind][1, :] / 1000, fmt=fmt_list[ind])
         if FitDoubleExp and ind == 0:
-            ax.errorbar(time, Opt[ind][3, :] / 1000, yerr=Err[ind][3, :] / 1000, fmt=fmt_list[ind])
+            ax.errorbar(time, Opt[ind][3, :] / 1000, yerr=Err[ind][3, :] / 1000, fmt='go')
     if i == 0:
         if FitDoubleExp:
             plt.legend(['TR', 'Tqp', 'T2echo'])
@@ -52,6 +52,8 @@ for i, file in enumerate(FileList):
     fmt_list = ['b--', 'r--']
     for ind in range(2):
         plt.plot(time, Opt[ind][1, :] / 1000, fmt_list[ind])
+        if FitDoubleExp and ind == 0:
+            plt.plot(time, Opt[ind][3, :] / 1000, 'g--')
     CountList += [Count]
     OptList += [Opt]
     ErrList += [Err]
@@ -63,4 +65,5 @@ plt.tight_layout()
 plt.xlim(TimeLimit)
 if FitDoubleExp:
     ax.set_yscale('log')
+    plt.ylim([10, 1e3])
 plt.show()

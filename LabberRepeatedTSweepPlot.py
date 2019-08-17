@@ -130,8 +130,8 @@ def plotLabberRepeatedTSweepPlot(DataPath, RabiFileList, BackgroundFile='calibra
                     A_guess = y_data[0].real - B_guess
                     T1_guess = x_data[-1] / 10
                     Tqp_guess = T1_guess / 10
-                    T1_guess = 16e3
-                    Tqp_guess = T1_guess
+                    # T1_guess = 16e3
+                    # Tqp_guess = T1_guess
                     if ind == 0 and FitDoubleExponential:
                         try:
                             opt, cov = curve_fit(DoubleExp_curve, x_data, y_data,
@@ -215,7 +215,7 @@ def plotLabberRepeatedTSweepPlot(DataPath, RabiFileList, BackgroundFile='calibra
                     for i_p, par in enumerate(optList[ind]):
                         if np.abs(ErrMatrixList[ind][i_p, -1]) > np.abs(par) or optList[ind][1] > 5 * Time[-1]:
                             OptMatrixList[ind][i_p, -1] = np.nan
-                            OptMatrixList[ind][i_p, -1] = par
+                            # OptMatrixList[ind][i_p, -1] = par
                         else:
                             OptMatrixList[ind][i_p, -1] = par
             else:

@@ -2,16 +2,16 @@ import Script_TwoTone
 import Script_TimeDomain
 from QubitDataProcessPackages import *
 
-CurrentList = np.array([2.545e-3])
-# CurrentList = np.concatenate((np.linspace(2.384e-3, 2.46e-3, 39), np.linspace(2.462e-3, 2.502e-3, 11)))
+# CurrentList = np.array([2.545e-3])
+CurrentList = np.concatenate((np.linspace(2.424e-3, 2.5e-3, 39), np.linspace(2.502e-3, 2.542e-3, 11)))
 # CurrentList = np.concatenate((np.linspace(2.466e-3, 2.542e-3, 20), np.linspace(2.544e-3, 2.62e-3, 39)))
 
 # CurrentList = np.linspace(2.59e-3, 2.62e-3, 16)
 #
 # CurrentList = np.insert(CurrentList, 0, 6.18e-3)
 print(CurrentList)
-Anchor1 = [2.567e-3, 525e6]
-Anchor2 = [2.568e-3, 525e6]
+Anchor1 = [2.4e-3, 665e6]
+Anchor2 = [2.41e-3, 649e6]
 SaveFig = True
 Span = 20e6
 DrivingPower = -15
@@ -33,8 +33,8 @@ TwoToneSeqLen = 10e3
 # MeasTypeList = ['t2_ramsey', 't2_echo']
 # MeasTypeList = ['rabi', 't1', 't2_ramsey', 't2_echo']
 # MeasTypeList = ['rabi', 't2_ramsey', 't2_echo']
-MeasTypeList = ['rabi', 't1', 't2_echo']
-# MeasTypeList = ['rabi', 't1']
+# MeasTypeList = ['rabi', 't1', 't2_echo']
+MeasTypeList = ['rabi', 't1']
 # MeasTypeList = ['rabi', 't1_t2_interleaved']
 # MeasTypeList = ['rabi', 't2_ramsey', 't1_t2_interleaved']
 for i, cur in enumerate(CurrentList):
