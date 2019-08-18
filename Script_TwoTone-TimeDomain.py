@@ -3,20 +3,20 @@ import Script_TimeDomain
 from QubitDataProcessPackages import *
 
 # CurrentList = np.array([2.545e-3])
-CurrentList = np.concatenate((np.linspace(2.424e-3, 2.5e-3, 39), np.linspace(2.502e-3, 2.542e-3, 11)))
+CurrentList = np.concatenate((np.linspace(2.492e-3, 2.5e-3, 5), np.linspace(2.502e-3, 2.542e-3, 11)))
 # CurrentList = np.concatenate((np.linspace(2.466e-3, 2.542e-3, 20), np.linspace(2.544e-3, 2.62e-3, 39)))
 
 # CurrentList = np.linspace(2.59e-3, 2.62e-3, 16)
 #
 # CurrentList = np.insert(CurrentList, 0, 6.18e-3)
 print(CurrentList)
-Anchor1 = [2.4e-3, 665e6]
-Anchor2 = [2.41e-3, 649e6]
+Anchor1 = [2.488e-3, 548.5e6]
+Anchor2 = [2.49e-3, 546.9e6]
 SaveFig = True
 Span = 20e6
 DrivingPower = -15
 PiPulseLength = 25e-9
-ReadoutFreq = 7.9681e9
+ReadoutFreq = 7.962e9
 ReadoutPower = 4
 T1MaxDelay = 60e-6
 PulseType = 0  # 0 Gaussian, 1 Square
