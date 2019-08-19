@@ -165,7 +165,7 @@ if __name__ == '__main__':
     Power = -10
     Avg = 50e3
     SeqLen = 10e3
-    [fc, width] = FindReadoutFreqOneTone(Current, AnchorReadout1, AnchorReadout2, SaveFig=SaveFig)
+    [fc, width] = 1e9 * FindReadoutFreqOneTone(Current, AnchorReadout1, AnchorReadout2, SaveFig=SaveFig)
     f0 = FindQubitFreqTwoTone(Current, Anchor1, Anchor2, Avg=Avg, Power=Power, Span=Span, SeqLen=SeqLen, ReadoutFreq=fc,
                               SaveFig=SaveFig)
     print(f0)
