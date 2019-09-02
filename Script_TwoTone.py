@@ -76,6 +76,7 @@ def FindQubitFreqTwoTone(Current, Anchor1, Anchor2, Avg=500e3, Power=0, ReadoutF
             os.makedirs(FigPath)
         FigName = OutFile.split('.')[0] + '.PNG'
         plt.savefig(FigPath + FigName)
+        plt.close('all')
     else:
         plt.show()
 
@@ -98,7 +99,7 @@ def FindReadoutFreqOneTone(Current, Anchor1, Anchor2, Avg=10e3, ReadoutPower=5, 
         'Qubit - Frequency': [[PredictFreq - Span / 2, 'START'], [PredictFreq + Span / 2, 'STOP']],
         'Alazar - Number of records': Avg,
         'Yoko - Current': Current,
-        'Counter - Number of points': 0,
+        # 'Counter - Number of points': 0,
         'Pulse Generator - Number of points': SeqLen,
         'Alazar - Channel B - Range': 5  # 100mV
     }
@@ -146,6 +147,7 @@ def FindReadoutFreqOneTone(Current, Anchor1, Anchor2, Avg=10e3, ReadoutPower=5, 
             os.makedirs(FigPath)
         FigName = OutFile.split('.')[0] + '.PNG'
         plt.savefig(FigPath + FigName)
+        plt.close('all')
     else:
         plt.show()
 
@@ -155,17 +157,24 @@ def FindReadoutFreqOneTone(Current, Anchor1, Anchor2, Avg=10e3, ReadoutPower=5, 
 if __name__ == '__main__':
     # ExperimentName = 'wg6 in 7.5GHz cavity'
     # CoolDownDate = 'test'
-    Current = 2.55e-3
-    Anchor1 = [2.54e-3, 524e6]
-    Anchor2 = [2.55e-3, 524e6]
-    AnchorReadout1 = [2.54e-3, 7.685e9]
-    AnchorReadout2 = [2.55e-3, 7.685e9]
+    Current = 1.9e-3
+    AnchorCurrents = [2.54e-3, 2.542e-3]
+    ExpectFreq = [2.128e9, 7.978e9]
+    Anchor1 = [AnchorCurrents[0], ExpectFreq[0]]
+    Anchor2 = [AnchorCurrents[1], ExpectFreq[0]]
+    AnchorReadout1 = [AnchorCurrents[0], ExpectFreq[1]]
+    AnchorReadout2 = [AnchorCurrents[1], ExpectFreq[1]]
     SaveFig = False
-    Span = 10e6
-    Power = -10
-    Avg = 50e3
+    Span = 200e6
+    Power = -15
+    Avg = 10e3
     SeqLen = 10e3
-    [fc, width] = 1e9 * FindReadoutFreqOneTone(Current, AnchorReadout1, AnchorReadout2, SaveFig=SaveFig)
-    f0 = FindQubitFreqTwoTone(Current, Anchor1, Anchor2, Avg=Avg, Power=Power, Span=Span, SeqLen=SeqLen, ReadoutFreq=fc,
-                              SaveFig=SaveFig)
+    ReadoutPower = -10
+    [fc, width] = FindReadoutFreqOneTone(Current, AnchorReadout1, AnchorReadout2, SaveFig=SaveFig, ReadoutPower=ReadoutPower)
+    fc *= 1e9
+    width *= 1e9
+    ReadoutFreq = fc - width / 2
+    # ReadoutFreq = 7.967e9
+    f0 = FindQubitFreqTwoTone(Current, Anchor1, Anchor2, Avg=Avg, Power=Power, Span=Span, SeqLen=SeqLen, ReadoutFreq=ReadoutFreq,
+                              SaveFig=SaveFig, ReadoutPower=ReadoutPower)
     print(f0)

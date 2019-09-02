@@ -350,7 +350,7 @@ def readRepeatedT1T2InterleavedSweepLabber(file):
     return [time, counter, t1_complex, t2_complex]
 
 
-def readVNAS11(file):
+def readVNA4portS11(file):
     # for Labber data
     S11_var = 'VNA-4port - S11'
     start_freq_var = 'VNA-4port - Start frequency'
@@ -366,7 +366,23 @@ def readVNAS11(file):
     return [freq, S11_complex]
 
 
-def readVNAS21(file):
+def readVNAS11(file):
+    # for Labber data
+    S11_var = 'VNA - S11'
+    start_freq_var = 'VNA - Start frequency'
+    stop_freq_var = 'VNA - Stop frequency'
+    num_of_points_var = 'VNA - # of points'
+    LogData = Labber.LogFile(file)
+    S11_complex = (np.transpose(LogData.getData(S11_var)))[:, 0]
+    Start_freq = np.transpose(LogData.getData(start_freq_var))[:, 0] * 1e-9
+    Stop_freq = np.transpose(LogData.getData(stop_freq_var))[:, 0] * 1e-9
+    Num_of_points = len(S11_complex)
+    freq = np.linspace(Start_freq, Stop_freq, Num_of_points)
+
+    return [freq, S11_complex]
+
+
+def readVNA4portS21(file):
     # for Labber data
     S11_var = 'VNA-4port - S21'
     start_freq_var = 'VNA-4port - Start frequency'
@@ -378,5 +394,22 @@ def readVNAS21(file):
     Stop_freq = np.transpose(LogData.getData(stop_freq_var))[:, 0] * 1e-9
     Num_of_points = len(S11_complex)
     freq = np.linspace(Start_freq, Stop_freq, Num_of_points)
+
+    return [freq, S11_complex]
+
+
+def readVNAS21(file):
+    # for Labber data
+    S11_var = 'VNA - S21'
+    start_freq_var = 'VNA - Start frequency'
+    stop_freq_var = 'VNA - Stop frequency'
+    num_of_points_var = 'VNA - # of points'
+    LogData = Labber.LogFile(file)
+    S11_complex = (np.transpose(LogData.getData(S11_var)))[:, 0]
+    Start_freq = np.transpose(LogData.getData(start_freq_var))[:, 0] * 1e-9
+    Stop_freq = np.transpose(LogData.getData(stop_freq_var))[:, 0] * 1e-9
+    Num_of_points = len(S11_complex)
+    S11_complex = np.reshape(S11_complex, (Num_of_points,))
+    freq = np.reshape(np.linspace(Start_freq, Stop_freq, Num_of_points), (Num_of_points,))
 
     return [freq, S11_complex]

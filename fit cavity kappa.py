@@ -7,17 +7,21 @@ import QubitSpectrumFunc as qsf
 from scipy.optimize import curve_fit
 import ExtractDataFunc as edf
 
-# DataPath = 'E:/Projects\Fluxonium\data_process/cavity/7.5GHz_5/'
-DataPath = 'E:/Projects\Fluxonium\data_process/Fluxonium032619/'
-OneToneFile = 'one tone_164.hdf5'
+DataPath = 'C:/Users/admin\Labber\Data/2019/08\Data_0830/'
+# DataPath = 'E:/Projects\Fluxonium\data_process/Fluxonium032619/'
+# OneToneFile = 'cavity Q_101.hdf5'
+OneToneFile = 'one tone_163.hdf5'
 
 TruncateFreq = False
 
 StartFreq = 7.95
 EndFreq = 8.98
-
-[Freq, Complex] = edf.readFSweepLabber(DataPath + OneToneFile)
-# [Freq, Complex] = edf.readVNAS21(DataPath + OneToneFile)
+if OneToneFile.startswith('one tone'):
+    [Freq, Complex] = edf.readFSweepLabber(DataPath + OneToneFile)
+else:
+    [Freq, Complex] = edf.readVNAS21(DataPath + OneToneFile)
+# print(Freq)
+# print(Complex)
 # Complex = np.sqrt(Complex)
 Complex = Complex ** 2
 if TruncateFreq:
@@ -35,6 +39,7 @@ AbsComplex = np.abs(ComplexTrunc)
 MaxAbs = np.max(AbsComplex)
 MinAbs = np.min(AbsComplex)
 MaxInd = AbsComplex.argmax()
+print(MaxInd)
 f0_guess = FreqTrunc[MaxInd]
 kappa_guess = (FreqTrunc[-1] - FreqTrunc[0]) / 4
 B_guess = MinAbs

@@ -36,6 +36,7 @@ def printCoherenceFromFileList(FileList, OutputFolder, OutputFile, FixedFolder=N
             file_folder = edf.getFolder(file)
             if not file.endswith('hdf5'):
                 file += '.hdf5'
+            # print(file)
             FitDict = plotReferencedTSweep(file_folder, file, FitDoubleExponential=fit_double, ShowFig=False, SaveFig=False)
             if i == 0:
                 freq = edf.readPumpFreqLabber(file_folder + file)
@@ -137,7 +138,7 @@ def getT1T2NameList(NameFolder, NameFile):
 
 if __name__ == '__main__':
     NameFolder = 'E:\\Projects\\Fluxonium\\data_process\\Fluxonium032619/'
-    NameFile = 'filename0720_2.txt'
+    NameFile = 'coherenceVSflux0822.txt'
     FileList = getT1T2NameList(NameFolder, NameFile)
     # print(FileList)
     # FileList = [
@@ -149,7 +150,7 @@ if __name__ == '__main__':
     FixedFolder = None
     LabberFolder = 'C:\\Users/admin\Labber\Data/'
     OutputFolder = 'E:\\Projects\\Fluxonium\\data_process\\Fluxonium032619/'
-    OutputFileTag = 'wg5 in 8.5GHz cavity 0710 cd'
+    OutputFileTag = 'wg5 in 8.5GHz cavity 0803 cd 2'
 
     for FitDoubleExp in [False, True]:
         OutputFile = OutputFileTag

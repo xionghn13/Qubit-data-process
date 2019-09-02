@@ -27,8 +27,8 @@ def sortPlot(x, y, spec):
     y_sort = y[ind]
     plt.plot(x_sort, y_sort, spec)
 
-I0 = -82.5e-3  # mA
-hI = 2.571  # mA
+I0 = -47.5e-3  # mA
+hI = 2.5975  # mA
 I_period = hI * 2  # mA
 SortWithFlux = False
 PlotT1diel = False
@@ -44,7 +44,7 @@ T = 0e-3
 f01 = 0.4864
 
 Folder = 'E:\Projects\Fluxonium\data_process\Fluxonium032619/'
-File = 'wg5 in 8.5GHz cavity 0710 cd double exp.xlsx'
+File = 'wg5 in 8.5GHz cavity 0803 cd 2 double exp.xlsx'
 ReadDataFromExcel = True
 
 # I0 = 2.199
@@ -163,7 +163,10 @@ if FitDoubleExp:
         legR = []
     else:
         legR = ['TR - Averge', 'T2echo - Averge', 'Tqp - Average']
-    plt.legend(['TR - Single', 'T2echo - Single', 'Tqp - Single'] + legR)
+    if T2Single.__len__() == 0 or np.all(T2Single != T2Single):
+        plt.legend(['TR - Single', 'Tqp - Single'] + legR)
+    else:
+        plt.legend(['TR - Single', 'T2echo - Single', 'Tqp - Single'] + legR)
     ax.set_yscale('log')
 
 else:
@@ -171,7 +174,10 @@ else:
         legR = []
     else:
         legR = ['TR - Averge', 'T2echo - Averge']
-    plt.legend(['T1 - Single', 'T2echo - Single'] + legR)
+    if T2Single.__len__() == 0 or np.all(T2Single != T2Single):
+        plt.legend(['T1 - Single'] + legR)
+    else:
+        plt.legend(['T1 - Single', 'T2echo - Single'] + legR)
 
 sortPlot(FreqMerge, T1Merge, ':')
 sortPlot(FreqMerge, T2Merge, ':')
@@ -204,13 +210,19 @@ if FitDoubleExp:
         legR = []
     else:
         legR = ['TR - Averge', 'T2echo - Averge', 'Tqp - Average']
-    plt.legend(leg + ['TR - Single', 'T2echo - Single', 'Tqp - Single'] + legR)
+    if T2Single.__len__() == 0 or np.all(T2Single != T2Single):
+        plt.legend(['TR - Single', 'Tqp - Single'] + legR)
+    else:
+        plt.legend(leg + ['TR - Single', 'T2echo - Single', 'Tqp - Single'] + legR)
 else:
     if FluxRepeated.__len__() == 0:
         legR = []
     else:
         legR = ['TR - Averge', 'T2echo - Averge']
-    plt.legend(leg + ['T1 - Single', 'T2echo - Single'] + legR)
+    if T2Single.__len__() == 0 or np.all(T2Single != T2Single):
+        plt.legend(['T1 - Single'] + legR)
+    else:
+        plt.legend(['T1 - Single', 'T2echo - Single'] + legR)
 sortPlot(FluxMerge, T1Merge, ':')
 sortPlot(FluxMerge, T2Merge, ':')
 if FitDoubleExp:
