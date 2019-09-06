@@ -10,8 +10,8 @@ E_c = 2.328
 E_j = 6.278
 level_num = 30
 g = 0.150
-I0 = -47.5e-3  # mA
-hI = 2.5975  # mA
+I0 = 11.3e-3  # mA
+hI = 2.6187  # mA
 w = 7.966
 
 
@@ -20,10 +20,11 @@ I_period = hI * 2
 iState = 0
 fState = 1
 
+SingleCurrentPoint = 0.4
 # plot dispersive shift as a function of flux
-# phi_ext1 = np.linspace(0.49, 0.51, 51)
+phi_ext1 = np.array([(SingleCurrentPoint - I0) / hI / 2])
 phi_ext = np.linspace(0., 1, 51)
-# phi_ext = np.sort(np.concatenate((phi_ext1, phi_ext2)))
+phi_ext = np.sort(np.concatenate((phi_ext1, phi_ext)))
 
 chi = np.zeros(len(phi_ext))
 # chi1 = np.zeros(len(phi_ext))
@@ -42,7 +43,10 @@ Ind0 = phi_ext == 0
 chi0 = chi[Ind0] * 1e3
 Indh = phi_ext == 0.5
 chih = chi[Indh] * 1e3
+IndS = phi_ext == phi_ext1[0]
+chiS = chi[IndS] * 1e3
 print('At 0 flux, chi/2pi=%.3GMHz. At half flux quanta, chi/2pi=%.3GMHz.' % (chi0, chih))
+print('At %.3GmA, chi/2pi=%.3GMHz.' % (SingleCurrentPoint, chiS))
 # chi_angle = chi*1e3/(kappa/2) *180/np.pi
 # chi1_angle = chi1*1e3/(kappa/2) *180/np.pi
 # chi2_angle = chi2*1e3/(kappa/2) *180/np.pi

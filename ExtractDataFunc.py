@@ -152,6 +152,16 @@ def readCurrentLabber(file):
         Cur = Cur[0]
     return Cur
 
+
+def readFirstPulseDelayLabber(file):
+    Delay_var = 'Pulse Generator - First pulse delay'
+    LogData = Labber.LogFile(file)
+    Delay = np.unique(np.transpose(LogData.getData(Delay_var)))
+    if len(Delay) == 1:
+        Delay = Delay[0]
+    return Delay
+
+
 def getFolder(file, LabberFolder='C:\\Users/admin\Labber\Data/'):
     name_str_list = file.split('_')
     type_str = name_str_list[0]
@@ -190,6 +200,28 @@ def readRabiLabber(file):
     # for Labber data
     ATS_var = 'Alazar - Channel A - Average buffer demodulated values'
     Time_var = 'Pulse Generator - Width #1'
+    LogData = Labber.LogFile(file)
+    rabi_complex = np.conj(np.transpose(LogData.getData(ATS_var)))[:, 0]
+    rabi_time = np.transpose(LogData.getData(Time_var))[:, 0] * 1e9
+
+    return [rabi_time, rabi_complex]
+
+
+def readRabiCH1DriveLabber(file):
+    # for Labber data
+    ATS_var = 'Alazar - Channel A - Average buffer demodulated values'
+    Time_var = 'Pulse Generator - Plateau #1'
+    LogData = Labber.LogFile(file)
+    rabi_complex = np.conj(np.transpose(LogData.getData(ATS_var)))[:, 0]
+    rabi_time = np.transpose(LogData.getData(Time_var))[:, 0] * 1e9
+
+    return [rabi_time, rabi_complex]
+
+
+def readRabiCH1PumpedLabber(file):
+    # for Labber data
+    ATS_var = 'Alazar - Channel A - Average buffer demodulated values'
+    Time_var = 'Pulse Generator - Width #2'
     LogData = Labber.LogFile(file)
     rabi_complex = np.conj(np.transpose(LogData.getData(ATS_var)))[:, 0]
     rabi_time = np.transpose(LogData.getData(Time_var))[:, 0] * 1e9

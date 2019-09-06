@@ -8,8 +8,8 @@ from LabberRepeatedTSweepPlot import plotLabberRepeatedTSweepPlot
 
 
 def timeDomainMeasurement(Current, ReadoutFreq, QubitFreq, DrivingPower, PiPulseLength, ReadoutPower=-5, Detuning=0.5e6,
-                          MeasurementType='rabi', T1MaxDelay=150e-6, Avg=300e3, DutyCyclePoints=400e3,
-                          PulseType=0, FitAndPlot=True, ShowFig=True):
+                          MeasurementType='rabi', T1MaxDelay=150e-6, Avg=300e3, DutyCyclePoints=400e3, PumpFreq=6.707e9,
+                          PumpPower=0, PumpLength=60e-9, PulseType=0, DriveDelay=1e-6, FitAndPlot=True, ShowFig=True):
     # ExperimentName = 'wg6 in 7.5GHz cavity'
     # CoolDownDate = 'test'
 
@@ -25,7 +25,37 @@ def timeDomainMeasurement(Current, ReadoutFreq, QubitFreq, DrivingPower, PiPulse
             'Qubit - Power': ReadoutPower,
             'Pump - Frequency': DrivingFreq,
             'Pump - Power': DrivingPower,
-            'Pulse Generator - Width #1': [[240e-9, 'STOP'], [31, 'N_PTS']],
+            'Pulse Generator - Width #1': [[900e-9, 'STOP'], [31, 'N_PTS']],
+            'Pulse Generator - Number of points': DutyCyclePoints,
+            'Alazar - Number of records': Avg,
+            'Pulse Generator - Pulse type': PulseType,  # 0 Gaussian
+            # 'Pulse Generator - Number of points': 20e3,
+        }
+    elif MeasurementType == 'rabi CH1 drive':
+        ItemDict = {
+            'Yoko - Current': Current,
+            'Qubit - Frequency': ReadoutFreq,
+            'Qubit - Power': ReadoutPower,
+            'Waveguide - Frequency': DrivingFreq,
+            'Waveguide - Power': DrivingPower,
+            'Pulse Generator - Plateau #1': [[180e-9, 'STOP'], [31, 'N_PTS']],
+            'Pulse Generator - Number of points': DutyCyclePoints,
+            'Alazar - Number of records': Avg,
+            'Pulse Generator - Pulse type': 0,  # 0 Gaussian
+            # 'Pulse Generator - Number of points': 20e3,
+        }
+    elif MeasurementType == 'rabi CH1 pumped':
+        ItemDict = {
+            'Yoko - Current': Current,
+            'Qubit - Frequency': ReadoutFreq,
+            'Qubit - Power': ReadoutPower,
+            'Pump - Frequency': DrivingFreq,
+            'Pump - Power': DrivingPower,
+            'Waveguide - Frequency': PumpFreq,
+            'Waveguide - Power': PumpPower,
+            'Pulse Generator - Plateau #1': PumpLength,
+            'Pulse Generator - Width #2': [[450e-9, 'STOP'], [31, 'N_PTS']],
+            'Pulse Generator - First pulse delay': DriveDelay,
             'Pulse Generator - Number of points': DutyCyclePoints,
             'Alazar - Number of records': Avg,
             'Pulse Generator - Pulse type': PulseType,  # 0 Gaussian

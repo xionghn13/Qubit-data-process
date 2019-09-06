@@ -15,7 +15,7 @@ def lorenztian(f, f0, kappa, A, B):
 
 # DataPath = 'E:/Projects\Fluxonium\data_process/cavity/8.5GHz/'
 DataPath = 'E:/Projects\Fluxonium\data_process/Fluxonium032619/'
-OneToneFile = 'rabi_175.hdf5'
+OneToneFile = 'rabi_2019-09-05-16-34_4.hdf5'
 
 TruncateFreq = False
 
@@ -63,7 +63,7 @@ for i in range(NumTime):
     if i == 0:
         OptMatrix = np.reshape(qopt, (len(qopt), 1))
         ErrMatrix = np.reshape(np.sqrt(qcov.diagonal()), (len(qopt), 1))
-        AbsFitList = []
+        AbsFitList = [AbsFit]
     else:
         OptMatrix = np.concatenate((OptMatrix, np.reshape(qopt, (len(qopt), 1))), axis=1)
         ErrMatrix = np.concatenate((ErrMatrix, np.reshape(np.sqrt(qcov.diagonal()), (len(qopt), 1))), axis=1)
@@ -72,23 +72,32 @@ for i in range(NumTime):
 f0Array = OptMatrix[0, :]
 MaxInd = f0Array.argmax()
 MinInd = f0Array.argmin()
-Maxf0 = np.max(f0Array)
-Minf0 = np.min(f0Array)
+MaxInd = 0
+MinInd = 11
+Maxf0 = f0Array[MaxInd]
+Minf0 = f0Array[MinInd]
 print('Min f0=%.5GGHz, max f0=%.5GGHz, difference=%.5GMHz' % (Minf0, Maxf0, (Maxf0 - Minf0) * 1e3))
-
+# print(MaxInd)
+# print(MinInd)
+# print(AbsFitList.__len__())
+# print(f0Array.__len__())
 fig, ax = plt.subplots()
+ax.grid(linestyle='--')
 leg = []
 for i in [MinInd, MaxInd]:
     plt.plot(FreqTrunc, AbsComplex[i, :], '.')
-    plt.plot(FreqTrunc, AbsFitList[i], 'r')
     leg += ['driving time=%.3Gns' % Time[i]]
     # plt.plot(FreqTrunc, AbsGuess, 'y')
+plt.legend(leg)
+for i in [MinInd, MaxInd]:
+    plt.plot(FreqTrunc, AbsFitList[i], '--')
 plt.xlabel('freq/GHz', fontsize='x-large')
 plt.ylabel('Abs', fontsize='x-large')
 plt.tick_params(axis='both', which='major', labelsize='x-large')
 plt.tight_layout()
 
 fig, ax = plt.subplots()
+ax.grid(linestyle='--')
 plotInd = 0
 leg = ()
 ax.errorbar(Time, OptMatrix[plotInd, :], yerr=ErrMatrix[plotInd, :], fmt='o')

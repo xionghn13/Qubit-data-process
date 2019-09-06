@@ -44,8 +44,8 @@ if ReadDataFromExcel:
     Len = len(Freq)
 
     Current = getRowData(sheet, 1, Len)
-    A = getRowData(sheet, 2, Len)
-    AErr = getRowData(sheet, 3, Len)
+    A = getRowData(sheet, 3, Len)
+    AErr = getRowData(sheet, 4, Len)
 
 
 Flux = (Current - I0) / I_period

@@ -62,6 +62,7 @@ def FindQubitFreqTwoTone(Current, Anchor1, Anchor2, Avg=500e3, Power=0, ReadoutF
     CurveFit = lorenztian(Freq, f0_fit, kappa_fit, A_fit, B_fit, C_fit)
 
     fig, ax = plt.subplots()
+    ax.grid(linestyle='--')
     plt.plot(Freq, y_data)
     plt.plot(Freq, CurveFit, 'r.')
     plt.plot(Freq, CurveGuess, 'y.')
@@ -133,6 +134,7 @@ def FindReadoutFreqOneTone(Current, Anchor1, Anchor2, Avg=10e3, ReadoutPower=5, 
     CurveFit = lorenztian(Freq, f0_fit, kappa_fit, A_fit, B_fit, C_fit)
 
     fig, ax = plt.subplots()
+    ax.grid(linestyle='--')
     plt.plot(Freq, y_data)
     plt.plot(Freq, CurveFit, 'r.')
     plt.plot(Freq, CurveGuess, 'y.')

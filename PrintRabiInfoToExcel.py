@@ -18,6 +18,7 @@ def printRabiInfoFromFileList(FileList, OutputFolder, OutputFile, FixedFolder=No
     CurSL = []
     ASL = []
     AerrSL = []
+    delaySL = []
     for ind, file in enumerate(FileList):
         file_folder = edf.getFolder(file)
         if not file.endswith('hdf5'):
@@ -25,8 +26,10 @@ def printRabiInfoFromFileList(FileList, OutputFolder, OutputFile, FixedFolder=No
         FitDict = plotReferencedTSweep(file_folder, file, ShowFig=False, SaveFig=False)
         freq = edf.readPumpFreqLabber(file_folder + file)
         cur = edf.readCurrentLabber(file_folder + file)
+        delay = edf.readFirstPulseDelayLabber((file_folder + file))
         freqSL += [freq]
         CurSL += [cur]
+        delaySL += [delay]
         A = FitDict['opt'][0]
         Aerr = np.sqrt(FitDict['cov'][0, 0])
         [A, Aerr] = checkBadFit(A, Aerr)
@@ -37,6 +40,7 @@ def printRabiInfoFromFileList(FileList, OutputFolder, OutputFile, FixedFolder=No
     table = [
         ['Freq'] + freqSL,
         ['Current'] + CurSL,
+        ['First Pulse Delay'] + delaySL,
         ['A'] + ASL,
         ['AErr'] + AerrSL,
     ]
@@ -60,7 +64,7 @@ def getRabiNameList(NameFolder, NameFile):
 
 if __name__ == '__main__':
     NameFolder = 'E:\\Projects\\Fluxonium\\data_process\\Fluxonium032619/'
-    NameFile = 'filename0720_2.txt'
+    NameFile = 'rabiVSdelay0904.txt'
     FileList = getRabiNameList(NameFolder, NameFile)
     # print(FileList)
     # FileList = [
@@ -72,7 +76,7 @@ if __name__ == '__main__':
     FixedFolder = None
     LabberFolder = 'C:\\Users/admin\Labber\Data/'
     OutputFolder = 'E:\\Projects\\Fluxonium\\data_process\\Fluxonium032619/'
-    OutputFileTag = 'wg5 in 8.5GHz cavity rabi 0710 cd'
+    OutputFileTag = 'wg5 in 8.5GHz cavity rabi CH1 pumped 0830 cd'
 
     OutputFile = OutputFileTag
     OutputFile += '.xlsx'
