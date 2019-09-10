@@ -37,12 +37,15 @@ def FindQubitFreqTwoTone(Current, Anchor1, Anchor2, Avg=500e3, Power=0, ReadoutF
 
     y_data = np.angle(Complex)
     y_data = np.abs(Complex)
+    N = 4
+    y_data_conv = np.convolve(y_data, np.ones((N,)) / N, mode='valid')
+    Freq_conv = np.convolve(Freq, np.ones((N,)) / N, mode='valid')
     kappa_guess = Span / 4 / 1e9
-    C_guess = (y_data[-1] - y_data[0]) / (Freq[-1] - Freq[0])
-    Ind = np.argmax(np.abs(y_data - C_guess * (Freq - Freq[0]) - y_data[0]))
-    f0_guess = Freq[Ind]
-    B_guess = y_data[0] + C_guess * (f0_guess - Freq[0])
-    A_guess = (y_data[Ind] - B_guess) * (kappa_guess / 2) ** 2
+    C_guess = (y_data_conv[-1] - y_data_conv[0]) / (Freq_conv[-1] - Freq_conv[0])
+    Ind = np.argmax(np.abs(y_data_conv - C_guess * (Freq_conv - Freq_conv[0]) - y_data_conv[0]))
+    f0_guess = Freq_conv[Ind]
+    B_guess = y_data_conv[0] + C_guess * (f0_guess - Freq_conv[0])
+    A_guess = (y_data_conv[Ind] - B_guess) * (kappa_guess / 2) ** 2
 
     def lorenztian(f, f0, kappa, A, B, C):
         t = A / ((f - f0) ** 2 + (kappa / 2) ** 2) + B + C * (f - f0)
@@ -57,6 +60,7 @@ def FindQubitFreqTwoTone(Current, Anchor1, Anchor2, Avg=500e3, Power=0, ReadoutF
     # print(bounds)
     qopt, qcov = curve_fit(lorenztian, Freq, y_data, guess, bounds=bounds)
     f0_fit, kappa_fit, A_fit, B_fit, C_fit = qopt
+    f0_std, kappa_std, A_std, B_std, C_std = np.sqrt(qcov.diagonal())
 
     CurveGuess = lorenztian(Freq, f0_guess, kappa_guess, A_guess, B_guess, C_guess)
     CurveFit = lorenztian(Freq, f0_fit, kappa_fit, A_fit, B_fit, C_fit)
@@ -81,7 +85,7 @@ def FindQubitFreqTwoTone(Current, Anchor1, Anchor2, Avg=500e3, Power=0, ReadoutF
     else:
         plt.show()
 
-    return f0_fit
+    return [f0_fit, f0_std]
 
 
 def FindReadoutFreqOneTone(Current, Anchor1, Anchor2, Avg=10e3, ReadoutPower=5, Span=10e6,

@@ -25,7 +25,7 @@ def main():
     pltpath = os.path.join(samples_path, sample,
             'Plots/Fits/Fluxonium Coupled to Harmonic Modes')
 
-    filename_in = 'one_mode_in_8.5GHz_cavity_0612cd_5.hdf5'
+    filename_in = 'one_mode_in_8.5GHz_cavity_0710cd.hdf5'
     
     filename_out = os.path.splitext(filename_in)[0]
 

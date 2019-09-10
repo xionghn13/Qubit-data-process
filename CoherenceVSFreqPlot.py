@@ -46,7 +46,7 @@ if __name__ == '__main__':
     f01 = 0.4864
 
     Folder = 'E:\Projects\Fluxonium\data_process\Fluxonium032619/'
-    File = 'wg5 in 8.5GHz cavity 0830 cd.xlsx'
+    File = 'wg5 in 8.5GHz cavity 0830 cd double exp.xlsx'
     ReadDataFromExcel = True
 
     # I0 = 2.199

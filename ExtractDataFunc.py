@@ -117,6 +117,15 @@ def readQubitPowerLabber(file):
     return Power
 
 
+def readSetup2ReadoutPowerLabber(file):
+    Power_var = 'Cavity RF - Power'
+    LogData = Labber.LogFile(file)
+    Power = np.unique(np.transpose(LogData.getData(Power_var)))
+    if len(Power) == 1:
+        Power = Power[0]
+    return Power
+
+
 def readQubitFreqLabber(file):
     Freq_var = 'Qubit - Frequency'
     LogData = Labber.LogFile(file)
@@ -379,6 +388,21 @@ def readRepeatedT1T2InterleavedSweepLabber(file):
     t1_t2_complex = np.conj(np.transpose(LogData.getData(ATS_var)))[:, ::len(time) * 2]
     t1_complex = t1_t2_complex[0::2]
     t2_complex = t1_t2_complex[1::2]
+    return [time, counter, t1_complex, t2_complex]
+
+
+def readSetup2RepeatedT1T2InterleavedSweepLabber(file):
+    # for Labber data
+    ATS_var = 'Signal Demodulation - Value'
+    Time_var = 'Multi-Qubit Pulse Generator - Sequence duration'
+    Counter_var = 'Single-Qubit Pulse Generator - Number of points'
+    LogData = Labber.LogFile(file)
+    counter = np.unique(np.transpose(LogData.getData(Counter_var)))
+    num_time = int(len(np.transpose(LogData.getData(Time_var))[0, :]) / len(counter))
+    time = np.transpose(LogData.getData(Time_var))[0, :num_time] * 1e9
+    t1_t2_complex = np.conj(np.transpose(LogData.getData(ATS_var)))
+    t1_complex = t1_t2_complex[0, :].reshape((len(counter), len(time))).transpose()
+    t2_complex = t1_t2_complex[1, :].reshape((len(counter), len(time))).transpose()
     return [time, counter, t1_complex, t2_complex]
 
 

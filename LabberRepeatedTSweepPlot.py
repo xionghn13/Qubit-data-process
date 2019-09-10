@@ -31,9 +31,13 @@ def plotLabberRepeatedTSweepPlot(DataPath, RabiFileList, BackgroundFile='calibra
         MeasurementType = RabiFileStrList[0]
         if MeasurementType == 't1' and RabiFileStrList[1] == 't2':
             MeasurementType = 't1t2interleaved'
-        ReadoutFreq = edf.readQubitFreqLabber(DataPath + RabiFile)
-        ReadoutPower = edf.readQubitPowerLabber(DataPath + RabiFile)
-        QubitFreq = edf.readPumpFreqLabber(DataPath + RabiFile)
+        if RabiFileStrList[0] == 'T1':
+            ReadoutPower = edf.readSetup2ReadoutPowerLabber(DataPath + RabiFile)
+        else:
+            ReadoutFreq = edf.readQubitFreqLabber(DataPath + RabiFile)
+            ReadoutPower = edf.readQubitPowerLabber(DataPath + RabiFile)
+            QubitFreq = edf.readPumpFreqLabber(DataPath + RabiFile)
+
         # Counter = edf.readPumpPowerLabber(DataPath + RabiFile)
 
         if MeasurementType in ('rabi', 'transient'):
@@ -44,6 +48,10 @@ def plotLabberRepeatedTSweepPlot(DataPath, RabiFileList, BackgroundFile='calibra
             [Time, Counter, ComplexVoltage] = edf.readRepeatedT2SweepLabber(DataPath + RabiFile)
         elif MeasurementType == 't1t2interleaved':
             [Time, Counter, ComplexVoltageT1, ComplexVoltageT2] = edf.readRepeatedT1T2InterleavedSweepLabber(
+                DataPath + RabiFile)
+        elif RabiFileStrList[0] == 'T1' and RabiFileStrList[1] == 'T2E':
+            MeasurementType = 't1t2interleaved'
+            [Time, Counter, ComplexVoltageT1, ComplexVoltageT2] = edf.readSetup2RepeatedT1T2InterleavedSweepLabber(
                 DataPath + RabiFile)
         Counter += LastCount + 1
         LastCount = Counter[-1]
@@ -130,10 +138,10 @@ def plotLabberRepeatedTSweepPlot(DataPath, RabiFileList, BackgroundFile='calibra
                     y_data = y_dataList[ind]
                     B_guess = y_data[-1]
                     A_guess = y_data[0].real - B_guess
-                    # T1_guess = x_data[-1] / 10
-                    # Tqp_guess = T1_guess / 10
-                    T1_guess = 180e3
-                    Tqp_guess = 30e3
+                    T1_guess = x_data[-1] / 10
+                    Tqp_guess = T1_guess / 10
+                    # T1_guess = 180e3
+                    # Tqp_guess = 30e3
                     if ind == 0 and FitDoubleExponential:
                         try:
                             opt, cov = curve_fit(DoubleExp_curve, x_data, y_data,
