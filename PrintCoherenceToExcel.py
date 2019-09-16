@@ -138,7 +138,7 @@ def getT1T2NameList(NameFolder, NameFile):
 
 if __name__ == '__main__':
     NameFolder = 'E:\\Projects\\Fluxonium\\data_process\\Fluxonium032619/'
-    NameFile = 'coherenceVSflux0902.txt'
+    NameFile = 'coherenceVSflux0911.txt'
     FileList = getT1T2NameList(NameFolder, NameFile)
     # print(FileList)
     # FileList = [
@@ -150,7 +150,7 @@ if __name__ == '__main__':
     FixedFolder = None
     LabberFolder = 'C:\\Users/admin\Labber\Data/'
     OutputFolder = 'E:\\Projects\\Fluxonium\\data_process\\Fluxonium032619/'
-    OutputFileTag = 'wg5 in 8.5GHz cavity 0830 cd'
+    OutputFileTag = 'wg5 in 8.5GHz cavity 0830 cd 3'
 
     for FitDoubleExp in [False, True]:
         OutputFile = OutputFileTag

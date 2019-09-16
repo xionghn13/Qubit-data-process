@@ -120,8 +120,8 @@ def main():
     subpath = 'Processed Data/Fluxonium Coupled to Harmonic Modes/'
     path = os.path.join(samples_path, sample, subpath)
 
-    filename_in = 'two_mode_in_8.5GHz_cavity.hdf5'
-    filename_fit = 'two_mode_in_8.5GHz_cavity.hdf5'
+    filename_in = 'two_mode_in_8.5GHz_cavity_0830cd.hdf5'
+    filename_fit = 'one_mode_in_8.5GHz_cavity_0830cd.hdf5'
 
     params = utilities.load_fit(os.path.join(path, filename_in))
 
@@ -148,14 +148,14 @@ def main():
     # params['num_qbt'] = 10
     # params['num_tot'] = 10
     # params['num_cpl'] = 10
-    params['error_type'] = 'absolute_error'
-    # params['num_mod'] = [10, 10]
-    # params['frequencies'] = np.array([7.89, 10])
-    # params['n_couplings'] = np.array([0.165, 1])
-    # params['phi_couplings'] = np.array([0., 0])
-    params['data_set'] = 'data4'
+    params['num_mod'] = [10]
+    params['frequencies'] = np.array([7.968])
+    params['n_couplings'] = np.array([0.144])
+    params['phi_couplings'] = np.array([0.])
+    # params['error_type'] = 'absolute_error'
+    # params['data_set'] = 'data1'
     
-    phi_ext = np.linspace(0.2, 1.2, 201)
+    phi_ext = np.linspace(-0.1, 0.6, 201)
 
     utilities.print_params(params)
     # params = fit(params)

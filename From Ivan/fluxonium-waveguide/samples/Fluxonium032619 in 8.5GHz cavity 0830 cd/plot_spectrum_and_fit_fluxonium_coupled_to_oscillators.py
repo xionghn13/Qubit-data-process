@@ -25,7 +25,7 @@ def main():
     pltpath = os.path.join(samples_path, sample,
             'Plots/Fits/Fluxonium Coupled to Harmonic Modes')
 
-    filename_in = 'two_mode_in_8.5GHz_cavity.hdf5'
+    filename_in = 'two_mode_in_8.5GHz_cavity_0830cd.hdf5'
     
     filename_out = os.path.splitext(filename_in)[0]
 
@@ -47,7 +47,7 @@ def main():
             params['E_C'], params['E_J'], str_freq, str_coup))
 
     # plt.xlim(-.05, 0.525)
-    plot_spectrum.label_axes(title, title_color='w', ylim=[0, 10], xlim=[-0.5, 0.6])
+    plot_spectrum.label_axes(title, title_color='w', xlim=[-0.5, 0.6])
     fig_path = os.path.join(pltpath, '%s_spectrum.png' % filename_out)
     plt.savefig(fig_path, dpi=600)
 

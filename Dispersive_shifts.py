@@ -5,14 +5,14 @@ import QubitSpectrumFunc as qsf
 from Single_small_junction import charge_dispersive_shift as nChi
 
 N = 50
-E_l = 0.418
-E_c = 2.679
-E_j = 6.928
+E_l = 1
+E_c = 2.3
+E_j = 13
 level_num = 30
 g = 0.146
 I0 = 5.27
 hI = 2.57 # mA
-w = 7.973
+w = 7.3
 
 
 I_period = hI * 2

@@ -29,8 +29,8 @@ def sortPlot(x, y, spec):
 
 
 if __name__ == '__main__':
-    I0 = -47.5e-3  # mA
-    hI = 2.5975  # mA
+    I0 = 32.5e-3  # mA
+    hI = 2.5895  # mA
     I_period = hI * 2  # mA
     SortWithFlux = False
     PlotT1diel = False
@@ -46,7 +46,7 @@ if __name__ == '__main__':
     f01 = 0.4864
 
     Folder = 'E:\Projects\Fluxonium\data_process\Fluxonium032619/'
-    File = 'wg5 in 8.5GHz cavity 0830 cd double exp.xlsx'
+    File = 'wg5 in 8.5GHz cavity 0830 cd 3 double exp.xlsx'
     ReadDataFromExcel = True
 
     # I0 = 2.199
@@ -151,8 +151,10 @@ if __name__ == '__main__':
             qsf.printPercent(i, 21)
 
     fig, ax = plt.subplots()
+    ax.grid(linestyle='--')
     ax.errorbar(FreqSingle, T1Single, yerr=T1ErrSingle, fmt='bo')
-    ax.errorbar(FreqSingle, T2Single, yerr=T2ErrSingle, fmt='b^')
+    if not (T2Single.__len__() == 0 or np.all(T2Single != T2Single)):
+        ax.errorbar(FreqSingle, T2Single, yerr=T2ErrSingle, fmt='b^')
     if FitDoubleExp:
         ax.errorbar(FreqSingle, TqpSingle, yerr=TqpErrSingle, fmt='bs')
 
@@ -195,12 +197,14 @@ if __name__ == '__main__':
     plt.tight_layout()
 
     fig, ax = plt.subplots()
+    ax.grid(linestyle='--')
     leg = []
     if PlotT1diel:
         sortPlot(FluxPlot, T1diel)
         leg = ['Dielectric loss tangent = %.3G' % loss_tan]
     ax.errorbar(FluxSingle, T1Single, yerr=T1ErrSingle, fmt='bo')
-    ax.errorbar(FluxSingle, T2Single, yerr=T2ErrSingle, fmt='b^')
+    if not (T2Single.__len__() == 0 or np.all(T2Single != T2Single)):
+        ax.errorbar(FluxSingle, T2Single, yerr=T2ErrSingle, fmt='b^')
     if FitDoubleExp:
         ax.errorbar(FluxSingle, TqpSingle, yerr=TqpErrSingle, fmt='bs')
 
@@ -238,6 +242,7 @@ if __name__ == '__main__':
 
     if FitDoubleExp:
         fig, ax = plt.subplots()
+        ax.grid(linestyle='--')
         ax.errorbar(FreqSingle, nqpSingle, yerr=nqpErrSingle, fmt='bo')
         ax.errorbar(FreqRepeated, nqpRepeated, yerr=nqpErrRepeated, fmt='ro')
 
@@ -254,6 +259,7 @@ if __name__ == '__main__':
         plt.tight_layout()
 
         fig, ax = plt.subplots()
+        ax.grid(linestyle='--')
         ax.errorbar(FluxSingle, nqpSingle, yerr=nqpErrSingle, fmt='bo')
         ax.errorbar(FluxRepeated, nqpRepeated, yerr=nqpErrRepeated, fmt='ro')
 
@@ -273,6 +279,7 @@ if __name__ == '__main__':
         plt.tight_layout()
 
     fig, ax = plt.subplots()
+    ax.grid(linestyle='--')
     sortPlot(FluxMerge, FreqMerge, 'o:')
     plt.xlabel('Flux/Phi_0', fontsize='x-large')
     plt.ylabel('Freq(GHz)', fontsize='x-large')

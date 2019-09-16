@@ -68,7 +68,7 @@ print('f0=%.5GGHz, kappa/2pi=%.3GMHz, A=%.3G, B=%.3G' % (f0_guess, kappa_guess *
 fig, ax = plt.subplots()
 leg = ()
 plt.plot(FreqTrunc, AbsComplex, '.')
-plt.plot(FreqTrunc, AbsFit, 'r')
+plt.plot(FreqTrunc, AbsFit, 'C0')
 plt.plot(FreqTrunc, AbsGuess, 'y')
 plt.xlabel('freq/GHz', fontsize='x-large')
 plt.ylabel('Abs', fontsize='x-large')

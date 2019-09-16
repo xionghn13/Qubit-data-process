@@ -3,19 +3,19 @@ import Script_TimeDomain
 from QubitDataProcessPackages import *
 
 # current list
-# CurrentList = np.array([2.63e-3])
-# CurrentList = np.concatenate((np.linspace(2.546e-3, 2.56e-3, 8), np.linspace(2.562e-3, 2.602e-3, 11)))
-# CurrentList = np.concatenate((np.linspace(2.662e-3, 2.682e-3, 6), np.linspace(2.684e-3, 2.76e-3, 39)))
+# CurrentList = np.array([2.622e-3])
+# CurrentList = np.concatenate((np.linspace(2.516e-3, 2.56e-3, 23), np.linspace(2.562e-3, 2.602e-3, 11)))
+# CurrentList = np.concatenate((np.linspace(2.606e-3, 2.682e-3, 20), np.linspace(2.684e-3, 2.76e-3, 39)))
 
-CurrentList = np.linspace(2.722e-3, 2.76e-3, 20)
+CurrentList = np.linspace(2.734e-3, 2.76e-3, 14)
 
 # CurrentList = np.insert(CurrentList, 0, 6.18e-3)
 print(CurrentList)
 
 # anchor points
-AnchorCurrents = [2.72e-3, 2.721e-3]
-Anchor1 = [AnchorCurrents[0], 0.5945e9]
-Anchor2 = [AnchorCurrents[1], 0.5945e9]
+AnchorCurrents = [2.73e-3, 2.732e-3]
+Anchor1 = [AnchorCurrents[0], 0.6055e9]
+Anchor2 = [AnchorCurrents[1], 0.6084e9]
 AnchorReadout1 = [AnchorCurrents[0], 7.967e9]
 AnchorReadout2 = [AnchorCurrents[1], 7.967e9]
 
@@ -50,12 +50,12 @@ DriveDelayList = [1e-9]
 # MeasTypeList = ['rabi CH1 drive']
 # MeasTypeList = ['rabi CH1 pumped']
 # MeasTypeList = ['t2_ramsey', 't1', 't2_echo']
-MeasTypeList = ['t1']
+# MeasTypeList = ['t1']
 # MeasTypeList = ['t2_ramsey', 't2_echo']
 # MeasTypeList = ['rabi', 't1', 't2_ramsey', 't2_echo']
 # MeasTypeList = ['rabi', 't2_ramsey', 't2_echo']
 # MeasTypeList = ['rabi', 't1', 't2_echo']
-# MeasTypeList = ['rabi', 't1']
+MeasTypeList = ['rabi', 't1']
 # MeasTypeList = ['rabi', 't1_short']
 # MeasTypeList = []
 # MeasTypeList = ['rabi', 't1_t2_interleaved']

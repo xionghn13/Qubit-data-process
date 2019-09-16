@@ -51,7 +51,7 @@ def colored_lines(x, levels, weights, initial, final, num_photons=1):
         width = 1.5
         style = '-'
     elif initial == 1 and num_photons == 1:
-        width = 1.0
+        width = 1.5
         style = '--'
     else:
         width = 1.0

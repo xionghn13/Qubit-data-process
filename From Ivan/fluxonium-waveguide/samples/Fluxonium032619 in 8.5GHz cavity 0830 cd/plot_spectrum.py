@@ -22,25 +22,26 @@ sample = 'fluxonium032619'
 
 def plot_spectrum():
     # I0 = -0.36  # mA
-    I0 = 2.199
-    hI = 2.469  # mA
+    I0 = 3.94e-3  # mA
+    hI = 2.61806  # mA
 
     path_filenames = [
-        'one tone_86.hdf5',
-        'one tone_87.hdf5',
-        'one tone_88.hdf5',
-        'two tone_211.hdf5',
-        'two tone_212.hdf5',
-        'two tone_213.hdf5',
-        'two tone_214.hdf5',
-        'two tone_231.hdf5',
-        'two tone_215.hdf5',
+        'one tone_164 (2).hdf5',
+        'two tone_2019-09-02-21-52.hdf5',
+        'two tone_2019-09-13.hdf5',
+        'two tone_2019-09-13-17.hdf5',
+        'two tone_2019-09-13-22.hdf5',
+        'two tone_2019-09-14-12.hdf5',
+        'one tone_171.hdf5',
+        'two tone_2019-09-15.hdf5'
+        # 'one tone_173.hdf5',
     ]
 
     path_filenames = [os.path.join(samples_path, sample, pf)
                       for pf in path_filenames]
     for path_filename in path_filenames:
         f = Labber.LogFile(path_filename)
+        # print(path_filename.split('\\')[-1])
         if path_filename.split('\\')[-1].startswith('two tone'):
             freq_var = 'Pump - Frequency'
         elif path_filename.split('\\')[-1].startswith('one tone'):
@@ -58,7 +59,6 @@ def plot_spectrum():
             bias_size = n_entries
             for k in range(bias_size):
                 d = f.getEntry(k)
-
                 freq_1d = d[freq_var] / 1.e9
                 bias_1d = d['Yoko - Current'] / 1.e-3
 
@@ -69,7 +69,7 @@ def plot_spectrum():
                                        dtype=complex)
                     freq_2d = np.empty_like(data_2d, dtype=float)
                     bias_2d = np.empty_like(data_2d, dtype=float)
-                    plot_2d = np.empty_like(data_2d, dtype=complex)
+                    plot_2d = np.empty_like(data_2d, dtype=float)
 
                 data_2d[k] = d[data_name]
                 freq_2d[k] = freq_1d
@@ -86,13 +86,11 @@ def plot_spectrum():
         bias_2d -= I0  # mA
         bias_2d /= (2. * hI)  # mA
 
-
-
-        if freq_var.startswith('pump'):
+        if freq_var.startswith('Pump'):
             plot_2d = np.transpose((data_2d.transpose() / np.mean(data_2d, axis=1)))
             # plot_2d = data_2d
             # plot_2d = plot_2d / np.mean(plot_2d)
-            plot_2d = np.abs(plot_2d)
+            plot_2d = np.imag(plot_2d)
         else:
             plot_2d = np.transpose((data_2d.transpose() / np.mean(data_2d, axis=1)))
             plot_2d = np.abs(plot_2d)
@@ -103,12 +101,10 @@ def plot_spectrum():
         # plot_2d = 1. - np.abs(plot_2d)
 
         bias_2d, freq_2d = correct_grid(bias_2d, freq_2d)
-        # plt.pcolormesh(bias_2d, freq_2d, plot_2d, cmap='PuBu')
-        plt.pcolormesh(bias_2d, freq_2d, plot_2d)
+        plt.pcolormesh(bias_2d, freq_2d, plot_2d, cmap='PuBu')
 
 
-
-def label_axes(title='', xlim=[0.2, 1.2], ylim=[3, 15],
+def label_axes(title='', xlim=[-0.1, 0.6], ylim=[0, 12],
                title_color='k'):
     labelsize = 18
     plt.xlabel('$\Phi_\mathrm{ext}/\Phi_0$', fontsize=labelsize)
@@ -129,7 +125,7 @@ def label_axes(title='', xlim=[0.2, 1.2], ylim=[3, 15],
 if __name__ == '__main__':
     filename = os.path.join(samples_path, sample, 'Plots', 'spectrum.png')
     plot_spectrum()
-    label_axes(ylim=[0, 10])
+    label_axes()
     plt.tight_layout()
     plt.savefig(filename, dpi=600)
     plt.show()

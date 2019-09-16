@@ -223,7 +223,7 @@ def plotLabberRepeatedTSweepPlot(DataPath, RabiFileList, BackgroundFile='calibra
                 FitRList.append(FitRt1t2List)
                 for ind in range(2):
                     for i_p, par in enumerate(optList[ind]):
-                        if np.abs(ErrMatrixList[ind][i_p, -1]) > np.abs(par) or optList[ind][1] > 5 * Time[-1]:
+                        if np.abs(ErrMatrixList[ind][i_p, -1]) > 0.4 * np.abs(par) or optList[ind][1] > 5 * Time[-1]:
                             OptMatrixList[ind][i_p, -1] = np.nan
                             # OptMatrixList[ind][i_p, -1] = par
                         else:
@@ -232,7 +232,7 @@ def plotLabberRepeatedTSweepPlot(DataPath, RabiFileList, BackgroundFile='calibra
                 RComplexList.append(RComplex[:, j])
                 FitRList.append(FitR)
                 for i_p, par in enumerate(opt):
-                    if np.abs(ErrMatrix[i_p, -1]) > np.abs(par) or opt[1] > 5 * Time[-1]:
+                    if np.abs(ErrMatrix[i_p, -1]) > 0.4 * np.abs(par) or opt[1] > 5 * Time[-1]:
                         OptMatrix[i_p, -1] = np.nan
                         # OptMatrix[i_p, -1] = par
                     else:
@@ -337,9 +337,9 @@ def plotLabberRepeatedTSweepPlot(DataPath, RabiFileList, BackgroundFile='calibra
             avgList = []
             stdList = []
             for ind in range(2):
-                avgList += [np.mean(OptMatrixList[ind][plotInd, :] / 1000)]
+                avgList += [np.nanmean(OptMatrixList[ind][plotInd, :] / 1000)]
                 if NumPoints > 1:
-                    stdList += [np.std(OptMatrixList[ind][plotInd, :] / 1000)]
+                    stdList += [np.nanstd(OptMatrixList[ind][plotInd, :] / 1000)]
                 else:
                     stdList += [ErrMatrixList[ind][plotInd, 0] / 1000]
                 ax.errorbar(CounterArray, OptMatrixList[ind][plotInd, :] / 1000, yerr=ErrMatrixList[ind][plotInd, :] / 1000,
@@ -366,9 +366,9 @@ def plotLabberRepeatedTSweepPlot(DataPath, RabiFileList, BackgroundFile='calibra
                 avgList = []
                 stdList = []
                 for ind in range(2):
-                    avgList += [np.mean(OptMatrixList[ind][plotInd, MinPlotInd:MaxPlotInd] / 1000)]
+                    avgList += [np.nanmean(OptMatrixList[ind][plotInd, MinPlotInd:MaxPlotInd] / 1000)]
                     if NumPoints > 1:
-                        stdList += [np.std(OptMatrixList[ind][plotInd, MinPlotInd:MaxPlotInd] / 1000)]
+                        stdList += [np.nanstd(OptMatrixList[ind][plotInd, MinPlotInd:MaxPlotInd] / 1000)]
                     else:
                         stdList += [ErrMatrixList[ind][plotInd, 0] / 1000]
                     ax.errorbar(CounterArray[MinPlotInd:MaxPlotInd],
@@ -379,8 +379,8 @@ def plotLabberRepeatedTSweepPlot(DataPath, RabiFileList, BackgroundFile='calibra
                     plt.plot(CounterArray[MinPlotInd:MaxPlotInd], OptMatrixList[ind][plotInd, MinPlotInd:MaxPlotInd] / 1000, '--')
                 plt.title('T1=%.3G$\pm$%.2Gus, T2=%.3G$\pm$%.2Gus' % (avgList[0], stdList[0], avgList[1], stdList[1]))
             else:
-                avg = np.mean(OptMatrix[plotInd, MinPlotInd:MaxPlotInd]) / 1000
-                std = np.std(OptMatrix[plotInd, MinPlotInd:MaxPlotInd]) / 1000
+                avg = np.nanmean(OptMatrix[plotInd, MinPlotInd:MaxPlotInd]) / 1000
+                std = np.nanstd(OptMatrix[plotInd, MinPlotInd:MaxPlotInd]) / 1000
                 ax.errorbar(CounterArray[MinPlotInd:MaxPlotInd], OptMatrix[plotInd, MinPlotInd:MaxPlotInd] / 1000,
                             yerr=ErrMatrix[plotInd, MinPlotInd:MaxPlotInd] / 1000,
                             fmt='o')
@@ -406,9 +406,9 @@ def plotLabberRepeatedTSweepPlot(DataPath, RabiFileList, BackgroundFile='calibra
                     avgList = []
                     stdList = []
                     for ind in range(1):
-                        avgList += [np.mean(OptMatrixList[ind][plotInd, MinPlotInd:MaxPlotInd] / 1000)]
+                        avgList += [np.nanmean(OptMatrixList[ind][plotInd, MinPlotInd:MaxPlotInd] / 1000)]
                         if NumPoints > 1:
-                            stdList += [np.std(OptMatrixList[ind][plotInd, MinPlotInd:MaxPlotInd] / 1000)]
+                            stdList += [np.nanstd(OptMatrixList[ind][plotInd, MinPlotInd:MaxPlotInd] / 1000)]
                         else:
                             stdList += [ErrMatrixList[ind][plotInd, 0] / 1000]
                         ax.errorbar(CounterArray[:MaxPlotInd], OptMatrixList[ind][plotInd, MinPlotInd:MaxPlotInd] / 1000,
@@ -417,8 +417,8 @@ def plotLabberRepeatedTSweepPlot(DataPath, RabiFileList, BackgroundFile='calibra
                     # plt.legend(['T1', 'T2echo'])
                     plt.title('Tqp=%.3G$\pm$%.2Gus' % (avgList[0], stdList[0]))
                 else:
-                    avg = np.mean(OptMatrix[plotInd, MinPlotInd:MaxPlotInd]) / 1000
-                    std = np.std(OptMatrix[plotInd, MinPlotInd:MaxPlotInd]) / 1000
+                    avg = np.nanmean(OptMatrix[plotInd, MinPlotInd:MaxPlotInd]) / 1000
+                    std = np.nanstd(OptMatrix[plotInd, MinPlotInd:MaxPlotInd]) / 1000
                     ax.errorbar(CounterArray[:MaxPlotInd], OptMatrix[plotInd, MinPlotInd:MaxPlotInd] / 1000,
                                 yerr=ErrMatrix[plotInd, MinPlotInd:MaxPlotInd] / 1000,
                                 fmt='o')
@@ -440,9 +440,9 @@ def plotLabberRepeatedTSweepPlot(DataPath, RabiFileList, BackgroundFile='calibra
                     avgList = []
                     stdList = []
                     for ind in range(1):
-                        avgList += [np.mean(OptMatrixList[ind][plotInd, MinPlotInd:MaxPlotInd])]
+                        avgList += [np.nanmean(OptMatrixList[ind][plotInd, MinPlotInd:MaxPlotInd])]
                         if NumPoints > 1:
-                            stdList += [np.std(OptMatrixList[ind][plotInd, MinPlotInd:MaxPlotInd])]
+                            stdList += [np.nanstd(OptMatrixList[ind][plotInd, MinPlotInd:MaxPlotInd])]
                         else:
                             stdList += [ErrMatrixList[ind][plotInd, 0]]
                         ax.errorbar(CounterArray[:MaxPlotInd], OptMatrixList[ind][plotInd, MinPlotInd:MaxPlotInd],
@@ -451,8 +451,8 @@ def plotLabberRepeatedTSweepPlot(DataPath, RabiFileList, BackgroundFile='calibra
                     # plt.legend(['T1', 'T2echo'])
                     plt.title('nqp=%.3G$\pm$%.2G' % (avgList[0], stdList[0]))
                 else:
-                    avg = np.mean(OptMatrix[plotInd, MinPlotInd:MaxPlotInd])
-                    std = np.std(OptMatrix[plotInd, MinPlotInd:MaxPlotInd])
+                    avg = np.nanmean(OptMatrix[plotInd, MinPlotInd:MaxPlotInd])
+                    std = np.nanstd(OptMatrix[plotInd, MinPlotInd:MaxPlotInd])
                     ax.errorbar(CounterArray[:MaxPlotInd], OptMatrix[plotInd, MinPlotInd:MaxPlotInd],
                                 yerr=ErrMatrix[plotInd, MinPlotInd:MaxPlotInd],
                                 fmt='o')
@@ -502,7 +502,7 @@ def plotLabberRepeatedTSweepPlot(DataPath, RabiFileList, BackgroundFile='calibra
 
 if __name__ == '__main__':
     # DataPath = 'E:/Projects\Fluxonium\data_process/Fluxonium042619/'
-    DataPath = 'C:/Users/admin\Labber\Data/2019/09\Data_0903/'
+    DataPath = 'C:/Users/admin\Labber\Data/2019/08\Data_0830/'
     BackgroundFile = 'calibration_5.hdf5'
 
     # RabiFileList = [
@@ -514,7 +514,7 @@ if __name__ == '__main__':
     # ]
     RabiFileList = [
         # 't1_t2_interleaved_2019-07-27-09-44-39.hdf5',
-        't1_2019-09-03-14-49-55.hdf5',
+        't1_2019-08-30-20-15-19.hdf5',
     ]
 
     IQModFreq = 0.05
