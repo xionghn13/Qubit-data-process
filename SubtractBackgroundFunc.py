@@ -25,10 +25,18 @@ def FISweepSelfCalibrate(DataPath, OneToneFile):
 
 
 def FISweepBackgroundCalibrate(DataPath, OneToneFile, BackgroundFile, OneTonePower):
-    [OneFreq, OneCurrent, OneComplex] = edf.readFISweepDat(DataPath + OneToneFile)
-    [BackFreq, BackComplex] = edf.readFSweepDat(DataPath + BackgroundFile)
-    BackPowerStr = BackgroundFile.split('_')[5][:-3]
-    BackPower = float(BackPowerStr)
+    if OneToneFile.endswith('dat'):
+        [OneFreq, OneCurrent, OneComplex] = edf.readFISweepDat(DataPath + OneToneFile)
+    else:
+        [OneFreq, OneCurrent, OneComplex] = edf.readFISweepLabber(DataPath + OneToneFile)
+    if BackgroundFile.endswith('dat'):
+        [BackFreq, BackComplex] = edf.readFSweepDat(DataPath + BackgroundFile)
+        BackPowerStr = BackgroundFile.split('_')[5][:-3]
+        BackPower = float(BackPowerStr)
+    else:
+        [BackFreq, BackComplex] = edf.readFSweepLabber(DataPath + BackgroundFile)
+        BackPower = edf.readQubitPowerLabber(DataPath + BackgroundFile)
+
     BackComplexITP = itp.interp1d(BackFreq, BackComplex)
     RComplex = OneComplex / BackComplexITP(OneFreq) * 10 ** (BackPower / 20 - OneTonePower / 20)
     OneFreqUniq = np.unique(OneFreq)

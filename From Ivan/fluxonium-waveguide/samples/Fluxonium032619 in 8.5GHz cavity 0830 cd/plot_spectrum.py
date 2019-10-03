@@ -24,7 +24,8 @@ def plot_spectrum():
     # I0 = -0.36  # mA
     I0 = 3.94e-3  # mA
     hI = 2.61806  # mA
-
+    I0 = 0  # mA
+    hI = 0.5  # mA
     path_filenames = [
         'one tone_164 (2).hdf5',
         'two tone_2019-09-02-21-52.hdf5',
@@ -33,10 +34,25 @@ def plot_spectrum():
         'two tone_2019-09-13-22.hdf5',
         'two tone_2019-09-14-12.hdf5',
         'one tone_171.hdf5',
-        'two tone_2019-09-15.hdf5'
+        'two tone_2019-09-15.hdf5',
+        'two tone_2019-09-15-18.hdf5',
+        'two tone_2019-09-17-23.hdf5',
+        'two tone_2019-09-18.hdf5',
+        'two tone_2019-09-19.hdf5',
+        'two tone_2019-09-19-21.hdf5',
+        'two tone_2019-09-24.hdf5',
+        'two tone_2019-09-24_2.hdf5',
+        'two tone_2019-09-24-18.hdf5',
+        'two tone_2019-09-24-21.hdf5',
+        'two tone_2019-09-25.hdf5',
+        'two tone_2019-09-25-9_2.hdf5',
+        'two tone_2019-09-25-23.hdf5',
         # 'one tone_173.hdf5',
     ]
-
+    no_spec_files = [
+        'two tone_2019-09-18.hdf5',
+        'two tone_2019-09-25.hdf5',
+    ]
     path_filenames = [os.path.join(samples_path, sample, pf)
                       for pf in path_filenames]
     for path_filename in path_filenames:
@@ -87,10 +103,19 @@ def plot_spectrum():
         bias_2d /= (2. * hI)  # mA
 
         if freq_var.startswith('Pump'):
+            # print(abs(np.mean(data_2d, axis=1)))
+            # print(abs(np.var(data_2d, axis=1)))
             plot_2d = np.transpose((data_2d.transpose() / np.mean(data_2d, axis=1)))
             # plot_2d = data_2d
             # plot_2d = plot_2d / np.mean(plot_2d)
-            plot_2d = np.imag(plot_2d)
+            plot_2d_max_contrast = np.zeros(plot_2d.shape)
+            for k in range(plot_2d.shape[0]):
+                if np.var(np.imag(plot_2d[k, :])) < np.var(np.real(plot_2d[k, :])):
+                    plot_2d_max_contrast[k, :] = np.real(plot_2d[k, :])
+                else:
+                    plot_2d_max_contrast[k, :] = np.imag(plot_2d[k, :])
+            plot_2d = plot_2d_max_contrast
+            plot_2d = np.transpose((plot_2d.transpose() - np.mean(plot_2d, axis=1)))
         else:
             plot_2d = np.transpose((data_2d.transpose() / np.mean(data_2d, axis=1)))
             plot_2d = np.abs(plot_2d)
@@ -99,7 +124,22 @@ def plot_spectrum():
         # for k in range(data_2d.shape[1]):
         #     plot_2d[:, k] /= np.max(plot_2d[:, k])
         # plot_2d = 1. - np.abs(plot_2d)
+        plot_2d -= np.mean(plot_2d)
+        plot_2d = np.abs(plot_2d)
+        # print(np.max(plot_2d))
 
+        if path_filename.split('\\')[-1] in no_spec_files:
+            # print('----------')
+            # print(np.min(plot_2d))
+            # plot_2d /= 10
+            # print(np.min(plot_2d))
+            plot_2d[1, 1] = 1
+        else:
+            plot_2d /= (np.max(plot_2d))
+        # print(np.max(plot_2d))
+        # print(np.min(plot_2d))
+        # print(np.mean(plot_2d))
+        # print(np.max(plot_2d))
         bias_2d, freq_2d = correct_grid(bias_2d, freq_2d)
         plt.pcolormesh(bias_2d, freq_2d, plot_2d, cmap='PuBu')
 

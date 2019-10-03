@@ -290,6 +290,17 @@ def readT1Labber(file):
     return [t1_time, t1_complex]
 
 
+def readIntegratedT1Labber(file):
+    # for Labber data
+    ATS_var = 'Alazar - Channel A - Average demodulated value'
+    Time_var = 'Alazar - Number of samples'
+    LogData = Labber.LogFile(file)
+    t1_complex = np.conj(np.transpose(LogData.getData(ATS_var)))[:, 0]
+    t1_time = np.transpose(LogData.getData(Time_var))[:, 0]
+
+    return [t1_time, t1_complex]
+
+
 def readT1PowerSweepLabber(file):
     # for Labber data
     ATS_var = 'Alazar - Channel A - Average buffer demodulated values'
@@ -325,6 +336,19 @@ def readRepeatedT1SweepLabber(file):
     t1_counter = np.unique(np.transpose(LogData.getData(Counter_var)))
     t1_time = np.transpose(LogData.getData(Time_var))[:, 0] * 1e9
     t1_complex = np.conj(np.transpose(LogData.getData(ATS_var)))[:, ::len(t1_time)]
+
+    return [t1_time, t1_counter, t1_complex]
+
+
+def readRepeatedIntegratedT1SweepLabber(file):
+    # for Labber data
+    ATS_var = 'Alazar - Channel A - Average demodulated value'
+    Time_var = 'Alazar - Number of samples'
+    Counter_var = 'Counter - Number of points'
+    LogData = Labber.LogFile(file)
+    t1_counter = np.unique(np.transpose(LogData.getData(Counter_var)))
+    t1_time = np.transpose(LogData.getData(Time_var))[:, 0]
+    t1_complex = np.conj(np.transpose(LogData.getData(ATS_var)))
 
     return [t1_time, t1_counter, t1_complex]
 
@@ -449,7 +473,7 @@ def readVNA4portS21(file):
     Start_freq = np.transpose(LogData.getData(start_freq_var))[:, 0] * 1e-9
     Stop_freq = np.transpose(LogData.getData(stop_freq_var))[:, 0] * 1e-9
     Num_of_points = len(S11_complex)
-    freq = np.linspace(Start_freq, Stop_freq, Num_of_points)
+    freq = np.reshape(np.linspace(Start_freq, Stop_freq, Num_of_points), (Num_of_points,))
 
     return [freq, S11_complex]
 

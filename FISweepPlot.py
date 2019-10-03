@@ -18,7 +18,8 @@ profiler = pprofile.Profile()
 # BackgroundFile = '081717_one_tone_4GHz_to_12GHz_-20dBm.dat'
 # OneToneFile = '081817_one_tone_6.4GHz_to_9.0GHz_-2.5mA_to_2.5mA_1.dat'
 DataPath = 'E:/Projects\Fluxonium\data_process/Fluxonium032619/'
-BackgroundFile = 'one_tone_6.45GHz_to_6.6GHz_5dBm_0mA_10us integration_200Kavg_100KHz step_091918.dat'
+# BackgroundFile = 'one_tone_6.45GHz_to_6.6GHz_5dBm_0mA_10us integration_200Kavg_100KHz step_091918.dat'
+BackgroundFile = 'one tone_174.hdf5'
 # BackgroundFile = 'one_tone_3.5GHz_to_12GHz_5dBm_3mA_10us integration_5Kavg_500KHz step_121018.dat'
 # OneToneFile = '110518_one_tone_4GHz_to_9GHz_-2mA_to_3mA_10us integration_3Kavg.dat'
 # OneToneFileList = ['110518_one_tone_4GHz_to_9GHz_-2mA_to_3mA_10us integration_3Kavg.dat',
@@ -164,29 +165,33 @@ BackgroundFile = 'one_tone_6.45GHz_to_6.6GHz_5dBm_0mA_10us integration_200Kavg_1
 #
 # ]
 
+# OneToneFileList = [
+#     'two tone_588.hdf5',
+#     'two tone_588_1.hdf5',
+#     'two tone_587.hdf5',
+#     'two tone_589.hdf5',
+#     'two tone_590.hdf5',
+#     'one tone_120.hdf5',
+#     'one tone_128.hdf5',
+#     'one tone_117_1.hdf5',
+#     'two tone_597.hdf5',
+#     'two tone_608.hdf5',
+#     'one tone_118_1.hdf5',
+#     'one tone_120_1.hdf5',
+#     'two tone_613.hdf5',
+#     'two tone_614.hdf5',
+#
+# ]
+# OneToneFile = 'power spectroscopy_5.hdf5'
 OneToneFileList = [
-    'two tone_588.hdf5',
-    'two tone_588_1.hdf5',
-    'two tone_587.hdf5',
-    'two tone_589.hdf5',
-    'two tone_590.hdf5',
-    'one tone_120.hdf5',
-    'one tone_128.hdf5',
-    'one tone_117_1.hdf5',
-    'two tone_597.hdf5',
-    'two tone_608.hdf5',
-    'one tone_118_1.hdf5',
-    'one tone_120_1.hdf5',
-    'two tone_613.hdf5',
-    'two tone_614.hdf5',
-
+    'one tone_178.hdf5',
+    'one tone_179.hdf5',
 ]
-
 PlotSpectrum = False
 ClickForPoints = False
 PickleSave = False
 NoCalibrate = False  # for one tone at anti crossing
-SelfCalibrate = True  # use background file to calibrate
+SelfCalibrate = True  # whether use background file to calibrate
 
 RawDataIndexForPlot = 0
 PickleFile = "SubtractBackgroundPickleDump.dat"
@@ -259,7 +264,10 @@ else:
 PhaseSlope = np.mean((OnePhaseRaw[-1] - OnePhaseRaw[first_ind]) / (OneFreqRawUniq[-1] - OneFreqRawUniq[first_ind]))
 
 if not SelfCalibrate:
-    [BackFreqRaw, BackComplexRaw] = edf.readFSweepDat(DataPath + BackgroundFile)
+    if BackgroundFile.endswith('dat'):
+        [BackFreqRaw, BackComplexRaw] = edf.readFSweepDat(DataPath + BackgroundFile)
+    else:
+        [BackFreqRaw, BackComplexRaw] = edf.readFSweepLabber(DataPath + BackgroundFile)
     BackPhaseRaw = np.unwrap(np.angle(BackComplexRaw))
 
     leg = ('One tone -15dBm', 'Background 5dBm')

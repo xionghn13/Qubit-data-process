@@ -7,10 +7,10 @@ import QubitSpectrumFunc as qsf
 from scipy.optimize import curve_fit
 import ExtractDataFunc as edf
 
-DataPath = 'C:/Users/admin\Labber\Data/2019/08\Data_0830/'
+DataPath = 'C:/Users/admin\Labber\\fridge 2 data\\2019\\09\Data_0922\\'
 # DataPath = 'E:/Projects\Fluxonium\data_process/Fluxonium032619/'
-# OneToneFile = 'cavity Q_101.hdf5'
-OneToneFile = 'one tone_163.hdf5'
+# OneToneFile = 'cavity Q_110.hdf5'
+OneToneFile = 'one tone_202.hdf5'
 
 TruncateFreq = False
 
@@ -39,7 +39,7 @@ AbsComplex = np.abs(ComplexTrunc)
 MaxAbs = np.max(AbsComplex)
 MinAbs = np.min(AbsComplex)
 MaxInd = AbsComplex.argmax()
-print(MaxInd)
+# print(MaxInd)
 f0_guess = FreqTrunc[MaxInd]
 kappa_guess = (FreqTrunc[-1] - FreqTrunc[0]) / 4
 B_guess = MinAbs
@@ -63,12 +63,12 @@ kappa_fit = np.abs(kappa_fit)
 
 AbsGuess = lorenztian(FreqTrunc, f0_guess, kappa_guess, A_guess, B_guess)
 AbsFit = lorenztian(FreqTrunc, f0_fit, kappa_fit, A_fit, B_fit)
-print('f0=%.5GGHz, kappa/2pi=%.3GMHz, A=%.3G, B=%.3G' % (f0_guess, kappa_guess * 1e3, MaxAbs, MinAbs))
+print('f0=%.6GGHz, kappa/2pi=%.3GMHz, A=%.3G, B=%.3G' % (f0_guess, kappa_guess * 1e3, MaxAbs, MinAbs))
 
 fig, ax = plt.subplots()
 leg = ()
 plt.plot(FreqTrunc, AbsComplex, '.')
-plt.plot(FreqTrunc, AbsFit, 'C0')
+plt.plot(FreqTrunc, AbsFit, 'r')
 plt.plot(FreqTrunc, AbsGuess, 'y')
 plt.xlabel('freq/GHz', fontsize='x-large')
 plt.ylabel('Abs', fontsize='x-large')

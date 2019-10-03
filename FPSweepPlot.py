@@ -7,11 +7,11 @@ from scipy.optimize import curve_fit
 import ExtractDataFunc as edf
 
 # DataPath = 'E:/Projects\Fluxonium\data_process/Fluxonium022319/'
-DataPath = 'E:/Projects\Fluxonium\data_process/FluxoniumPrevious/'
+DataPath = 'E:/Projects\Fluxonium\data_process/Fluxonium032619/'
 # BackgroundFile = 'calibration_5.hdf5'
-BackgroundFile = 'one_tone_6.45GHz_to_6.6GHz_5dBm_0mA_10us integration_200Kavg_100KHz step_091918.dat'
+BackgroundFile = 'one tone_174.hdf5'
 # OneToneFile = 'power spectroscopy_5.hdf5'
-OneToneFile = '100218_no pump_one_tone_6.48GHz_to_6.495GHz_-25dBm_to_-10dBm_-0.575mA_integration 3us_ 200Kavg_30us blank.dat'
+OneToneFile = 'one tone_175.hdf5'
 
 Calibration = True
 UseOneToneRange = True
@@ -19,14 +19,14 @@ FitSeparately = True
 PlotParamVSPower = False
 PlotUnfittedCircle = False
 ShiftCircle = True
-LineSpec = '.'
+LineSpec = '-'
 
 StartFreq = 0.95
 EndFreq = 1.1
 StartPower = -0
 EndPower = -0
 SelectPower = np.array([])
-SelectPower = np.array([-25, -20, -15, -10])
+# SelectPower = np.array([-25, -20, -15, -10])
 
 gamma_f_guess = 3e-3
 P0_guess = 0.5
@@ -132,6 +132,7 @@ if Calibration:
     if FitSeparately:
         optArray = np.zeros((7, NumPowerTrunc))
         covArray = np.zeros((7, NumPowerTrunc))
+        print(OnePowerUniqTrunc)
         LargerFreqRangeList = []
         FittedComplexList = []
         UnfittedComplexList = []

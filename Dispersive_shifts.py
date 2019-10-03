@@ -6,13 +6,13 @@ from Single_small_junction import charge_dispersive_shift as nChi
 
 N = 50
 E_l = 1
-E_c = 2.3
+E_c = 2.26
 E_j = 13
 level_num = 30
-g = 0.146
+g = 0.183
 I0 = 5.27
 hI = 2.57 # mA
-w = 7.3
+w = 11
 
 
 I_period = hI * 2
@@ -20,7 +20,7 @@ I_period = hI * 2
 iState = 0
 fState = 1
 
-SingleCurrentPoint = 0.4
+SingleCurrentPoint = I0 * 1.1
 # plot dispersive shift as a function of flux
 phi_ext1 = np.array([(SingleCurrentPoint - I0) / hI / 2])
 phi_ext = np.linspace(0., 1, 51)

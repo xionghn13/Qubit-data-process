@@ -131,6 +131,9 @@ def plotReferencedTSweep(DataPath, RabiFile, BackgroundFile='', Plus50MHzBackgro
                 [Time, Complex] = edf.readRabiCH1PumpedLabber(DataPath + RabiFile)
             else:
                 [Time, Complex] = edf.readRabiLabber(DataPath + RabiFile)
+        elif RabiFile.startswith('int_t1'):
+            MeasurementType = 't1 no ref'
+            [Time, Complex] = edf.readIntegratedT1Labber(DataPath+ RabiFile)
         elif RabiFile.startswith('t1'):
             MeasurementType = 't1 no ref'
             [Time, Complex] = edf.readT1Labber(DataPath + RabiFile)
@@ -402,14 +405,14 @@ def plotReferencedTSweep(DataPath, RabiFile, BackgroundFile='', Plus50MHzBackgro
 
 
 if __name__ == '__main__':
-    DataPath = 'C:/Users/admin\Labber\Data/2019/09\Data_0902\\'
+    DataPath = 'C:/Users/admin\Labber\Data/2019/09\Data_0928\\'
     BackgroundFile = []
     # BackgroundFile = '021219_rabi_CH2(AWG1Vpp)_no pump_readout_4.077GHz__-15dBm_qubit4.027GHz_-35dBm_0.8_mA_I cos Q sin mod true interleafing_odd readout even ref_avg100k_Rabi300_duty50000readout3us.h5'
     BackgroundFile = 'calibration_5.hdf5'
     # Plus50MHzBackgroundFile = '012819_rabi_CH2(AWG1Vpp)_no pump_readout_4.146GHz__-20dBm_qubit4.096GHz_-25dBm_4.9_mA_I cos Q sin mod true interleafing_odd readout even ref_avg100k_Rabi100000_duty150000readout3us.h5'
     Plus50MHzBackgroundFile = 'one_tone_4.05GHz_to_4.3GHz_-15dBm_4.9mA_10us integration_100Kavg_50KHz step_020419.dat'
     Minus50MHzBackgroundFile = 'one_tone_4.05GHz_to_4.3GHz_-15dBm_4.9mA_10us integration_100Kavg_50KHz step_020419.dat'
-    RabiFile = 't1_short_2019-09-02-20-53-02.hdf5'
+    RabiFile = 't2_echo_2019-09-28-23_3.hdf5'
     IQModFreq = 0.05
 
     PhaseSlope = 326.7041108065019

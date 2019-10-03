@@ -10,8 +10,8 @@ from scipy.optimize import curve_fit
 import ExtractDataFunc as edf
 
 
-DataPath = 'C:/Users/admin\Labber\Data/2019/08\Data_0827/'
-S11File = 'cavity Q_99.hdf5'
+DataPath = 'C:/Users/admin\Labber\Data/2019/09\Data_0919/'
+S11File = 'cavity Q_105.hdf5'
 
 
 [Freq, RComplex] = edf.readVNAS11(DataPath + S11File)

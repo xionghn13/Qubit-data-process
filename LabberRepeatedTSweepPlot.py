@@ -31,6 +31,8 @@ def plotLabberRepeatedTSweepPlot(DataPath, RabiFileList, BackgroundFile='calibra
         MeasurementType = RabiFileStrList[0]
         if MeasurementType == 't1' and RabiFileStrList[1] == 't2':
             MeasurementType = 't1t2interleaved'
+        elif MeasurementType == 'int':
+            MeasurementType = 't1'
         if RabiFileStrList[0] == 'T1':
             ReadoutPower = edf.readSetup2ReadoutPowerLabber(DataPath + RabiFile)
         else:
@@ -43,7 +45,10 @@ def plotLabberRepeatedTSweepPlot(DataPath, RabiFileList, BackgroundFile='calibra
         if MeasurementType in ('rabi', 'transient'):
             [Time, Counter, ComplexVoltage] = edf.readRepeatedRabiSweepLabber(DataPath + RabiFile)
         elif MeasurementType == 't1':
-            [Time, Counter, ComplexVoltage] = edf.readRepeatedT1SweepLabber(DataPath + RabiFile)
+            if RabiFileStrList[0] == 'int':
+                [Time, Counter, ComplexVoltage] = edf.readRepeatedIntegratedT1SweepLabber(DataPath + RabiFile)
+            else:
+                [Time, Counter, ComplexVoltage] = edf.readRepeatedT1SweepLabber(DataPath + RabiFile)
         elif MeasurementType == 't2':
             [Time, Counter, ComplexVoltage] = edf.readRepeatedT2SweepLabber(DataPath + RabiFile)
         elif MeasurementType == 't1t2interleaved':
@@ -502,7 +507,7 @@ def plotLabberRepeatedTSweepPlot(DataPath, RabiFileList, BackgroundFile='calibra
 
 if __name__ == '__main__':
     # DataPath = 'E:/Projects\Fluxonium\data_process/Fluxonium042619/'
-    DataPath = 'C:/Users/admin\Labber\Data/2019/08\Data_0830/'
+    DataPath = 'C:/Users/admin\Labber\Data/2019/09\Data_0928/'
     BackgroundFile = 'calibration_5.hdf5'
 
     # RabiFileList = [
@@ -514,7 +519,7 @@ if __name__ == '__main__':
     # ]
     RabiFileList = [
         # 't1_t2_interleaved_2019-07-27-09-44-39.hdf5',
-        't1_2019-08-30-20-15-19.hdf5',
+        'int_t1_32.hdf5',
     ]
 
     IQModFreq = 0.05

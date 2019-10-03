@@ -4,8 +4,8 @@ from datetime import timedelta
 FolderName = 'E:\\Projects\\Fluxonium\\data_process\\Fluxonium032619\\Shared log\\'
 FileName = 'magnet_20190830.txt'
 
-time_origin = [30, 19, 0, 0]
-TimeLimit = (-30, 36)
+time_origin = [38, 16, 0, 0]
+TimeLimit = (0, 48)
 
 
 DataTable = np.genfromtxt(FolderName + FileName, skip_header=23, delimiter=',')
