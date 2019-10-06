@@ -5,6 +5,7 @@ def thermal_photon(frequency, temperature):
     photon = 1 / (np.exp(h * frequency / k_B / temperature) - 1)
     return photon
 
+
 def effective_temperature(frequency, photon_number):
     temperature_effective = h * frequency / k_B / np.log(1 + 1 / photon_number)
     return temperature_effective
@@ -26,14 +27,30 @@ def pow_law(f, a, b):
     t = - a * f ** b
     return t
 
-# att_dB_list =
-att_dB = np.array([20, 20, 20])  # 4K, 100mK, 10mK
-temp = np.array([300, 4, 0.1, 0.02])  # 300K, 4K, 100mK, 10mK
-att = 10 ** (att_dB / 10)
+
+fridge_att_config_list = [
+    {
+        'temperature': 4,
+        'attenuation': [20]
+    },
+    {
+        'temperature': 0.1,
+        'attenuation': [20]
+    },
+    {
+        'temperature': 0.06,
+        'attenuation': [20],
+    },
+    {
+        'temperature': 0.02,
+        'attenuation': ['att1', 'att2'],
+    }
+]
 
 f = np.logspace(6, 12, num=101)
 # f = f.reshape((1, len(f)))
 fc = 12e9
+
 att1 = 'C:/Users\\admin\Labber\Data\\2019\\07\\Data_0709\\home made attenuator.hdf5'
 [freq_att1, S21_att1] = edf.readVNAS21(att1)
 freq_att1 *= 1e9
@@ -51,7 +68,6 @@ qopt, qcov = curve_fit(pow_law, freq_att1, S21_att1dB, guess, bounds=bounds)
 a_att1_fit, b_att1_fit = qopt
 S21_att1dB_fit = pow_law(freq_att1, a_att1_fit, b_att1_fit)
 
-
 att2 = 'C:/Users\\admin\Labber\Data\\2019\\07\Data_0731\homemade_attenuator2.hdf5'
 [freq_att2, S21_att2] = edf.readVNA4portS21(att2)
 freq_att2 *= 1e9
@@ -66,10 +82,14 @@ bounds = (
     (10, np.inf)
 )
 
-print(freq_att1.shape)
 qopt, qcov = curve_fit(pow_law, freq_att2, S21_att2dB, guess, bounds=bounds)
 a_att2_fit, b_att2_fit = qopt
 S21_att2dB_fit = pow_law(freq_att2, a_att2_fit, b_att2_fit)
+
+
+att_dB = np.array([20, 20, 20])  # 4K, 100mK, 10mK
+temp = np.array([300, 4, 0.1, 0.02])  # 300K, 4K, 100mK, 10mK
+att = 10 ** (att_dB / 10)
 
 n_ph = np.zeros((len(temp), len(f)))
 for i in range(len(temp)):
