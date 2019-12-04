@@ -9,10 +9,13 @@ import ExtractDataFunc as edf
 import os
 
 
-def plotReferencedTSweep(DataPath, RabiFile, BackgroundFile='', Plus50MHzBackgroundFile='', Minus50MHzBackgroundFile='',
+def plotReferencedTSweep(DataPath, RabiFile, BackgroundFolder='', BackgroundFile='', Plus50MHzBackgroundFile='',
+                         Minus50MHzBackgroundFile='', CircleCorrection=False,
+                         CorrectionParam=[1, 0.027, 0.798, -0.0098],
                          IQModFreq=0.05, PhaseSlope=326.7041108065019, PhaseReferenceFreq=4.105, Calibration=False,
                          FitCorrectedR=False, LimitTimeRange=False, RotateComplex=True, FitDoubleExponential=False,
                          StartTime=5000, EndTime=1e8, SaveFig=True, ShowFig=False, LogScale=False):
+    # read calibration file
     if Calibration:
         if BackgroundFile == []:
             [Plus50MHzBackFreq, Plus50MHzBackComplex] = edf.readFSweepDat(DataPath + Plus50MHzBackgroundFile)
@@ -23,7 +26,7 @@ def plotReferencedTSweep(DataPath, RabiFile, BackgroundFile='', Plus50MHzBackgro
             Minus50MHzBackPowerStr = Minus50MHzBackgroundFile.split('_')[5][:-3]
             Minus50MHzBackPower = float(Minus50MHzBackPowerStr)
         elif BackgroundFile.startswith('one_tone'):
-            [Plus50MHzBackFreq, Plus50MHzBackComplex] = edf.readFSweepDat(DataPath + BackgroundFile)
+            [Plus50MHzBackFreq, Plus50MHzBackComplex] = edf.readFSweepDat(BackgroundFolder + BackgroundFile)
             Plus50MHzBackPowerStr = BackgroundFile.split('_')[5][:-3]
             Plus50MHzBackPower = float(Plus50MHzBackPowerStr)
 
@@ -46,27 +49,36 @@ def plotReferencedTSweep(DataPath, RabiFile, BackgroundFile='', Plus50MHzBackgro
             Plus50MHzBackPower = BackPower
             Minus50MHzBackPower = BackPower
             if MeasurementType in ('rabi', 'transient'):
-                [Time, ComplexLowerFreq, ComplexHigherFreq] = edf.readRabiH5(DataPath + BackgroundFile)
+                [Time, ComplexLowerFreq, ComplexHigherFreq] = edf.readRabiH5(BackgroundFolder + BackgroundFile)
             elif MeasurementType == 't1':
-                [Time, ComplexLowerFreq, ComplexHigherFreq] = edf.readT1H5(DataPath + BackgroundFile)
+                [Time, ComplexLowerFreq, ComplexHigherFreq] = edf.readT1H5(BackgroundFolder + BackgroundFile)
             Plus50MHzBackFreq = np.array([BackLowerFreq, BackHigherFreq])
             Plus50MHzBackComplex = np.array([ComplexLowerFreq.mean(), ComplexHigherFreq.mean()])
             Minus50MHzBackFreq = Plus50MHzBackFreq
             Minus50MHzBackComplex = Plus50MHzBackComplex
         elif BackgroundFile.endswith('hdf5'):
             if BackgroundFile.startswith('transient'):
-                [Time, ComplexLowerFreq] = edf.readRabiLabber(DataPath + BackgroundFile)
-                BackPower = edf.readQubitPowerLabber(DataPath + BackgroundFile)
+                [Time, ComplexLowerFreq] = edf.readRabiLabber(BackgroundFolder + BackgroundFile)
+                BackPower = edf.readReadoutPowerLabber(BackgroundFolder + BackgroundFile)
                 Plus50MHzBackPower = BackPower
                 Minus50MHzBackPower = BackPower
-                BackFreq = edf.readQubitFreqLabber(DataPath + BackgroundFile)
+                BackFreq = edf.readReadoutFreqLabber(BackgroundFolder + BackgroundFile)
                 Plus50MHzBackFreq = np.array([BackFreq])
                 Plus50MHzBackComplex = np.array([ComplexLowerFreq.mean()])
                 Minus50MHzBackFreq = Plus50MHzBackFreq
                 Minus50MHzBackComplex = Plus50MHzBackComplex
-            elif BackgroundFile.startswith('calibration'):
-                [BackFreq, BackComplex] = edf.readFSweepLabber(DataPath + BackgroundFile)
-                BackPower = edf.readQubitPowerLabber(DataPath + BackgroundFile)
+            elif BackgroundFile.startswith('calibration') or BackgroundFile.startswith('power'):
+                [BackFreq, BackComplex] = edf.readFSweepLabber(BackgroundFolder + BackgroundFile)
+                BackPower = edf.readReadoutPowerLabber(BackgroundFolder + BackgroundFile)
+                Plus50MHzBackPower = BackPower
+                Minus50MHzBackPower = BackPower
+                Plus50MHzBackFreq = BackFreq
+                Plus50MHzBackComplex = BackComplex
+                Minus50MHzBackFreq = Plus50MHzBackFreq
+                Minus50MHzBackComplex = Plus50MHzBackComplex
+            elif BackgroundFile.startswith('RefRabiCal'):
+                # use rabi to calibrate rabi. Plus or minus are merged in one array.
+                [BackFreq, BackPower, BackComplex] = edf.readRefRabiCalLabber(BackgroundFolder + BackgroundFile)
                 Plus50MHzBackPower = BackPower
                 Minus50MHzBackPower = BackPower
                 Plus50MHzBackFreq = BackFreq
@@ -74,6 +86,7 @@ def plotReferencedTSweep(DataPath, RabiFile, BackgroundFile='', Plus50MHzBackgro
                 Minus50MHzBackFreq = Plus50MHzBackFreq
                 Minus50MHzBackComplex = Plus50MHzBackComplex
 
+    # read data file
     if RabiFile.endswith('dat'):
         RabiFileStrList = RabiFile.split('_')
         MeasurementType = RabiFileStrList[1]
@@ -119,6 +132,8 @@ def plotReferencedTSweep(DataPath, RabiFile, BackgroundFile='', Plus50MHzBackgro
                 Time = Time[TimeInd]
                 Complex = Complex[TimeInd]
     elif RabiFile.endswith('hdf5'):
+        ReadoutPower = edf.readReadoutPowerLabber(DataPath + RabiFile)
+        ReadoutFreq = edf.readReadoutFreqLabber(DataPath + RabiFile)
         if RabiFile.startswith('transient'):
             MeasurementType = 'transient no ref'
             [Time, Complex] = edf.readRabiLabber(DataPath + RabiFile)
@@ -133,7 +148,7 @@ def plotReferencedTSweep(DataPath, RabiFile, BackgroundFile='', Plus50MHzBackgro
                 [Time, Complex] = edf.readRabiLabber(DataPath + RabiFile)
         elif RabiFile.startswith('int_t1'):
             MeasurementType = 't1 no ref'
-            [Time, Complex] = edf.readIntegratedT1Labber(DataPath+ RabiFile)
+            [Time, Complex] = edf.readIntegratedT1Labber(DataPath + RabiFile)
         elif RabiFile.startswith('t1'):
             MeasurementType = 't1 no ref'
             [Time, Complex] = edf.readT1Labber(DataPath + RabiFile)
@@ -143,9 +158,11 @@ def plotReferencedTSweep(DataPath, RabiFile, BackgroundFile='', Plus50MHzBackgro
         elif RabiFile.startswith('t2_echo'):
             MeasurementType = 't2echo'
             [Time, Complex] = edf.readT2Labber(DataPath + RabiFile)
+        elif RabiFile.startswith('RefRabi'):
+            MeasurementType = 'rabi'
+            [Time, ReadoutLowerFreq, ReadoutHigherFreq, ComplexLowerFreq, ComplexHigherFreq] = edf.readRefRabiLabber(
+                DataPath + RabiFile)
 
-        ReadoutPower = edf.readQubitPowerLabber(DataPath + RabiFile)
-        ReadoutFreq = edf.readQubitFreqLabber(DataPath + RabiFile)
         if LimitTimeRange:
             TimeInd = (EndTime >= Time) == (Time >= StartTime)
             Time = Time[TimeInd]
@@ -173,6 +190,12 @@ def plotReferencedTSweep(DataPath, RabiFile, BackgroundFile='', Plus50MHzBackgro
                                                             Minus50MHzBackComplex, Minus50MHzBackPower)
         ComplexLowerFreqNormalized = ComplexLowerFreq * 10 ** (- ReadoutPower / 20)
         ComplexHigherFreqNormalized = ComplexHigherFreq * 10 ** (- ReadoutPower / 20)
+
+        [amp_cor_re_fit, amp_cor_im_fit, P0_fit, P0_im_fit] = CorrectionParam
+        if CircleCorrection:
+            RComplexLowerFreq /= (amp_cor_re_fit + amp_cor_im_fit * 1j)
+            RComplexLowerFreq = (RComplexLowerFreq - 1) / (P0_fit + P0_im_fit * 1j) * np.abs(
+                P0_fit + P0_im_fit * 1j) + 1
 
         # y_data = np.array(RComplexLowerFreq.real, dtype='float64')
         if FitCorrectedR:
@@ -235,7 +258,7 @@ def plotReferencedTSweep(DataPath, RabiFile, BackgroundFile='', Plus50MHzBackgro
         if MeasurementType == 't2':
             Tpi_guess = np.abs(x_data[MaxInd] - x_data[MinInd])
         else:
-            Tpi_guess =  T1_guess / 4
+            Tpi_guess = T1_guess / 4
         phi0_guess = 0
         guess = ([A_guess, T1_guess, B_guess, Tpi_guess, phi0_guess])
         # bounds = (
@@ -302,9 +325,11 @@ def plotReferencedTSweep(DataPath, RabiFile, BackgroundFile='', Plus50MHzBackgro
         if MeasurementType in ('t2', 't2echo', 'transient no ref', 't1 no ref', 'rabi no ref'):
             plt.plot(Time, (np.angle(ComplexNormalized) - PhaseSlope * (ReadoutFreq - 4.105)) % (2 * np.pi), 'o')
         else:
-            plt.plot(Time, (np.angle(ComplexLowerFreqNormalized) - PhaseSlope * (ReadoutLowerFreq - 4.105)) % (2 * np.pi),
+            plt.plot(Time,
+                     (np.angle(ComplexLowerFreqNormalized) - PhaseSlope * (ReadoutLowerFreq - 4.105)) % (2 * np.pi),
                      'o')
-            plt.plot(Time, (np.angle(ComplexHigherFreqNormalized) - PhaseSlope * (ReadoutHigherFreq - 4.105)) % (2 * np.pi),
+            plt.plot(Time,
+                     (np.angle(ComplexHigherFreqNormalized) - PhaseSlope * (ReadoutHigherFreq - 4.105)) % (2 * np.pi),
                      'o')
         plt.xlabel('Time/ns', fontsize='x-large')
         plt.ylabel('Phase', fontsize='x-large')
@@ -360,8 +385,14 @@ def plotReferencedTSweep(DataPath, RabiFile, BackgroundFile='', Plus50MHzBackgro
                 plt.title('T1=%.3G$\pm$%.2Gus, A=%.3G, B=%.3G' % (
                     T1_fit / 1000, T1_std / 1000, A_fit, B_fit))
         elif MeasurementType in ('transient', 'transient no ref'):
-            plt.title('T_transient=%.3G$\pm$%.2Gus, A=%.3G, B=%.3G' % (
-                T1_fit / 1000, T1_std / 1000, A_fit, B_fit))
+            if FitDoubleExponential:
+                plt.title('TR=%.3G$\pm$%.2Gus, A=%.3G, B=%.3G\n'
+                          'Tqp=%.3G$\pm$%.2Gus, lambda=%.3G$\pm$%.2G' % (
+                              TR_fit / 1000, TR_std / 1000, A_fit, B_fit, Tqp_fit / 1000, Tqp_std / 1000, lamb_fit,
+                              lamb_std))
+            else:
+                plt.title('T_transient=%.3G$\pm$%.2Gus, A=%.3G, B=%.3G' % (
+                    T1_fit / 1000, T1_std / 1000, A_fit, B_fit))
         elif MeasurementType in ('rabi', 'Ch1 rabi', 'Ch1 pump rabi', 'rabi no ref'):
             plt.title('Tpi=%.3Gus, T1=%.3Gus, A=%.3G, B=%.3G, phi0=%.3G' % (
                 Tpi_fit / 1000, T1_fit / 1000, A_fit, B_fit, phi0_fit))
@@ -405,32 +436,38 @@ def plotReferencedTSweep(DataPath, RabiFile, BackgroundFile='', Plus50MHzBackgro
 
 
 if __name__ == '__main__':
-    DataPath = 'C:/Users/admin\Labber\Data/2019/09\Data_0928\\'
+    DataFolderName = '11112019_back to waveguide'
+    DataPath = 'C:/SC Lab\\Labber\\' + DataFolderName + '/2019/12\Data_1203\\'
+    BackgroundFolder = 'C:\SC Lab\Projects\Fluxonium\data_process/ziggy4/'
     BackgroundFile = []
     # BackgroundFile = '021219_rabi_CH2(AWG1Vpp)_no pump_readout_4.077GHz__-15dBm_qubit4.027GHz_-35dBm_0.8_mA_I cos Q sin mod true interleafing_odd readout even ref_avg100k_Rabi300_duty50000readout3us.h5'
-    BackgroundFile = 'calibration_5.hdf5'
     # Plus50MHzBackgroundFile = '012819_rabi_CH2(AWG1Vpp)_no pump_readout_4.146GHz__-20dBm_qubit4.096GHz_-25dBm_4.9_mA_I cos Q sin mod true interleafing_odd readout even ref_avg100k_Rabi100000_duty150000readout3us.h5'
     Plus50MHzBackgroundFile = 'one_tone_4.05GHz_to_4.3GHz_-15dBm_4.9mA_10us integration_100Kavg_50KHz step_020419.dat'
     Minus50MHzBackgroundFile = 'one_tone_4.05GHz_to_4.3GHz_-15dBm_4.9mA_10us integration_100Kavg_50KHz step_020419.dat'
-    RabiFile = 't2_echo_2019-09-28-23_3.hdf5'
+    BackgroundFile = 'power spectroscopy_83.hdf5'
+    RabiFile = 'rabi_16.hdf5'
     IQModFreq = 0.05
-
+    CircleCorrection = True
+    CorrectionParam = [1, -0.0017, 0.749, -0.022]
     PhaseSlope = 326.7041108065019
     PhaseReferenceFreq = 4.105
-    Calibration = False
+    Calibration = True
     FitCorrectedR = False
     LimitTimeRange = False
-    RotateComplex = True
-    FitDoubleExponential = False
+    RotateComplex = False
+    FitDoubleExponential = True
     LogScale = False
     SaveFig = False
     ShowFig = True
     StartTime = 5000
     EndTime = 1e8
-    FitDict = plotReferencedTSweep(DataPath, RabiFile, BackgroundFile=BackgroundFile,
+    FitDict = plotReferencedTSweep(DataPath, RabiFile, BackgroundFolder=BackgroundFolder, BackgroundFile=BackgroundFile,
                                    Plus50MHzBackgroundFile=Plus50MHzBackgroundFile,
                                    Minus50MHzBackgroundFile=Minus50MHzBackgroundFile,
-                                   IQModFreq=IQModFreq, PhaseSlope=PhaseSlope, PhaseReferenceFreq=PhaseReferenceFreq,
+                                   IQModFreq=IQModFreq,
+                                   CircleCorrection=CircleCorrection,
+                                   CorrectionParam=CorrectionParam,
+                                   PhaseSlope=PhaseSlope, PhaseReferenceFreq=PhaseReferenceFreq,
                                    Calibration=Calibration,
                                    FitCorrectedR=FitCorrectedR, LimitTimeRange=LimitTimeRange,
                                    RotateComplex=RotateComplex,

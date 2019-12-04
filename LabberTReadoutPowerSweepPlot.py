@@ -29,14 +29,14 @@ NumFile = len(LabberFileList)
 # analyze background file
 if Calibration:
     [BackFreq, BackComplex] = edf.readFSweepLabber(DataPath + BackgroundFile)
-    BackPower = edf.readQubitPowerLabber(DataPath + BackgroundFile)
+    BackPower = edf.readReadoutPowerLabber(DataPath + BackgroundFile)
     BackPowerStr = str(BackPower)
 
 for i, RabiFile in enumerate(LabberFileList):
     RabiFileStrList = RabiFile[:-5].split('_')
     MeasurementType = RabiFileStrList[0]
 
-    ReadoutFreq = edf.readQubitFreqLabber(DataPath + RabiFile)
+    ReadoutFreq = edf.readReadoutFreqLabber(DataPath + RabiFile)
     QubitFreq = edf.readPumpFreqLabber(DataPath + RabiFile)
     # DrivePower = edf.readPumpPowerLabber(DataPath + RabiFile)
 

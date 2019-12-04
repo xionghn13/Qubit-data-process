@@ -29,24 +29,24 @@ def sortPlot(x, y, spec):
 
 
 if __name__ == '__main__':
-    I0 = 32.5e-3  # mA
-    hI = 2.5895  # mA
+    I0 = - 0.102  # mA
+    hI = 2.528 + 0.102  # mA
     I_period = hI * 2  # mA
     SortWithFlux = False
-    PlotT1diel = False
+    PlotT1diel = True
 
     # for dielectric loss estimation
     N = 50
-    EL = 0.437
-    EC = 2.265
-    EJ = 6.487
+    EL = 0.419
+    EC = 2.522
+    EJ = 6.585
     loss_tan = 3.33e-6
     Q_cap = 1 / loss_tan
     T = 0e-3
-    f01 = 0.4864
+    # f01 = 0.4864
 
-    Folder = 'E:\Projects\Fluxonium\data_process\Fluxonium032619/'
-    File = 'wg5 in 8.5GHz cavity 0830 cd 3 double exp.xlsx'
+    Folder = 'C:\SC Lab\Projects\Fluxonium\data_process\Fluxonium032619\\'
+    File = 'wg5 in 8.5GHz cavity 1009 cd.xlsx'
     ReadDataFromExcel = True
 
     # I0 = 2.199
@@ -141,7 +141,7 @@ if __name__ == '__main__':
     if PlotT1diel:
         MinFlux = np.min(FluxMerge)
         MaxFlux = np.max(FluxMerge)
-        FluxPlot = np.linspace(MinFlux, MaxFlux, 21)
+        FluxPlot = np.linspace(MinFlux, MaxFlux, 101)
         T1diel = FluxPlot * 0
         for i, flux in enumerate(FluxPlot):
             [pem, freq] = np.abs(ssj.phase_matrix_element_freq(N, EL, EC, EJ, flux * 2 * np.pi, 0, 1))
@@ -152,7 +152,8 @@ if __name__ == '__main__':
 
     fig, ax = plt.subplots()
     ax.grid(linestyle='--')
-    ax.errorbar(FreqSingle, T1Single, yerr=T1ErrSingle, fmt='bo')
+    if not (T1Single.__len__() == 0 or np.all(T1Single != T1Single)):
+        ax.errorbar(FreqSingle, T1Single, yerr=T1ErrSingle, fmt='bo')
     if not (T2Single.__len__() == 0 or np.all(T2Single != T2Single)):
         ax.errorbar(FreqSingle, T2Single, yerr=T2ErrSingle, fmt='b^')
     if FitDoubleExp:
@@ -177,11 +178,12 @@ if __name__ == '__main__':
         if FreqRepeated.__len__() == 0:
             legR = []
         else:
-            legR = ['TR - Averge', 'T2echo - Averge']
-        if T2Single.__len__() == 0 or np.all(T2Single != T2Single):
-            plt.legend(['T1 - Single'] + legR)
-        else:
-            plt.legend(['T1 - Single', 'T2echo - Single'] + legR)
+            legR = ['T1 - Averge', 'T2echo - Averge']
+        if not (T2Single.__len__() == 0 or np.all(T2Single != T2Single)):
+            legR = ['T2echo - Single'] + legR
+        if not (T1Single.__len__() == 0 or np.all(T1Single != T1Single)):
+            legR = ['T1 - Single'] + legR
+        plt.legend(legR)
 
     sortPlot(FreqMerge, T1Merge, ':')
     sortPlot(FreqMerge, T2Merge, ':')
@@ -200,9 +202,10 @@ if __name__ == '__main__':
     ax.grid(linestyle='--')
     leg = []
     if PlotT1diel:
-        sortPlot(FluxPlot, T1diel)
+        sortPlot(FluxPlot, T1diel, '-')
         leg = ['Dielectric loss tangent = %.3G' % loss_tan]
-    ax.errorbar(FluxSingle, T1Single, yerr=T1ErrSingle, fmt='bo')
+    if not (T1Single.__len__() == 0 or np.all(T1Single != T1Single)):
+        ax.errorbar(FluxSingle, T1Single, yerr=T1ErrSingle, fmt='bo')
     if not (T2Single.__len__() == 0 or np.all(T2Single != T2Single)):
         ax.errorbar(FluxSingle, T2Single, yerr=T2ErrSingle, fmt='b^')
     if FitDoubleExp:
@@ -224,11 +227,13 @@ if __name__ == '__main__':
         if FluxRepeated.__len__() == 0:
             legR = []
         else:
-            legR = ['TR - Averge', 'T2echo - Averge']
-        if T2Single.__len__() == 0 or np.all(T2Single != T2Single):
-            plt.legend(['T1 - Single'] + legR)
-        else:
-            plt.legend(['T1 - Single', 'T2echo - Single'] + legR)
+            legR = ['T1 - Averge', 'T2echo - Averge']
+        if not (T2Single.__len__() == 0 or np.all(T2Single != T2Single)):
+            legR = ['T2echo - Single'] + legR
+        if not (T1Single.__len__() == 0 or np.all(T1Single != T1Single)):
+            legR = ['T1 - Single'] + legR
+        plt.legend(legR)
+
     sortPlot(FluxMerge, T1Merge, ':')
     sortPlot(FluxMerge, T2Merge, ':')
     if FitDoubleExp:

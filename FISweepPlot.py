@@ -17,9 +17,9 @@ profiler = pprofile.Profile()
 # DataPath = 'E:/Projects\Fluxonium\data_process/test_data/'
 # BackgroundFile = '081717_one_tone_4GHz_to_12GHz_-20dBm.dat'
 # OneToneFile = '081817_one_tone_6.4GHz_to_9.0GHz_-2.5mA_to_2.5mA_1.dat'
-DataPath = 'E:/Projects\Fluxonium\data_process/Fluxonium032619/'
+DataPath = 'C:\SC Lab\Projects\Fluxonium\data_process/ziggy4/'
 # BackgroundFile = 'one_tone_6.45GHz_to_6.6GHz_5dBm_0mA_10us integration_200Kavg_100KHz step_091918.dat'
-BackgroundFile = 'one tone_174.hdf5'
+BackgroundFile = 'one tone_1.hdf5'
 # BackgroundFile = 'one_tone_3.5GHz_to_12GHz_5dBm_3mA_10us integration_5Kavg_500KHz step_121018.dat'
 # OneToneFile = '110518_one_tone_4GHz_to_9GHz_-2mA_to_3mA_10us integration_3Kavg.dat'
 # OneToneFileList = ['110518_one_tone_4GHz_to_9GHz_-2mA_to_3mA_10us integration_3Kavg.dat',
@@ -184,14 +184,19 @@ BackgroundFile = 'one tone_174.hdf5'
 # ]
 # OneToneFile = 'power spectroscopy_5.hdf5'
 OneToneFileList = [
-    'one tone_178.hdf5',
-    'one tone_179.hdf5',
+    'one tone_2.hdf5',
+    'one tone_3.hdf5',
+    'one tone_4.hdf5',
+    'one tone_6.hdf5',
+    'one tone_7.hdf5',
+    'one tone_8.hdf5',
+
 ]
 PlotSpectrum = False
 ClickForPoints = False
 PickleSave = False
 NoCalibrate = False  # for one tone at anti crossing
-SelfCalibrate = True  # whether use background file to calibrate
+SelfCalibrate = False  # whether use background file to calibrate
 
 RawDataIndexForPlot = 0
 PickleFile = "SubtractBackgroundPickleDump.dat"

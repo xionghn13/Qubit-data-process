@@ -7,33 +7,37 @@ from scipy.optimize import curve_fit
 import ExtractDataFunc as edf
 
 # DataPath = 'E:/Projects\Fluxonium\data_process/Fluxonium022319/'
-DataPath = 'E:/Projects\Fluxonium\data_process/Fluxonium032619/'
+DataPath = 'C:\SC Lab\Projects\Fluxonium\data_process/ziggy4/'
 # BackgroundFile = 'calibration_5.hdf5'
-BackgroundFile = 'one tone_174.hdf5'
-# OneToneFile = 'power spectroscopy_5.hdf5'
-OneToneFile = 'one tone_175.hdf5'
+BackgroundFile = 'power spectroscopy_83.hdf5'
+OneToneFile = 'power spectroscopy_92.hdf5'
+# BackgroundFile = 'power spectroscopy_68.hdf5'
+# OneToneFile = 'power spectroscopy_67.hdf5'
+# BackgroundFile = 'power spectroscopy_65.hdf5'
+# OneToneFile = 'power spectroscopy_66.hdf5'
 
 Calibration = True
-UseOneToneRange = True
-FitSeparately = True
+UseOneToneRange = False
+FitSeparately = False
 PlotParamVSPower = False
 PlotUnfittedCircle = False
-ShiftCircle = True
-LineSpec = '-'
+ShiftCircle = False
+RotateCircle = False
+LineSpec = '.'
 
-StartFreq = 0.95
-EndFreq = 1.1
-StartPower = -0
-EndPower = -0
+StartFreq = 6.542
+EndFreq = 6.554
+StartPower = -10
+EndPower = 10
 SelectPower = np.array([])
 # SelectPower = np.array([-25, -20, -15, -10])
 
-gamma_f_guess = 3e-3
+gamma_f_guess = 2e-3
 P0_guess = 0.5
 A_guess = 3e3
 # amp_cor_re_guess = 1
 # amp_cor_im_guess = -0.3
-P0_im_guess = 0.1
+P0_im_guess = 0.
 
 bounds = (
     [1, 0, 0, 1e2, 0.1, -1, -1],
@@ -63,7 +67,7 @@ if NotUsePowerSpectroscopyCalibrate:
         BackPower = float(BackPowerStr)
     elif BackgroundFile.endswith('.hdf5'):
         [BackFreq, BackComplex] = edf.readFSweepLabber(DataPath + BackgroundFile)
-        BackPower = edf.readQubitPowerLabber(DataPath + BackgroundFile)
+        BackPower = edf.readReadoutPowerLabber(DataPath + BackgroundFile)
         BackPowerStr = str(BackPower)
     UseOnePowerCalibrate = True
 else:
@@ -84,6 +88,7 @@ if OneToneFile.endswith('.dat'):
     [OneFreq, OnePower, OneComplex] = edf.readFPSweepDat(DataPath + OneToneFile)
 elif OneToneFile.endswith('.hdf5'):
     [OneFreq, OnePower, OneComplex] = edf.readFPSweepLabber(DataPath + OneToneFile)
+# OneFreq -= 50e-3
 OnePowerUniq = np.unique(OnePower)
 NumPower = np.size(OnePowerUniq)
 OneFreqUniq = np.unique(OneFreq)
@@ -185,10 +190,26 @@ if Calibration:
         amp_cor_re_guess = np.real(RComplexTrunc[0, 0] + RComplexTrunc[-1, 0]) / 2
         amp_cor_im_guess = np.imag(RComplexTrunc[0, 0] + RComplexTrunc[-1, 0]) / 2
         guess = [f0_guess, gamma_f_guess, P0_guess, A_guess, amp_cor_re_guess, amp_cor_im_guess, P0_im_guess]
-        opt, cov, LargerFreqRange, FittedComplex = qsf.fitReflectionCircles(OneFreqUniqTrunc, OnePowerUniqTrunc,
+        try:
+            opt, cov, LargerFreqRange, FittedComplex = qsf.fitReflectionCircles(OneFreqUniqTrunc, OnePowerUniqTrunc,
                                                                             RComplexTrunc,
                                                                             guess, bounds)
-        f0_fit, gamma_f_fit, P0_fit, A_fit, amp_cor_re_fit, amp_cor_im_fit, P0_im_fit = opt
+            f0_fit, gamma_f_fit, P0_fit, A_fit, amp_cor_re_fit, amp_cor_im_fit, P0_im_fit = opt
+        except ValueError:
+            f0_fit, gamma_f_fit, P0_fit, A_fit, amp_cor_re_fit, amp_cor_im_fit, P0_im_fit = guess
+            LargerFreqRange = OneFreqUniqTrunc
+            FittedComplex = RComplexTrunc
+        if ShiftCircle:
+            RComplexTrunc[:, :] = RComplexTrunc[:, :] / (amp_cor_re_fit + amp_cor_im_fit * 1j)
+            FittedComplex = FittedComplex / (amp_cor_re_fit + amp_cor_im_fit * 1j)
+            amp_cor_im_fit = 0
+            amp_cor_re_fit = 1
+        if RotateCircle:
+            RComplexTrunc[:, :] = (RComplexTrunc[:, :] - 1) / (P0_fit + P0_im_fit * 1j) * np.abs(
+                P0_fit + P0_im_fit * 1j) + 1
+            FittedComplex = (FittedComplex - 1) / (P0_fit + P0_im_fit * 1j) * np.abs(P0_fit + P0_im_fit * 1j) + 1
+            P0_fit = np.abs(P0_fit + P0_im_fit * 1j)
+            P0_im_fit = 0
 ########################################################################################################################
 
 if Calibration:

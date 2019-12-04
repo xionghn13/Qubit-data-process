@@ -1,11 +1,27 @@
 import os
 import numpy as np
+import datetime as dt
 from datetime import datetime
 from Labber import ScriptTools
+import time
+import sys
+
+def Wait(sec, remind_interval=1):
+    num_10sec = sec // remind_interval
+    rest_sec = sec % remind_interval
+    for i in range(num_10sec):
+        sys.stdout.write("\r")
+        sys.stdout.write('Continue after ' + str(dt.timedelta(seconds=sec - remind_interval * i)))
+        sys.stdout.flush()
+        time.sleep(remind_interval)
+    time.sleep(rest_sec)
+    sys.stdout.write("\r")
+    sys.stdout.write('Countdown ended\n')
+    sys.stdout.flush()
 
 
-def RunMeasurement(ConfigName, MeasLabel, ItemDict={}):
-
+def RunMeasurement(ConfigName, MeasLabel, ItemDict={},
+                   DataFolderName='10092019_wg5 in 8.5GHz cavity (add coax atts, eccosorb ...)'):
     # set path to executable
     ScriptTools.setExePath('C:\Program Files (x86)\Labber\Program')
 
@@ -15,13 +31,11 @@ def RunMeasurement(ConfigName, MeasLabel, ItemDict={}):
     Month = TimeStr[5:7]
     Day = TimeStr[8:10]
     # define measurement objects
-    ConfigPath = 'E:\Data/fluxonium waveguide\labber config/'
-    DataPath = 'C:/Users/admin\Labber\Data/' + Year + '/' + Month + '/' + 'Data_' + Month + Day + '/'
-
+    ConfigPath = 'C:\SC Lab\GitHubRepositories\measurement-with-labber\measurement setting/'
+    DataPath = 'C:/SC Lab\\Labber\\' + DataFolderName + '/' + Year + '/' + Month + '/' + 'Data_' + Month + Day + '/'
 
     if not os.path.exists(DataPath):
         os.makedirs(DataPath)
-
 
     ConfigFile = ConfigPath + ConfigName
     OutputFile = DataPath + MeasLabel + '_' + TimeStr
@@ -38,4 +52,3 @@ def RunMeasurement(ConfigName, MeasLabel, ItemDict={}):
     # measure resonator
     MeasObj.performMeasurement(return_data=False)
     return [DataPath, MeasLabel + '_' + TimeStr + '.hdf5']
-

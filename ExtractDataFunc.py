@@ -16,6 +16,9 @@ def readFSweepLabber(file):
     ATS_var = 'Alazar - Channel A - Average demodulated value'
     BackFreq_var = 'Qubit - Frequency'
     LogData = Labber.LogFile(file)
+    Entries = LogData.getEntry()
+    if BackFreq_var not in Entries:
+        BackFreq_var = 'Readout - Frequency'
     BackComplex = np.conj(LogData.getData(ATS_var)[0])
     BackFreq = LogData.getData(BackFreq_var)[0] * 1e-9
     return [BackFreq, BackComplex]
@@ -49,6 +52,9 @@ def readFISweepLabber(file):
     OneFreq_var = 'Qubit - Frequency'
     Current_var = 'Yoko - Current'
     LogData = Labber.LogFile(file)
+    Entries = LogData.getEntry()
+    if OneFreq_var not in Entries:
+        OneFreq_var = 'Readout - Frequency'
     OneComplex = np.conj(np.transpose(LogData.getData(ATS_var)))
     OneFreq = np.transpose(LogData.getData(OneFreq_var)) * 1e-9
     OneCurrent = np.transpose(LogData.getData(Current_var)) * 1000
@@ -60,6 +66,9 @@ def readFISweepTwoToneLabber(file):
     OneFreq_var = 'Pump - Frequency'
     Current_var = 'Yoko - Current'
     LogData = Labber.LogFile(file)
+    Entries = LogData.getEntry()
+    if OneFreq_var not in Entries:
+        OneFreq_var = 'Drive2 - Frequency'
     OneComplex = np.conj(np.transpose(LogData.getData(ATS_var)))
     OneFreq = np.transpose(LogData.getData(OneFreq_var)) * 1e-9
     OneCurrent = np.transpose(LogData.getData(Current_var)) * 1000
@@ -70,6 +79,9 @@ def readFSweepTwoToneLabber(file):
     ATS_var = 'Alazar - Channel A - Average demodulated value'
     OneFreq_var = 'Pump - Frequency'
     LogData = Labber.LogFile(file)
+    Entries = LogData.getEntry()
+    if OneFreq_var not in Entries:
+        OneFreq_var = 'Drive2 - Frequency'
     OneComplex = np.conj((LogData.getData(ATS_var)))[0]
     OneFreq = (LogData.getData(OneFreq_var))[0] * 1e-9
     return [OneFreq, OneComplex]
@@ -102,15 +114,22 @@ def readFPSweepLabber(file):
     OneFreq_var = 'Qubit - Frequency'
     Power_var = 'Qubit - Power'
     LogData = Labber.LogFile(file)
+    Entries = LogData.getEntry()
+    if Power_var not in Entries:
+        Power_var = 'Readout - Power'
+        OneFreq_var = 'Readout - Frequency'
     OneComplex = np.conj(np.transpose(LogData.getData(ATS_var)))
     OneFreq = np.transpose(LogData.getData(OneFreq_var)) * 1e-9
     OnePower = np.transpose(LogData.getData(Power_var))
     return [OneFreq, OnePower, OneComplex]
 
 
-def readQubitPowerLabber(file):
+def readReadoutPowerLabber(file):
     Power_var = 'Qubit - Power'
     LogData = Labber.LogFile(file)
+    Entries = LogData.getEntry()
+    if Power_var not in Entries:
+        Power_var = 'Readout - Power'
     Power = np.unique(np.transpose(LogData.getData(Power_var)))
     if len(Power) == 1:
         Power = Power[0]
@@ -126,9 +145,12 @@ def readSetup2ReadoutPowerLabber(file):
     return Power
 
 
-def readQubitFreqLabber(file):
+def readReadoutFreqLabber(file):
     Freq_var = 'Qubit - Frequency'
     LogData = Labber.LogFile(file)
+    Entries = LogData.getEntry()
+    if Freq_var not in Entries:
+        Freq_var = 'Readout - Frequency'
     Freq = np.unique(np.transpose(LogData.getData(Freq_var))) * 1e-9
     if len(Freq) == 1:
         Freq = Freq[0]
@@ -138,6 +160,9 @@ def readQubitFreqLabber(file):
 def readPumpPowerLabber(file):
     Power_var = 'Pump - Power'
     LogData = Labber.LogFile(file)
+    Entries = LogData.getEntry()
+    if Power_var not in Entries:
+        Power_var = 'Drive2 - Power'
     Power = np.unique(np.transpose(LogData.getData(Power_var)))
     if len(Power) == 1:
         Power = Power[0]
@@ -147,6 +172,9 @@ def readPumpPowerLabber(file):
 def readPumpFreqLabber(file):
     Freq_var = 'Pump - Frequency'
     LogData = Labber.LogFile(file)
+    Entries = LogData.getEntry()
+    if Freq_var not in Entries:
+        Freq_var = 'Drive2 - Frequency'
     Freq = np.unique(np.transpose(LogData.getData(Freq_var))) * 1e-9
     if len(Freq) == 1:
         Freq = Freq[0]
@@ -181,6 +209,7 @@ def getFolder(file, LabberFolder='C:\\Users/admin\Labber\Data/'):
     file_folder = LabberFolder + year + '\\' + month + '\\' + 'Data_' + month + day + '\\'
     return file_folder
 
+
 def readDrivingPulseLenLabber(file):
     PulseLen_var = 'Pulse Generator - Width #1'
     LogData = Labber.LogFile(file)
@@ -210,6 +239,9 @@ def readRabiLabber(file):
     ATS_var = 'Alazar - Channel A - Average buffer demodulated values'
     Time_var = 'Pulse Generator - Width #1'
     LogData = Labber.LogFile(file)
+    Entries = LogData.getEntry()
+    if ATS_var not in Entries:
+        ATS_var = 'Alazar - Channel A - Average demodulated value'
     rabi_complex = np.conj(np.transpose(LogData.getData(ATS_var)))[:, 0]
     rabi_time = np.transpose(LogData.getData(Time_var))[:, 0] * 1e9
 
@@ -221,6 +253,9 @@ def readRabiCH1DriveLabber(file):
     ATS_var = 'Alazar - Channel A - Average buffer demodulated values'
     Time_var = 'Pulse Generator - Plateau #1'
     LogData = Labber.LogFile(file)
+    Entries = LogData.getEntry()
+    if ATS_var not in Entries:
+        ATS_var = 'Alazar - Channel A - Average demodulated value'
     rabi_complex = np.conj(np.transpose(LogData.getData(ATS_var)))[:, 0]
     rabi_time = np.transpose(LogData.getData(Time_var))[:, 0] * 1e9
 
@@ -232,6 +267,9 @@ def readRabiCH1PumpedLabber(file):
     ATS_var = 'Alazar - Channel A - Average buffer demodulated values'
     Time_var = 'Pulse Generator - Width #2'
     LogData = Labber.LogFile(file)
+    Entries = LogData.getEntry()
+    if ATS_var not in Entries:
+        ATS_var = 'Alazar - Channel A - Average demodulated value'
     rabi_complex = np.conj(np.transpose(LogData.getData(ATS_var)))[:, 0]
     rabi_time = np.transpose(LogData.getData(Time_var))[:, 0] * 1e9
 
@@ -244,9 +282,16 @@ def readRabiPowerSweepLabber(file):
     Time_var = 'Pulse Generator - Width #1'
     Power_var = 'Pump - Power'
     LogData = Labber.LogFile(file)
-    rabi_power = np.unique(np.transpose(LogData.getData(Power_var)))
     rabi_time = np.transpose(LogData.getData(Time_var))[:, 0] * 1e9
-    rabi_complex = np.conj(np.transpose(LogData.getData(ATS_var)))[:, ::len(rabi_time)]
+    Entries = LogData.getEntry()
+    if ATS_var not in Entries:
+        ATS_var = 'Alazar - Channel A - Average demodulated value'
+        Power_var = 'Drive2 - Power'
+        rabi_complex = np.conj(np.transpose(LogData.getData(ATS_var)))
+    else:
+        rabi_complex = np.conj(np.transpose(LogData.getData(ATS_var)))[:, ::len(rabi_time)]
+
+    rabi_power = np.unique(np.transpose(LogData.getData(Power_var)))
 
     return [rabi_time, rabi_power, rabi_complex]
 
@@ -257,9 +302,15 @@ def readRabiFreqSweepLabber(file):
     Time_var = 'Pulse Generator - Width #1'
     Freq_var = 'Qubit - Frequency'
     LogData = Labber.LogFile(file)
-    rabi_freq = np.unique(np.transpose(LogData.getData(Freq_var))) * 1e-9
     rabi_time = np.transpose(LogData.getData(Time_var))[:, 0] * 1e9
-    rabi_complex = np.conj(np.transpose(LogData.getData(ATS_var)))[:, ::len(rabi_time)]
+    Entries = LogData.getEntry()
+    if ATS_var not in Entries:
+        ATS_var = 'Alazar - Channel A - Average demodulated value'
+        Freq_var = 'Readout - Frequency'
+        rabi_complex = np.conj(np.transpose(LogData.getData(ATS_var)))
+    else:
+        rabi_complex = np.conj(np.transpose(LogData.getData(ATS_var)))[:, ::len(rabi_time)]
+    rabi_freq = np.unique(np.transpose(LogData.getData(Freq_var))) * 1e-9
 
     return [rabi_time, rabi_freq, rabi_complex]
 
@@ -284,6 +335,9 @@ def readT1Labber(file):
     ATS_var = 'Alazar - Channel A - Average buffer demodulated values'
     Time_var = 'Pulse Generator - Readout delay'
     LogData = Labber.LogFile(file)
+    Entries = LogData.getEntry()
+    if ATS_var not in Entries:
+        ATS_var = 'Alazar - Channel A - Average demodulated value'
     t1_complex = np.conj(np.transpose(LogData.getData(ATS_var)))[:, 0]
     t1_time = np.transpose(LogData.getData(Time_var))[:, 0] * 1e9
 
@@ -307,10 +361,15 @@ def readT1PowerSweepLabber(file):
     Time_var = 'Pulse Generator - Readout delay'
     Power_var = 'Pump - Power'
     LogData = Labber.LogFile(file)
-    t1_power = np.unique(np.transpose(LogData.getData(Power_var)))
     t1_time = np.transpose(LogData.getData(Time_var))[:, 0] * 1e9
-    t1_complex = np.conj(np.transpose(LogData.getData(ATS_var)))[:, ::len(t1_time)]
-
+    Entries = LogData.getEntry()
+    if ATS_var not in Entries:
+        ATS_var = 'Alazar - Channel A - Average demodulated value'
+        Power_var = 'Drive2 - Power'
+        t1_complex = np.conj(np.transpose(LogData.getData(ATS_var)))
+    else:
+        t1_complex = np.conj(np.transpose(LogData.getData(ATS_var)))[:, ::len(t1_time)]
+    t1_power = np.unique(np.transpose(LogData.getData(Power_var)))
     return [t1_time, t1_power, t1_complex]
 
 
@@ -320,10 +379,15 @@ def readT1ReadoutPowerSweepLabber(file):
     Time_var = 'Pulse Generator - Readout delay'
     Power_var = 'Qubit - Power'
     LogData = Labber.LogFile(file)
-    t1_power = np.unique(np.transpose(LogData.getData(Power_var)))
     t1_time = np.transpose(LogData.getData(Time_var))[:, 0] * 1e9
-    t1_complex = np.conj(np.transpose(LogData.getData(ATS_var)))[:, ::len(t1_time)]
-
+    Entries = LogData.getEntry()
+    if ATS_var not in Entries:
+        ATS_var = 'Alazar - Channel A - Average demodulated value'
+        Power_var = 'Readout - Power'
+        t1_complex = np.conj(np.transpose(LogData.getData(ATS_var)))
+    else:
+        t1_complex = np.conj(np.transpose(LogData.getData(ATS_var)))[:, ::len(t1_time)]
+    t1_power = np.unique(np.transpose(LogData.getData(Power_var)))
     return [t1_time, t1_power, t1_complex]
 
 
@@ -333,10 +397,27 @@ def readRepeatedT1SweepLabber(file):
     Time_var = 'Pulse Generator - Readout delay'
     Counter_var = 'Counter - Number of points'
     LogData = Labber.LogFile(file)
+    t1_time = np.transpose(LogData.getData(Time_var))[:, 0] * 1e9
+    Entries = LogData.getEntry()
+    if ATS_var not in Entries:
+        ATS_var = 'Alazar - Channel A - Average demodulated value'
+        t1_complex = np.conj(np.transpose(LogData.getData(ATS_var)))
+    else:
+        t1_complex = np.conj(np.transpose(LogData.getData(ATS_var)))[:, ::len(t1_time)]
+    t1_counter = np.unique(np.transpose(LogData.getData(Counter_var)))
+
+    return [t1_time, t1_counter, t1_complex]
+
+
+def readSetup2RepeatedT1SweepLabber(file):
+    # for Labber data
+    ATS_var = 'AlazarTech Signal Demodulator - Channel A - Average demodulated value'
+    Time_var = 'Multi-Qubit Pulse Generator - Sequence duration'
+    Counter_var = 'DummyVariable - Number of points'
+    LogData = Labber.LogFile(file)
     t1_counter = np.unique(np.transpose(LogData.getData(Counter_var)))
     t1_time = np.transpose(LogData.getData(Time_var))[:, 0] * 1e9
-    t1_complex = np.conj(np.transpose(LogData.getData(ATS_var)))[:, ::len(t1_time)]
-
+    t1_complex = np.conj(np.transpose(LogData.getData(ATS_var)))
     return [t1_time, t1_counter, t1_complex]
 
 
@@ -382,6 +463,9 @@ def readT2Labber(file):
     ATS_var = 'Alazar - Channel A - Average buffer demodulated values'
     Time_var = 'Pulse Generator - Sequence duration'
     LogData = Labber.LogFile(file)
+    Entries = LogData.getEntry()
+    if ATS_var not in Entries:
+        ATS_var = 'Alazar - Channel A - Average demodulated value'
     t2_complex = np.conj(np.transpose(LogData.getData(ATS_var)))[:, 0]
     t2_time = np.transpose(LogData.getData(Time_var))[:, 0] * 1e9
 
@@ -394,9 +478,14 @@ def readRepeatedT2SweepLabber(file):
     Time_var = 'Pulse Generator - Sequence duration'
     Counter_var = 'Counter - Number of points'
     LogData = Labber.LogFile(file)
-    t2_counter = np.unique(np.transpose(LogData.getData(Counter_var)))
     t2_time = np.transpose(LogData.getData(Time_var))[:, 0] * 1e9
-    t2_complex = np.conj(np.transpose(LogData.getData(ATS_var)))[:, ::len(t2_time)]
+    Entries = LogData.getEntry()
+    if ATS_var not in Entries:
+        ATS_var = 'Alazar - Channel A - Average demodulated value'
+        t2_complex = np.conj(np.transpose(LogData.getData(ATS_var)))
+    else:
+        t2_complex = np.conj(np.transpose(LogData.getData(ATS_var)))[:, ::len(t2_time)]
+    t2_counter = np.unique(np.transpose(LogData.getData(Counter_var)))
     return [t2_time, t2_counter, t2_complex]
 
 
@@ -409,10 +498,76 @@ def readRepeatedT1T2InterleavedSweepLabber(file):
     counter = np.unique(np.transpose(LogData.getData(Counter_var)))
     num_time = int(len(np.transpose(LogData.getData(Time_var))[0, :]) / len(counter))
     time = np.transpose(LogData.getData(Time_var))[0, :num_time] * 1e9
-    t1_t2_complex = np.conj(np.transpose(LogData.getData(ATS_var)))[:, ::len(time) * 2]
-    t1_complex = t1_t2_complex[0::2]
-    t2_complex = t1_t2_complex[1::2]
+    Entries = LogData.getEntry()
+    if ATS_var not in Entries:
+        ATS_var = 'Alazar - Channel A - Average demodulated value'
+        t1_t2_complex = np.conj(np.transpose(LogData.getData(ATS_var)))
+        t1_complex = t1_t2_complex[0, :].reshape((len(counter), num_time)).transpose()
+        t2_complex = t1_t2_complex[1, :].reshape((len(counter), num_time)).transpose()
+    else:
+        t1_t2_complex = np.conj(np.transpose(LogData.getData(ATS_var)))[:, ::len(time) * 2]
+        t1_complex = t1_t2_complex[0::2]
+        t2_complex = t1_t2_complex[1::2]
     return [time, counter, t1_complex, t2_complex]
+
+
+def readReferencedRepeatedT1T2InterleavedSweepLabber(file):
+    # for Labber data
+    ATS_var = 'Alazar - Channel A - Average demodulated value'
+    Time_var = 'Pulse Generator - Sequence duration'
+    Counter_var = 'Counter - Number of points'
+    Freq_var = 'Readout - Frequency'
+    Demod_Freq_var = 'Alazar - Demodulation frequency'
+    # Power_var = 'Readout - Power'
+    LogData = Labber.LogFile(file)
+    # power = np.unique(np.transpose(LogData.getData(Power_var)))[0]
+    freq = np.unique(np.transpose(LogData.getData(Freq_var)))[0] * 1e-9
+    demod_freq = LogData.getChannelValue(Demod_Freq_var) * 1e-9
+    freq = np.array([freq - demod_freq, freq + demod_freq])
+    counter = np.unique(np.transpose(LogData.getData(Counter_var)))
+    time = np.unique(LogData.getData(Time_var)) * 1e9
+    num_time = len(time)
+    # print(len(np.unique(LogData.getData(Time_var))))
+    # time = np.transpose(LogData.getData(Time_var))[0, :num_time] * 1e9
+    t1_t2_complex = np.conj(LogData.getData(ATS_var))
+    print(t1_t2_complex.shape)
+    ref_complex = t1_t2_complex[:, 1].reshape((len(counter), num_time, 2))
+    t1_t2_complex = t1_t2_complex[:, 0].reshape((len(counter), num_time, 2))
+    print(t1_t2_complex.shape)
+    t1_complex = np.transpose(np.concatenate((t1_t2_complex[:, :, [0]], ref_complex[:, :, [0]]), axis=2), axes=[1, 0, 2])
+    t2_complex = np.transpose(np.concatenate((t1_t2_complex[:, :, [1]], ref_complex[:, :, [1]]), axis=2), axes=[1, 0, 2])
+    # print(t1_complex[0, 0, 0])
+    return [time, counter, freq, t1_complex, t2_complex]
+
+
+def readReferencedRepeatedT1RamseyEchoInterleavedSweepLabber(file):
+    # for Labber data
+    ATS_var = 'Alazar - Channel A - Average demodulated value'
+    Time_var = 'Pulse Generator - Sequence duration'
+    Counter_var = 'Counter - Number of points'
+    Freq_var = 'Readout - Frequency'
+    Demod_Freq_var = 'Alazar - Demodulation frequency'
+    # Power_var = 'Readout - Power'
+    LogData = Labber.LogFile(file)
+    # power = np.unique(np.transpose(LogData.getData(Power_var)))[0]
+    freq = np.unique(np.transpose(LogData.getData(Freq_var)))[0] * 1e-9
+    demod_freq = LogData.getChannelValue(Demod_Freq_var) * 1e-9
+    freq = np.array([freq - demod_freq, freq + demod_freq])
+    counter = np.unique(np.transpose(LogData.getData(Counter_var)))
+    time = np.unique(LogData.getData(Time_var)) * 1e9
+    num_time = len(time)
+    # print(len(np.unique(LogData.getData(Time_var))))
+    # time = np.transpose(LogData.getData(Time_var))[0, :num_time] * 1e9
+    t1_t2_complex = np.conj(LogData.getData(ATS_var))
+    # print(t1_t2_complex.shape)
+    ref_complex = t1_t2_complex[:, 1].reshape((len(counter), num_time, 3))
+    t1_t2_complex = t1_t2_complex[:, 0].reshape((len(counter), num_time, 3))
+    # print(t1_t2_complex.shape)
+    t1_complex = np.transpose(np.concatenate((t1_t2_complex[:, :, [0]], ref_complex[:, :, [0]]), axis=2), axes=[1, 0, 2])
+    ramsey_complex = np.transpose(np.concatenate((t1_t2_complex[:, :, [1]], ref_complex[:, :, [1]]), axis=2), axes=[1, 0, 2])
+    echo_complex = np.transpose(np.concatenate((t1_t2_complex[:, :, [2]], ref_complex[:, :, [1]]), axis=2), axes=[1, 0, 2])
+    # print(t1_complex[0, 0, :])
+    return [time, counter, freq, t1_complex, ramsey_complex, echo_complex]
 
 
 def readSetup2RepeatedT1T2InterleavedSweepLabber(file):
@@ -430,6 +585,56 @@ def readSetup2RepeatedT1T2InterleavedSweepLabber(file):
     return [time, counter, t1_complex, t2_complex]
 
 
+def readRepeatedT1RamseyEchoInterleavedSweepLabber(file):
+    # for Labber data
+    ATS_var = 'Alazar - Channel A - Average demodulated value'
+    Time_var = 'Pulse Generator - Sequence duration'
+    Counter_var = 'Counter - Number of points'
+    LogData = Labber.LogFile(file)
+    counter = np.unique(np.transpose(LogData.getData(Counter_var)))
+    num_time = int(len(np.transpose(LogData.getData(Time_var))[0, :]) / len(counter))
+    time = np.transpose(LogData.getData(Time_var))[0, :num_time] * 1e9
+    t1_t2_complex = np.conj(np.transpose(LogData.getData(ATS_var)))
+    t1_complex = t1_t2_complex[0, :].reshape((len(counter), num_time)).transpose()
+    ramsey_complex = t1_t2_complex[1, :].reshape((len(counter), num_time)).transpose()
+    echo_complex = t1_t2_complex[2, :].reshape((len(counter), num_time)).transpose()
+    return [time, counter, t1_complex, ramsey_complex, echo_complex]
+
+
+def readRefRabiCalLabber(file):
+    # for Labber data
+    ATS_var = 'Alazar - Channel A - Average demodulated value'
+    Freq_var = 'Readout - Frequency'
+    Demod_Freq_var = 'Alazar - Demodulation frequency'
+    Power_var = 'Readout - Power'
+    LogData = Labber.LogFile(file)
+    power = np.unique(np.transpose(LogData.getData(Power_var)))[0]
+    freq = np.unique(np.transpose(LogData.getData(Freq_var)))[0] * 1e-9
+    demod_freq = LogData.getChannelValue(Demod_Freq_var) * 1e-9
+    freq = np.array([freq - demod_freq, freq + demod_freq])
+    rabi_complex = np.mean(np.conj(np.transpose(LogData.getData(ATS_var))), axis=1)
+    return [freq, power, rabi_complex]
+
+
+def readRefRabiLabber(file):
+    # for Labber data
+    ATS_var = 'Alazar - Channel A - Average demodulated value'
+    Freq_var = 'Readout - Frequency'
+    Demod_Freq_var = 'Alazar - Demodulation frequency'
+    Time_var = 'Pulse Generator - Width #1'
+    LogData = Labber.LogFile(file)
+    freq = np.unique(np.transpose(LogData.getData(Freq_var)))[0] * 1e-9
+    demod_freq = LogData.getChannelValue(Demod_Freq_var) * 1e-9
+    freq_low = freq - demod_freq
+    freq_high = freq + demod_freq
+    time = np.unique(np.transpose(LogData.getData(Time_var))) * 1e9
+    rabi_complex = np.conj(np.transpose(LogData.getData(ATS_var)))
+    rabi_lowf = rabi_complex[0, :]
+    rabi_highf = rabi_complex[1, :]
+    return [time, freq_low, freq_high, rabi_lowf, rabi_highf]
+
+
+# read VNA data
 def readVNA4portS11(file):
     # for Labber data
     S11_var = 'VNA-4port - S11'
@@ -493,3 +698,14 @@ def readVNAS21(file):
     freq = np.reshape(np.linspace(Start_freq, Stop_freq, Num_of_points), (Num_of_points,))
 
     return [freq, S11_complex]
+
+
+# read time
+def readStartStopTime(file):
+    LogData = Labber.LogFile(file)
+    return [LogData.getEntry(0)['timestamp'], LogData.getEntry(-1)['timestamp']]
+
+
+def getTimeStampArray(file, count):
+    [start, stop] = readStartStopTime(file)
+    return np.linspace(start, stop, count)

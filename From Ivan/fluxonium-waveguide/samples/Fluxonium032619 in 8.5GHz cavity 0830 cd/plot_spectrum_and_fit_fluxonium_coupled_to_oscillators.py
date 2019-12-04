@@ -20,13 +20,18 @@ import plot_anchor_points
 
 
 def main():
+
+
     sample = 'fluxonium032619'
     fitpath = 'Processed Data/Fluxonium Coupled to Harmonic Modes/'
     pltpath = os.path.join(samples_path, sample,
             'Plots/Fits/Fluxonium Coupled to Harmonic Modes')
 
     filename_in = 'two_mode_in_8.5GHz_cavity_0830cd.hdf5'
-    
+    if not os.path.exists(pltpath):
+        os.makedirs(pltpath)
+
+
     filename_out = os.path.splitext(filename_in)[0]
 
     filename = os.path.join(samples_path, sample, fitpath, filename_in)

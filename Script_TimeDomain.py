@@ -9,7 +9,8 @@ from LabberRepeatedTSweepPlot import plotLabberRepeatedTSweepPlot
 
 def timeDomainMeasurement(Current, ReadoutFreq, QubitFreq, DrivingPower, PiPulseLength, ReadoutPower=-5, Detuning=0.5e6,
                           MeasurementType='rabi', T1MaxDelay=150e-6, Avg=300e3, DutyCyclePoints=400e3, PumpFreq=6.707e9,
-                          PumpPower=0, PumpLength=60e-9, PulseType=0, DriveDelay=1e-6, FitAndPlot=True, ShowFig=True):
+                          PumpPower=0, PumpLength=60e-9, PulseType=0, DriveDelay=1e-6, FitAndPlot=True, ShowFig=True,
+                          DataFolderName='10092019_wg5 in 8.5GHz cavity (add coax atts, eccosorb ...)'):
     # ExperimentName = 'wg6 in 7.5GHz cavity'
     # CoolDownDate = 'test'
 
@@ -21,21 +22,21 @@ def timeDomainMeasurement(Current, ReadoutFreq, QubitFreq, DrivingPower, PiPulse
     if MeasurementType == 'rabi':
         ItemDict = {
             'Yoko - Current': Current,
-            'Qubit - Frequency': ReadoutFreq,
-            'Qubit - Power': ReadoutPower,
-            'Pump - Frequency': DrivingFreq,
-            'Pump - Power': DrivingPower,
-            'Pulse Generator - Width #1': [[900e-9, 'STOP'], [31, 'N_PTS']],
+            'Readout - Frequency': ReadoutFreq,
+            'Readout - Power': ReadoutPower,
+            'Drive2 - Frequency': DrivingFreq,
+            'Drive2 - Power': DrivingPower,
+            'Pulse Generator - Width #1': [[450e-9, 'STOP'], [31, 'N_PTS']],
             'Pulse Generator - Number of points': DutyCyclePoints,
             'Alazar - Number of records': Avg,
             'Pulse Generator - Pulse type': PulseType,  # 0 Gaussian
             # 'Pulse Generator - Number of points': 20e3,
         }
-    elif MeasurementType == 'rabi CH1 drive':
+    elif MeasurementType == 'rabi_CH1_drive':
         ItemDict = {
             'Yoko - Current': Current,
-            'Qubit - Frequency': ReadoutFreq,
-            'Qubit - Power': ReadoutPower,
+            'Readout - Frequency': ReadoutFreq,
+            'Readout - Power': ReadoutPower,
             'Waveguide - Frequency': DrivingFreq,
             'Waveguide - Power': DrivingPower,
             'Pulse Generator - Plateau #1': [[180e-9, 'STOP'], [31, 'N_PTS']],
@@ -44,17 +45,17 @@ def timeDomainMeasurement(Current, ReadoutFreq, QubitFreq, DrivingPower, PiPulse
             'Pulse Generator - Pulse type': 0,  # 0 Gaussian
             # 'Pulse Generator - Number of points': 20e3,
         }
-    elif MeasurementType == 'rabi CH1 pumped':
+    elif MeasurementType == 'rabi_CH1_pumped':
         ItemDict = {
             'Yoko - Current': Current,
-            'Qubit - Frequency': ReadoutFreq,
-            'Qubit - Power': ReadoutPower,
-            'Pump - Frequency': DrivingFreq,
-            'Pump - Power': DrivingPower,
+            'Readout - Frequency': ReadoutFreq,
+            'Readout - Power': ReadoutPower,
+            'Drive2 - Frequency': DrivingFreq,
+            'Drive2 - Power': DrivingPower,
             'Waveguide - Frequency': PumpFreq,
             'Waveguide - Power': PumpPower,
             'Pulse Generator - Plateau #1': PumpLength,
-            'Pulse Generator - Width #2': [[450e-9, 'STOP'], [31, 'N_PTS']],
+            'Pulse Generator - Width #2': [[3000e-9, 'STOP'], [31, 'N_PTS']],
             'Pulse Generator - First pulse delay': DriveDelay,
             'Pulse Generator - Number of points': DutyCyclePoints,
             'Alazar - Number of records': Avg,
@@ -64,10 +65,11 @@ def timeDomainMeasurement(Current, ReadoutFreq, QubitFreq, DrivingPower, PiPulse
     elif MeasurementType == 't2_ramsey':
         ItemDict = {
             'Yoko - Current': Current,
-            'Qubit - Frequency': ReadoutFreq,
-            'Qubit - Power': ReadoutPower,
-            'Pump - Frequency': [[DrivingFreq, 'START'], [QubitFreq, 'STOP']],
-            'Pump - Power': DrivingPower,
+            'Readout - Frequency': ReadoutFreq,
+            'Readout - Power': ReadoutPower,
+            'Drive2 - Frequency': [[DrivingFreq, 'START'], [QubitFreq, 'STOP']],
+            'Drive2 - Power': DrivingPower,
+            'Pulse Generator - Width #1': PiPulseLength,
             'Pulse Generator - Sequence duration': [[20e-6, 'STOP']],
             'Pulse Generator - Number of points': DutyCyclePoints,
             'Alazar - Number of records': Avg,
@@ -76,10 +78,10 @@ def timeDomainMeasurement(Current, ReadoutFreq, QubitFreq, DrivingPower, PiPulse
     elif MeasurementType in ['t1', 't1_short']:
         ItemDict = {
             'Yoko - Current': Current,
-            'Qubit - Frequency': ReadoutFreq,
-            'Qubit - Power': ReadoutPower,
-            'Pump - Frequency': DrivingFreq,
-            'Pump - Power': DrivingPower,
+            'Readout - Frequency': ReadoutFreq,
+            'Readout - Power': ReadoutPower,
+            'Drive2 - Frequency': DrivingFreq,
+            'Drive2 - Power': DrivingPower,
             'Pulse Generator - Width #1': PiPulseLength,
             'Pulse Generator - Readout delay': [[T1MaxDelay, 'STOP']],
             # 'Pulse Generator - Number of points': DutyCyclePoints,
@@ -91,12 +93,12 @@ def timeDomainMeasurement(Current, ReadoutFreq, QubitFreq, DrivingPower, PiPulse
     elif MeasurementType == 't2_echo':
         ItemDict = {
             'Yoko - Current': Current,
-            'Qubit - Frequency': ReadoutFreq,
-            'Qubit - Power': ReadoutPower,
-            'Pump - Frequency': DrivingFreq,
-            'Pump - Power': DrivingPower,
+            'Readout - Frequency': ReadoutFreq,
+            'Readout - Power': ReadoutPower,
+            'Drive2 - Frequency': DrivingFreq,
+            'Drive2 - Power': DrivingPower,
             'Pulse Generator - Width #1': PiPulseLength,
-            'Pulse Generator - Sequence duration': [[105e-6, 'STOP']],
+            'Pulse Generator - Sequence duration': [[500e-6, 'STOP']],
             'Pulse Generator - Number of points': DutyCyclePoints,
             'Alazar - Number of records': Avg * 4,
             'Pulse Generator - Pulse type': PulseType,  # 0 Gaussian
@@ -106,32 +108,48 @@ def timeDomainMeasurement(Current, ReadoutFreq, QubitFreq, DrivingPower, PiPulse
     elif MeasurementType == 't1_t2_interleaved':
         ItemDict = {
             'Yoko - Current': Current,
-            'Qubit - Frequency': ReadoutFreq,
-            'Qubit - Power': ReadoutPower,
-            'Pump - Frequency': DrivingFreq,
-            'Pump - Power': DrivingPower,
+            'Readout - Frequency': ReadoutFreq,
+            'Readout - Power': ReadoutPower,
+            'Drive2 - Frequency': DrivingFreq,
+            'Drive2 - Power': DrivingPower,
             'Pulse Generator - Width #1': PiPulseLength,
             'Pulse Generator - Sequence duration': [[60e-6, 'STOP']],
             'Pulse Generator - Number of points': DutyCyclePoints,
             'Alazar - Number of records': Avg,
             'Pulse Generator - Pulse type': PulseType,  # 0 Gaussian
-            'Counter - Number of points': [[100, 'STOP']]
+            'Counter - Number of points': [[1000, 'STOP']]
             # 'Counter - Number of points': 0
         }
+    elif MeasurementType == 't1_ramsey_echo_interleaved':
+        ItemDict = {
+            'Yoko - Current': Current,
+            'Readout - Frequency': ReadoutFreq,
+            'Readout - Power': ReadoutPower,
+            'Drive2 - Frequency': DrivingFreq,
+            'Drive2 - Power': DrivingPower,
+            'Pulse Generator - Width #1': PiPulseLength,
+            'Pulse Generator - Sequence duration': [[10e-6, 'STOP']],
+            'Pulse Generator - Number of points': DutyCyclePoints,
+            'Alazar - Number of records': Avg,
+            'Pulse Generator - Pulse type': PulseType,  # 0 Gaussian
+            'Counter - Number of points': [[1000, 'STOP']]
+            # 'Counter - Number of points': 0
+        }
+
     # else:
     #     ItemDict = {
     #         'Yoko - Current': Current,
-    #         'Qubit - Frequency': ReadoutFreq,
-    #         'Pump - Frequency': DrivingFreq,
-    #         'Pump - Power': DrivingPower,
+    #         'Readout - Frequency': ReadoutFreq,
+    #         'Drive2 - Frequency': DrivingFreq,
+    #         'Drive2 - Power': DrivingPower,
     #         'Pulse Generator - Width #1': PiPulseLength,
     #         'Pulse Generator - Pulse type': PulseType,  # 0 Gaussian
     #     }
-    ItemDict['Alazar - Channel B - Range'] = 5  #100mV
+    ItemDict['Alazar - Channel B - Range'] = 4  # 200mV
     MeasLabel = MeasurementType
     ConfigName = MeasLabel + '.hdf5'
-    ConfigName = ConfigName.replace('_', ' ')
-    [OutPath, OutFile] = mcf.RunMeasurement(ConfigName, MeasLabel, ItemDict=ItemDict)
+    # ConfigName = ConfigName.replace('_', ' ')
+    [OutPath, OutFile] = mcf.RunMeasurement(ConfigName, MeasLabel, ItemDict=ItemDict, DataFolderName=DataFolderName)
     if FitAndPlot:
         if MeasurementType == 't1_t2_interleaved' or (
                 'Counter - Number of points' in ItemDict and isinstance(ItemDict['Counter - Number of points'], list)):
@@ -143,6 +161,7 @@ def timeDomainMeasurement(Current, ReadoutFreq, QubitFreq, DrivingPower, PiPulse
 
 
 if __name__ == '__main__':
+    DataFolderName = '10092019_wg5 in 8.5GHz cavity (add coax atts, eccosorb ...)'
     Current = 2.55e-3
     QubitFreq = 0.524014e9
     ReadoutPower = 5
@@ -169,12 +188,13 @@ if __name__ == '__main__':
     # MeasType = 't1'
     # for PiPulseLength in np.linspace(100e-6, 1000e-6, 10):
     for MeasType in MeasTypeList:
-    # PiPulseLength = 300e-6
-    # for DrivingPower in [5, 10, 15]:
-        FitDict = timeDomainMeasurement(Current, ReadoutFreq, QubitFreq, DrivingPower, PiPulseLength, ReadoutPower=ReadoutPower,
+        # PiPulseLength = 300e-6
+        # for DrivingPower in [5, 10, 15]:
+        FitDict = timeDomainMeasurement(Current, ReadoutFreq, QubitFreq, DrivingPower, PiPulseLength,
+                                        ReadoutPower=ReadoutPower,
                                         T1MaxDelay=T1MaxDelay, Detuning=T2RamseyDetuning, DutyCyclePoints=CyclePoints,
                                         Avg=Avg, PulseType=PulseType, MeasurementType=MeasType, FitAndPlot=True,
-                                        ShowFig=False)
+                                        ShowFig=False, DataFolderName=DataFolderName)
         if MeasType == 'rabi':
             PiPulseLength = round(FitDict['opt'][3]) * 1e-9
             print('PiPulseLength now is %.3Gs' % PiPulseLength)

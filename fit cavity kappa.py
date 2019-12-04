@@ -7,10 +7,11 @@ import QubitSpectrumFunc as qsf
 from scipy.optimize import curve_fit
 import ExtractDataFunc as edf
 
-DataPath = 'C:/Users/admin\Labber\\fridge 2 data\\2019\\09\Data_0922\\'
+DataFolderName = '10092019_wg5 in 8.5GHz cavity (add coax atts, eccosorb ...)'
+DataPath = 'C:/SC Lab\\Labber\\' + DataFolderName + '/2019/10\Data_1023/'
 # DataPath = 'E:/Projects\Fluxonium\data_process/Fluxonium032619/'
-# OneToneFile = 'cavity Q_110.hdf5'
-OneToneFile = 'one tone_202.hdf5'
+# OneToneFile = 'cavity Q_15.hdf5'
+OneToneFile = 'one tone_22.hdf5'
 
 TruncateFreq = False
 

@@ -82,7 +82,7 @@ def phase_matrix_element_freq(N, E_l, E_c, E_j, phi_ext, iState, fState):
 
     eigen_energies, eigen_states = H.eigenstates()
     element = phi.matrix_element(eigen_states[iState], eigen_states[fState])
-    freq = eigen_energies[fState] - eigen_energies[iState]
+    freq = abs(eigen_energies[fState] - eigen_energies[iState])
     return [element, freq]
 
 
@@ -97,6 +97,20 @@ def qp_matrix_element(N, E_l, E_c, E_j, phi_ext, iState, fState):
     eigen_energies, eigen_states = H.eigenstates()
     element = sine_ope.matrix_element(eigen_states[iState], eigen_states[fState])
     return abs(element)
+
+
+def qp_matrix_element_freq(N, E_l, E_c, E_j, phi_ext, iState, fState):
+    a = tensor(destroy(N))
+    phi = (a + a.dag()) * (8.0 * E_c / E_l) ** (0.25) / np.sqrt(2.0)
+    na = 1.0j * (a.dag() - a) * (E_l / (8.0 * E_c)) ** (0.25) / np.sqrt(2.0)
+    ope = 1.0j * (phi + phi_ext)
+    H = 4.0 * E_c * na ** 2.0 + 0.5 * E_l * phi ** 2.0 - 0.5 * E_j * (ope.expm() + (-ope).expm())
+
+    sine_ope = ((ope / 2.0).expm() - (-ope / 2.0).expm()) / (2.0j)
+    eigen_energies, eigen_states = H.eigenstates()
+    element = sine_ope.matrix_element(eigen_states[iState], eigen_states[fState])
+    freq = abs(eigen_energies[fState] - eigen_energies[iState])
+    return [abs(element), freq]
 
 
 def charge_dispersive_shift(N, level_num, E_l, E_c, E_j, phi_ext, iState, fState, wr, g):
@@ -276,6 +290,7 @@ def relaxation_rate_qp_finiteTemp(E_l, E_c, E_j, w, qpem, T):
 
     cap = e ** 2.0 / (2.0 * E_c)
     ind = hbar ** 2 / (4.0 * e ** 2 * E_l)
+    print(kv(0, hbar * abs(w) / (2 * kB * T)))
     S = (16.0 * E_j / np.pi) * np.exp(-delta_alum / (kB * T)) * np.exp(hbar * w / (2 * kB * T)) * 0.5 * (
             1.0 / np.tanh(hbar * w / (2 * kB * T)) + 1) * kv(0, hbar * abs(w) / (2 * kB * T))
     gamma_qp = (qpem) ** 2.0 * S

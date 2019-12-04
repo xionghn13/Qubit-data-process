@@ -26,8 +26,11 @@ def transient_time_curve(power_dBm_Gamma_r, Gamma_in, Gamma_out, A):
     return time
 
 
-def FitTransientTime(DrivePowerArray, Gamma_r, OptMatrix):
+def FitTransientTime(DrivePowerArray, Gamma_r, OptMatrix, power_for_plot=[]):
+    if len(power_for_plot) == 0:
+        power_for_plot = DrivePowerArray
     x_data = [DrivePowerArray, Gamma_r]
+    x_for_plot = [power_for_plot, Gamma_r]
     y_data = OptMatrix[1, :] / 1000
     pow_mean = 1e-3 * 10 ** (x_data[0].mean() / 10)
     pow_ratio_guess = Gamma_r ** 2 / 2 / pow_mean
@@ -40,7 +43,7 @@ def FitTransientTime(DrivePowerArray, Gamma_r, OptMatrix):
     )
     opt, cov = curve_fit(transient_time_curve, x_data, y_data, p0=guess, bounds=bounds)
     Gamma_in_fit, Gamma_out_fit, pow_ratio_fit = opt
-    FitTime = transient_time_curve(x_data, Gamma_in_fit, Gamma_out_fit, pow_ratio_fit)
+    FitTime = transient_time_curve(x_for_plot, Gamma_in_fit, Gamma_out_fit, pow_ratio_fit)
     return opt, cov, FitTime
 
 

@@ -5,13 +5,13 @@ import numpy as np
 import scipy.interpolate as itp
 import matplotlib.pyplot as plt
 import SubtractBackgroundFunc as sbf
-import QubitSpectrumFunc as qsf
+# import QubitSpectrumFunc as qsf
 from scipy.optimize import curve_fit
 import ExtractDataFunc as edf
 
-
-DataPath = 'C:/Users/admin\Labber\Data/2019/09\Data_0919/'
-S11File = 'cavity Q_105.hdf5'
+DataFolderName = '10092019_wg5 in 8.5GHz cavity (add coax atts, eccosorb ...)'
+DataPath = 'C:/SC Lab\\Labber\\' + DataFolderName + '/2019/10\Data_1010/'
+S11File = 'cavity Q_14.hdf5'
 
 
 [Freq, RComplex] = edf.readVNAS11(DataPath + S11File)

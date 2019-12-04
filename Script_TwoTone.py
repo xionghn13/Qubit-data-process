@@ -9,7 +9,8 @@ from scipy.optimize import curve_fit
 
 
 def FindQubitFreqTwoTone(Current, Anchor1, Anchor2, Avg=500e3, Power=0, ReadoutFreq=7.292e9, ReadoutPower=0, Span=10e6,
-                         SeqLen=1e4, SaveFig=True):
+                         SeqLen=1e4, SaveFig=True,
+                         DataFolderName='10092019_wg5 in 8.5GHz cavity (add coax atts, eccosorb ...)'):
     ConfigName = 'two tone sweep for cavity.hdf5'
     MeasLabel = 'two tone'
 
@@ -20,17 +21,17 @@ def FindQubitFreqTwoTone(Current, Anchor1, Anchor2, Avg=500e3, Power=0, ReadoutF
     PredictFreq = slope * (Current - Anchor1[0]) + Anchor1[1]
 
     ItemDict = {
-        'Pump - Frequency': [[PredictFreq - Span / 2, 'START'], [PredictFreq + Span / 2, 'STOP']],
-        'Pump - Power': Power,
-        'Qubit - Power': ReadoutPower,
-        'Qubit - Frequency': ReadoutFreq,
+        'Drive2 - Frequency': [[PredictFreq - Span / 2, 'START'], [PredictFreq + Span / 2, 'STOP']],
+        'Drive2 - Power': Power,
+        'Readout - Power': ReadoutPower,
+        'Readout - Frequency': ReadoutFreq,
         'Alazar - Number of records': Avg,
         'Yoko - Current': Current,
         'Counter - Number of points': 0,
         'Pulse Generator - Number of points': SeqLen,
-        'Alazar - Channel B - Range': 5  # 100mV
+        'Alazar - Channel B - Range': 4  # 200mV
     }
-    [OutPath, OutFile] = mcf.RunMeasurement(ConfigName, MeasLabel, ItemDict=ItemDict)
+    [OutPath, OutFile] = mcf.RunMeasurement(ConfigName, MeasLabel, ItemDict=ItemDict, DataFolderName=DataFolderName)
     # OutFile = 'two tone_2019-06-04-22-34-04.hdf5'
     # OutPath = 'C:/Users/admin\\Labber\\Data/2019/06\\Data_0604/'
     [Freq, Complex] = edf.readFSweepTwoToneLabber(OutPath + OutFile)
@@ -89,7 +90,8 @@ def FindQubitFreqTwoTone(Current, Anchor1, Anchor2, Avg=500e3, Power=0, ReadoutF
 
 
 def FindReadoutFreqOneTone(Current, Anchor1, Anchor2, Avg=10e3, ReadoutPower=5, Span=10e6,
-                         SeqLen=2e4, SaveFig=True):
+                           SeqLen=2e4, SaveFig=True,
+                           DataFolderName='10092019_wg5 in 8.5GHz cavity (add coax atts, eccosorb ...)'):
     ConfigName = 'one tone sweep for script.hdf5'
     MeasLabel = 'one tone'
 
@@ -100,15 +102,16 @@ def FindReadoutFreqOneTone(Current, Anchor1, Anchor2, Avg=10e3, ReadoutPower=5, 
     PredictFreq = slope * (Current - Anchor1[0]) + Anchor1[1]
 
     ItemDict = {
-        'Qubit - Power': ReadoutPower,
-        'Qubit - Frequency': [[PredictFreq - Span / 2, 'START'], [PredictFreq + Span / 2, 'STOP']],
+        'Readout - Power': ReadoutPower,
+        'Readout - Frequency': [[PredictFreq - Span / 2, 'START'], [PredictFreq + Span / 2, 'STOP']],
         'Alazar - Number of records': Avg,
         'Yoko - Current': Current,
         # 'Counter - Number of points': 0,
         'Pulse Generator - Number of points': SeqLen,
-        'Alazar - Channel B - Range': 5  # 100mV
+        'Alazar - Channel B - Range': 4  # 200mV
     }
-    [OutPath, OutFile] = mcf.RunMeasurement(ConfigName, MeasLabel, ItemDict=ItemDict)
+    [OutPath, OutFile] = mcf.RunMeasurement(ConfigName, MeasLabel, ItemDict=ItemDict,
+                                            DataFolderName=DataFolderName)
     [Freq, Complex] = edf.readFSweepLabber(OutPath + OutFile)
 
     # y_data = np.angle(Complex)
@@ -163,6 +166,7 @@ def FindReadoutFreqOneTone(Current, Anchor1, Anchor2, Avg=10e3, ReadoutPower=5, 
 if __name__ == '__main__':
     # ExperimentName = 'wg6 in 7.5GHz cavity'
     # CoolDownDate = 'test'
+    DataFolderName = '10092019_wg5 in 8.5GHz cavity (add coax atts, eccosorb ...)'
     Current = 1.9e-3
     AnchorCurrents = [2.54e-3, 2.542e-3]
     ExpectFreq = [2.128e9, 7.978e9]
@@ -176,11 +180,13 @@ if __name__ == '__main__':
     Avg = 10e3
     SeqLen = 10e3
     ReadoutPower = -10
-    [fc, width] = FindReadoutFreqOneTone(Current, AnchorReadout1, AnchorReadout2, SaveFig=SaveFig, ReadoutPower=ReadoutPower)
+    [fc, width] = FindReadoutFreqOneTone(Current, AnchorReadout1, AnchorReadout2, SaveFig=SaveFig,
+                                         ReadoutPower=ReadoutPower, DataFolderName=DataFolderName)
     fc *= 1e9
     width *= 1e9
     ReadoutFreq = fc - width / 2
     # ReadoutFreq = 7.967e9
-    f0 = FindQubitFreqTwoTone(Current, Anchor1, Anchor2, Avg=Avg, Power=Power, Span=Span, SeqLen=SeqLen, ReadoutFreq=ReadoutFreq,
-                              SaveFig=SaveFig, ReadoutPower=ReadoutPower)
+    f0 = FindQubitFreqTwoTone(Current, Anchor1, Anchor2, Avg=Avg, Power=Power, Span=Span, SeqLen=SeqLen,
+                              ReadoutFreq=ReadoutFreq,
+                              SaveFig=SaveFig, ReadoutPower=ReadoutPower, DataFolderName=DataFolderName)
     print(f0)

@@ -8,35 +8,19 @@ from QubitDecayFunc import T1_curve, rabi_curve, FitTransientTime, AutoRotate
 import ExtractDataFunc as edf
 import h5py
 
-DataPath = 'E:/Projects\Fluxonium\data_process/Fluxonium022319/'
-BackgroundFile = 'calibration_5.hdf5'
-
-# RabiFileList = [
-#     'transient_9.hdf5',
-#     'transient_8.hdf5',
-#     'transient_7.hdf5',
-#     'transient_6.hdf5',
-#
-# ]
+DataPath = 'C:\SC Lab\Projects\Fluxonium\data_process/ziggy4/'
+BackgroundFile = 'power spectroscopy_83.hdf5'
 RabiFileList = [
-    't1_12.hdf5',
-    't1_13.hdf5',
-    't1_14.hdf5',
-    't1_15.hdf5',
-    't1_20.hdf5',
-    't1_21.hdf5',
-    't1_22.hdf5',
-    't1_23.hdf5',
-
+    'transient_19_1.hdf5',
 ]
 
 IQModFreq = 0.05
 # FitForGamma = True
-Gamma_r = 2.5 * np.pi * 2
-FitCorrectedR = True
+Gamma_r = 2.6 * np.pi * 2
+FitCorrectedR = False
 LogScale = False
-Calibration = False
-RotateComplex = True
+Calibration = True
+RotateComplex = False
 
 PhaseSlope = 326.7041108065019
 PhaseRefrenceFreq = 4.105
@@ -46,15 +30,15 @@ DrivePowerArray = np.zeros([NumFile, ])
 # analyze background file
 
 [BackFreq, BackComplex] = edf.readFSweepLabber(DataPath + BackgroundFile)
-BackPower = edf.readQubitPowerLabber(DataPath + BackgroundFile)
+BackPower = edf.readReadoutPowerLabber(DataPath + BackgroundFile)
 BackPowerStr = str(BackPower)
 
 for i, RabiFile in enumerate(RabiFileList):
     RabiFileStrList = RabiFile[:-5].split('_')
     MeasurementType = RabiFileStrList[0]
 
-    ReadoutFreq = edf.readQubitFreqLabber(DataPath + RabiFile)
-    ReadoutPower = edf.readQubitPowerLabber(DataPath + RabiFile)
+    ReadoutFreq = edf.readReadoutFreqLabber(DataPath + RabiFile)
+    ReadoutPower = edf.readReadoutPowerLabber(DataPath + RabiFile)
     QubitFreq = edf.readPumpFreqLabber(DataPath + RabiFile)
     # DrivePower = edf.readPumpPowerLabber(DataPath + RabiFile)
 
@@ -83,7 +67,7 @@ for i, RabiFile in enumerate(RabiFileList):
                 (-2, 1, -1),
                 (2, 1e6, 1)
             )
-            opt, cov = curve_fit(T1_curve, x_data, y_data, p0=[A_guess, T1_guess, B_guess], maxfev=30000)
+            opt, cov = curve_fit(T1_curve, x_data, y_data, p0=[A_guess, T1_guess, B_guess], bounds=bounds, maxfev=30000)
             A_fit, T1_fit, B_fit = opt
             FitR = T1_curve(Time, A_fit, T1_fit, B_fit)
             ParamList = ['A', 'Decay time/ns', 'B']
@@ -117,15 +101,19 @@ for i, RabiFile in enumerate(RabiFileList):
             DrivePowerArray = np.concatenate((DrivePowerArray, np.array([power])))
         TimeList.append(Time)
         RComplexList.append(RComplex)
+        # print(FitR)
         FitRList.append(FitR)
         for i_p, par in enumerate(opt):
             if np.abs(ErrMatrix[i_p, -1]) > np.abs(par) or opt[1] > 5 * Time[-1]:
                 OptMatrix[i_p, -1] = np.nan
+                # OptMatrix[i_p, -1] = par
             else:
                 OptMatrix[i_p, -1] = par
 
 if MeasurementType == 'transient':
-    opt, cov, FitTime = FitTransientTime(DrivePowerArray, Gamma_r, OptMatrix)
+    print(OptMatrix)
+    power_for_plot = np.linspace(np.min(DrivePowerArray) - 20, np.max(DrivePowerArray) + 10, 101)
+    opt, cov, FitTime = FitTransientTime(DrivePowerArray, Gamma_r, OptMatrix, power_for_plot=power_for_plot)
     Gamma_in_fit, Gamma_out_fit, pow_ratio_fit = opt
     TransientOpt = opt
     TransientErr = np.sqrt(cov.diagonal())
@@ -134,6 +122,7 @@ if MeasurementType == 'transient':
 limit = 1.7
 
 fig, ax = plt.subplots()
+ax.grid(linestyle='--')
 for i in range(NumFile):
     plt.plot(np.real(RComplexList[i]), np.imag(RComplexList[i]))
 if Calibration:
@@ -149,7 +138,8 @@ if Calibration:
 ax.set_aspect('equal')
 
 fig, ax = plt.subplots()
-for i in range(NumFile):
+ax.grid(linestyle='--')
+for i in range(len(TimeList)):
     plt.plot(TimeList[i], np.real(RComplexList[i]), 'o')
     plt.plot(TimeList[i], FitRList[i])
 plt.xlabel('Time/ns', fontsize='x-large')
@@ -158,23 +148,46 @@ plt.tick_params(axis='both', which='major', labelsize='x-large')
 plt.tight_layout()
 
 fig, ax = plt.subplots()
+ax.grid(linestyle='--')
 plotInd = 1
 # plt.plot(DrivePowerArray, OptMatrix[plotInd, :]/1000, 'o')
 ax.errorbar(DrivePowerArray, OptMatrix[plotInd, :] / 1000, yerr=ErrMatrix[plotInd, :] / 1000, fmt='o')
 if MeasurementType == 'transient':
-    plt.plot(DrivePowerArray, FitTime)
+    plt.plot(power_for_plot, FitTime)
 plt.xlabel('Power/dBm', fontsize='x-large')
 plt.ylabel('Decay time/us', fontsize='x-large')
 plt.tick_params(axis='both', which='major', labelsize='x-large')
 if MeasurementType == 'transient':
-    plt.title('Gamma_in=%.3G$\pm$%.3GMHz, Gamma_out=%.3G$\pm$%.3GMHz,\n pow_ratio=%.3G$\pm$%.3G' % (
+    plt.title('Gamma_in=%.3G$\pm$%.3Gus$^{-1}$, Gamma_out=%.3G$\pm$%.3Gus$^{-1}$,\n pow_ratio=%.3G$\pm$%.3G' % (
         Gamma_in_fit, TransientErr[0], Gamma_out_fit, TransientErr[1], pow_ratio_fit, TransientErr[2]))
 plt.tight_layout()
 if LogScale:
     ax.set_yscale('log')
 
+fig, ax = plt.subplots()
+ax.grid(linestyle='--')
+plotInd = 1
+DrivePowerArray_MHz = np.sqrt(1e-3 * 10 ** (DrivePowerArray / 10) * pow_ratio_fit) / 2 / np.pi
+power_for_plot_MHz = np.sqrt(1e-3 * 10 ** (power_for_plot / 10) * pow_ratio_fit) / 2 / np.pi
+branching_ratio = Gamma_r / Gamma_out_fit
+ax.errorbar(DrivePowerArray_MHz, OptMatrix[plotInd, :] / 1000, yerr=ErrMatrix[plotInd, :] / 1000, fmt='o')
+if MeasurementType == 'transient':
+    plt.plot(power_for_plot_MHz, FitTime)
+plt.xlabel('$\Omega/2\pi$(MHz)', fontsize='x-large')
+plt.ylabel('Decay tim(us)', fontsize='x-large')
+plt.tick_params(axis='both', which='major', labelsize='x-large')
+if MeasurementType == 'transient':
+    plt.title('Gamma_in=(%.3G$\pm$%.3Gus)$^{-1}$, Gamma_out=(%.3G$\pm$%.3Gus)$^{-1}$,\n branching_ratio=%.3G' % (
+        1 / Gamma_in_fit, TransientErr[0] / Gamma_in_fit ** 2, 1 / Gamma_out_fit, TransientErr[1] / Gamma_out_fit ** 2,
+        branching_ratio))
+plt.tight_layout()
+ax.set_xscale('log')
+if LogScale:
+    ax.set_yscale('log')
+
 if MeasurementType == 'rabi':
     fig, ax = plt.subplots()
+    ax.grid(linestyle='--')
     plotInd = 2
     # plt.plot(DrivePowerArray, OptMatrix[plotInd, :]/1000, 'o')
     ax.errorbar(DrivePowerArray, OptMatrix[plotInd, :], yerr=ErrMatrix[plotInd, :], fmt='o')
@@ -185,6 +198,7 @@ if MeasurementType == 'rabi':
     # plt.ylim(0, 20000)
 
     fig, ax = plt.subplots()
+    ax.grid(linestyle='--')
     plotInd = 3
     # plt.plot(DrivePowerArray, OptMatrix[plotInd, :]/1000, 'o')
     ax.errorbar(DrivePowerArray, OptMatrix[plotInd, :], yerr=ErrMatrix[plotInd, :], fmt='o')
@@ -195,6 +209,7 @@ if MeasurementType == 'rabi':
     ax.set_yscale('log')
 
     fig, ax = plt.subplots()
+    ax.grid(linestyle='--')
     plotInd = 3
     DrivePowerWattArray = 10 ** (DrivePowerArray / 10) / 1000
     ax.errorbar(DrivePowerWattArray, OptMatrix[plotInd, :], yerr=ErrMatrix[plotInd, :], fmt='o')

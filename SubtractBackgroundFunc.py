@@ -35,7 +35,7 @@ def FISweepBackgroundCalibrate(DataPath, OneToneFile, BackgroundFile, OneTonePow
         BackPower = float(BackPowerStr)
     else:
         [BackFreq, BackComplex] = edf.readFSweepLabber(DataPath + BackgroundFile)
-        BackPower = edf.readQubitPowerLabber(DataPath + BackgroundFile)
+        BackPower = edf.readReadoutPowerLabber(DataPath + BackgroundFile)
 
     BackComplexITP = itp.interp1d(BackFreq, BackComplex)
     RComplex = OneComplex / BackComplexITP(OneFreq) * 10 ** (BackPower / 20 - OneTonePower / 20)
@@ -49,7 +49,17 @@ def FPSweepBackgroundCalibrate(OneFreq, OnePower, OneComplex, BackFreq, BackComp
     if isinstance(BackPower, float):
         if len(BackFreq) > 1:
             BackComplexITP = itp.interp1d(BackFreq, BackComplex)
-            RComplex = OneComplex / BackComplexITP(OneFreq) * 10 ** (BackPower / 20 - OnePower / 20)
+            try:
+                RComplex = OneComplex / BackComplexITP(OneFreq) * 10 ** (BackPower / 20 - OnePower / 20)
+            except ValueError:
+                RComplex = np.zeros_like(OneComplex)
+                print(OneComplex.shape)
+                for i in range(len(OneFreq)):
+                    try:
+                        RComplex[:, :, i] = OneComplex[:, :, i] / BackComplexITP(OneFreq[i]) * 10 ** (BackPower / 20 - OnePower / 20)
+                    except ValueError:
+                        RComplex[:, :, i] = OneComplex[:, :, i] * 10 ** (- OnePower / 20)
+                        print('interpolation out of range. Readout frequency is ', OneFreq[i], 'GHz')
         else:
             RComplex = OneComplex / BackComplex * 10 ** (BackPower / 20 - OnePower / 20)
     else:

@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
-folder = 'C:\\Projects\\Fluxonium\\data_process\\Fluxonium032619/'
-file = 'driving2_2.csv'
+folder = 'C:\\SC Lab\Projects\Fluxonium\data_process\Fluxonium032619/'
+file = 'filter1.csv'
 data = np.genfromtxt(folder + file, skip_header=3, delimiter=';')
 freq = data[:, 0]
 S21 = data[:, 1] + 1j * data[:, 2]
@@ -21,7 +21,7 @@ plt.ylabel('S21(dB)', fontsize='x-large')
 plt.tick_params(axis='both', which='major', labelsize='x-large')
 plt.tight_layout()
 plt.show()
-print(data)
-print(freq)
+# print(data)
+# print(freq)
 
 # ------------------------------------------------------------------

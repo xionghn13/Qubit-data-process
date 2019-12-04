@@ -38,8 +38,8 @@ for i, T1File in enumerate(T1FileList):
     T1FileStrList = T1File[:-5].split('_')
     MeasurementType = T1FileStrList[0]
 
-    ReadoutFreq = edf.readQubitFreqLabber(DataPath + T1File)
-    ReadoutPower = edf.readQubitPowerLabber(DataPath + T1File)
+    ReadoutFreq = edf.readReadoutFreqLabber(DataPath + T1File)
+    ReadoutPower = edf.readReadoutPowerLabber(DataPath + T1File)
     QubitFreq = edf.readPumpFreqLabber(DataPath + T1File)
     # DrivePower = edf.readPumpPowerLabber(DataPath + T1File)
     DrivingPulseLen = edf.readDrivingPulseLenLabber(DataPath + T1File) * 1e6
