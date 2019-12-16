@@ -9,15 +9,15 @@ import ExtractDataFunc as edf
 # DataPath = 'E:/Projects\Fluxonium\data_process/Fluxonium022319/'
 DataPath = 'C:\SC Lab\Projects\Fluxonium\data_process/ziggy4/'
 # BackgroundFile = 'calibration_5.hdf5'
-BackgroundFile = 'power spectroscopy_83.hdf5'
-OneToneFile = 'power spectroscopy_92.hdf5'
+BackgroundFile = 'power spectroscopy_76.hdf5'
+OneToneFile = 'power spectroscopy_82.hdf5'
 # BackgroundFile = 'power spectroscopy_68.hdf5'
 # OneToneFile = 'power spectroscopy_67.hdf5'
 # BackgroundFile = 'power spectroscopy_65.hdf5'
 # OneToneFile = 'power spectroscopy_66.hdf5'
 
 Calibration = True
-UseOneToneRange = False
+UseOneToneRange = True
 FitSeparately = False
 PlotParamVSPower = False
 PlotUnfittedCircle = False
@@ -33,7 +33,7 @@ SelectPower = np.array([])
 # SelectPower = np.array([-25, -20, -15, -10])
 
 gamma_f_guess = 2e-3
-P0_guess = 0.5
+P0_guess = 0.7
 A_guess = 3e3
 # amp_cor_re_guess = 1
 # amp_cor_im_guess = -0.3
@@ -388,7 +388,7 @@ if Calibration:
     plt.tight_layout()
     ax.set_aspect('equal')
     plt.legend(leg)
-
+    print('Optimal power =', 10 * np.log10(1 / A_fit * 1000), 'dBm')
 param_name = ['f0', 'gamma_f', 'P0', 'A', 'amp_cor_re', 'amp_cor_im', 'P0_im']
 if FitSeparately and PlotParamVSPower and Calibration:
     for i, p in enumerate(param_name):

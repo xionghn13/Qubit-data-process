@@ -794,12 +794,12 @@ if __name__ == '__main__':
     # DataPath = 'E:/Projects\Fluxonium\data_process/Fluxonium042619/'
     DataFolderName = '11112019_back to waveguide'
     # DataFolderName = 'Data'
-    DataPath = 'C:/SC Lab\\Labber\\' + DataFolderName + '/2019/12\Data_1203\\'
+    DataPath = 'C:/SC Lab\\Labber\\' + DataFolderName + '/2019/12\Data_1204\\'
     # DataPath = 'Z:\Projects\Transmon_Palmer\\2019\\10\Data_1017\\'
     BackgroundFolder = 'C:\SC Lab\Projects\Fluxonium\data_process/ziggy4/'
     BackgroundFile = 'power spectroscopy_83.hdf5'
     RabiFileList = [
-        't1_t2_interleaved_9.hdf5',
+        'transient_24.hdf5',
     ]
 
     IQModFreq = 0.05

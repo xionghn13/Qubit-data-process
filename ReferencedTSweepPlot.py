@@ -11,7 +11,7 @@ import os
 
 def plotReferencedTSweep(DataPath, RabiFile, BackgroundFolder='', BackgroundFile='', Plus50MHzBackgroundFile='',
                          Minus50MHzBackgroundFile='', CircleCorrection=False,
-                         CorrectionParam=[1, 0.027, 0.798, -0.0098],
+                         CorrectionParam=[1, 0.027, 0.798, -0.0098], PopulationConversionConst=[1, 1.390],
                          IQModFreq=0.05, PhaseSlope=326.7041108065019, PhaseReferenceFreq=4.105, Calibration=False,
                          FitCorrectedR=False, LimitTimeRange=False, RotateComplex=True, FitDoubleExponential=False,
                          StartTime=5000, EndTime=1e8, SaveFig=True, ShowFig=False, LogScale=False):
@@ -166,7 +166,11 @@ def plotReferencedTSweep(DataPath, RabiFile, BackgroundFolder='', BackgroundFile
         if LimitTimeRange:
             TimeInd = (EndTime >= Time) == (Time >= StartTime)
             Time = Time[TimeInd]
-            Complex = Complex[TimeInd]
+            if RabiFile.startswith('RefRabi'):
+                ComplexLowerFreq = ComplexLowerFreq[TimeInd]
+                ComplexHigherFreq = ComplexHigherFreq[TimeInd]
+            else:
+                Complex = Complex[TimeInd]
 
     if MeasurementType in ('t2', 't2echo', 'transient no ref', 't1 no ref', 'rabi no ref'):
         ComplexNormalized = Complex * 10 ** (- ReadoutPower / 20)
@@ -260,14 +264,16 @@ def plotReferencedTSweep(DataPath, RabiFile, BackgroundFolder='', BackgroundFile
         else:
             Tpi_guess = T1_guess / 4
         phi0_guess = 0
-        guess = ([A_guess, T1_guess, B_guess, Tpi_guess, phi0_guess])
+        T_out_guess = T1_guess
+        C_guess = B_guess
+        guess = ([A_guess, T1_guess, B_guess, Tpi_guess, phi0_guess, T_out_guess, C_guess])
         # bounds = (
         #     (-2, 1, -1, 1, - np.pi / 2),
         #     (2, np.inf, 1, np.inf, np.pi / 2)
         # )
         bounds = (
-            (- np.inf, 1, - np.inf, 1, - np.pi / 2),
-            (np.inf, np.inf, np.inf, np.inf, np.pi / 2)
+            (- np.inf, 1, - np.inf, 1, - np.pi / 2, - np.inf, - np.inf),
+            (np.inf, np.inf, np.inf, np.inf, np.pi / 2, np.inf, np.inf)
         )
         # print(guess)
         try:
@@ -276,11 +282,11 @@ def plotReferencedTSweep(DataPath, RabiFile, BackgroundFolder='', BackgroundFile
             print("Error - curve_fit failed")
             opt = guess
             cov = np.zeros([len(opt), len(opt)])
-        A_fit, T1_fit, B_fit, Tpi_fit, phi0_fit = opt
-        A_std, T1_std, B_std, Tpi_std, phi0_std = np.sqrt(cov.diagonal())
+        A_fit, T1_fit, B_fit, Tpi_fit, phi0_fit, T_out_fit, C_fit = opt
+        A_std, T1_std, B_std, Tpi_std, phi0_std, T_out_std, C_std = np.sqrt(cov.diagonal())
         TimeFit = np.linspace(Time.min(), Time.max(), 200)
-        FitR = rabi_curve(TimeFit, A_fit, T1_fit, B_fit, Tpi_fit, phi0_fit)
-        ParamList = ['A', 'Decay time/ns', 'B', 'Tpi/ns', 'pho0']
+        FitR = rabi_curve(TimeFit, A_fit, T1_fit, B_fit, Tpi_fit, phi0_fit, T_out_fit, C_fit)
+        ParamList = ['A', 'Decay time(ns)', 'B', 'Tpi(ns)', 'pho0', 'T_out(ns)', 'C']
 
     # print(cov)
     limit = 1.7
@@ -351,101 +357,112 @@ def plotReferencedTSweep(DataPath, RabiFile, BackgroundFolder='', BackgroundFile
                     plt.title('T_transient=%.3G$\pm$%.2Gus, A=%.3G, B=%.3G' % (
                         T1_fit / 1000, T1_std / 1000, A_fit, B_fit))
                 elif MeasurementType in ('rabi', 'Ch1 rabi', 'Ch1 pump rabi'):
-                    plt.title('Tpi=%.3Gus, T1=%.3Gus, A=%.3G, B=%.3G, phi0=%.3G' % (
-                        Tpi_fit / 1000, T1_fit / 1000, A_fit, B_fit, phi0_fit))
+                    plt.title('Tpi=%.3Gus, T1=%.3Gus, T_out=%.3Gus$\pm$%.2Gus, A=%.3G, B=%.3G, phi0=%.3G' % (
+                        Tpi_fit / 1000, T1_fit / 1000, T_out_fit / 1000, T_out_std / 1000, A_fit, B_fit, phi0_fit))
             plt.xlabel('Time/ns', fontsize='x-large')
             plt.ylabel('Re', fontsize='x-large')
             plt.tick_params(axis='both', which='major', labelsize='x-large')
             plt.tight_layout()
 
-    fig, ax = plt.subplots()
-    ax.grid(linestyle='--')
-    if MeasurementType in ('t2', 't2echo', 'transient no ref', 't1 no ref', 'rabi no ref'):
-        if LogScale:
-            plt.plot(Time, y_data - B_fit, 'o')
-        else:
-            plt.plot(Time, y_data, 'o')
-    else:
-        plt.plot(Time, np.real(RComplexLowerFreq), 'o')
-        if FitCorrectedR:
-            plt.plot(Time, np.real(RComplexHigherFreq), 'o')
-    if not FitCorrectedR:
-        if LogScale:
-            plt.plot(TimeFit, FitR - B_fit)
-        else:
-            plt.plot(TimeFit, FitR)
-        if MeasurementType in ('t1', 't1 no ref'):
-            if FitDoubleExponential:
-                plt.title('TR=%.3G$\pm$%.2Gus, A=%.3G, B=%.3G\n'
-                          'Tqp=%.3G$\pm$%.2Gus, lambda=%.3G$\pm$%.2G' % (
-                              TR_fit / 1000, TR_std / 1000, A_fit, B_fit, Tqp_fit / 1000, Tqp_std / 1000, lamb_fit,
-                              lamb_std))
-            else:
-                plt.plot(Time, y_guess, ':')
-                plt.title('T1=%.3G$\pm$%.2Gus, A=%.3G, B=%.3G' % (
-                    T1_fit / 1000, T1_std / 1000, A_fit, B_fit))
-        elif MeasurementType in ('transient', 'transient no ref'):
-            if FitDoubleExponential:
-                plt.title('TR=%.3G$\pm$%.2Gus, A=%.3G, B=%.3G\n'
-                          'Tqp=%.3G$\pm$%.2Gus, lambda=%.3G$\pm$%.2G' % (
-                              TR_fit / 1000, TR_std / 1000, A_fit, B_fit, Tqp_fit / 1000, Tqp_std / 1000, lamb_fit,
-                              lamb_std))
-            else:
-                plt.title('T_transient=%.3G$\pm$%.2Gus, A=%.3G, B=%.3G' % (
-                    T1_fit / 1000, T1_std / 1000, A_fit, B_fit))
-        elif MeasurementType in ('rabi', 'Ch1 rabi', 'Ch1 pump rabi', 'rabi no ref'):
-            plt.title('Tpi=%.3Gus, T1=%.3Gus, A=%.3G, B=%.3G, phi0=%.3G' % (
-                Tpi_fit / 1000, T1_fit / 1000, A_fit, B_fit, phi0_fit))
-    plt.xlabel('Time/ns', fontsize='x-large')
-    plt.ylabel('Re', fontsize='x-large')
-    if MeasurementType == 't2':
-        plt.title('Tpi=%.3Gus, T2Ramsey=%.3Gus$\pm$%.2Gus\n'
-                  'A=%.3G, B=%.3G, phi0=%.3G' % (
-                      Tpi_fit / 1000, T1_fit / 1000, T1_std / 1000, A_fit, B_fit, phi0_fit))
-    elif MeasurementType == 't2echo':
-        plt.title('T2echo=%.3G$\pm$%.2Gus, A=%.3G, B=%.3G' % (
-            T1_fit / 1000, T1_std / 1000, A_fit, B_fit))
-    plt.tick_params(axis='both', which='major', labelsize='x-large')
-    plt.tight_layout()
-    if MeasurementType not in ('t2', 't2echo', 'transient no ref', 't1 no ref', 'rabi no ref') and FitCorrectedR:
-        plt.legend(['%.4GGHz' % ReadoutLowerFreq, '%.4GGHz' % ReadoutHigherFreq])
-    if LogScale:
-        ax.set_yscale('log')
-    if SaveFig:
-        FigPath = DataPath + 'figures/'
-        if not os.path.exists(FigPath):
-            os.makedirs(FigPath)
-        FigName = RabiFile.split('.')[0] + '.PNG'
-        plt.savefig(FigPath + FigName)
-
-    if MeasurementType in ('t1', 't1 no ref'):
         fig, ax = plt.subplots()
         ax.grid(linestyle='--')
-        plt.plot(Time, y_data - y_pred, 'o--')
+        if MeasurementType in ('t2', 't2echo', 'transient no ref', 't1 no ref', 'rabi no ref'):
+            if LogScale:
+                plt.plot(Time, y_data - B_fit, 'o')
+            else:
+                plt.plot(Time, y_data, 'o')
+        else:
+            plt.plot(Time, np.real(RComplexLowerFreq), 'o')
+            if FitCorrectedR:
+                plt.plot(Time, np.real(RComplexHigherFreq), 'o')
+        if not FitCorrectedR:
+            if LogScale:
+                plt.plot(TimeFit, FitR - B_fit)
+            else:
+                plt.plot(TimeFit, FitR)
+            if MeasurementType in ('t1', 't1 no ref'):
+                if FitDoubleExponential:
+                    plt.title('TR=%.3G$\pm$%.2Gus, A=%.3G, B=%.3G\n'
+                              'Tqp=%.3G$\pm$%.2Gus, lambda=%.3G$\pm$%.2G' % (
+                                  TR_fit / 1000, TR_std / 1000, A_fit, B_fit, Tqp_fit / 1000, Tqp_std / 1000, lamb_fit,
+                                  lamb_std))
+                else:
+                    plt.plot(Time, y_guess, ':')
+                    plt.title('T1=%.3G$\pm$%.2Gus, A=%.3G, B=%.3G' % (
+                        T1_fit / 1000, T1_std / 1000, A_fit, B_fit))
+            elif MeasurementType in ('transient', 'transient no ref'):
+                if FitDoubleExponential:
+                    plt.title('TR=%.3G$\pm$%.2Gus, A=%.3G, B=%.3G\n'
+                              'Tqp=%.3G$\pm$%.2Gus, lambda=%.3G$\pm$%.2G' % (
+                                  TR_fit / 1000, TR_std / 1000, A_fit, B_fit, Tqp_fit / 1000, Tqp_std / 1000, lamb_fit,
+                                  lamb_std))
+                else:
+                    plt.title('T_transient=%.3G$\pm$%.2Gus, A=%.3G, B=%.3G' % (
+                        T1_fit / 1000, T1_std / 1000, A_fit, B_fit))
+            elif MeasurementType in ('rabi', 'Ch1 rabi', 'Ch1 pump rabi', 'rabi no ref'):
+                plt.title('Tpi=%.3Gus, T1=%.3Gus, T_out=%.3Gus$\pm$%.2Gus\n A=%.3G, B=%.3G, phi0=%.3G, C=%.3G' % (
+                    Tpi_fit / 1000, T1_fit / 1000, T_out_fit / 1000, T_out_std / 1000, A_fit, B_fit, phi0_fit, C_fit))
         plt.xlabel('Time/ns', fontsize='x-large')
-        plt.ylabel('Residual', fontsize='x-large')
+        plt.ylabel('Re', fontsize='x-large')
+        if MeasurementType == 't2':
+            plt.title('Tpi=%.3Gus, T2Ramsey=%.3Gus$\pm$%.2Gus\n'
+                      'A=%.3G, B=%.3G, phi0=%.3G' % (
+                          Tpi_fit / 1000, T1_fit / 1000, T1_std / 1000, A_fit, B_fit, phi0_fit))
+        elif MeasurementType == 't2echo':
+            plt.title('T2echo=%.3G$\pm$%.2Gus, A=%.3G, B=%.3G' % (
+                T1_fit / 1000, T1_std / 1000, A_fit, B_fit))
         plt.tick_params(axis='both', which='major', labelsize='x-large')
         plt.tight_layout()
+        if MeasurementType not in ('t2', 't2echo', 'transient no ref', 't1 no ref', 'rabi no ref') and FitCorrectedR:
+            plt.legend(['%.4GGHz' % ReadoutLowerFreq, '%.4GGHz' % ReadoutHigherFreq])
+        if LogScale:
+            ax.set_yscale('log')
+        if SaveFig:
+            FigPath = DataPath + 'figures/'
+            if not os.path.exists(FigPath):
+                os.makedirs(FigPath)
+            FigName = RabiFile.split('.')[0] + '.PNG'
+            plt.savefig(FigPath + FigName)
 
-    if ShowFig:
-        plt.show()
-    else:
-        plt.close('all')
+        if Calibration:
+            fig, ax = plt.subplots()
+            ax.grid(linestyle='--')
+            plt.plot(Time, (PopulationConversionConst[0] - y_data) * PopulationConversionConst[1], 'o')
+            if not FitCorrectedR:
+                plt.plot(TimeFit, (PopulationConversionConst[0] - FitR) * PopulationConversionConst[1])
+            plt.xlabel('Time(ns)', fontsize='x-large')
+            plt.ylabel('Population', fontsize='x-large')
+            plt.tick_params(axis='both', which='major', labelsize='x-large')
+            plt.tight_layout()
+
+        if MeasurementType in ('t1', 't1 no ref'):
+            fig, ax = plt.subplots()
+            ax.grid(linestyle='--')
+            plt.plot(Time, y_data - y_pred, 'o--')
+            plt.xlabel('Time/ns', fontsize='x-large')
+            plt.ylabel('Residual', fontsize='x-large')
+            plt.tick_params(axis='both', which='major', labelsize='x-large')
+            plt.tight_layout()
+
+        if ShowFig:
+            plt.show()
+        else:
+            plt.close('all')
 
     return {'opt': opt, 'cov': cov, 'ParamList': ParamList}
 
 
 if __name__ == '__main__':
     DataFolderName = '11112019_back to waveguide'
-    DataPath = 'C:/SC Lab\\Labber\\' + DataFolderName + '/2019/12\Data_1203\\'
+    DataPath = 'C:/SC Lab\\Labber\\' + DataFolderName + '/2019/12\Data_1215\\'
     BackgroundFolder = 'C:\SC Lab\Projects\Fluxonium\data_process/ziggy4/'
     BackgroundFile = []
     # BackgroundFile = '021219_rabi_CH2(AWG1Vpp)_no pump_readout_4.077GHz__-15dBm_qubit4.027GHz_-35dBm_0.8_mA_I cos Q sin mod true interleafing_odd readout even ref_avg100k_Rabi300_duty50000readout3us.h5'
     # Plus50MHzBackgroundFile = '012819_rabi_CH2(AWG1Vpp)_no pump_readout_4.146GHz__-20dBm_qubit4.096GHz_-25dBm_4.9_mA_I cos Q sin mod true interleafing_odd readout even ref_avg100k_Rabi100000_duty150000readout3us.h5'
     Plus50MHzBackgroundFile = 'one_tone_4.05GHz_to_4.3GHz_-15dBm_4.9mA_10us integration_100Kavg_50KHz step_020419.dat'
     Minus50MHzBackgroundFile = 'one_tone_4.05GHz_to_4.3GHz_-15dBm_4.9mA_10us integration_100Kavg_50KHz step_020419.dat'
-    BackgroundFile = 'power spectroscopy_83.hdf5'
-    RabiFile = 'rabi_16.hdf5'
+    BackgroundFile = 'power spectroscopy_101.hdf5'
+    RabiFile = 'rabi_36.hdf5'
     IQModFreq = 0.05
     CircleCorrection = True
     CorrectionParam = [1, -0.0017, 0.749, -0.022]
@@ -455,14 +472,16 @@ if __name__ == '__main__':
     FitCorrectedR = False
     LimitTimeRange = False
     RotateComplex = False
-    FitDoubleExponential = True
+    FitDoubleExponential = False
     LogScale = False
     SaveFig = False
     ShowFig = True
-    StartTime = 5000
-    EndTime = 1e8
+    StartTime = 0
+    EndTime = 30e3
+    PopulationConversionConst = [1, 1.2430052973214951]
     FitDict = plotReferencedTSweep(DataPath, RabiFile, BackgroundFolder=BackgroundFolder, BackgroundFile=BackgroundFile,
                                    Plus50MHzBackgroundFile=Plus50MHzBackgroundFile,
+                                   PopulationConversionConst=PopulationConversionConst,
                                    Minus50MHzBackgroundFile=Minus50MHzBackgroundFile,
                                    IQModFreq=IQModFreq,
                                    CircleCorrection=CircleCorrection,

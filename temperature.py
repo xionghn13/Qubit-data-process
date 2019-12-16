@@ -24,6 +24,25 @@ print(r01)
 print(p0)
 print('T = %.3GmK' % (T * 1000))
 
+print('---------------A1 B1 A2 B2 to P0 P1 P2----------------------')
+
+A1, B1, f1 = [0.225, 0.536 + 0.0372, 1.1557e9]
+A2, B2, f2 = [0.321, 0.669 + 0.0107, 3.881e9]
+end_point = 1.
+r01 = (end_point - (B1 - A1)) / (end_point - (B1 + A1))
+r02 = abs((end_point - (B2 - A2)) / (end_point - (B2 + A2)))
+T1 = h * f1 / kB / np.log(r01)
+T2 = h * f2 / kB / np.log(r02)
+p0 = 1 / (1 / r01 + 1 / r02 + 1)
+R2P = p0 / np.mean((1 - (B1 - A1), 1 - (B2 - A2)))
+print(r01)
+print('[P0, P1, P2] = [', p0, ',', p0 / r01, ',', p0 / r02, ']')
+print('T01 = %.3GmK' % (T1 * 1000))
+print('T02 = %.3GmK' % (T2 * 1000))
+print('end point is', end_point)
+print('ratio between P0 and end_point - r is', R2P)
+
+
 print('---------------Gamma to temp----------------------')
 Gamma = 2 * np.pi * 4.69
 Gamma_up = 0.0067

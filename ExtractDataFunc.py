@@ -248,6 +248,38 @@ def readRabiLabber(file):
     return [rabi_time, rabi_complex]
 
 
+def readMultiRabiLabber(file):
+    # for Labber data
+    ATS_var = 'Alazar - Channel A - Average buffer demodulated values'
+    Time_var = 'Pulse Generator - Width #1'
+    LogData = Labber.LogFile(file)
+    Entries = LogData.getEntry()
+    if ATS_var not in Entries:
+        ATS_var = 'Alazar - Channel A - Average demodulated value'
+    rabi_complex = np.conj(np.transpose(LogData.getData(ATS_var)))[:, :]
+    rabi_time = np.transpose(LogData.getData(Time_var))[:, 0] * 1e9
+
+    return [rabi_time, rabi_complex]
+
+
+def readRepeatedRabiSweepLabber(file):
+    # for Labber data
+    ATS_var = 'Alazar - Channel A - Average buffer demodulated values'
+    Time_var = 'Pulse Generator - Width #1'
+    Counter_var = 'Counter - Number of points'
+    LogData = Labber.LogFile(file)
+    t1_time = np.transpose(LogData.getData(Time_var))[:, 0] * 1e9
+    Entries = LogData.getEntry()
+    if ATS_var not in Entries:
+        ATS_var = 'Alazar - Channel A - Average demodulated value'
+        t1_complex = np.conj(np.transpose(LogData.getData(ATS_var)))
+    else:
+        t1_complex = np.conj(np.transpose(LogData.getData(ATS_var)))[:, ::len(t1_time)]
+    t1_counter = np.unique(np.transpose(LogData.getData(Counter_var)))
+
+    return [t1_time, t1_counter, t1_complex]
+
+
 def readRabiCH1DriveLabber(file):
     # for Labber data
     ATS_var = 'Alazar - Channel A - Average buffer demodulated values'
@@ -291,8 +323,7 @@ def readRabiPowerSweepLabber(file):
     else:
         rabi_complex = np.conj(np.transpose(LogData.getData(ATS_var)))[:, ::len(rabi_time)]
 
-    rabi_power = np.unique(np.transpose(LogData.getData(Power_var)))
-
+    rabi_power = LogData.getData(Power_var)[:, 0]
     return [rabi_time, rabi_power, rabi_complex]
 
 
@@ -339,6 +370,20 @@ def readT1Labber(file):
     if ATS_var not in Entries:
         ATS_var = 'Alazar - Channel A - Average demodulated value'
     t1_complex = np.conj(np.transpose(LogData.getData(ATS_var)))[:, 0]
+    t1_time = np.transpose(LogData.getData(Time_var))[:, 0] * 1e9
+
+    return [t1_time, t1_complex]
+
+
+def readMultiT1Labber(file):
+    # for Labber data
+    ATS_var = 'Alazar - Channel A - Average buffer demodulated values'
+    Time_var = 'Pulse Generator - Readout delay'
+    LogData = Labber.LogFile(file)
+    Entries = LogData.getEntry()
+    if ATS_var not in Entries:
+        ATS_var = 'Alazar - Channel A - Average demodulated value'
+    t1_complex = np.conj(np.transpose(LogData.getData(ATS_var)))[:, :]
     t1_time = np.transpose(LogData.getData(Time_var))[:, 0] * 1e9
 
     return [t1_time, t1_complex]

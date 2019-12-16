@@ -26,7 +26,7 @@ def main():
     fitpath = 'Processed Data/Fluxonium/'
     pltpath = os.path.join(samples_path, sample, 'Plots/Fits/Fluxonium')
 
-    filename_in = 'fluxonium_3.hdf5'
+    filename_in = 'ziggy4_in_6.5GHz_waveguide_1.hdf5'
     
     filename_out = os.path.splitext(filename_in)[0]
 
@@ -56,14 +56,32 @@ def main():
         freq = levels[:,idx] - levels[:,0]
         plt.plot(phi_ext, freq,
                 color=colors[idx % len(colors)], lw=1.5, ls='-')
- 
-    # for idx in range(2, params['num_qbt']-2):
-        # plt.plot(phi_ext, levels[:,idx] - levels[:,1],
-            # color=colors[idx % len(colors)], lw=1.0, ls='-.')
+
+    # for idx in range(2, params['num_qbt']):
+    #     plt.plot(phi_ext, (levels[:,idx] - levels[:,1]),
+    #         color=colors[idx % len(colors)], lw=1.0, ls='-.')
+    # for idx in range(2, params['num_qbt']):
+    #     plt.plot(phi_ext, (levels[:,idx] - levels[:,1]) / 2,
+    #         color=colors[idx % len(colors)], lw=1.0, ls='-.')
+
+    # for idx in range(3, params['num_qbt']):
+    #     plt.plot(phi_ext, (levels[:, idx] - levels[:, 2]),
+    #              color=colors[idx % len(colors)], lw=1.0, ls='-.')
+    for idx in range(3, params['num_qbt']):
+        plt.plot(phi_ext, (levels[:,idx] - levels[:,2]) / 2,
+            color=colors[idx % len(colors)], lw=1.0, ls='-.')
+    #
+    # # print(params['num_qbt']-4)
+    # for idx in range(4, params['num_qbt']):
+    #     plt.plot(phi_ext, (levels[:,idx] - levels[:,3]),
+    #         color=colors[idx % len(colors)], lw=1.0, ls='-.')
+    # for idx in range(4, params['num_qbt']):
+    #     plt.plot(phi_ext, (levels[:,idx] - levels[:,3]) / 2,
+    #         color=colors[idx % len(colors)], lw=1.0, ls='-.')
 
     # for idx in range(1, params['num_qbt']-1):
-        # plt.plot(phi_ext, (levels[:,idx] - levels[:,0]) / 2.,
-            # color=colors[idx % len(colors)], lw=1.0, ls='-.')
+    #     plt.plot(phi_ext, (levels[:,idx] - levels[:,0]) / 2.,
+    #         color=colors[idx % len(colors)], lw=1.0, ls='-.')
 
     plot_spectrum.label_axes(title, title_color='k')
     plt.tight_layout()

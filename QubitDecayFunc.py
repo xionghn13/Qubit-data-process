@@ -7,13 +7,20 @@ def T1_curve(t, A, T1, B):
     # print('T1 = %.3Gus, A = %.3G, B = %.3G' % (T1 / 1000, A, B))
     return r
 
+
 def DoubleExp_curve(t, A, TR, B, Tqp, lamb):
-    r = A * np.exp(- t / TR + lamb * (np.exp( - t / Tqp) - 1)) + B
+    r = A * np.exp(- t / TR + lamb * (np.exp(- t / Tqp) - 1)) + B
     # print('T1 = %.3Gus, A = %.3G, B = %.3G' % (T1 / 1000, A, B))
     return r
 
-def rabi_curve(t, A, T1, B, Tpi, phi0):
-    r = A * np.exp(- t / T1) * np.cos(t / Tpi * np.pi + phi0) + B
+
+def TwoExp_curve(t, A, T1, B, T2, C):
+    r = A * np.exp(- t / T1) + B * np.exp(- t / T2) + C
+    return r
+
+
+def rabi_curve(t, A, T1, B, Tpi, phi0, T_out, C):
+    r = A * np.exp(- t / T1) * np.cos(t / Tpi * np.pi + phi0) + B * np.exp(-t / T_out) + C
     return r
 
 
@@ -59,7 +66,7 @@ def AutoRotate(complex):
     # print(normalized_max_disp)
     if normalized_max_disp.real < 0:
         normalized_max_disp = -normalized_max_disp
-    CM = np.mean(complex_out) * 0 # origin
+    CM = np.mean(complex_out) * 0  # origin
     complex_out -= CM
     complex_out /= normalized_max_disp
     complex_out += CM

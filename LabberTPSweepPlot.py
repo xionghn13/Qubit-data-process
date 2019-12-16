@@ -9,9 +9,10 @@ import ExtractDataFunc as edf
 import h5py
 
 DataPath = 'C:\SC Lab\Projects\Fluxonium\data_process/ziggy4/'
-BackgroundFile = 'power spectroscopy_83.hdf5'
+BackgroundFile = 'power spectroscopy_101.hdf5'
 RabiFileList = [
-    'transient_19_1.hdf5',
+    'transient_28.hdf5',
+    'transient_27.hdf5',
 ]
 
 IQModFreq = 0.05
@@ -46,6 +47,11 @@ for i, RabiFile in enumerate(RabiFileList):
         [Time, DrivePower, ComplexRabi] = edf.readRabiPowerSweepLabber(DataPath + RabiFile)
     elif MeasurementType == 't1':
         [Time, DrivePower, ComplexRabi] = edf.readT1PowerSweepLabber(DataPath + RabiFile)
+
+    if i == 0:
+        ind = DrivePower > -45
+        DrivePower = DrivePower[ind]
+        ComplexRabi = ComplexRabi[:, ind]
 
     ComplexRabiNormalized = ComplexRabi * 10 ** (- ReadoutPower / 20)
     if Calibration:

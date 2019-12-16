@@ -36,6 +36,7 @@ rho1_recostructed = 0.5 * (avgI * qeye(2) + avgX * sigmax() + avgY * sigmay() + 
 
 ##############two qubits tomography##############
 rho = tensor(rho1, rho2)
+rho = ket2dm(bell_state())
 # ideal measurement
 rho_measure = 0.25 * (tensor(qeye(2), qeye(2))
                       + expect(tensor(qeye(2), sigmax()), rho) * tensor(qeye(2), sigmax())
