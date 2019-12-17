@@ -319,3 +319,48 @@ else:
 #                                                   BackComplex, BackPower)
 #     else:
 #         RComplex = ComplexRabiNormalized
+
+# Fig.2
+# BackgroundFile = 'power spectroscopy_76.hdf5'
+# OneToneFile = 'power spectroscopy_77.hdf5'
+#
+# Fig.3
+# BackgroundFile = 'RefRabiCal_4.hdf5'
+# RabiFile = 'RefRabi_12.hdf5'
+#
+# BackgroundFile = 'RefRabiCal_4.hdf5'
+# RabiFileList = [
+# 'ref_t1_ramsey_echo_interleaved_1.hdf5',
+# ]
+#
+#
+# Fig.4
+# BackgroundFile = 'power spectroscopy_101.hdf5'
+# RabiFileList = [
+# 'transient_28.hdf5',
+# 'transient_27.hdf5',
+# ]
+#
+#
+#
+# Sup:
+# 240uA
+# BackgroundFile = 'power spectroscopy_76.hdf5'
+# OneToneFile = 'power spectroscopy_82.hdf5'
+#
+# 01 rabi
+# BackgroundFile = 'power spectroscopy_76.hdf5'
+# RabiFile = 'rabi_14.hdf5'
+#
+# p0/p1=3.094827586206897
+# T = 49.2mK
+# 02 rabi
+# BackgroundFile = 'power spectroscopy_76.hdf5'
+# RabiFile = 'rabi_12.hdf5'
+#
+# p0/p2=25.068965517241356
+# T = 57.9mK
+# p0=0.734
+#
+# transient
+#
