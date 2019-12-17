@@ -44,8 +44,8 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.MultiPopulationPlot">
-    <configuration name="LabberTPSweepPlot" type="PythonConfigurationType" factoryName="Python" temporary="true">
+  <component name="RunManager" selected="Python.ReferencedTSweepPlot">
+    <configuration name="Fluorescence shelving of a superconducting circuit" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="Qubit-data-process" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -53,32 +53,11 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/PaperDataProcess" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/LabberTPSweepPlot.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="MasterEqSimulation" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="Qubit-data-process" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/MasterEqSimulation.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/PaperDataProcess/Fluorescence shelving of a superconducting circuit.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -129,6 +108,27 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="plot_spectrum_and_fit_fluxonium" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="Qubit-data-process" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/ziggy4 in 6.5GHz waveguide with cold att" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/ziggy4 in 6.5GHz waveguide with cold att/plot_spectrum_and_fit_fluxonium.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="temperature" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="Qubit-data-process" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -152,11 +152,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.MultiPopulationPlot" />
-        <item itemvalue="Python.LabberTPSweepPlot" />
-        <item itemvalue="Python.temperature" />
         <item itemvalue="Python.ReferencedTSweepPlot" />
-        <item itemvalue="Python.MasterEqSimulation" />
+        <item itemvalue="Python.temperature" />
+        <item itemvalue="Python.Fluorescence shelving of a superconducting circuit" />
+        <item itemvalue="Python.MultiPopulationPlot" />
+        <item itemvalue="Python.plot_spectrum_and_fit_fluxonium" />
       </list>
     </recent_temporary>
   </component>
@@ -188,13 +188,6 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/ExtractDataFunc.py</url>
-          <line>259</line>
-          <option name="timeStamp" value="34" />
-        </line-breakpoint>
-      </breakpoints>
       <default-breakpoints>
         <breakpoint type="python-exception">
           <properties notifyOnTerminate="true" exception="BaseException">

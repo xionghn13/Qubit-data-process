@@ -78,8 +78,8 @@ def plotMultiPopulationTSweep(DataPath, RabiFile, BackgroundFolder='', Backgroun
     x_data = np.array(Time, dtype='float64')
     num_curve = RComplex.shape[1]
     for i in range(num_curve):
-        # y_data = np.array(RComplex[:, i].real, dtype='float64')
-        y_data = np.sum(np.array(RComplex[:, [0, 1, 3]].real, dtype='float64'), axis=1)
+        y_data = np.array(RComplex[:, i].real, dtype='float64')
+        # y_data = np.sum(np.array(RComplex[:, [0, 1, 3]].real, dtype='float64'), axis=1)
         if MeasurementType in ('transient no ref', 't1 no ref'):
             B_guess = y_data[-1]
             A_guess = y_data.max() - y_data.min()
@@ -309,13 +309,13 @@ def plotMultiPopulationTSweep(DataPath, RabiFile, BackgroundFolder='', Backgroun
 
 if __name__ == '__main__':
     DataFolderName = '11112019_back to waveguide'
-    DataPath = 'C:/SC Lab\\Labber\\' + DataFolderName + '/2019/12\Data_1215\\'
+    DataPath = 'C:/SC Lab\\Labber\\' + DataFolderName + '/2019/12\Data_1216\\'
     BackgroundFolder = 'C:\SC Lab\Projects\Fluxonium\data_process/ziggy4/'
     BackgroundFile = []
     Plus50MHzBackgroundFile = 'one_tone_4.05GHz_to_4.3GHz_-15dBm_4.9mA_10us integration_100Kavg_50KHz step_020419.dat'
     Minus50MHzBackgroundFile = 'one_tone_4.05GHz_to_4.3GHz_-15dBm_4.9mA_10us integration_100Kavg_50KHz step_020419.dat'
     BackgroundFile = 'power spectroscopy_101.hdf5'
-    RabiFile = 't1_P2_P1_9.hdf5'
+    RabiFile = 't1_P2_P1_15.hdf5'
     IQModFreq = 0.05
     CircleCorrection = False
     CorrectionParam = [1, -0.0017, 0.749, -0.022]
