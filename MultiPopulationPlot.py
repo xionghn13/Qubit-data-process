@@ -309,13 +309,13 @@ def plotMultiPopulationTSweep(DataPath, RabiFile, BackgroundFolder='', Backgroun
 
 if __name__ == '__main__':
     DataFolderName = '11112019_back to waveguide'
-    DataPath = 'C:/SC Lab\\Labber\\' + DataFolderName + '/2019/12\Data_1216\\'
+    DataPath = 'C:/SC Lab\\Labber\\' + DataFolderName + '/2019/12\Data_1217\\'
     BackgroundFolder = 'C:\SC Lab\Projects\Fluxonium\data_process/ziggy4/'
     BackgroundFile = []
     Plus50MHzBackgroundFile = 'one_tone_4.05GHz_to_4.3GHz_-15dBm_4.9mA_10us integration_100Kavg_50KHz step_020419.dat'
     Minus50MHzBackgroundFile = 'one_tone_4.05GHz_to_4.3GHz_-15dBm_4.9mA_10us integration_100Kavg_50KHz step_020419.dat'
     BackgroundFile = 'power spectroscopy_101.hdf5'
-    RabiFile = 't1_P2_P1_15.hdf5'
+    RabiFile = 't1_P2_P1_16.hdf5'
     IQModFreq = 0.05
     CircleCorrection = False
     CorrectionParam = [1, -0.0017, 0.749, -0.022]
@@ -332,7 +332,7 @@ if __name__ == '__main__':
     ShowFig = True
     StartTime = 0.5e3
     EndTime = 40e3
-    PopulationConversionConst = [1., 1.1800380394776169]
+    PopulationConversionConst = [1., 0.973600492844838]
     FitDict = plotMultiPopulationTSweep(DataPath, RabiFile, BackgroundFolder=BackgroundFolder,
                                         BackgroundFile=BackgroundFile,
                                         IQModFreq=IQModFreq, PopulationConversionConst=PopulationConversionConst,

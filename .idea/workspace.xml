@@ -284,7 +284,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.ReferencedTSweepPlot">
+  <component name="RunManager" selected="Python.MultiPopulationPlot">
     <configuration name="Fluorescence shelving of a superconducting circuit" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="Qubit-data-process" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -392,10 +392,10 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.MultiPopulationPlot" />
         <item itemvalue="Python.ReferencedTSweepPlot" />
         <item itemvalue="Python.temperature" />
         <item itemvalue="Python.Fluorescence shelving of a superconducting circuit" />
-        <item itemvalue="Python.MultiPopulationPlot" />
         <item itemvalue="Python.plot_spectrum_and_fit_fluxonium" />
       </list>
     </recent_temporary>
