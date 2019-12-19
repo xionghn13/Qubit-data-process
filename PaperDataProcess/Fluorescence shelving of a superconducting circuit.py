@@ -69,7 +69,6 @@ r_re_set = f.create_dataset('R_real', data=RComplexTrunc.real)
 r_im_set = f.create_dataset('R_imag', data=RComplexTrunc.imag)
 f.close()
 
-
 # figure 3
 
 BackgroundFile = 'RefRabiCal_4.hdf5'
@@ -152,57 +151,45 @@ f.close()
 
 BackgroundFile = 'power spectroscopy_101.hdf5'
 RabiFileList = [
+    'transient_30.hdf5',
     'transient_29.hdf5',
-    'transient_28.hdf5',
     'transient_27.hdf5',
 ]
-#
-# IQModFreq = 0.05
-# # FitForGamma = True
-# Gamma_r = 2.6 * np.pi * 2
-# FitCorrectedR = False
-# LogScale = False
-# Calibration = True
-# RotateComplex = False
-#
-# PhaseSlope = 326.7041108065019
-# PhaseRefrenceFreq = 4.105
-#
-# NumFile = len(RabiFileList)
-# DrivePowerArray = np.zeros([NumFile, ])
-# # analyze background file
-#
-# [BackFreq, BackComplex] = edf.readFSweepLabber(DataPath + BackgroundFile)
-# BackPower = edf.readReadoutPowerLabber(DataPath + BackgroundFile)
-# BackPowerStr = str(BackPower)
-#
-# for i, RabiFile in enumerate(RabiFileList):
-#     RabiFileStrList = RabiFile[:-5].split('_')
-#     MeasurementType = RabiFileStrList[0]
-#
-#     ReadoutFreq = edf.readReadoutFreqLabber(DataPath + RabiFile)
-#     ReadoutPower = edf.readReadoutPowerLabber(DataPath + RabiFile)
-#     QubitFreq = edf.readPumpFreqLabber(DataPath + RabiFile)
-#     # DrivePower = edf.readPumpPowerLabber(DataPath + RabiFile)
-#
-#     if MeasurementType in ('rabi', 'transient'):
-#         [Time, DrivePower, ComplexRabi] = edf.readRabiPowerSweepLabber(DataPath + RabiFile)
-#     elif MeasurementType == 't1':
-#         [Time, DrivePower, ComplexRabi] = edf.readT1PowerSweepLabber(DataPath + RabiFile)
-#
-#     if i == 0:
-#         ind = DrivePower > -45
-#         DrivePower = DrivePower[ind]
-#         ComplexRabi = ComplexRabi[:, ind]
-#
-#     ComplexRabiNormalized = ComplexRabi * 10 ** (- ReadoutPower / 20)
-#     if Calibration:
-#         RComplex = sbf.FPSweepBackgroundCalibrate(ReadoutFreq, ReadoutPower, ComplexRabi, BackFreq,
-#                                                   BackComplex, BackPower)
-#     else:
-#         RComplex = ComplexRabiNormalized
 
+NumFile = len(RabiFileList)
 
+[BackFreq, BackComplex] = edf.readFSweepLabber(DataPath + BackgroundFile)
+BackPower = edf.readReadoutPowerLabber(DataPath + BackgroundFile)
+BackPowerStr = str(BackPower)
+
+for i, RabiFile in enumerate(RabiFileList):
+    RabiFileStrList = RabiFile[:-5].split('_')
+    MeasurementType = RabiFileStrList[0]
+
+    ReadoutFreq = edf.readReadoutFreqLabber(DataPath + RabiFile)
+    ReadoutPower = edf.readReadoutPowerLabber(DataPath + RabiFile)
+    QubitFreq = edf.readPumpFreqLabber(DataPath + RabiFile)
+    [Time, DrivePower, ComplexRabi] = edf.readRabiPowerSweepLabber(DataPath + RabiFile)
+
+    ComplexRabiNormalized = ComplexRabi * 10 ** (- ReadoutPower / 20)
+    RComplex = sbf.FPSweepBackgroundCalibrate(ReadoutFreq, ReadoutPower, ComplexRabi, BackFreq, BackComplex, BackPower)
+
+    for j, power in enumerate(DrivePower):
+        if i == 0 and j == 0:
+            TimeList = []
+            RComplexList = []
+            FitRList = []
+            DrivePowerArray = np.array([power])
+        else:
+            DrivePowerArray = np.concatenate((DrivePowerArray, np.array([power])))
+        TimeList.append(Time)
+        RComplexList.append(RComplex)
+
+f = h5py.File(DataPath + 'transient.hdf5', 'w')
+timeset = f.create_dataset('time', data=TimeList)
+Rset = f.create_dataset('R', data=RComplexList)
+Pset = f.create_dataset('power', data=DrivePowerArray)
+f.close()
 #
 #
 #
