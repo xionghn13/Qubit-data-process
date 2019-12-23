@@ -11,6 +11,9 @@ import h5py
 DataPath = 'C:\SC Lab\Projects\Fluxonium\data_process/ziggy4/'
 BackgroundFile = 'power spectroscopy_101.hdf5'
 RabiFileList = [
+    'transient_29.hdf5',
+    # 'transient_30.hdf5',
+    # 'transient_31.hdf5',
     'transient_28.hdf5',
     'transient_27.hdf5',
 ]
@@ -48,7 +51,7 @@ for i, RabiFile in enumerate(RabiFileList):
     elif MeasurementType == 't1':
         [Time, DrivePower, ComplexRabi] = edf.readT1PowerSweepLabber(DataPath + RabiFile)
 
-    if i == 0:
+    if RabiFile == 'transient_28.hdf5':
         ind = DrivePower > -45
         DrivePower = DrivePower[ind]
         ComplexRabi = ComplexRabi[:, ind]

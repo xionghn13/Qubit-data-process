@@ -313,7 +313,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="Fluorescence shelving of a superconducting circuit" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="LabberTPSweepPlot" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="Qubit-data-process" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -321,11 +321,11 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/PaperDataProcess" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/PaperDataProcess/Fluorescence shelving of a superconducting circuit.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/LabberTPSweepPlot.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -400,10 +400,10 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.Fluorescence shelving of a superconducting circuit (1)" />
+        <item itemvalue="Python.LabberTPSweepPlot" />
         <item itemvalue="Python.MultiPopulationPlot" />
         <item itemvalue="Python.ReferencedTSweepPlot" />
         <item itemvalue="Python.temperature" />
-        <item itemvalue="Python.Fluorescence shelving of a superconducting circuit" />
       </list>
     </recent_temporary>
   </component>

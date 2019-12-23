@@ -114,9 +114,13 @@ def plotMultiPopulationTSweep(DataPath, RabiFile, BackgroundFolder='', Backgroun
                 y_pred = DoubleExp_curve(Time, A_fit, TR_fit, B_fit, Tqp_fit, lamb_fit)
                 ParamList = ['A', 'TR/ns', 'B', 'Tqp/ns', 'lambda']
             elif FitTwoExponential:
+                bounds = (
+                    (- 1, 0.1, - 1, 0.01, -1),
+                    (1, 1e6, 1, 1e6, 1)
+                )
                 try:
                     opt, cov = curve_fit(TwoExp_curve, x_data, y_data,
-                                         p0=[A_guess, T1_guess, -A_guess, T1_guess * 0.1, B_guess],
+                                         p0=[A_guess, T1_guess, -A_guess, T1_guess * 0.1, B_guess], bounds=bounds,
                                          maxfev=300000)
                     print('guess = %s' % str([A_guess, T1_guess, -A_guess, T1_guess * 0.1, B_guess]))
                     # print('Double exp fit opt = %s' % str(opt))
@@ -234,7 +238,7 @@ def plotMultiPopulationTSweep(DataPath, RabiFile, BackgroundFolder='', Backgroun
             plt.tick_params(axis='both', which='major', labelsize='x-large')
             plt.tight_layout()
 
-        plot_level = 'P2'
+        plot_level = 'P0'
 
         if plot_level == 'P0':
             plot_ind = [0, 2]
@@ -309,13 +313,13 @@ def plotMultiPopulationTSweep(DataPath, RabiFile, BackgroundFolder='', Backgroun
 
 if __name__ == '__main__':
     DataFolderName = '11112019_back to waveguide'
-    DataPath = 'C:/SC Lab\\Labber\\' + DataFolderName + '/2019/12\Data_1221\\'
+    DataPath = 'C:/SC Lab\\Labber\\' + DataFolderName + '/2019/12\Data_1222\\'
     BackgroundFolder = 'C:\SC Lab\Projects\Fluxonium\data_process/ziggy4/'
     BackgroundFile = []
     Plus50MHzBackgroundFile = 'one_tone_4.05GHz_to_4.3GHz_-15dBm_4.9mA_10us integration_100Kavg_50KHz step_020419.dat'
     Minus50MHzBackgroundFile = 'one_tone_4.05GHz_to_4.3GHz_-15dBm_4.9mA_10us integration_100Kavg_50KHz step_020419.dat'
     BackgroundFile = 'power spectroscopy_101.hdf5'
-    RabiFile = 't1_P2_P1_19.hdf5'
+    RabiFile = 't1_P2_P1_22.hdf5'
     IQModFreq = 0.05
     CircleCorrection = False
     CorrectionParam = [1, -0.0017, 0.749, -0.022]

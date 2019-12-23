@@ -2,7 +2,7 @@ from QubitDataProcessPackages import *
 
 # figure 2
 
-DataPath = 'C:\SC Lab\Projects\Fluxonium\data_process/paper_figures\Fluorescence/'
+DataPath = 'C:\SC Lab\GitHubRepositories\Qubit-data-process\PaperDataProcess\Fluorescence shelving of a superconducting circuit\Fluorescence/'
 BackgroundFile = 'power spectroscopy_76.hdf5'
 OneToneFile = 'power spectroscopy_77.hdf5'
 
@@ -151,11 +151,12 @@ f.close()
 
 BackgroundFile = 'power spectroscopy_101.hdf5'
 RabiFileList = [
-    'transient_30.hdf5',
     'transient_29.hdf5',
+    'transient_28.hdf5',
     'transient_27.hdf5',
 ]
 
+PopulationConversionConst = [1, 1.1800380394776169]
 NumFile = len(RabiFileList)
 
 [BackFreq, BackComplex] = edf.readFSweepLabber(DataPath + BackgroundFile)
@@ -171,23 +172,28 @@ for i, RabiFile in enumerate(RabiFileList):
     QubitFreq = edf.readPumpFreqLabber(DataPath + RabiFile)
     [Time, DrivePower, ComplexRabi] = edf.readRabiPowerSweepLabber(DataPath + RabiFile)
 
+    if RabiFile == 'transient_28.hdf5':
+        ind = DrivePower > -45
+        DrivePower = DrivePower[ind]
+        ComplexRabi = ComplexRabi[:, ind]
+
     ComplexRabiNormalized = ComplexRabi * 10 ** (- ReadoutPower / 20)
     RComplex = sbf.FPSweepBackgroundCalibrate(ReadoutFreq, ReadoutPower, ComplexRabi, BackFreq, BackComplex, BackPower)
 
     for j, power in enumerate(DrivePower):
         if i == 0 and j == 0:
             TimeList = []
-            RComplexList = []
+            y_dataList = []
             FitRList = []
             DrivePowerArray = np.array([power])
         else:
             DrivePowerArray = np.concatenate((DrivePowerArray, np.array([power])))
         TimeList.append(Time)
-        RComplexList.append(RComplex[:, j].real)
+        y_dataList.append((PopulationConversionConst[0] - RComplex[:, j].real) * PopulationConversionConst[1])
 
-f = h5py.File(DataPath + 'transient.hdf5', 'w')
+f = h5py.File(DataPath + 'transient_data.hdf5', 'w')
 timeset = f.create_dataset('time', data=TimeList)
-Rset = f.create_dataset('R', data=RComplexList)
+Yset = f.create_dataset('y', data=y_dataList)
 Pset = f.create_dataset('power', data=DrivePowerArray)
 f.close()
 #
