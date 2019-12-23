@@ -204,7 +204,7 @@
       <change beforePath="$PROJECT_DIR$/MeasurementControlFunc.py" beforeDir="false" afterPath="$PROJECT_DIR$/MeasurementControlFunc.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MultiPopulationPlot.py" beforeDir="false" afterPath="$PROJECT_DIR$/MultiPopulationPlot.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MultiTrialCoherenceVSFreqPlot.py" beforeDir="false" afterPath="$PROJECT_DIR$/MultiTrialCoherenceVSFreqPlot.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PaperDataProcess/Fluorescence shelving of a superconducting circuit.py" beforeDir="false" afterPath="$PROJECT_DIR$/PaperDataProcess/Fluorescence shelving of a superconducting circuit.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PaperDataProcess/Fluorescence shelving of a superconducting circuit.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/PlotFridgeTemp.py" beforeDir="false" afterPath="$PROJECT_DIR$/PlotFridgeTemp.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/PlotJPMagnet.py" beforeDir="false" afterPath="$PROJECT_DIR$/PlotJPMagnet.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/PrintCoherenceToExcel.py" beforeDir="false" afterPath="$PROJECT_DIR$/PrintCoherenceToExcel.py" afterDir="false" />
