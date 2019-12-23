@@ -75,7 +75,7 @@ BackgroundFile = 'RefRabiCal_4.hdf5'
 RabiFile = 'RefRabi_12.hdf5'
 PopulationConversionConst = [1, 1.]
 # use rabi to calibrate rabi. Plus or minus are merged in one array.
-[BackFreq, BackPower, BackComplex] = edf.readRefRabiCalLabber(BackgroundFolder + BackgroundFile)
+[BackFreq, BackPower, BackComplex] = edf.readRefRabiCalLabber(DataPath + BackgroundFile)
 Plus50MHzBackPower = BackPower
 Minus50MHzBackPower = BackPower
 Plus50MHzBackFreq = BackFreq
@@ -183,7 +183,7 @@ for i, RabiFile in enumerate(RabiFileList):
         else:
             DrivePowerArray = np.concatenate((DrivePowerArray, np.array([power])))
         TimeList.append(Time)
-        RComplexList.append(RComplex)
+        RComplexList.append(RComplex[:, j].real)
 
 f = h5py.File(DataPath + 'transient.hdf5', 'w')
 timeset = f.create_dataset('time', data=TimeList)
