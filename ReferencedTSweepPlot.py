@@ -454,7 +454,7 @@ def plotReferencedTSweep(DataPath, RabiFile, BackgroundFolder='', BackgroundFile
 
 if __name__ == '__main__':
     DataFolderName = '11112019_back to waveguide'
-    DataPath = 'C:/SC Lab\\Labber\\' + DataFolderName + '/2019/12\Data_1216\\'
+    DataPath = 'C:/SC Lab\\Labber\\' + DataFolderName + '/2019/12\Data_1220\\'
     BackgroundFolder = 'C:\SC Lab\Projects\Fluxonium\data_process/ziggy4/'
     BackgroundFile = []
     # BackgroundFile = '021219_rabi_CH2(AWG1Vpp)_no pump_readout_4.077GHz__-15dBm_qubit4.027GHz_-35dBm_0.8_mA_I cos Q sin mod true interleafing_odd readout even ref_avg100k_Rabi300_duty50000readout3us.h5'
@@ -462,7 +462,7 @@ if __name__ == '__main__':
     Plus50MHzBackgroundFile = 'one_tone_4.05GHz_to_4.3GHz_-15dBm_4.9mA_10us integration_100Kavg_50KHz step_020419.dat'
     Minus50MHzBackgroundFile = 'one_tone_4.05GHz_to_4.3GHz_-15dBm_4.9mA_10us integration_100Kavg_50KHz step_020419.dat'
     BackgroundFile = 'power spectroscopy_101.hdf5'
-    RabiFile = 'rabi_Drive1_10.hdf5'
+    RabiFile = 'rabi_Drive1_13.hdf5'
     IQModFreq = 0.05
     CircleCorrection = True
     CorrectionParam = [1, -0.0017, 0.749, -0.022]
