@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f54da7de-e7c6-43d6-8803-bea26cab1707" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/Qubit-data-process.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Qubit-data-process.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
@@ -204,7 +205,13 @@
       <change beforePath="$PROJECT_DIR$/MeasurementControlFunc.py" beforeDir="false" afterPath="$PROJECT_DIR$/MeasurementControlFunc.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MultiPopulationPlot.py" beforeDir="false" afterPath="$PROJECT_DIR$/MultiPopulationPlot.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MultiTrialCoherenceVSFreqPlot.py" beforeDir="false" afterPath="$PROJECT_DIR$/MultiTrialCoherenceVSFreqPlot.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PaperDataProcess/Fluorescence shelving of a superconducting circuit.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PaperDataProcess/Fluorescence shelving of a superconducting circuit/Fluorescence shelving of a superconducting circuit.py" beforeDir="false" afterPath="$PROJECT_DIR$/PaperDataProcess/Fluorescence shelving of a superconducting circuit/Fluorescence shelving of a superconducting circuit.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PaperDataProcess/Fluorescence shelving of a superconducting circuit/Fluorescence/plot_figures.nb" beforeDir="false" afterPath="$PROJECT_DIR$/PaperDataProcess/Fluorescence shelving of a superconducting circuit/Fluorescence/plot_figures.nb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PaperDataProcess/Fluorescence shelving of a superconducting circuit/plot.nb" beforeDir="false" afterPath="$PROJECT_DIR$/PaperDataProcess/Fluorescence shelving of a superconducting circuit/plot.nb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PaperDataProcess/Fluorescence shelving of a superconducting circuit/rerefinishingthepaper/Data analysis for Rabi 01 and Rabi02 with 02 pumping.nb" beforeDir="false" afterPath="$PROJECT_DIR$/PaperDataProcess/Fluorescence shelving of a superconducting circuit/rerefinishingthepaper/Data analysis for Rabi 01 and Rabi02 with 02 pumping.nb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PaperDataProcess/Fluorescence shelving of a superconducting circuit/rerefinishingthepaper/Data analysis for T1 of 01 with 02 pumping.nb" beforeDir="false" afterPath="$PROJECT_DIR$/PaperDataProcess/Fluorescence shelving of a superconducting circuit/rerefinishingthepaper/Data analysis for T1 of 01 with 02 pumping.nb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PaperDataProcess/Fluorescence shelving of a superconducting circuit/rerefinishingthepaper/Data analysis for T2 echo with 02 pumping.nb" beforeDir="false" afterPath="$PROJECT_DIR$/PaperDataProcess/Fluorescence shelving of a superconducting circuit/rerefinishingthepaper/Data analysis for T2 echo with 02 pumping.nb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PaperDataProcess/Fluorescence shelving of a superconducting circuit/rerefinishingthepaper/Data analysis for circles.nb" beforeDir="false" afterPath="$PROJECT_DIR$/PaperDataProcess/Fluorescence shelving of a superconducting circuit/rerefinishingthepaper/Data analysis for circles.nb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/PlotFridgeTemp.py" beforeDir="false" afterPath="$PROJECT_DIR$/PlotFridgeTemp.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/PlotJPMagnet.py" beforeDir="false" afterPath="$PROJECT_DIR$/PlotJPMagnet.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/PrintCoherenceToExcel.py" beforeDir="false" afterPath="$PROJECT_DIR$/PrintCoherenceToExcel.py" afterDir="false" />
@@ -284,7 +291,28 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.MultiPopulationPlot">
+  <component name="RunManager" selected="Python.Fluorescence shelving of a superconducting circuit (1)">
+    <configuration name="Fluorescence shelving of a superconducting circuit (1)" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="Qubit-data-process" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="C:\ProgramData\Anaconda3\python.exe" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/PaperDataProcess/Fluorescence shelving of a superconducting circuit" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/PaperDataProcess/Fluorescence shelving of a superconducting circuit/Fluorescence shelving of a superconducting circuit.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="Fluorescence shelving of a superconducting circuit" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="Qubit-data-process" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -348,27 +376,6 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="plot_spectrum_and_fit_fluxonium" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="Qubit-data-process" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/ziggy4 in 6.5GHz waveguide with cold att" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/ziggy4 in 6.5GHz waveguide with cold att/plot_spectrum_and_fit_fluxonium.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <configuration name="temperature" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="Qubit-data-process" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -392,11 +399,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.Fluorescence shelving of a superconducting circuit (1)" />
         <item itemvalue="Python.MultiPopulationPlot" />
         <item itemvalue="Python.ReferencedTSweepPlot" />
         <item itemvalue="Python.temperature" />
         <item itemvalue="Python.Fluorescence shelving of a superconducting circuit" />
-        <item itemvalue="Python.plot_spectrum_and_fit_fluxonium" />
       </list>
     </recent_temporary>
   </component>
