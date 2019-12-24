@@ -154,7 +154,7 @@ RabiFileList = [
     'transient_32.hdf5',
 ]
 
-PopulationConversionConst = [1, 1.1800380394776169]
+PopulationConversionConst = [1, 0.973600492844838]
 NumFile = len(RabiFileList)
 
 [BackFreq, BackComplex] = edf.readFSweepLabber(DataPath + BackgroundFile)
