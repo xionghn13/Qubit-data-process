@@ -11,11 +11,8 @@ import h5py
 DataPath = 'C:\SC Lab\Projects\Fluxonium\data_process/ziggy4/'
 BackgroundFile = 'power spectroscopy_101.hdf5'
 RabiFileList = [
-    'transient_29.hdf5',
-    # 'transient_30.hdf5',
-    # 'transient_31.hdf5',
-    'transient_28.hdf5',
-    'transient_27.hdf5',
+    'transient_32.hdf5',
+
 ]
 
 IQModFreq = 0.05
