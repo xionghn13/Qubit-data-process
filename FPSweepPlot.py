@@ -10,14 +10,14 @@ import ExtractDataFunc as edf
 DataPath = 'C:\SC Lab\Projects\Fluxonium\data_process/ziggy4/'
 # BackgroundFile = 'calibration_5.hdf5'
 BackgroundFile = 'power spectroscopy_76.hdf5'
-OneToneFile = 'power spectroscopy_82.hdf5'
+OneToneFile = 'power spectroscopy_77.hdf5'
 # BackgroundFile = 'power spectroscopy_68.hdf5'
 # OneToneFile = 'power spectroscopy_67.hdf5'
 # BackgroundFile = 'power spectroscopy_65.hdf5'
 # OneToneFile = 'power spectroscopy_66.hdf5'
 
 Calibration = True
-UseOneToneRange = True
+UseOneToneRange = False
 FitSeparately = False
 PlotParamVSPower = False
 PlotUnfittedCircle = False
@@ -25,10 +25,10 @@ ShiftCircle = False
 RotateCircle = False
 LineSpec = '.'
 
-StartFreq = 6.542
-EndFreq = 6.554
-StartPower = -10
-EndPower = 10
+StartFreq = 6.538
+EndFreq = 6.55
+StartPower = -0
+EndPower = 5
 SelectPower = np.array([])
 # SelectPower = np.array([-25, -20, -15, -10])
 
@@ -260,7 +260,7 @@ if Calibration:
 fig, ax = plt.subplots()
 leg = ()
 for i in range(NumPowerTrunc):
-    plt.plot(OneFreqUniqTrunc, np.abs(OneComplexNormalizedTrunc[:, i]), LineSpec)
+    plt.plot(OneFreqUniqTrunc, np.imag(OneComplexNormalizedTrunc[:, i]), LineSpec)
     # if not UseOnePowerCalibrate:
     #     plt.plot(BackFreqUniqTrunc, np.abs(BackComplexNormalizedTrunc[:, i]), '--')
     if UseTwoTone:
@@ -268,10 +268,10 @@ for i in range(NumPowerTrunc):
     else:
         leg += ('One tone ' + str(OnePowerUniqTrunc[i]) + 'dBm',)
 if UseOnePowerCalibrate and Calibration:
-    plt.plot(BackFreqUniqTrunc, np.abs(BackComplexNormalizedTrunc), '--')
+    plt.plot(BackFreqUniqTrunc, np.imag(BackComplexNormalizedTrunc), '--')
     leg += ('Background ' + BackPowerStr + 'dBm',)
 plt.xlabel('freq/GHz', fontsize='x-large')
-plt.ylabel('Abs', fontsize='x-large')
+plt.ylabel('imag', fontsize='x-large')
 plt.tick_params(axis='both', which='major', labelsize='x-large')
 plt.tight_layout()
 plt.legend(leg)
