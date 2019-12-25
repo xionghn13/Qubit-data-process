@@ -2,7 +2,8 @@ from QubitDataProcessPackages import *
 
 # figure 2
 
-DataPath = 'C:\SC Lab\GitHubRepositories\Qubit-data-process\PaperDataProcess\Fluorescence shelving of a superconducting circuit\Fluorescence/'
+# DataPath = 'C:\SC Lab\GitHubRepositories\Qubit-data-process\PaperDataProcess\Fluorescence shelving of a superconducting circuit\Fluorescence/'
+DataPath = 'D:\GitHubRepository\Qubit-data-process\PaperDataProcess\Fluorescence shelving of a superconducting circuit\Fluorescence/'
 BackgroundFile = 'power spectroscopy_76.hdf5'
 OneToneFile = 'power spectroscopy_77.hdf5'
 
@@ -151,7 +152,9 @@ f.close()
 
 BackgroundFile = 'power spectroscopy_101.hdf5'
 RabiFileList = [
-    'transient_32.hdf5',
+    # 'transient_32.hdf5',
+    'transient_29.hdf5',
+    'transient_28.hdf5',
 ]
 
 PopulationConversionConst = [1, 0.973600492844838]
