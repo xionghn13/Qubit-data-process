@@ -152,9 +152,8 @@ f.close()
 
 BackgroundFile = 'power spectroscopy_101.hdf5'
 RabiFileList = [
+    'transient_9.hdf5',
     # 'transient_32.hdf5',
-    'transient_29.hdf5',
-    'transient_28.hdf5',
 ]
 
 PopulationConversionConst = [1, 0.973600492844838]
@@ -173,10 +172,14 @@ for i, RabiFile in enumerate(RabiFileList):
     QubitFreq = edf.readPumpFreqLabber(DataPath + RabiFile)
     [Time, DrivePower, ComplexRabi] = edf.readRabiPowerSweepLabber(DataPath + RabiFile)
 
-    if RabiFile == 'transient_28.hdf5':
+    if RabiFile in ('transient_28.hdf5'):
         ind = DrivePower > -45
         DrivePower = DrivePower[ind]
         ComplexRabi = ComplexRabi[:, ind]
+    # elif RabiFile in ('transient_32.hdf5'):
+    #     ind = DrivePower > -40
+    #     DrivePower = DrivePower[ind]
+    #     ComplexRabi = ComplexRabi[:, ind]
 
     ComplexRabiNormalized = ComplexRabi * 10 ** (- ReadoutPower / 20)
     RComplex = sbf.FPSweepBackgroundCalibrate(ReadoutFreq, ReadoutPower, ComplexRabi, BackFreq, BackComplex, BackPower)
@@ -189,10 +192,12 @@ for i, RabiFile in enumerate(RabiFileList):
             DrivePowerArray = np.array([power])
         else:
             DrivePowerArray = np.concatenate((DrivePowerArray, np.array([power])))
-        TimeList.append(Time)
-        y_dataList.append((PopulationConversionConst[0] - RComplex[:, j].real) * PopulationConversionConst[1])
+        TimeList.append(list(Time))
+        y_dataList.append(list((PopulationConversionConst[0] - RComplex[:, j].real) * PopulationConversionConst[1]))
 
-f = h5py.File(DataPath + 'transient_data.hdf5', 'w')
+f = h5py.File(DataPath + 'transient_data0.hdf5', 'w')
+# timeset0 = f.create_dataset('time0', data=TimeList[:1])
+# Yset0 = f.create_dataset('y0', data=y_dataList[:1])
 timeset = f.create_dataset('time', data=TimeList)
 Yset = f.create_dataset('y', data=y_dataList)
 Pset = f.create_dataset('power', data=DrivePowerArray)
