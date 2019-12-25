@@ -11,3 +11,8 @@ __pycache__/ExtractDataFunc.cpython-37.pyc
 __pycache__/QubitDataProcessPackages.cpython-37.pyc
 __pycache__/SubtractBackgroundFunc.cpython-37.pyc
 .idea/workspace.xml
+.idea/Qubit-data-process.iml
+*.xml
+.idea/misc.xml
+.idea/Qubit-data-process.iml
+.idea/workspace.xml
