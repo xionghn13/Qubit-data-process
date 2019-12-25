@@ -176,6 +176,7 @@ if file.startswith('t1_t2_interleaved') or file.startswith('t1_ramsey_echo_inter
     plt.ylim((min_T, max_T))
     plt.colorbar()
     plt.tick_params(axis='both', which='major', labelsize='x-large')
+    plt.gcf().set_size_inches(10, 5, forward=True)
     plt.tight_layout()
 
 if PlotSetup2Data:
