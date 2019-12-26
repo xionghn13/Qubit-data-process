@@ -9,9 +9,9 @@ import ExtractDataFunc as edf
 import h5py
 
 DataPath = 'C:\SC Lab\Projects\Fluxonium\data_process/ziggy4/'
-BackgroundFile = 'power spectroscopy_101.hdf5'
+BackgroundFile = 'power spectroscopy_105.hdf5'
 RabiFileList = [
-    'transient_32.hdf5',
+    'transient_35.hdf5',
 
 ]
 

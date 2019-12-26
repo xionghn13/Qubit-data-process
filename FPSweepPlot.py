@@ -9,8 +9,8 @@ import ExtractDataFunc as edf
 # DataPath = 'E:/Projects\Fluxonium\data_process/Fluxonium022319/'
 DataPath = 'C:\SC Lab\Projects\Fluxonium\data_process/ziggy4/'
 # BackgroundFile = 'calibration_5.hdf5'
-BackgroundFile = 'power spectroscopy_76.hdf5'
-OneToneFile = 'power spectroscopy_77.hdf5'
+BackgroundFile = 'power spectroscopy_105.hdf5'
+OneToneFile = 'power spectroscopy_107.hdf5'
 # BackgroundFile = 'power spectroscopy_68.hdf5'
 # OneToneFile = 'power spectroscopy_67.hdf5'
 # BackgroundFile = 'power spectroscopy_65.hdf5'
@@ -27,10 +27,10 @@ LineSpec = '.'
 
 StartFreq = 6.538
 EndFreq = 6.55
-StartPower = -0
-EndPower = 5
+StartPower = -10
+EndPower = 7.5
 SelectPower = np.array([])
-# SelectPower = np.array([-25, -20, -15, -10])
+# SelectPower = np.array([-10, -5, 2.5, 5])
 
 gamma_f_guess = 2e-3
 P0_guess = 0.7
