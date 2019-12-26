@@ -19,7 +19,12 @@ def TwoExp_curve(t, A, T1, B, T2, C):
     return r
 
 
-def rabi_curve(t, A, T1, B, Tpi, phi0, T_out, C):
+def rabi_curve(t, A, T1, B, Tpi, phi0):
+    r = A * np.exp(- t / T1) * np.cos(t / Tpi * np.pi + phi0) + B
+    return r
+
+
+def rabi_two_exp_curve(t, A, T1, B, Tpi, phi0, T_out, C):
     r = A * np.exp(- t / T1) * np.cos(t / Tpi * np.pi + phi0) + B * np.exp(-t / T_out) + C
     return r
 
