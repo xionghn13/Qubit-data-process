@@ -9,9 +9,9 @@ EC = 1.184
 EJ = 1.967
 # loss_tan = 1/e-6
 # Q_cap = 1 / loss_tan
-Q_cap = 2.8e5
-T = 50e-3
-epsilon = 0.7
+Q_cap = 3.2e5
+T = 20e-3
+epsilon = 0.5
 
 flux = 0.5
 [pem01, freq] = np.abs(ssj.phase_matrix_element_freq(N, EL, EC, EJ, flux * 2 * np.pi, 0, 1))
