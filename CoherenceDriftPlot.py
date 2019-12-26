@@ -8,16 +8,16 @@ from LabberRepeatedTSweepPlot import plotLabberRepeatedTSweepPlot
 DataPath = 'C:\SC Lab\Projects\Fluxonium\data_process\Fluxonium032619\\'
 FileList = [
     't1_ramsey_echo_interleaved_1.hdf5',
-    't1_ramsey_echo_interleaved_2.hdf5',
-    't1_ramsey_echo_interleaved_3.hdf5',
-    't1_ramsey_echo_interleaved_4.hdf5',
-    't1_ramsey_echo_interleaved_5.hdf5',
-    't1_ramsey_echo_interleaved_6.hdf5',
-    't1_ramsey_echo_interleaved_7.hdf5',
-    't1_ramsey_echo_interleaved_8.hdf5',
-    't1_ramsey_echo_interleaved_9.hdf5',
-    't1_ramsey_echo_interleaved_10.hdf5',
-    't1_ramsey_echo_interleaved_11.hdf5',
+    # 't1_ramsey_echo_interleaved_2.hdf5',
+    # 't1_ramsey_echo_interleaved_3.hdf5',
+    # 't1_ramsey_echo_interleaved_4.hdf5',
+    # 't1_ramsey_echo_interleaved_5.hdf5',
+    # 't1_ramsey_echo_interleaved_6.hdf5',
+    # 't1_ramsey_echo_interleaved_7.hdf5',
+    # 't1_ramsey_echo_interleaved_8.hdf5',
+    # 't1_ramsey_echo_interleaved_9.hdf5',
+    # 't1_ramsey_echo_interleaved_10.hdf5',
+    # 't1_ramsey_echo_interleaved_11.hdf5',
 ]
 Setup2DataPath = 'Z:\Projects\Transmon_Palmer\\2019\\10\Data_1017\\'
 Setup2FileList = [
@@ -136,7 +136,6 @@ if FitDoubleExp:
     plt.ylim([10, 1e3])
 plt.gcf().autofmt_xdate()
 plt.gcf().set_size_inches(20, 5, forward=True)
-plt.gcf().autofmt_xdate()
 
 plt.tight_layout()
 
