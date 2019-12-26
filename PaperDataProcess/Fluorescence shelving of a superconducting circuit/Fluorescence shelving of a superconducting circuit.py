@@ -152,8 +152,8 @@ f.close()
 
 BackgroundFile = 'power spectroscopy_101.hdf5'
 RabiFileList = [
-    'transient_9.hdf5',
-    # 'transient_32.hdf5',
+    # 'transient_9.hdf5',
+    'transient_35.hdf5',
 ]
 
 PopulationConversionConst = [1, 0.973600492844838]
@@ -195,7 +195,7 @@ for i, RabiFile in enumerate(RabiFileList):
         TimeList.append(list(Time))
         y_dataList.append(list((PopulationConversionConst[0] - RComplex[:, j].real) * PopulationConversionConst[1]))
 
-f = h5py.File(DataPath + 'transient_data0.hdf5', 'w')
+f = h5py.File(DataPath + 'transient_data.hdf5', 'w')
 # timeset0 = f.create_dataset('time0', data=TimeList[:1])
 # Yset0 = f.create_dataset('y0', data=y_dataList[:1])
 timeset = f.create_dataset('time', data=TimeList)
