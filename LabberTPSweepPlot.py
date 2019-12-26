@@ -17,7 +17,7 @@ RabiFileList = [
 
 IQModFreq = 0.05
 # FitForGamma = True
-Gamma_r = 2.6 * np.pi * 2
+Gamma_r = 1.807 * np.pi * 2
 FitCorrectedR = False
 LogScale = False
 Calibration = True
@@ -124,6 +124,7 @@ if MeasurementType == 'transient':
     TransientOpt = opt
     TransientErr = np.sqrt(cov.diagonal())
     TransientParamList = ['Gamma_in', 'Gamma_out', 'pow_ratio']
+    print(opt)
 
 limit = 1.7
 
