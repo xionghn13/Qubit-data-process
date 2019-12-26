@@ -2,7 +2,7 @@ from QubitDataProcessPackages import *
 from datetime import timedelta
 from LabberRepeatedTSweepPlot import plotLabberRepeatedTSweepPlot
 
-DataFolderName = '10092019_wg5 in 8.5GHz cavity (add coax atts, eccosorb ...)'
+# DataFolderName = '10092019_wg5 in 8.5GHz cavity (add coax atts, eccosorb ...)'
 # DataFolderName = 'Data'
 # DataPath = 'C:/SC Lab\\Labber\\' + DataFolderName + '/2019/10\Data_1029\\'
 DataPath = 'C:\SC Lab\Projects\Fluxonium\data_process\Fluxonium032619\\'
@@ -74,6 +74,7 @@ for i, file in enumerate(FileList):
               '(s), which is ' + time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(start_sec)))
     t_monitor = edf.getTimeStampArray(DataPath + file, len(Count)) - time_origin_sec
     t_monitor /= 3600
+    t_monitor = edf.SecArrayToDateTimeList(edf.getTimeStampArray(DataPath + file, len(Count)))
     # print(t_monitor)
     # TimeStamp = TimeStartStop[i]
     # start_sec = timedelta(hours=TimeStamp['start'][0], minutes=TimeStamp['start'][1],
@@ -133,6 +134,10 @@ if SetTimeLimit:
 if FitDoubleExp:
     ax.set_yscale('log')
     plt.ylim([10, 1e3])
+plt.gcf().autofmt_xdate()
+plt.gcf().set_size_inches(20, 5, forward=True)
+plt.gcf().autofmt_xdate()
+
 plt.tight_layout()
 
 if file.startswith('t1_t2_interleaved') or file.startswith('t1_ramsey_echo_interleaved'):
@@ -156,6 +161,8 @@ if file.startswith('t1_t2_interleaved') or file.startswith('t1_ramsey_echo_inter
         plt.xlim(TimeLimit)
     ax.set_yscale('log')
     plt.ylim([10, 1e3])
+    plt.gcf().autofmt_xdate()
+    plt.gcf().set_size_inches(20, 5, forward=True)
     plt.tight_layout()
 
     fig, ax = plt.subplots()
@@ -171,12 +178,11 @@ if file.startswith('t1_t2_interleaved') or file.startswith('t1_ramsey_echo_inter
     min_T = np.min(np.concatenate((T1, T2)))
     max_T = np.max(np.concatenate((T1, T2)))
     plt.xlabel('T1(us)', fontsize='x-large')
-    plt.ylabel("T2(us)", fontsize='x-large')
+    plt.ylabel("T2echo(us)", fontsize='x-large')
     plt.xlim((min_T, max_T))
     plt.ylim((min_T, max_T))
     plt.colorbar()
     plt.tick_params(axis='both', which='major', labelsize='x-large')
-    plt.gcf().set_size_inches(10, 5, forward=True)
     plt.tight_layout()
 
 if PlotSetup2Data:

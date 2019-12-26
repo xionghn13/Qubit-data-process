@@ -1,6 +1,7 @@
 import numpy as np
 import h5py
 import Labber
+import time
 
 
 def readFSweepDat(file):
@@ -754,3 +755,10 @@ def readStartStopTime(file):
 def getTimeStampArray(file, count):
     [start, stop] = readStartStopTime(file)
     return np.linspace(start, stop, count)
+
+
+def SecArrayToDateTimeList(arr):
+    l = []
+    for sec in arr:
+        l += [time.localtime(sec)]
+    return l
