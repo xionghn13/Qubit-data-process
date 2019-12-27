@@ -90,6 +90,7 @@ for i, file in enumerate(FileList):
         for ind in range(num_meas):
             if NoErrorBar:
                 plt.plot(t_monitor, Opt[ind][1, :] / 1000, fmt_list[ind], ms=MarkerSize)
+                print(t_monitor)
             else:
                 ax.errorbar(t_monitor, Opt[ind][1, :] / 1000, yerr=Err[ind][1, :] / 1000, fmt=fmt_list[ind])
             if FitDoubleExp and ind == 0:
@@ -136,7 +137,6 @@ if FitDoubleExp:
     plt.ylim([10, 1e3])
 plt.gcf().autofmt_xdate()
 plt.gcf().set_size_inches(20, 5, forward=True)
-
 plt.tight_layout()
 
 if file.startswith('t1_t2_interleaved') or file.startswith('t1_ramsey_echo_interleaved'):
