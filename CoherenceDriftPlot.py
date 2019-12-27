@@ -6,6 +6,7 @@ from LabberRepeatedTSweepPlot import plotLabberRepeatedTSweepPlot
 # DataFolderName = 'Data'
 # DataPath = 'C:/SC Lab\\Labber\\' + DataFolderName + '/2019/10\Data_1029\\'
 DataPath = 'C:\SC Lab\Projects\Fluxonium\data_process\Fluxonium032619\\'
+DataPath = 'D:\GitHubRepository\Qubit-data-process\\temporary_data\\'
 FileList = [
     't1_ramsey_echo_interleaved_1.hdf5',
     # 't1_ramsey_echo_interleaved_2.hdf5',
@@ -18,6 +19,14 @@ FileList = [
     # 't1_ramsey_echo_interleaved_9.hdf5',
     # 't1_ramsey_echo_interleaved_10.hdf5',
     # 't1_ramsey_echo_interleaved_11.hdf5',
+
+    # 't1_t2_interleaved_2019-10-11-23-41-22_2.hdf5',
+    # 't1_t2_interleaved_2019-10-12-14-11-02.hdf5',
+    # 't1_t2_interleaved_2019-10-13-03-08-16.hdf5',
+    # 't1_ramsey_echo_interleaved_2019-10-14-14-53-39_7.hdf5',
+    # 't1_ramsey_echo_interleaved_2019-10-17_7.hdf5',
+    # 't1_ramsey_echo_interleaved_2019-10-18_3.hdf5',
+
 ]
 Setup2DataPath = 'Z:\Projects\Transmon_Palmer\\2019\\10\Data_1017\\'
 Setup2FileList = [
@@ -90,7 +99,6 @@ for i, file in enumerate(FileList):
         for ind in range(num_meas):
             if NoErrorBar:
                 plt.plot(t_monitor, Opt[ind][1, :] / 1000, fmt_list[ind], ms=MarkerSize)
-                print(t_monitor)
             else:
                 ax.errorbar(t_monitor, Opt[ind][1, :] / 1000, yerr=Err[ind][1, :] / 1000, fmt=fmt_list[ind])
             if FitDoubleExp and ind == 0:
@@ -127,7 +135,7 @@ for i, file in enumerate(FileList):
     OptList += [Opt]
     ErrList += [Err]
 
-plt.xlabel('Time(hr)', fontsize='x-large')
+plt.xlabel('Time', fontsize='x-large')
 plt.ylabel("Decay time(us)", fontsize='x-large')
 plt.tick_params(axis='both', which='major', labelsize='x-large')
 if SetTimeLimit:
@@ -136,7 +144,7 @@ if FitDoubleExp:
     ax.set_yscale('log')
     plt.ylim([10, 1e3])
 plt.gcf().autofmt_xdate()
-plt.gcf().set_size_inches(20, 5, forward=True)
+plt.gcf().set_size_inches(15, 5, forward=True)
 plt.tight_layout()
 
 if file.startswith('t1_t2_interleaved') or file.startswith('t1_ramsey_echo_interleaved'):
@@ -153,7 +161,7 @@ if file.startswith('t1_t2_interleaved') or file.startswith('t1_ramsey_echo_inter
         fmt_list = ['royalblue', 'violet', 'grey']
         plt.plot(t_monitor, Opt[0][1, :] / 1000, LineSpec, color=fmt_list[0])
         plt.plot(t_monitor, T_phi, LineSpec, color=fmt_list[1])
-    plt.xlabel('Time(hr)', fontsize='x-large')
+    plt.xlabel('Time', fontsize='x-large')
     plt.ylabel("Decay time(us)", fontsize='x-large')
     plt.tick_params(axis='both', which='major', labelsize='x-large')
     if SetTimeLimit:
@@ -161,7 +169,7 @@ if file.startswith('t1_t2_interleaved') or file.startswith('t1_ramsey_echo_inter
     ax.set_yscale('log')
     plt.ylim([10, 1e3])
     plt.gcf().autofmt_xdate()
-    plt.gcf().set_size_inches(20, 5, forward=True)
+    plt.gcf().set_size_inches(15, 5, forward=True)
     plt.tight_layout()
 
     fig, ax = plt.subplots()
@@ -242,7 +250,7 @@ if PlotSetup2Data:
         Setup2OptList += [Opt]
         Setup2ErrList += [Err]
 
-    plt.xlabel('Time(hr)', fontsize='x-large')
+    plt.xlabel('Time', fontsize='x-large')
     plt.ylabel("Decay time(us)", fontsize='x-large')
     plt.tick_params(axis='both', which='major', labelsize='x-large')
     plt.tight_layout()
@@ -259,7 +267,7 @@ if PlotSetup2Data:
     # plt.legend(('Sample 1', 'Sample 2'))
     # plt.plot(TimeList[0], OptList[0][0][1, :] / 1000, LineSpec, color=fmt_list[0])
     # plt.plot(Setup2TimeList[0], Setup2OptList[0][0][1, :] / 1000, LineSpec, color=fmt_list[1])
-    # plt.xlabel('Time(hr)', fontsize='x-large')
+    # plt.xlabel('Time', fontsize='x-large')
     # plt.ylabel("T1(us)", fontsize='x-large')
     # plt.tick_params(axis='both', which='major', labelsize='x-large')
     # plt.tight_layout()

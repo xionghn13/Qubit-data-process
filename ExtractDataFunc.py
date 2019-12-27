@@ -1,7 +1,7 @@
 import numpy as np
 import h5py
 import Labber
-import time
+import datetime
 
 
 def readFSweepDat(file):
@@ -760,5 +760,5 @@ def getTimeStampArray(file, count):
 def SecArrayToDateTimeList(arr):
     l = []
     for sec in arr:
-        l += [time.localtime(sec)]
+        l += [datetime.datetime.fromtimestamp(sec)]
     return l
