@@ -17,3 +17,6 @@ __pycache__/SubtractBackgroundFunc.cpython-37.pyc
 .idea/Qubit-data-process.iml
 .idea/workspace.xml
 __pycache__/SubtractBackgroundFunc.cpython-37.pyc
+*.pyc
+__pycache__/SubtractBackgroundFunc.cpython-37.pyc
+__pycache__/ThermalPhotonDephasing.cpython-37.pyc

@@ -8,24 +8,25 @@ from LabberRepeatedTSweepPlot import plotLabberRepeatedTSweepPlot
 DataPath = 'C:\SC Lab\Projects\Fluxonium\data_process\Fluxonium032619\\'
 DataPath = 'D:\GitHubRepository\Qubit-data-process\\temporary_data\\'
 FileList = [
-    't1_ramsey_echo_interleaved_1.hdf5',
-    't1_ramsey_echo_interleaved_2.hdf5',
-    't1_ramsey_echo_interleaved_3.hdf5',
-    't1_ramsey_echo_interleaved_4.hdf5',
-    't1_ramsey_echo_interleaved_5.hdf5',
-    't1_ramsey_echo_interleaved_6.hdf5',
-    't1_ramsey_echo_interleaved_7.hdf5',
-    't1_ramsey_echo_interleaved_8.hdf5',
-    't1_ramsey_echo_interleaved_9.hdf5',
-    't1_ramsey_echo_interleaved_10.hdf5',
-    't1_ramsey_echo_interleaved_11.hdf5',
+    # 't1_ramsey_echo_interleaved_1.hdf5',
+    # 't1_ramsey_echo_interleaved_2.hdf5',
+    # 't1_ramsey_echo_interleaved_3.hdf5',
+    # 't1_ramsey_echo_interleaved_4.hdf5',
+    # 't1_ramsey_echo_interleaved_5.hdf5',
+    # 't1_ramsey_echo_interleaved_6.hdf5',
+    # 't1_ramsey_echo_interleaved_7.hdf5',
+    # 't1_ramsey_echo_interleaved_8.hdf5',
+    # 't1_ramsey_echo_interleaved_9.hdf5',
+    # 't1_ramsey_echo_interleaved_10.hdf5',
+    # 't1_ramsey_echo_interleaved_11.hdf5',
 
-    # 't1_t2_interleaved_2019-10-11-23-41-22_2.hdf5',
-    # 't1_t2_interleaved_2019-10-12-14-11-02.hdf5',
-    # 't1_t2_interleaved_2019-10-13-03-08-16.hdf5',
-    # 't1_ramsey_echo_interleaved_2019-10-14-14-53-39_7.hdf5',
-    # 't1_ramsey_echo_interleaved_2019-10-17_7.hdf5',
-    # 't1_ramsey_echo_interleaved_2019-10-18_3.hdf5',
+    't1_t2_interleaved_2019-10-11-23-41-22_2.hdf5',
+    't1_t2_interleaved_2019-10-12-14-11-02.hdf5',
+    't1_t2_interleaved_2019-10-13-03-08-16.hdf5',
+    't1_ramsey_echo_interleaved_2019-10-14-14-53-39_7.hdf5',
+    't1_ramsey_echo_interleaved_2019-10-17.hdf5',
+    't1_ramsey_echo_interleaved_2019-10-17_7.hdf5',
+    't1_ramsey_echo_interleaved_2019-10-18_3.hdf5',
 
 ]
 Setup2DataPath = 'Z:\Projects\Transmon_Palmer\\2019\\10\Data_1017\\'
