@@ -9,16 +9,16 @@ DataPath = 'C:\SC Lab\Projects\Fluxonium\data_process\Fluxonium032619\\'
 DataPath = 'D:\GitHubRepository\Qubit-data-process\\temporary_data\\'
 FileList = [
     't1_ramsey_echo_interleaved_1.hdf5',
-    # 't1_ramsey_echo_interleaved_2.hdf5',
-    # 't1_ramsey_echo_interleaved_3.hdf5',
-    # 't1_ramsey_echo_interleaved_4.hdf5',
-    # 't1_ramsey_echo_interleaved_5.hdf5',
-    # 't1_ramsey_echo_interleaved_6.hdf5',
-    # 't1_ramsey_echo_interleaved_7.hdf5',
-    # 't1_ramsey_echo_interleaved_8.hdf5',
-    # 't1_ramsey_echo_interleaved_9.hdf5',
-    # 't1_ramsey_echo_interleaved_10.hdf5',
-    # 't1_ramsey_echo_interleaved_11.hdf5',
+    't1_ramsey_echo_interleaved_2.hdf5',
+    't1_ramsey_echo_interleaved_3.hdf5',
+    't1_ramsey_echo_interleaved_4.hdf5',
+    't1_ramsey_echo_interleaved_5.hdf5',
+    't1_ramsey_echo_interleaved_6.hdf5',
+    't1_ramsey_echo_interleaved_7.hdf5',
+    't1_ramsey_echo_interleaved_8.hdf5',
+    't1_ramsey_echo_interleaved_9.hdf5',
+    't1_ramsey_echo_interleaved_10.hdf5',
+    't1_ramsey_echo_interleaved_11.hdf5',
 
     # 't1_t2_interleaved_2019-10-11-23-41-22_2.hdf5',
     # 't1_t2_interleaved_2019-10-12-14-11-02.hdf5',
@@ -93,6 +93,15 @@ for i, file in enumerate(FileList):
     # start_sec -= time_origin_sec
     # stop_sec -= time_origin_sec
     # t_monitor = np.linspace(start_sec, stop_sec, len(Count)) / 3600
+    color_map_dic = {
+        'T1': 0,
+        'T2ramsey': 1,
+        'T2echo': 2,
+    }
+    if file.startswith('t1_t2_interleaved'):
+        meas_names = ['T1', 'T2echo']
+    elif file.startswith('t1_ramsey_echo_interleaved'):
+        meas_names = ['T1', 'T2ramsey', 'T2echo']
     fmt_list = ['bo', 'ro', 'ko', 'go']
     if file.startswith('t1_t2_interleaved') or file.startswith('t1_ramsey_echo_interleaved'):
         num_meas = len(Opt)
@@ -100,7 +109,8 @@ for i, file in enumerate(FileList):
             if NoErrorBar:
                 plt.plot(t_monitor, Opt[ind][1, :] / 1000, fmt_list[ind], ms=MarkerSize)
             else:
-                ax.errorbar(t_monitor, Opt[ind][1, :] / 1000, yerr=Err[ind][1, :] / 1000, fmt=fmt_list[ind])
+                ax.errorbar(t_monitor, Opt[ind][1, :] / 1000, yerr=Err[ind][1, :] / 1000,
+                            fmt=fmt_list[color_map_dic[meas_names[ind]]])
             if FitDoubleExp and ind == 0:
                 ax.errorbar(t_monitor, Opt[ind][3, :] / 1000, yerr=Err[ind][3, :] / 1000, fmt='go')
     else:
@@ -108,23 +118,27 @@ for i, file in enumerate(FileList):
         ax.errorbar(t_monitor, Opt[1, :] / 1000, yerr=Err[1, :] / 1000, fmt=fmt_list[0])
         if FitDoubleExp:
             ax.errorbar(t_monitor, Opt[3, :] / 1000, yerr=Err[3, :] / 1000, fmt='go')
-    if i == 0:
-        if FitDoubleExp:
-            if file.startswith('t1_t2_interleaved'):
-                plt.legend(['TR', 'Tqp', 'T2echo'])
-            else:
-                plt.legend(['TR', 'Tqp'])
-        else:
-            if file.startswith('t1_t2_interleaved'):
-                plt.legend(['T1', 'T2echo'])
-            elif file.startswith('t1_ramsey_echo_interleaved'):
-                plt.legend(['T1', 'T2ramsey', 'T2echo', 'T_phi'])
-            else:
-                plt.legend(['T1'])
+    # if i == 0:
+    #     if FitDoubleExp:
+    #         if file.startswith('t1_t2_interleaved'):
+    #             plt.legend(['TR', 'Tqp', 'T2echo'])
+    #         else:
+    #             plt.legend(['TR', 'Tqp'])
+    #     else:
+    #         if file.startswith('t1_t2_interleaved'):
+    #             plt.legend(['T1', 'T2echo'])
+    #         elif file.startswith('t1_ramsey_echo_interleaved'):
+    #             plt.legend(['T1', 'T2ramsey', 'T2echo', 'T_phi'])
+    #         else:
+    #             plt.legend(['T1'])
     fmt_list = ['royalblue', 'violet', 'grey']
     if file.startswith('t1_t2_interleaved') or file.startswith('t1_ramsey_echo_interleaved'):
         for ind in range(num_meas):
-            plt.plot(t_monitor, Opt[ind][1, :] / 1000, LineSpec, color=fmt_list[ind])
+            if i == len(FileList) - 1:
+                plt.plot(t_monitor, Opt[ind][1, :] / 1000, LineSpec, label=meas_names[ind],
+                         color=fmt_list[color_map_dic[meas_names[ind]]])
+            else:
+                plt.plot(t_monitor, Opt[ind][1, :] / 1000, LineSpec, color=fmt_list[color_map_dic[meas_names[ind]]])
             if FitDoubleExp and ind == 0:
                 plt.plot(t_monitor, Opt[ind][3, :] / 1000, 'g' + LineSpec)
     else:
@@ -134,7 +148,7 @@ for i, file in enumerate(FileList):
     TimeList += [t_monitor]
     OptList += [Opt]
     ErrList += [Err]
-
+plt.legend()
 plt.xlabel('Time', fontsize='x-large')
 plt.ylabel("Decay time(us)", fontsize='x-large')
 plt.tick_params(axis='both', which='major', labelsize='x-large')
@@ -157,10 +171,15 @@ if file.startswith('t1_t2_interleaved') or file.startswith('t1_ramsey_echo_inter
         T_phi = 1 / (1 / Opt[-1][1, :] - 0.5 / Opt[0][1, :]) / 1000
         plt.plot(t_monitor, Opt[0][1, :] / 1000, fmt_list[0], ms=MarkerSize)
         plt.plot(t_monitor, T_phi, fmt_list[1], ms=MarkerSize)
-        plt.legend(['T1', 'T_phi'])
+        # plt.legend(['T1', 'T_phi'])
         fmt_list = ['royalblue', 'violet', 'grey']
-        plt.plot(t_monitor, Opt[0][1, :] / 1000, LineSpec, color=fmt_list[0])
-        plt.plot(t_monitor, T_phi, LineSpec, color=fmt_list[1])
+        if i == len(FileList) - 1:
+            plt.plot(t_monitor, Opt[0][1, :] / 1000, LineSpec, label='T1', color=fmt_list[0])
+            plt.plot(t_monitor, T_phi, LineSpec, label='T_phi', color=fmt_list[1])
+        else:
+            plt.plot(t_monitor, Opt[0][1, :] / 1000, LineSpec, color=fmt_list[0])
+            plt.plot(t_monitor, T_phi, LineSpec, color=fmt_list[1])
+    plt.legend()
     plt.xlabel('Time', fontsize='x-large')
     plt.ylabel("Decay time(us)", fontsize='x-large')
     plt.tick_params(axis='both', which='major', labelsize='x-large')
@@ -188,7 +207,8 @@ if file.startswith('t1_t2_interleaved') or file.startswith('t1_ramsey_echo_inter
     plt.ylabel("T2echo(us)", fontsize='x-large')
     plt.xlim((min_T, max_T))
     plt.ylim((min_T, max_T))
-    plt.colorbar()
+    cbar = plt.colorbar()
+    cbar.ax.set_ylabel('Count', fontsize='x-large')
     plt.tick_params(axis='both', which='major', labelsize='x-large')
     plt.tight_layout()
 

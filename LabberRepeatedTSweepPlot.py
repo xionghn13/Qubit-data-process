@@ -245,7 +245,7 @@ def plotLabberRepeatedTSweepPlot(DataPath, RabiFileList, BackgroundFolder='', Ba
                         covList += [cov]
                         ParamList = ['A', 'TR/ns', 'B', 'Tqp/ns', 'lambda']
                     if ind == 1 or not FitDoubleExponential:
-                        print(y_data[0])
+                        # print(y_data[0])
                         opt, cov = curve_fit(T1_curve, x_data, y_data, p0=[A_guess, T1_guess, B_guess], bounds=bounds,
                                              maxfev=30000)
                         A_fit, T1_fit, B_fit = opt
@@ -253,7 +253,7 @@ def plotLabberRepeatedTSweepPlot(DataPath, RabiFileList, BackgroundFolder='', Ba
                         FitR = T1_curve(TimeFit, A_fit, T1_fit, B_fit)
                         FitRt1t2List += [FitR]
                         optList += [opt]
-                        print(opt)
+                        # print(opt)
                         covList += [cov]
                         ParamList = ['A', 'Decay time/ns', 'B']
             elif MeasurementType in ('t1_ramsey_echo_interleaved', 'ref_t1_ramsey_echo_interleaved'):
