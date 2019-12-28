@@ -48,7 +48,7 @@ def FISweepBackgroundCalibrate(DataPath, OneToneFile, BackgroundFile, OneTonePow
 def FPSweepBackgroundCalibrate(OneFreq, OnePower, OneComplex, BackFreq, BackComplex, BackPower):
     if isinstance(BackPower, float):
         if len(BackFreq) > 1:
-            BackComplexITP = itp.interp1d(BackFreq, BackComplex)
+            BackComplexITP = itp.interp1d(BackFreq, BackComplex, fill_value='extrapolate')
             try:
                 RComplex = OneComplex / BackComplexITP(OneFreq) * 10 ** (BackPower / 20 - OnePower / 20)
             except ValueError:
