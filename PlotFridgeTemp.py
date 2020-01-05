@@ -89,8 +89,8 @@ def readFridgePressureLog(flie_name_list):
                 day_offset = day
                 month = float(date_str_list[1])
         day = float(date_str_list[0]) + day_offset
-        print(line)
-        print(time_str)
+        # print(line)
+        # print(time_str)
         Time[i] = getTimeFromStrings(day, time_str)
     return [Time, Pressure]
 
@@ -123,7 +123,7 @@ def readFridgeFlowLog(flie_name_list):
     return [Time, Flow]
 
 
-DateList = ['19-10-30', '19-10-31', '19-11-01', '19-11-02', '19-11-03', '19-11-04']
+DateList = ['19-10-11', '19-10-12', '19-10-13', '19-10-14', '19-10-15']
 TempChannelList = [1, 2, 5, 7]
 AllChannelTempFileList = []
 AllChannelPressureFileList = []
@@ -145,9 +145,9 @@ for date in DateList:
 
 print(AllChannelTempFileList)
 
-time_origin = [10, 30]
+time_origin = [10, 11]
 time_origin += [16, 42, 11]
-TimeLimit = (-6.2, 130.3)
+TimeLimit = (-16.2, 130.3)
 
 time_origin_sec = timedelta(days=time_origin[1], hours=time_origin[2], minutes=time_origin[3],
                                 seconds=time_origin[4]).total_seconds()

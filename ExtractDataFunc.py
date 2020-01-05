@@ -251,10 +251,12 @@ def readRabiLabber(file):
 
 def readMultiRabiLabber(file):
     # for Labber data
-    ATS_var = 'Alazar - Channel A - Average buffer demodulated values'
-    Time_var = 'Pulse Generator - Width #1'
     LogData = Labber.LogFile(file)
     Entries = LogData.getEntry()
+    ATS_var = 'Alazar - Channel A - Average buffer demodulated values'
+    Time_var = 'Pulse Generator - Width #1'
+    if Time_var not in Entries:
+        Time_var = 'Pulse Generator - Plateau #1'
     if ATS_var not in Entries:
         ATS_var = 'Alazar - Channel A - Average demodulated value'
     rabi_complex = np.conj(np.transpose(LogData.getData(ATS_var)))[:, :]

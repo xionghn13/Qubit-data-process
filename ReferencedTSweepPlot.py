@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import SubtractBackgroundFunc as sbf
 import QubitSpectrumFunc as qsf
 from scipy.optimize import curve_fit
-from QubitDecayFunc import T1_curve, rabi_curve, AutoRotate, DoubleExp_curve
+from QubitDecayFunc import T1_curve, rabi_curve, AutoRotate, DoubleExp_curve, rabi_two_exp_curve
 import ExtractDataFunc as edf
 import os
 
@@ -277,7 +277,7 @@ def plotReferencedTSweep(DataPath, RabiFile, BackgroundFolder='', BackgroundFile
         )
         # print(guess)
         try:
-            opt, cov = curve_fit(rabi_curve, x_data, y_data, p0=guess, bounds=bounds)
+            opt, cov = curve_fit(rabi_two_exp_curve, x_data, y_data, p0=guess, bounds=bounds)
         except RuntimeError:
             print("Error - curve_fit failed")
             opt = guess
@@ -285,7 +285,7 @@ def plotReferencedTSweep(DataPath, RabiFile, BackgroundFolder='', BackgroundFile
         A_fit, T1_fit, B_fit, Tpi_fit, phi0_fit, T_out_fit, C_fit = opt
         A_std, T1_std, B_std, Tpi_std, phi0_std, T_out_std, C_std = np.sqrt(cov.diagonal())
         TimeFit = np.linspace(Time.min(), Time.max(), 200)
-        FitR = rabi_curve(TimeFit, A_fit, T1_fit, B_fit, Tpi_fit, phi0_fit, T_out_fit, C_fit)
+        FitR = rabi_two_exp_curve(TimeFit, A_fit, T1_fit, B_fit, Tpi_fit, phi0_fit, T_out_fit, C_fit)
         ParamList = ['A', 'Decay time(ns)', 'B', 'Tpi(ns)', 'pho0', 'T_out(ns)', 'C']
 
     # print(cov)
@@ -454,7 +454,7 @@ def plotReferencedTSweep(DataPath, RabiFile, BackgroundFolder='', BackgroundFile
 
 if __name__ == '__main__':
     DataFolderName = '11112019_back to waveguide'
-    DataPath = 'C:/SC Lab\\Labber\\' + DataFolderName + '/2019/12\Data_1225\\'
+    DataPath = 'C:/SC Lab\\Labber\\' + DataFolderName + '/2020/01\Data_0104\\'
     BackgroundFolder = 'C:\SC Lab\Projects\Fluxonium\data_process/ziggy4/'
     BackgroundFile = []
     # BackgroundFile = '021219_rabi_CH2(AWG1Vpp)_no pump_readout_4.077GHz__-15dBm_qubit4.027GHz_-35dBm_0.8_mA_I cos Q sin mod true interleafing_odd readout even ref_avg100k_Rabi300_duty50000readout3us.h5'
@@ -462,7 +462,7 @@ if __name__ == '__main__':
     Plus50MHzBackgroundFile = 'one_tone_4.05GHz_to_4.3GHz_-15dBm_4.9mA_10us integration_100Kavg_50KHz step_020419.dat'
     Minus50MHzBackgroundFile = 'one_tone_4.05GHz_to_4.3GHz_-15dBm_4.9mA_10us integration_100Kavg_50KHz step_020419.dat'
     BackgroundFile = 'power spectroscopy_105.hdf5'
-    RabiFile = 't1_4.hdf5'
+    RabiFile = 'rabi_Drive1_12.hdf5'
     IQModFreq = 0.05
     CircleCorrection = True
     CorrectionParam = [1, -0.0017, 0.749, -0.022]

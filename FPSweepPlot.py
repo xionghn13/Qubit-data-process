@@ -10,14 +10,14 @@ import ExtractDataFunc as edf
 DataPath = 'C:\SC Lab\Projects\Fluxonium\data_process/ziggy4/'
 # BackgroundFile = 'calibration_5.hdf5'
 BackgroundFile = 'power spectroscopy_105.hdf5'
-OneToneFile = 'power spectroscopy_111.hdf5'
+OneToneFile = 'power spectroscopy_113.hdf5'
 # BackgroundFile = 'power spectroscopy_68.hdf5'
 # OneToneFile = 'power spectroscopy_67.hdf5'
 # BackgroundFile = 'power spectroscopy_65.hdf5'
 # OneToneFile = 'power spectroscopy_66.hdf5'
 
 Calibration = True
-UseOneToneRange = False
+UseOneToneRange = True
 FitSeparately = False
 PlotParamVSPower = False
 PlotUnfittedCircle = False
