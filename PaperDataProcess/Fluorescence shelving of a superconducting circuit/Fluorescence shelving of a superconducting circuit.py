@@ -202,7 +202,58 @@ timeset = f.create_dataset('time', data=TimeList)
 Yset = f.create_dataset('y', data=y_dataList)
 Pset = f.create_dataset('power', data=DrivePowerArray)
 f.close()
-#
+
+# population measurement
+BackgroundFile = 'power spectroscopy_105.hdf5'
+RabiFileList = [
+    'transient_P2_P1_24.hdf5',
+    'transient_P2_P1_26.hdf5',
+    'transient_P2_P1_31.hdf5',
+]
+OutFileList = [
+    'optimal_power_transient_population.hdf5',
+    'high_power_transient_population.hdf5',
+    'low_power_transient_population.hdf5',
+]
+PopulationConversionConstList = [
+    [1., 1 / 1.0789138211341804],
+    [1., 1 / 1.0282720690126486],
+    [1., 1. / 1.0621686624421236],
+]
+[BackFreq, BackComplex] = edf.readFSweepLabber(DataPath + BackgroundFile)
+BackPower = edf.readReadoutPowerLabber(DataPath + BackgroundFile)
+
+for i in range(len(RabiFileList)):
+    PopulationConversionConst = PopulationConversionConstList[i]
+    RabiFile = RabiFileList[i]
+    ReadoutPower = edf.readReadoutPowerLabber(DataPath + RabiFile)
+    ReadoutFreq = edf.readReadoutFreqLabber(DataPath + RabiFile)
+    TransientPower = edf.readDrive1PowerLabber(DataPath + RabiFile)
+    [Time, Complex] = edf.readMultiRabiLabber(DataPath + RabiFile)
+    ComplexNormalized = Complex * 10 ** (- ReadoutPower / 20)
+    RComplex = sbf.FPSweepBackgroundCalibrate(ReadoutFreq, ReadoutPower, Complex, BackFreq, BackComplex, BackPower)
+    num_curve = RComplex.shape[1]
+    Population = (PopulationConversionConst[0] - RComplex.real) * PopulationConversionConst[1]
+    CorrectP2 = True
+    if CorrectP2:
+        P2PiPulse = 108
+        P2RabiT1 = 604
+        k = np.exp(- P2PiPulse / P2RabiT1)
+        P0 = np.mean(Population[:, [0, 2]], axis=1)
+        P2 = Population[:, 3]
+        Population[:, 3] = 2 / (k + 1) * (P2 + (k - 1) / 2 * P0)
+
+    P0 = np.mean(Population[:, [0, 2]], axis=1)
+    P1 = Population[:, 1]
+    P2 = Population[:, 3]
+    PList = [P0, P1, P2]
+
+    f = h5py.File(DataPath + OutFileList[i], 'w')
+    timeset = f.create_dataset('time', data=Time)
+    Yset = f.create_dataset('y', data=PList)
+    Pset = f.create_dataset('power', data=TransientPower)
+    f.close()
+
 #
 #
 #

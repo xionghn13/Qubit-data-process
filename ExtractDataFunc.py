@@ -170,6 +170,16 @@ def readPumpPowerLabber(file):
     return Power
 
 
+def readDrive1PowerLabber(file):
+    Power_var = 'Drive1 - Power'
+    LogData = Labber.LogFile(file)
+    Entries = LogData.getEntry()
+    Power = np.unique(np.transpose(LogData.getData(Power_var)))
+    if len(Power) == 1:
+        Power = Power[0]
+    return Power
+
+
 def readPumpFreqLabber(file):
     Freq_var = 'Pump - Frequency'
     LogData = Labber.LogFile(file)
