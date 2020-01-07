@@ -262,7 +262,7 @@ def plotMultiPopulationTSweep(DataPath, RabiFile, BackgroundFolder='', Backgroun
             plt.tick_params(axis='both', which='major', labelsize='x-large')
             plt.tight_layout()
 
-        plot_level = 'P_sum'
+        plot_level = 'P2'
 
         if plot_level == 'P0':
             plot_ind = [0, 2]
@@ -337,13 +337,13 @@ def plotMultiPopulationTSweep(DataPath, RabiFile, BackgroundFolder='', Backgroun
 
 if __name__ == '__main__':
     DataFolderName = '11112019_back to waveguide'
-    DataPath = 'C:/SC Lab\\Labber\\' + DataFolderName + '/2020/01\Data_0103\\'
+    DataPath = 'C:/SC Lab\\Labber\\' + DataFolderName + '/2020/01\Data_0104\\'
     BackgroundFolder = 'C:\SC Lab\Projects\Fluxonium\data_process/ziggy4/'
     BackgroundFile = []
     Plus50MHzBackgroundFile = 'one_tone_4.05GHz_to_4.3GHz_-15dBm_4.9mA_10us integration_100Kavg_50KHz step_020419.dat'
     Minus50MHzBackgroundFile = 'one_tone_4.05GHz_to_4.3GHz_-15dBm_4.9mA_10us integration_100Kavg_50KHz step_020419.dat'
     BackgroundFile = 'power spectroscopy_105.hdf5'
-    RabiFile = 'transient_P2_P1_31.hdf5'
+    RabiFile = 't1_P2_P1_23.hdf5'
     IQModFreq = 0.05
     CircleCorrection = False
     CorrectionParam = [1, -0.0017, 0.749, -0.022]
@@ -360,7 +360,7 @@ if __name__ == '__main__':
     ShowFig = True
     StartTime = 0.5e3
     EndTime = 40e3
-    PopulationConversionConst = [1., 1. / 1.0621686624421236]
+    PopulationConversionConst = [1., 1. / 0.9761871987220584]
     FitDict = plotMultiPopulationTSweep(DataPath, RabiFile, BackgroundFolder=BackgroundFolder,
                                         BackgroundFile=BackgroundFile,
                                         IQModFreq=IQModFreq, PopulationConversionConst=PopulationConversionConst,
