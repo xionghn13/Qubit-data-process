@@ -83,7 +83,7 @@ def plotMultiPopulationTSweep(DataPath, RabiFile, BackgroundFolder='', Backgroun
         if MeasurementType in ('transient no ref', 't1 no ref'):
             B_guess = y_data[-1]
             A_guess = y_data.max() - y_data.min()
-            T1_guess = x_data[-1] / 1
+            T1_guess = x_data[-1] / 5
             # bounds = (
             #     (-2, 1, -1),
             #     (2, 1e6, 1)
@@ -124,7 +124,7 @@ def plotMultiPopulationTSweep(DataPath, RabiFile, BackgroundFolder='', Backgroun
                                          maxfev=300000)
                     print('guess = %s' % str([A_guess, T1_guess, -A_guess, T1_guess * 0.1, B_guess]))
                     # print('Double exp fit opt = %s' % str(opt))
-                except (RuntimeError, TypeError) as e:
+                except (RuntimeError, TypeError, ValueError) as e:
                     print("Error - curve_fit failed")
                     opt = np.array([A_guess / 2, T1_guess, A_guess / 2, T1_guess * 0.1, B_guess])
                     cov = np.zeros([len(opt), len(opt)])
@@ -235,7 +235,8 @@ def plotMultiPopulationTSweep(DataPath, RabiFile, BackgroundFolder='', Backgroun
             fig, ax = plt.subplots()
             ax.grid(linestyle='--')
             if PlotErrBar:
-                stds = [0.003971263619235736, 0.007063671960122041, 0.004772838906966845, 0.009408918991044542, 0.007791820522548097]
+                stds = [0.003971263619235736, 0.007063671960122041, 0.004772838906966845, 0.009408918991044542,
+                        0.007791820522548097]
                 ax.errorbar(Time, P0, yerr=np.ones_like(P0) * stds[0], fmt='o', label='P0')
                 ax.errorbar(Time, P1, yerr=np.ones_like(P0) * stds[1], fmt='o', label='P1')
                 ax.errorbar(Time, P2, yerr=np.ones_like(P0) * stds[2], fmt='o', label='P2')
@@ -276,6 +277,10 @@ def plotMultiPopulationTSweep(DataPath, RabiFile, BackgroundFolder='', Backgroun
                                                          axis=1)) * PopulationConversionConst[1]
         fit_plot = (PopulationConversionConst[0] - np.mean(np.array(FitRList).transpose()[:, plot_ind], axis=1)) * \
                    PopulationConversionConst[1]
+
+        def r_to_P(x):
+            return (PopulationConversionConst[0] - x) * PopulationConversionConst[1]
+
         opt = np.mean(OptMatrix[:, plot_ind], axis=1)
         err = ErrMatrix[:, plot_ind[0]]
         if FitDoubleExponential:
@@ -301,11 +306,12 @@ def plotMultiPopulationTSweep(DataPath, RabiFile, BackgroundFolder='', Backgroun
             elif FitTwoExponential:
                 plt.title('T_Exp1=%.3G$\pm$%.2Gus, A=%.3G, B=%.3G\n'
                           'T_Exp2=%.3G$\pm$%.2Gus, C=%.3G$\pm$%.2G' % (
-                              T1_fit / 1000, T1_std / 1000, A_fit, B_fit, T2_fit / 1000, T2_std / 1000, C_fit,
+                              T1_fit / 1000, T1_std / 1000, -A_fit * PopulationConversionConst[1],
+                              -B_fit * PopulationConversionConst[1], T2_fit / 1000, T2_std / 1000, r_to_P(C_fit),
                               C_std))
             else:
                 plt.title('T1=%.3G$\pm$%.2Gus, A=%.3G, B=%.3G' % (
-                    T1_fit / 1000, T1_std / 1000, A_fit, B_fit))
+                    T1_fit / 1000, T1_std / 1000, -A_fit * PopulationConversionConst[1], r_to_P(B_fit)))
         elif MeasurementType in ('transient', 'transient no ref'):
             if FitDoubleExponential:
                 plt.title('TR=%.3G$\pm$%.2Gus, A=%.3G, B=%.3G\n'
@@ -319,7 +325,7 @@ def plotMultiPopulationTSweep(DataPath, RabiFile, BackgroundFolder='', Backgroun
                               C_std))
             else:
                 plt.title('T_transient=%.3G$\pm$%.2Gus, A=%.3G, B=%.3G' % (
-                    T1_fit / 1000, T1_std / 1000, A_fit, B_fit))
+                    T1_fit / 1000, T1_std / 1000, -A_fit * PopulationConversionConst[1], r_to_P(B_fit)))
         plt.xlabel('Time(ns)', fontsize='x-large')
         plt.ylabel(plot_level, fontsize='x-large')
         plt.tick_params(axis='both', which='major', labelsize='x-large')
@@ -337,13 +343,14 @@ def plotMultiPopulationTSweep(DataPath, RabiFile, BackgroundFolder='', Backgroun
 
 if __name__ == '__main__':
     DataFolderName = '11112019_back to waveguide'
-    DataPath = 'C:/SC Lab\\Labber\\' + DataFolderName + '/2020/01\Data_0104\\'
+    DataPath = 'C:/SC Lab\\Labber\\' + DataFolderName + '/2020/01\Data_0110\\'
     BackgroundFolder = 'C:\SC Lab\Projects\Fluxonium\data_process/ziggy4/'
     BackgroundFile = []
     Plus50MHzBackgroundFile = 'one_tone_4.05GHz_to_4.3GHz_-15dBm_4.9mA_10us integration_100Kavg_50KHz step_020419.dat'
     Minus50MHzBackgroundFile = 'one_tone_4.05GHz_to_4.3GHz_-15dBm_4.9mA_10us integration_100Kavg_50KHz step_020419.dat'
     BackgroundFile = 'power spectroscopy_105.hdf5'
-    RabiFile = 't1_P2_P1_23.hdf5'
+    # RabiFile = 't1_P2_P1_23.hdf5'
+    RabiFile = 'transient_after_pi_pulse_P2_P1_6.hdf5'
     IQModFreq = 0.05
     CircleCorrection = False
     CorrectionParam = [1, -0.0017, 0.749, -0.022]
@@ -354,13 +361,13 @@ if __name__ == '__main__':
     LimitTimeRange = False
     RotateComplex = False
     FitDoubleExponential = False
-    FitTwoExponential = True
+    FitTwoExponential = False
     LogScale = False
     SaveFig = False
     ShowFig = True
     StartTime = 0.5e3
     EndTime = 40e3
-    PopulationConversionConst = [1., 1. / 0.9761871987220584]
+    PopulationConversionConst = [1., 1. / 1]
     FitDict = plotMultiPopulationTSweep(DataPath, RabiFile, BackgroundFolder=BackgroundFolder,
                                         BackgroundFile=BackgroundFile,
                                         IQModFreq=IQModFreq, PopulationConversionConst=PopulationConversionConst,
