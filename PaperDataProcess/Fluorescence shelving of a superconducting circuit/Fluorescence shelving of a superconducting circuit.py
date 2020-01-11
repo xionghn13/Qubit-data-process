@@ -259,22 +259,112 @@ for i in range(len(RabiFileList)):
 #
 # Sup:
 # 240uA
-# BackgroundFile = 'power spectroscopy_76.hdf5'
-# OneToneFile = 'power spectroscopy_82.hdf5'
-#
+BackgroundFile = 'power spectroscopy_76.hdf5'
+OneToneFile = 'power spectroscopy_82.hdf5'
+
+Calibration = True
+UseOneToneRange = True
+
+StartFreq = 6.542
+EndFreq = 6.554
+StartPower = -5
+EndPower = 10
+SelectPower = np.array([])
+# SelectPower = np.array([-25, -20, -15, -10])
+########################################################################################################################
+NotUsePowerSpectroscopyCalibrate = BackgroundFile.startswith('one_tone') or BackgroundFile.startswith('calibration')
+
+[BackFreq, BackPower, BackComplex] = edf.readFPSweepLabber(DataPath + BackgroundFile)
+BackPower = BackPower[0, 0]
+BackFreq = BackFreq[:, 0]
+BackComplex = BackComplex[:, 0]
+BackPowerStr = str(BackPower)
+
+[OneFreq, OnePower, OneComplex] = edf.readFPSweepLabber(DataPath + OneToneFile)
+OnePowerUniq = np.unique(OnePower)
+NumPower = np.size(OnePowerUniq)
+OneFreqUniq = np.unique(OneFreq)
+NumFreq = np.size(OneFreqUniq)
+if UseOneToneRange:
+    StartFreq = OneFreqUniq.min()
+    EndFreq = OneFreqUniq.max()
+    StartPower = OnePowerUniq.min()
+    EndPower = OnePowerUniq.max()
+if Calibration:
+    RComplex = sbf.FPSweepBackgroundCalibrate(OneFreq, OnePower, OneComplex, BackFreq, BackComplex, BackPower)
+
+OneComplexNormalized = OneComplex * 10 ** (- OnePower / 20)
+BackComplexNormalized = BackComplex * 10 ** (- BackPower / 20)
+FreqInd = (EndFreq >= OneFreqUniq) == (OneFreqUniq >= StartFreq)
+if len(SelectPower) > 0:
+    for i, p in enumerate(SelectPower):
+        if i == 0:
+            PowerInd = OnePowerUniq == p
+        else:
+            PowerInd = PowerInd + (OnePowerUniq == p)
+else:
+    PowerInd = (EndPower >= OnePowerUniq) == (OnePowerUniq >= StartPower)
+OneFreqUniqTrunc = OneFreqUniq[FreqInd]
+OnePowerUniqTrunc = OnePowerUniq[PowerInd]
+NumFreqTrunc = len(OneFreqUniqTrunc)
+NumPowerTrunc = len(OnePowerUniqTrunc)
+OneComplexNormalizedTrunc = OneComplexNormalized[FreqInd, :]
+OneComplexNormalizedTrunc = OneComplexNormalizedTrunc[:, PowerInd]
+
+BackFreqUniq = np.unique(BackFreq)
+BackFreqInd = (EndFreq > BackFreqUniq) == (BackFreqUniq > StartFreq)
+BackFreqUniqTrunc = BackFreqUniq[BackFreqInd]
+BackComplexNormalizedTrunc = BackComplexNormalized[BackFreqInd]
+RComplexTrunc = RComplex[FreqInd, :]
+RComplexTrunc = RComplexTrunc[:, PowerInd]
+
+f = h5py.File(DataPath + 'sup_circles_data.hdf5', 'w')
+fset = f.create_dataset('freq', data=OneFreqUniqTrunc)
+pset = f.create_dataset('power', data=OnePowerUniqTrunc)
+r_re_set = f.create_dataset('R_real', data=RComplexTrunc.real)
+r_im_set = f.create_dataset('R_imag', data=RComplexTrunc.imag)
+f.close()
+
 # 01 rabi
-# BackgroundFile = 'power spectroscopy_76.hdf5'
-# RabiFile = 'rabi_14.hdf5'
-#
-# p0/p1=3.094827586206897
-# T = 49.2mK
+BackgroundFile = 'power spectroscopy_76.hdf5'
+RabiFile = 'rabi_14.hdf5'
+# PopulationConversionConst = [1, 1.]
+[BackFreq, BackPower, BackComplex] = edf.readFPSweepLabber(DataPath + BackgroundFile)
+BackPower = BackPower[0, 0]
+BackFreq = BackFreq[:, 0]
+BackComplex = BackComplex[:, 0]
+
+# read data
+ReadoutPower = edf.readReadoutPowerLabber(DataPath + RabiFile)
+ReadoutFreq = edf.readReadoutFreqLabber(DataPath + RabiFile)
+[Time, Complex] = edf.readRabiLabber(DataPath + RabiFile)
+RComplex = sbf.FPSweepBackgroundCalibrate(ReadoutFreq, ReadoutPower, Complex, BackFreq, BackComplex, BackPower)
+
+y_data = np.array(RComplex.real, dtype='float64')
+# population = (PopulationConversionConst[0] - y_data) * PopulationConversionConst[1]
+f = h5py.File(DataPath + 'sup_01_rabi_data.hdf5', 'w')
+yset = f.create_dataset('y', data=y_data)
+xset = f.create_dataset('x', data=Time)
+f.close()
 # 02 rabi
-# BackgroundFile = 'power spectroscopy_76.hdf5'
-# RabiFile = 'rabi_12.hdf5'
-#
-# p0/p2=25.068965517241356
-# T = 57.9mK
-# p0=0.734
-#
-# transient
-#
+
+BackgroundFile = 'power spectroscopy_76.hdf5'
+RabiFile = 'rabi_12.hdf5'
+# PopulationConversionConst = [1, 1.]
+[BackFreq, BackPower, BackComplex] = edf.readFPSweepLabber(DataPath + BackgroundFile)
+BackPower = BackPower[0, 0]
+BackFreq = BackFreq[:, 0]
+BackComplex = BackComplex[:, 0]
+
+# read data
+ReadoutPower = edf.readReadoutPowerLabber(DataPath + RabiFile)
+ReadoutFreq = edf.readReadoutFreqLabber(DataPath + RabiFile)
+[Time, Complex] = edf.readRabiLabber(DataPath + RabiFile)
+RComplex = sbf.FPSweepBackgroundCalibrate(ReadoutFreq, ReadoutPower, Complex, BackFreq, BackComplex, BackPower)
+
+y_data = np.array(RComplex.real, dtype='float64')
+# population = (PopulationConversionConst[0] - y_data) * PopulationConversionConst[1]
+f = h5py.File(DataPath + 'sup_02_rabi_data.hdf5', 'w')
+yset = f.create_dataset('y', data=y_data)
+xset = f.create_dataset('x', data=Time)
+f.close()
