@@ -794,7 +794,7 @@ if __name__ == '__main__':
     # DataPath = 'E:/Projects\Fluxonium\data_process/Fluxonium042619/'
     DataFolderName = '11112019_back to waveguide'
     # DataFolderName = 'Data'
-    DataPath = 'C:/SC Lab\\Labber\\' + DataFolderName + '/2020/01\Data_0106\\'
+    DataPath = 'C:/SC Lab\\Labber\\' + DataFolderName + '/2020/01\Data_0111\\'
     # DataPath = 'Z:\Projects\Transmon_Palmer\\2019\\10\Data_1017\\'
     BackgroundFolder = 'C:\SC Lab\Projects\Fluxonium\data_process/ziggy4/'
     BackgroundFile = 'power spectroscopy_105.hdf5'
