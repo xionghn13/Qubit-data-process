@@ -209,16 +209,20 @@ RabiFileList = [
     'transient_P2_P1_24.hdf5',
     'transient_P2_P1_26.hdf5',
     'transient_P2_P1_31.hdf5',
+    't1_P2_P1_23.hdf5',
 ]
 OutFileList = [
     'optimal_power_transient_population.hdf5',
     'high_power_transient_population.hdf5',
     'low_power_transient_population.hdf5',
+    '02_pi_pulse_decay.hdf5'
+
 ]
 PopulationConversionConstList = [
     [1., 1 / 1.0789138211341804],
     [1., 1 / 1.0282720690126486],
     [1., 1. / 1.0621686624421236],
+    [1, 1. / 0.9761871987220584],
 ]
 [BackFreq, BackComplex] = edf.readFSweepLabber(DataPath + BackgroundFile)
 BackPower = edf.readReadoutPowerLabber(DataPath + BackgroundFile)
@@ -229,7 +233,10 @@ for i in range(len(RabiFileList)):
     ReadoutPower = edf.readReadoutPowerLabber(DataPath + RabiFile)
     ReadoutFreq = edf.readReadoutFreqLabber(DataPath + RabiFile)
     TransientPower = edf.readDrive1PowerLabber(DataPath + RabiFile)
-    [Time, Complex] = edf.readMultiRabiLabber(DataPath + RabiFile)
+    if RabiFile.startswith('transient'):
+        [Time, Complex] = edf.readMultiRabiLabber(DataPath + RabiFile)
+    else:
+        [Time, Complex] = edf.readMultiT1Labber(DataPath + RabiFile)
     ComplexNormalized = Complex * 10 ** (- ReadoutPower / 20)
     RComplex = sbf.FPSweepBackgroundCalibrate(ReadoutFreq, ReadoutPower, Complex, BackFreq, BackComplex, BackPower)
     num_curve = RComplex.shape[1]
