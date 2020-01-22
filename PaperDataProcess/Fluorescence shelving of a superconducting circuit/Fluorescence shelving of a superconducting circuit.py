@@ -153,7 +153,11 @@ f.close()
 BackgroundFile = 'power spectroscopy_105.hdf5'
 RabiFileList = [
     # 'transient_9.hdf5',
-    'transient_36.hdf5',
+    # 'transient_36.hdf5',
+    # 'transient_27.hdf5',
+    # 'transient_28.hdf5',
+    # 'transient_29.hdf5',
+    'transient_32.hdf5',
 ]
 
 PopulationConversionConst = [1, 0.973600492844838]
