@@ -219,7 +219,8 @@ def plotMultiPopulationTSweep(DataPath, RabiFile, BackgroundFolder='', Backgroun
         PlotErrBar = False
         if CorrectP2:
             P2PiPulse = 108
-            P2RabiT1 = 604
+            # P2RabiT1 = 604
+            P2RabiT1 = 990
             k = np.exp(- P2PiPulse / P2RabiT1)
             P0 = np.mean(Population[:, [0, 2]], axis=1)
             P2 = Population[:, 3]
@@ -267,7 +268,7 @@ def plotMultiPopulationTSweep(DataPath, RabiFile, BackgroundFolder='', Backgroun
             plt.tick_params(axis='both', which='major', labelsize='x-large')
             plt.tight_layout()
 
-        plot_level = 'P2'
+        plot_level = 'P0'
 
         if plot_level == 'P0':
             plot_ind = [0, 2]
@@ -347,16 +348,16 @@ def plotMultiPopulationTSweep(DataPath, RabiFile, BackgroundFolder='', Backgroun
 
 if __name__ == '__main__':
     DataFolderName = '11112019_back to waveguide'
-    DataPath = 'C:/SC Lab\\Labber\\' + DataFolderName + '/2020/01\Data_0114\\'
+    DataPath = 'C:/SC Lab\\Labber\\' + DataFolderName + '/2020/01\Data_0122\\'
     BackgroundFolder = 'C:\SC Lab\Projects\Fluxonium\data_process/ziggy4/'
     BackgroundFile = []
     Plus50MHzBackgroundFile = 'one_tone_4.05GHz_to_4.3GHz_-15dBm_4.9mA_10us integration_100Kavg_50KHz step_020419.dat'
     Minus50MHzBackgroundFile = 'one_tone_4.05GHz_to_4.3GHz_-15dBm_4.9mA_10us integration_100Kavg_50KHz step_020419.dat'
     BackgroundFile = 'power spectroscopy_105.hdf5'
-    RabiFile = 'transient_after_pi_pulse_P2_P1_15.hdf5'
+    RabiFile = 't1_P2_P1_30.hdf5'
     IQModFreq = 0.05
-    CircleCorrection = False
-    CorrectionParam = [1, -0.0017, 0.749, -0.022]
+    CircleCorrection = True
+    CorrectionParam = [1, 0.044, 0.737, 0.037]
     PhaseSlope = 326.7041108065019
     PhaseReferenceFreq = 4.105
     Calibration = True
@@ -370,7 +371,7 @@ if __name__ == '__main__':
     ShowFig = True
     StartTime = 0.5e3
     EndTime = 40e3
-    PopulationConversionConst = [1., 1. / 0.917454]
+    PopulationConversionConst = [1., 1. / 0.8694655525612803]
     FitDict = plotMultiPopulationTSweep(DataPath, RabiFile, BackgroundFolder=BackgroundFolder,
                                         BackgroundFile=BackgroundFile,
                                         IQModFreq=IQModFreq, PopulationConversionConst=PopulationConversionConst,

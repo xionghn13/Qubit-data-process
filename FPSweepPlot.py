@@ -25,9 +25,9 @@ ShiftCircle = False
 RotateCircle = False
 LineSpec = '.'
 
-StartFreq = 6.54
-EndFreq = 6.554
-StartPower = -5
+StartFreq = 6.538
+EndFreq = 6.552
+StartPower = -10
 EndPower = 10
 SelectPower = np.array([])
 # SelectPower = np.array([-10, -5, 2.5, 5])

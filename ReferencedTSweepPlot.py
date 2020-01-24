@@ -286,6 +286,8 @@ def plotReferencedTSweep(DataPath, RabiFile, BackgroundFolder='', BackgroundFile
         A_std, T1_std, B_std, Tpi_std, phi0_std, T_out_std, C_std = np.sqrt(cov.diagonal())
         TimeFit = np.linspace(Time.min(), Time.max(), 200)
         FitR = rabi_two_exp_curve(TimeFit, A_fit, T1_fit, B_fit, Tpi_fit, phi0_fit, T_out_fit, C_fit)
+        FitUpper = A_fit * np.exp(- TimeFit / T1_fit) + B_fit * np.exp(-TimeFit / T_out_fit) + C_fit
+        FitLower = -A_fit * np.exp(- TimeFit / T1_fit) + B_fit * np.exp(-TimeFit / T_out_fit) + C_fit
         ParamList = ['A', 'Decay time(ns)', 'B', 'Tpi(ns)', 'pho0', 'T_out(ns)', 'C']
 
     # print(cov)
@@ -400,6 +402,8 @@ def plotReferencedTSweep(DataPath, RabiFile, BackgroundFolder='', BackgroundFile
                     plt.title('T_transient=%.3G$\pm$%.2Gus, A=%.3G, B=%.3G' % (
                         T1_fit / 1000, T1_std / 1000, A_fit, B_fit))
             elif MeasurementType in ('rabi', 'Ch1 rabi', 'Ch1 pump rabi', 'rabi no ref'):
+                plt.plot(TimeFit, FitUpper, ':')
+                plt.plot(TimeFit, FitLower, ':')
                 plt.title('Tpi=%.3Gus, T1=%.3Gus, T_out=%.3Gus$\pm$%.2Gus\n A=%.3G, B=%.3G, phi0=%.3G, C=%.3G' % (
                     Tpi_fit / 1000, T1_fit / 1000, T_out_fit / 1000, T_out_std / 1000, A_fit, B_fit, phi0_fit, C_fit))
         plt.xlabel('Time/ns', fontsize='x-large')
@@ -454,7 +458,8 @@ def plotReferencedTSweep(DataPath, RabiFile, BackgroundFolder='', BackgroundFile
 
 if __name__ == '__main__':
     DataFolderName = '11112019_back to waveguide'
-    DataPath = 'C:/SC Lab\\Labber\\' + DataFolderName + '/2020/01\Data_0112\\'
+    DataPath = 'C:/SC Lab\\Labber\\' + DataFolderName + '/2020/01\Data_0114\\'
+    # DataPath = 'C:/SC Lab\\Labber\\' + DataFolderName + '/2019/12\Data_1229\\'
     BackgroundFolder = 'C:\SC Lab\Projects\Fluxonium\data_process/ziggy4/'
     BackgroundFile = []
     # BackgroundFile = '021219_rabi_CH2(AWG1Vpp)_no pump_readout_4.077GHz__-15dBm_qubit4.027GHz_-35dBm_0.8_mA_I cos Q sin mod true interleafing_odd readout even ref_avg100k_Rabi300_duty50000readout3us.h5'
@@ -462,9 +467,9 @@ if __name__ == '__main__':
     Plus50MHzBackgroundFile = 'one_tone_4.05GHz_to_4.3GHz_-15dBm_4.9mA_10us integration_100Kavg_50KHz step_020419.dat'
     Minus50MHzBackgroundFile = 'one_tone_4.05GHz_to_4.3GHz_-15dBm_4.9mA_10us integration_100Kavg_50KHz step_020419.dat'
     BackgroundFile = 'power spectroscopy_105.hdf5'
-    RabiFile = 'rabi_71.hdf5'
+    RabiFile = 'rabi_75.hdf5'
     IQModFreq = 0.05
-    CircleCorrection = True
+    CircleCorrection = False
     CorrectionParam = [1, -0.0017, 0.749, -0.022]
     PhaseSlope = 326.7041108065019
     PhaseReferenceFreq = 4.105
