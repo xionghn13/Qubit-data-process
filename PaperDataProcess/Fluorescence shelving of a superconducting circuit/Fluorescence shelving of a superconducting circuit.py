@@ -4,8 +4,8 @@ from QubitDataProcessPackages import *
 
 # DataPath = 'C:\SC Lab\GitHubRepositories\Qubit-data-process\PaperDataProcess\Fluorescence shelving of a superconducting circuit\Fluorescence/'
 DataPath = 'D:\GitHubRepository\Qubit-data-process\PaperDataProcess\Fluorescence shelving of a superconducting circuit\Fluorescence/'
-BackgroundFile = 'power spectroscopy_105.hdf5'
-OneToneFile = 'power spectroscopy_108.hdf5'
+BackgroundFile = 'power spectroscopy_76.hdf5'
+OneToneFile = 'power spectroscopy_82.hdf5'
 
 Calibration = True
 UseOneToneRange = True
