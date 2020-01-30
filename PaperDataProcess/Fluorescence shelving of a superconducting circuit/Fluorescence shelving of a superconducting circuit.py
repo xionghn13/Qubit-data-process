@@ -2,10 +2,10 @@ from QubitDataProcessPackages import *
 
 # figure 2
 
-# DataPath = 'C:\SC Lab\GitHubRepositories\Qubit-data-process\PaperDataProcess\Fluorescence shelving of a superconducting circuit\Fluorescence/'
-DataPath = 'D:\GitHubRepository\Qubit-data-process\PaperDataProcess\Fluorescence shelving of a superconducting circuit\Fluorescence/'
-BackgroundFile = 'power spectroscopy_76.hdf5'
-OneToneFile = 'power spectroscopy_82.hdf5'
+DataPath = 'C:\SC Lab\GitHubRepositories\Qubit-data-process\PaperDataProcess\Fluorescence shelving of a superconducting circuit\Fluorescence/'
+# DataPath = 'D:\GitHubRepository\Qubit-data-process\PaperDataProcess\Fluorescence shelving of a superconducting circuit\Fluorescence/'
+BackgroundFile = 'power spectroscopy_116.hdf5'
+OneToneFile = 'power spectroscopy_117.hdf5'
 
 Calibration = True
 UseOneToneRange = True
@@ -63,7 +63,7 @@ BackComplexNormalizedTrunc = BackComplexNormalized[BackFreqInd]
 RComplexTrunc = RComplex[FreqInd, :]
 RComplexTrunc = RComplexTrunc[:, PowerInd]
 
-f = h5py.File(DataPath + 'circles_data.hdf5', 'w')
+f = h5py.File(DataPath + 'circles_data_0125.hdf5', 'w')
 fset = f.create_dataset('freq', data=OneFreqUniqTrunc)
 pset = f.create_dataset('power', data=OnePowerUniqTrunc)
 r_re_set = f.create_dataset('R_real', data=RComplexTrunc.real)
@@ -214,12 +214,14 @@ RabiFileList = [
     'transient_P2_P1_26.hdf5',
     'transient_P2_P1_31.hdf5',
     't1_P2_P1_23.hdf5',
+    't1_P2_P1_30.hdf5',
 ]
 OutFileList = [
     'optimal_power_transient_population.hdf5',
     'high_power_transient_population.hdf5',
     'low_power_transient_population.hdf5',
-    '02_pi_pulse_decay.hdf5'
+    '02_pi_pulse_decay.hdf5',
+    '02_pi_pulse_decay_0122.hdf5',
 
 ]
 PopulationConversionConstList = [
@@ -227,6 +229,14 @@ PopulationConversionConstList = [
     [1., 1 / 1.0282720690126486],
     [1., 1. / 1.0621686624421236],
     [1, 1. / 0.9761871987220584],
+    [1., 1. / 0.8694655525612803],
+]
+P2CorrectionList = [
+    [108, 604],
+    [108, 604],
+    [108, 604],
+    [108, 604],
+    [108, 674],
 ]
 [BackFreq, BackComplex] = edf.readFSweepLabber(DataPath + BackgroundFile)
 BackPower = edf.readReadoutPowerLabber(DataPath + BackgroundFile)
@@ -247,8 +257,8 @@ for i in range(len(RabiFileList)):
     Population = (PopulationConversionConst[0] - RComplex.real) * PopulationConversionConst[1]
     CorrectP2 = True
     if CorrectP2:
-        P2PiPulse = 108
-        P2RabiT1 = 604
+        P2PiPulse = P2CorrectionList[i][0]
+        P2RabiT1 = P2CorrectionList[i][1]
         k = np.exp(- P2PiPulse / P2RabiT1)
         P0 = np.mean(Population[:, [0, 2]], axis=1)
         P2 = Population[:, 3]

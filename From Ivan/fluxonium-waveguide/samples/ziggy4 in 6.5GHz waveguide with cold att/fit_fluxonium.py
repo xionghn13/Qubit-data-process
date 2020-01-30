@@ -98,17 +98,18 @@ def main():
     #          }
              
     # params['num_osc'] = 50
-    params['error_type'] = 'absolute_error'
-    params['data_set'] = 'data1'
+    # params['error_type'] = 'absolute_error'
+    # params['data_set'] = 'data1'
     
     # params['E_L'] = .1
-
+    phi_ext1 = np.linspace(0.501, 0.51, 101)
     phi_ext = np.linspace(0.4, 1.35, 96)
+    phi_ext = np.sort(np.concatenate((phi_ext1, phi_ext)))
 
     utilities.print_params(params)
     qubit = Fluxonium(params)
 
-    params = fit(qubit, params)
+    # params = fit(qubit, params)
     utilities.print_params(params)
     utilities.save_fit(os.path.join(path, filename_fit), params)
 

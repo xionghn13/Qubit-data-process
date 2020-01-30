@@ -13,7 +13,7 @@ Q_cap = 3.0e5
 T = 2e-3
 epsilon = 0
 
-flux = 0.505
+flux = 0.508
 [pem01, freq] = np.abs(ssj.phase_matrix_element_freq(N, EL, EC, EJ, flux * 2 * np.pi, 0, 1))
 T1diel01 = 1e6 / ssj.relaxation_rate_cap(EL, EC, EJ, Q_cap / (freq / 1.1558) ** epsilon, freq, pem01, T)
 print(freq)

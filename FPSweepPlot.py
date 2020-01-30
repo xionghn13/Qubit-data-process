@@ -9,15 +9,15 @@ import ExtractDataFunc as edf
 # DataPath = 'E:/Projects\Fluxonium\data_process/Fluxonium022319/'
 DataPath = 'C:\SC Lab\Projects\Fluxonium\data_process/ziggy4/'
 # BackgroundFile = 'calibration_5.hdf5'
-BackgroundFile = 'power spectroscopy_76.hdf5'
-OneToneFile = 'power spectroscopy_82.hdf5'
-# BackgroundFile = 'power spectroscopy_68.hdf5'
-# OneToneFile = 'power spectroscopy_67.hdf5'
+# BackgroundFile = 'power spectroscopy_76.hdf5'
+# OneToneFile = 'power spectroscopy_82.hdf5'
+BackgroundFile = 'power spectroscopy_116.hdf5'
+OneToneFile = 'power spectroscopy_118.hdf5'
 # BackgroundFile = 'power spectroscopy_65.hdf5'
 # OneToneFile = 'power spectroscopy_66.hdf5'
 
 Calibration = True
-UseOneToneRange = False
+UseOneToneRange = True
 FitSeparately = False
 PlotParamVSPower = False
 PlotUnfittedCircle = False
@@ -32,16 +32,16 @@ EndPower = 10
 SelectPower = np.array([])
 # SelectPower = np.array([-10, -5, 2.5, 5])
 
-gamma_f_guess = 2e-3
-P0_guess = 0.7
+gamma_f_guess = 1.693e-3
+P0_guess = 0.75768
 A_guess = 3e3
-# amp_cor_re_guess = 1
+amp_cor_re_guess = 1
 # amp_cor_im_guess = -0.3
 P0_im_guess = 0.
 
 bounds = (
-    [1, 0, 0, 1e2, 0.1, -1, -1],
-    [20, 2e-2, 1, np.inf, 1.5, 1, 1])  # f0, gamma_f, P0, A, amp_cor_re, amp_cor_im, P0_im
+    [1, 1.693e-3 - 1e-12, 0.75768 - 1e-9, 1e2, 1 - 1e-9, -1e-9, -1e-9],
+    [20, 1.693e-2 + 1e-12, 0.75768 + 1e-9, np.inf, 1 + 1e-9, 1e-9, 1e-9])  # f0, gamma_f, P0, A, amp_cor_re, amp_cor_im, P0_im
 ########################################################################################################################
 NotUsePowerSpectroscopyCalibrate = BackgroundFile.startswith('one_tone') or BackgroundFile.startswith('calibration')
 if OneToneFile.endswith('.dat'):
@@ -147,6 +147,9 @@ if Calibration:
             amp_cor_re_guess = np.real(RComplexTrunc[0, i] + RComplexTrunc[-1, i]) / 2
             amp_cor_im_guess = np.imag(RComplexTrunc[0, i] + RComplexTrunc[-1, i]) / 2
 
+            amp_cor_re_guess = 1
+            amp_cor_im_guess = 0
+
             guess = [f0_guess, gamma_f_guess, P0_guess, A_guess, amp_cor_re_guess, amp_cor_im_guess, P0_im_guess]
             bounds[0][0] = OneFreqUniqTrunc[0]
             bounds[1][0] = OneFreqUniqTrunc[-1]
@@ -189,6 +192,10 @@ if Calibration:
         f0_guess = OneFreqUniqTrunc[f0_ind]
         amp_cor_re_guess = np.real(RComplexTrunc[0, 0] + RComplexTrunc[-1, 0]) / 2
         amp_cor_im_guess = np.imag(RComplexTrunc[0, 0] + RComplexTrunc[-1, 0]) / 2
+
+        amp_cor_re_guess = 1
+        amp_cor_im_guess = 0
+
         guess = [f0_guess, gamma_f_guess, P0_guess, A_guess, amp_cor_re_guess, amp_cor_im_guess, P0_im_guess]
         try:
             opt, cov, LargerFreqRange, FittedComplex = qsf.fitReflectionCircles(OneFreqUniqTrunc, OnePowerUniqTrunc,
@@ -380,7 +387,7 @@ if Calibration:
     plt.plot([1], [0], 'ro')
     plt.xlim(-limit, limit)
     plt.ylim(-limit, limit)
-    plt.title('f0=%.6GGHz, gamma_f=%.3GMHz, P0=%.3G, A=%.2G,\n amp_cor_re=%0.2G, amp_cor_im=%0.2G, P0_im=%0.2G' % (
+    plt.title('f0=%.6GGHz, gamma_f=%.5GMHz, P0=%.5G, A=%.5G,\n amp_cor_re=%0.2G, amp_cor_im=%0.2G, P0_im=%0.2G' % (
         f0_fit, gamma_f_fit * 1e3, P0_fit, A_fit, amp_cor_re_fit, amp_cor_im_fit, P0_im_fit))
     plt.xlabel('Re(r)', fontsize='x-large')
     plt.ylabel('Im(r)', fontsize='x-large')

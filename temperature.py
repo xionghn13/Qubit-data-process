@@ -1,12 +1,13 @@
 import numpy as np
 
 h = 6.63e-34
-f = 1.1515e9
+f = 0.95e9
 kB = 1.38e-23
 T0 = 13e-3
 
-P0 = 0.3
-T = h * f / kB / np.log((1 - P0) / P0)
+P0 = 0.54
+P1 = 0.54 * 0.68
+T = h * f / kB / np.log(P0 / P1)
 print('T = %.3GmK' % (T * 1000))
 print(np.exp( - h * f / kB / T0))
 print('n_eff = %.3G' % (1 / (np.exp(h * f / kB / T0) - 1)))

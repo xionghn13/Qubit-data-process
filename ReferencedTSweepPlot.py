@@ -146,6 +146,7 @@ def plotReferencedTSweep(DataPath, RabiFile, BackgroundFolder='', BackgroundFile
                 [Time, Complex] = edf.readRabiCH1PumpedLabber(DataPath + RabiFile)
             else:
                 [Time, Complex] = edf.readRabiLabber(DataPath + RabiFile)
+                # print(Complex)
         elif RabiFile.startswith('int_t1'):
             MeasurementType = 't1 no ref'
             [Time, Complex] = edf.readIntegratedT1Labber(DataPath + RabiFile)
@@ -259,36 +260,58 @@ def plotReferencedTSweep(DataPath, RabiFile, BackgroundFolder='', BackgroundFile
         T1_guess = x_data[-1]
         MaxInd = y_data.argmax()
         MinInd = y_data.argmin()
+        FitTwoExpRabi = False
         if MeasurementType == 't2':
             Tpi_guess = np.abs(x_data[MaxInd] - x_data[MinInd])
         else:
             Tpi_guess = T1_guess / 4
         phi0_guess = 0
         T_out_guess = T1_guess
-        C_guess = B_guess
-        guess = ([A_guess, T1_guess, B_guess * 0, Tpi_guess, phi0_guess, T_out_guess, C_guess])
-        # bounds = (
-        #     (-2, 1, -1, 1, - np.pi / 2),
-        #     (2, np.inf, 1, np.inf, np.pi / 2)
-        # )
-        bounds = (
-            (- np.inf, 1, - 1e-5, 1, - np.pi / 2, - np.inf, - np.inf),
-            (np.inf, np.inf, 0, np.inf, np.pi / 2, np.inf, np.inf)
-        )
-        # print(guess)
-        try:
-            opt, cov = curve_fit(rabi_two_exp_curve, x_data, y_data, p0=guess, bounds=bounds)
-        except RuntimeError:
-            print("Error - curve_fit failed")
-            opt = guess
-            cov = np.zeros([len(opt), len(opt)])
-        A_fit, T1_fit, B_fit, Tpi_fit, phi0_fit, T_out_fit, C_fit = opt
-        A_std, T1_std, B_std, Tpi_std, phi0_std, T_out_std, C_std = np.sqrt(cov.diagonal())
-        TimeFit = np.linspace(Time.min(), Time.max(), 200)
-        FitR = rabi_two_exp_curve(TimeFit, A_fit, T1_fit, B_fit, Tpi_fit, phi0_fit, T_out_fit, C_fit)
-        FitUpper = A_fit * np.exp(- TimeFit / T1_fit) + B_fit * np.exp(-TimeFit / T_out_fit) + C_fit
-        FitLower = -A_fit * np.exp(- TimeFit / T1_fit) + B_fit * np.exp(-TimeFit / T_out_fit) + C_fit
-        ParamList = ['A', 'Decay time(ns)', 'B', 'Tpi(ns)', 'pho0', 'T_out(ns)', 'C']
+        if FitTwoExpRabi:
+            C_guess = B_guess
+            guess = ([A_guess, T1_guess, B_guess * 0, Tpi_guess, phi0_guess, T_out_guess, C_guess])
+            # bounds = (
+            #     (-2, 1, -1, 1, - np.pi / 2),
+            #     (2, np.inf, 1, np.inf, np.pi / 2)
+            # )
+            bounds = (
+                (- np.inf, 1, - 1e-5, 1, - np.pi / 2, - np.inf, - np.inf),
+                (np.inf, np.inf, 0, np.inf, np.pi / 2, np.inf, np.inf)
+            )
+            # print(guess)
+            try:
+                opt, cov = curve_fit(rabi_two_exp_curve, x_data, y_data, p0=guess, bounds=bounds)
+            except RuntimeError:
+                print("Error - curve_fit failed")
+                opt = guess
+                cov = np.zeros([len(opt), len(opt)])
+            A_fit, T1_fit, B_fit, Tpi_fit, phi0_fit, T_out_fit, C_fit = opt
+            A_std, T1_std, B_std, Tpi_std, phi0_std, T_out_std, C_std = np.sqrt(cov.diagonal())
+            TimeFit = np.linspace(Time.min(), Time.max(), 200)
+            FitR = rabi_two_exp_curve(TimeFit, A_fit, T1_fit, B_fit, Tpi_fit, phi0_fit, T_out_fit, C_fit)
+            FitUpper = A_fit * np.exp(- TimeFit / T1_fit) + B_fit * np.exp(-TimeFit / T_out_fit) + C_fit
+            FitLower = -A_fit * np.exp(- TimeFit / T1_fit) + B_fit * np.exp(-TimeFit / T_out_fit) + C_fit
+            ParamList = ['A', 'Decay time(ns)', 'B', 'Tpi(ns)', 'pho0', 'T_out(ns)', 'C']
+        else:
+            guess = ([A_guess, T1_guess, B_guess, Tpi_guess, phi0_guess])
+            bounds = (
+                (-2, 1, -1, 1, - np.pi / 2),
+                (2, np.inf, 1, np.inf, np.pi / 2)
+            )
+
+            try:
+                opt, cov = curve_fit(rabi_curve, x_data, y_data, p0=guess, bounds=bounds)
+            except RuntimeError:
+                print("Error - curve_fit failed")
+                opt = guess
+                cov = np.zeros([len(opt), len(opt)])
+            A_fit, T1_fit, B_fit, Tpi_fit, phi0_fit = opt
+            A_std, T1_std, B_std, Tpi_std, phi0_std = np.sqrt(cov.diagonal())
+            TimeFit = np.linspace(Time.min(), Time.max(), 200)
+            FitR = rabi_curve(TimeFit, A_fit, T1_fit, B_fit, Tpi_fit, phi0_fit)
+            FitUpper = A_fit * np.exp(- TimeFit / T1_fit) + B_fit
+            FitLower = -A_fit * np.exp(- TimeFit / T1_fit) + B_fit
+            ParamList = ['A', 'Decay time(ns)', 'B', 'Tpi(ns)', 'pho0']
 
     # print(cov)
     limit = 1.7
@@ -359,8 +382,12 @@ def plotReferencedTSweep(DataPath, RabiFile, BackgroundFolder='', BackgroundFile
                     plt.title('T_transient=%.3G$\pm$%.2Gus, A=%.3G, B=%.3G' % (
                         T1_fit / 1000, T1_std / 1000, A_fit, B_fit))
                 elif MeasurementType in ('rabi', 'Ch1 rabi', 'Ch1 pump rabi'):
-                    plt.title('Tpi=%.3Gus, T1=%.3Gus, T_out=%.3Gus$\pm$%.2Gus, A=%.3G, B=%.3G, phi0=%.3G' % (
-                        Tpi_fit / 1000, T1_fit / 1000, T_out_fit / 1000, T_out_std / 1000, A_fit, B_fit, phi0_fit))
+                    if FitTwoExpRabi:
+                        plt.title('Tpi=%.3Gus, T1=%.3Gus, T_out=%.3Gus$\pm$%.2Gus, A=%.3G, B=%.3G, phi0=%.3G' % (
+                            Tpi_fit / 1000, T1_fit / 1000, T_out_fit / 1000, T_out_std / 1000, A_fit, B_fit, phi0_fit))
+                    else:
+                        plt.title('Tpi=%.3Gus, T1=%.3Gus, A=%.3G, B=%.3G, phi0=%.3G' % (
+                            Tpi_fit / 1000, T1_fit / 1000, A_fit, B_fit, phi0_fit))
             plt.xlabel('Time/ns', fontsize='x-large')
             plt.ylabel('Re', fontsize='x-large')
             plt.tick_params(axis='both', which='major', labelsize='x-large')
@@ -404,8 +431,12 @@ def plotReferencedTSweep(DataPath, RabiFile, BackgroundFolder='', BackgroundFile
             elif MeasurementType in ('rabi', 'Ch1 rabi', 'Ch1 pump rabi', 'rabi no ref'):
                 plt.plot(TimeFit, FitUpper, ':')
                 plt.plot(TimeFit, FitLower, ':')
-                plt.title('Tpi=%.3Gus, T1=%.3Gus, T_out=%.3Gus$\pm$%.2Gus\n A=%.3G, B=%.3G, phi0=%.3G, C=%.3G' % (
-                    Tpi_fit / 1000, T1_fit / 1000, T_out_fit / 1000, T_out_std / 1000, A_fit, B_fit, phi0_fit, C_fit))
+                if FitTwoExpRabi:
+                    plt.title('Tpi=%.3Gus, T1=%.3Gus, T_out=%.3Gus$\pm$%.2Gus\n A=%.3G, B=%.3G, phi0=%.3G, C=%.3G' % (
+                        Tpi_fit / 1000, T1_fit / 1000, T_out_fit / 1000, T_out_std / 1000, A_fit, B_fit, phi0_fit, C_fit))
+                else:
+                    plt.title('Tpi=%.3Gus, T1=%.3Gus \n A=%.3G, B=%.3G, phi0=%.3G' % (
+                        Tpi_fit / 1000, T1_fit / 1000, A_fit, B_fit, phi0_fit))
         plt.xlabel('Time/ns', fontsize='x-large')
         plt.ylabel('Re', fontsize='x-large')
         if MeasurementType == 't2':
@@ -434,6 +465,9 @@ def plotReferencedTSweep(DataPath, RabiFile, BackgroundFolder='', BackgroundFile
             plt.plot(Time, (PopulationConversionConst[0] - y_data) * PopulationConversionConst[1], 'o')
             if not FitCorrectedR:
                 plt.plot(TimeFit, (PopulationConversionConst[0] - FitR) * PopulationConversionConst[1])
+            if MeasurementType in ('rabi', 'Ch1 rabi', 'Ch1 pump rabi', 'rabi no ref'):
+                plt.plot(TimeFit, (PopulationConversionConst[0] - FitLower) * PopulationConversionConst[1], ':')
+                plt.plot(TimeFit, (PopulationConversionConst[0] - FitUpper) * PopulationConversionConst[1], ':')
             plt.xlabel('Time(ns)', fontsize='x-large')
             plt.ylabel('Population', fontsize='x-large')
             plt.tick_params(axis='both', which='major', labelsize='x-large')
@@ -458,19 +492,19 @@ def plotReferencedTSweep(DataPath, RabiFile, BackgroundFolder='', BackgroundFile
 
 if __name__ == '__main__':
     DataFolderName = '11112019_back to waveguide'
-    DataPath = 'C:/SC Lab\\Labber\\' + DataFolderName + '/2020/01\Data_0114\\'
-    # DataPath = 'C:/SC Lab\\Labber\\' + DataFolderName + '/2019/12\Data_1229\\'
+    DataPath = 'C:/SC Lab\\Labber\\' + DataFolderName + '/2020/01\Data_0130\\'
+    # DataPath = 'C:/SC Lab\\Labber\\' + DataFolderName + '/2019/11\Data_1123\\'
     BackgroundFolder = 'C:\SC Lab\Projects\Fluxonium\data_process/ziggy4/'
     BackgroundFile = []
     # BackgroundFile = '021219_rabi_CH2(AWG1Vpp)_no pump_readout_4.077GHz__-15dBm_qubit4.027GHz_-35dBm_0.8_mA_I cos Q sin mod true interleafing_odd readout even ref_avg100k_Rabi300_duty50000readout3us.h5'
     # Plus50MHzBackgroundFile = '012819_rabi_CH2(AWG1Vpp)_no pump_readout_4.146GHz__-20dBm_qubit4.096GHz_-25dBm_4.9_mA_I cos Q sin mod true interleafing_odd readout even ref_avg100k_Rabi100000_duty150000readout3us.h5'
     Plus50MHzBackgroundFile = 'one_tone_4.05GHz_to_4.3GHz_-15dBm_4.9mA_10us integration_100Kavg_50KHz step_020419.dat'
     Minus50MHzBackgroundFile = 'one_tone_4.05GHz_to_4.3GHz_-15dBm_4.9mA_10us integration_100Kavg_50KHz step_020419.dat'
-    BackgroundFile = 'power spectroscopy_105.hdf5'
-    RabiFile = 'rabi_75.hdf5'
+    BackgroundFile = 'power spectroscopy_116.hdf5'
+    RabiFile = 't2_ramsey_Drive1_2.hdf5'
     IQModFreq = 0.05
     CircleCorrection = False
-    CorrectionParam = [1, -0.0017, 0.749, -0.022]
+    CorrectionParam = [1.1, 0.044, 0.737, 0.037]
     PhaseSlope = 326.7041108065019
     PhaseReferenceFreq = 4.105
     Calibration = True
@@ -483,7 +517,7 @@ if __name__ == '__main__':
     ShowFig = True
     StartTime = 0
     EndTime = 30e3
-    PopulationConversionConst = [1, 1.]
+    PopulationConversionConst = [1, 1. / 1]
     FitDict = plotReferencedTSweep(DataPath, RabiFile, BackgroundFolder=BackgroundFolder, BackgroundFile=BackgroundFile,
                                    Plus50MHzBackgroundFile=Plus50MHzBackgroundFile,
                                    PopulationConversionConst=PopulationConversionConst,

@@ -178,7 +178,7 @@ def plotMultiPopulationTSweep(DataPath, RabiFile, BackgroundFolder='', Backgroun
 
     # print(cov)
     limit = 1.7
-    print(np.real(RComplex[-1, 3]))
+    # print(np.real(RComplex[-1, 3]))
     if ShowFig:
         fig, ax = plt.subplots()
         ax.grid(linestyle='--')
@@ -215,18 +215,31 @@ def plotMultiPopulationTSweep(DataPath, RabiFile, BackgroundFolder='', Backgroun
         # plt.tight_layout()
 
         Population = (PopulationConversionConst[0] - RComplex.real) * PopulationConversionConst[1]
-        CorrectP2 = True
+        CorrectP2 = False
+        CorrectP1 = False
         PlotErrBar = False
-        if CorrectP2:
+        if CorrectP2 and num_curve == 4:
             P2PiPulse = 108
             # P2RabiT1 = 604
-            P2RabiT1 = 990
+            P2RabiT1 = 1080
             k = np.exp(- P2PiPulse / P2RabiT1)
             P0 = np.mean(Population[:, [0, 2]], axis=1)
             P2 = Population[:, 3]
             print(P2[0])
             Population[:, 3] = 2 / (k + 1) * (P2 + (k - 1) / 2 * P0)
             print(P2[0])
+            # print(Population[:, 3][0])
+
+        if CorrectP1:
+            P2PiPulse = 86
+            # P2RabiT1 = 604
+            P2RabiT1 = 9360
+            k = np.exp(- P2PiPulse / P2RabiT1)
+            P0 = np.mean(Population[:, [0, 2]], axis=1)
+            P1 = Population[:, 1]
+            print(P1[0])
+            Population[:, 1] = 2 / (k + 1) * (P1 + (k - 1) / 2 * P0)
+            print(P1[0])
             # print(Population[:, 3][0])
 
         if num_curve == 4:
@@ -259,6 +272,23 @@ def plotMultiPopulationTSweep(DataPath, RabiFile, BackgroundFolder='', Backgroun
             plt.ylabel('Population', fontsize='x-large')
             plt.tick_params(axis='both', which='major', labelsize='x-large')
             plt.tight_layout()
+        elif num_curve == 2:
+            P1 = Population[:, 1]
+            P0 = Population[:, 0]
+            P01 = P0 + P1
+            print('std:', [P0.std(), P1.std(), P01.std()])
+            print('avg:', [P0.mean(), P1.mean(), P01.mean()])
+            fig, ax = plt.subplots()
+            ax.grid(linestyle='--')
+            plt.plot(Time, P0, 'o', label='P0')
+            plt.plot(Time, P1, 'o', label='P1')
+            plt.plot(Time, P01, 'o', label='P0+P1')
+
+            plt.legend()
+            plt.xlabel('Time(ns)', fontsize='x-large')
+            plt.ylabel('Population', fontsize='x-large')
+            plt.tick_params(axis='both', which='major', labelsize='x-large')
+            plt.tight_layout()
         else:
             fig, ax = plt.subplots()
             ax.grid(linestyle='--')
@@ -268,75 +298,76 @@ def plotMultiPopulationTSweep(DataPath, RabiFile, BackgroundFolder='', Backgroun
             plt.tick_params(axis='both', which='major', labelsize='x-large')
             plt.tight_layout()
 
-        plot_level = 'P0'
+        if num_curve == 4:
+            plot_level = 'P0'
 
-        if plot_level == 'P0':
-            plot_ind = [0, 2]
-        elif plot_level == 'P1':
-            plot_ind = [1]
-        elif plot_level == 'P2':
-            plot_ind = [3]
-        elif plot_level == 'P_sum':
-            plot_ind = [0, 1, 3]
-        P_plot = (PopulationConversionConst[0] - np.mean(np.array(RComplexList).transpose()[:, plot_ind].real,
-                                                         axis=1)) * PopulationConversionConst[1]
-        fit_plot = (PopulationConversionConst[0] - np.mean(np.array(FitRList).transpose()[:, plot_ind], axis=1)) * \
-                   PopulationConversionConst[1]
+            if plot_level == 'P0':
+                plot_ind = [0, 2]
+            elif plot_level == 'P1':
+                plot_ind = [1]
+            elif plot_level == 'P2':
+                plot_ind = [3]
+            elif plot_level == 'P_sum':
+                plot_ind = [0, 1, 3]
+            P_plot = (PopulationConversionConst[0] - np.mean(np.array(RComplexList).transpose()[:, plot_ind].real,
+                                                             axis=1)) * PopulationConversionConst[1]
+            fit_plot = (PopulationConversionConst[0] - np.mean(np.array(FitRList).transpose()[:, plot_ind], axis=1)) * \
+                       PopulationConversionConst[1]
 
-        def r_to_P(x):
-            return (PopulationConversionConst[0] - x) * PopulationConversionConst[1]
+            def r_to_P(x):
+                return (PopulationConversionConst[0] - x) * PopulationConversionConst[1]
 
-        opt = np.mean(OptMatrix[:, plot_ind], axis=1)
-        err = ErrMatrix[:, plot_ind[0]]
-        if FitDoubleExponential:
-            A_fit, TR_fit, B_fit, Tqp_fit, lamb_fit = opt
-            A_std, TR_std, B_std, Tqp_std, lamb_std = err
-        elif FitTwoExponential:
-            A_fit, T1_fit, B_fit, T2_fit, C_fit = opt
-            A_std, T1_std, B_std, T2_std, C_std = err
-        else:
-            A_fit, T1_fit, B_fit = opt
-            A_std, T1_std, B_std = err
-
-        fig, ax = plt.subplots()
-        ax.grid(linestyle='--')
-        plt.plot(TimeList[plot_ind[0]], P_plot, 'o')
-        plt.plot(TimeFitList[plot_ind[0]], fit_plot)
-        if MeasurementType in ('t1', 't1 no ref'):
+            opt = np.mean(OptMatrix[:, plot_ind], axis=1)
+            err = ErrMatrix[:, plot_ind[0]]
             if FitDoubleExponential:
-                plt.title('TR=%.3G$\pm$%.2Gus, A=%.3G, B=%.3G\n'
-                          'Tqp=%.3G$\pm$%.2Gus, lambda=%.3G$\pm$%.2G' % (
-                              TR_fit / 1000, TR_std / 1000, A_fit, B_fit, Tqp_fit / 1000, Tqp_std / 1000, lamb_fit,
-                              lamb_std))
+                A_fit, TR_fit, B_fit, Tqp_fit, lamb_fit = opt
+                A_std, TR_std, B_std, Tqp_std, lamb_std = err
             elif FitTwoExponential:
-                plt.title('T_Exp1=%.3G$\pm$%.2Gus, A=%.3G, B=%.3G\n'
-                          'T_Exp2=%.3G$\pm$%.2Gus, C=%.3G$\pm$%.2G' % (
-                              T1_fit / 1000, T1_std / 1000, -A_fit * PopulationConversionConst[1],
-                              -B_fit * PopulationConversionConst[1], T2_fit / 1000, T2_std / 1000, r_to_P(C_fit),
-                              C_std))
+                A_fit, T1_fit, B_fit, T2_fit, C_fit = opt
+                A_std, T1_std, B_std, T2_std, C_std = err
             else:
-                plt.title('T1=%.3G$\pm$%.2Gus, A=%.3G, B=%.3G' % (
-                    T1_fit / 1000, T1_std / 1000, -A_fit * PopulationConversionConst[1], r_to_P(B_fit)))
-        elif MeasurementType in ('transient', 'transient no ref'):
-            if FitDoubleExponential:
-                plt.title('TR=%.3G$\pm$%.2Gus, A=%.3G, B=%.3G\n'
-                          'Tqp=%.3G$\pm$%.2Gus, lambda=%.3G$\pm$%.2G' % (
-                              TR_fit / 1000, TR_std / 1000, A_fit, B_fit, Tqp_fit / 1000, Tqp_std / 1000, lamb_fit,
-                              lamb_std))
-            elif FitTwoExponential:
-                plt.title('T_Exp1=%.3G$\pm$%.2Gus, A=%.3G, B=%.3G\n'
-                          'T_Exp2=%.3G$\pm$%.2Gus, C=%.3G$\pm$%.2G' % (
-                              T1_fit / 1000, T1_std / 1000, A_fit, B_fit, T2_fit / 1000, T2_std / 1000, C_fit,
-                              C_std))
-            else:
-                plt.title('T_transient=%.3G$\pm$%.2Gus, A=%.3G, B=%.3G' % (
-                    T1_fit / 1000, T1_std / 1000, -A_fit * PopulationConversionConst[1], r_to_P(B_fit)))
-        plt.xlabel('Time(ns)', fontsize='x-large')
-        plt.ylabel(plot_level, fontsize='x-large')
-        plt.tick_params(axis='both', which='major', labelsize='x-large')
-        plt.tight_layout()
-        if LogScale:
-            ax.set_yscale('log')
+                A_fit, T1_fit, B_fit = opt
+                A_std, T1_std, B_std = err
+
+            fig, ax = plt.subplots()
+            ax.grid(linestyle='--')
+            plt.plot(TimeList[plot_ind[0]], P_plot, 'o')
+            plt.plot(TimeFitList[plot_ind[0]], fit_plot)
+            if MeasurementType in ('t1', 't1 no ref'):
+                if FitDoubleExponential:
+                    plt.title('TR=%.3G$\pm$%.2Gus, A=%.3G, B=%.3G\n'
+                              'Tqp=%.3G$\pm$%.2Gus, lambda=%.3G$\pm$%.2G' % (
+                                  TR_fit / 1000, TR_std / 1000, A_fit, B_fit, Tqp_fit / 1000, Tqp_std / 1000, lamb_fit,
+                                  lamb_std))
+                elif FitTwoExponential:
+                    plt.title('T_Exp1=%.3G$\pm$%.2Gus, A=%.3G, B=%.3G\n'
+                              'T_Exp2=%.3G$\pm$%.2Gus, C=%.3G$\pm$%.2G' % (
+                                  T1_fit / 1000, T1_std / 1000, -A_fit * PopulationConversionConst[1],
+                                  -B_fit * PopulationConversionConst[1], T2_fit / 1000, T2_std / 1000, r_to_P(C_fit),
+                                  C_std))
+                else:
+                    plt.title('T1=%.3G$\pm$%.2Gus, A=%.3G, B=%.3G' % (
+                        T1_fit / 1000, T1_std / 1000, -A_fit * PopulationConversionConst[1], r_to_P(B_fit)))
+            elif MeasurementType in ('transient', 'transient no ref'):
+                if FitDoubleExponential:
+                    plt.title('TR=%.3G$\pm$%.2Gus, A=%.3G, B=%.3G\n'
+                              'Tqp=%.3G$\pm$%.2Gus, lambda=%.3G$\pm$%.2G' % (
+                                  TR_fit / 1000, TR_std / 1000, A_fit, B_fit, Tqp_fit / 1000, Tqp_std / 1000, lamb_fit,
+                                  lamb_std))
+                elif FitTwoExponential:
+                    plt.title('T_Exp1=%.3G$\pm$%.2Gus, A=%.3G, B=%.3G\n'
+                              'T_Exp2=%.3G$\pm$%.2Gus, C=%.3G$\pm$%.2G' % (
+                                  T1_fit / 1000, T1_std / 1000, A_fit, B_fit, T2_fit / 1000, T2_std / 1000, C_fit,
+                                  C_std))
+                else:
+                    plt.title('T_transient=%.3G$\pm$%.2Gus, A=%.3G, B=%.3G' % (
+                        T1_fit / 1000, T1_std / 1000, -A_fit * PopulationConversionConst[1], r_to_P(B_fit)))
+            plt.xlabel('Time(ns)', fontsize='x-large')
+            plt.ylabel(plot_level, fontsize='x-large')
+            plt.tick_params(axis='both', which='major', labelsize='x-large')
+            plt.tight_layout()
+            if LogScale:
+                ax.set_yscale('log')
 
     if ShowFig:
         plt.show()
@@ -348,15 +379,15 @@ def plotMultiPopulationTSweep(DataPath, RabiFile, BackgroundFolder='', Backgroun
 
 if __name__ == '__main__':
     DataFolderName = '11112019_back to waveguide'
-    DataPath = 'C:/SC Lab\\Labber\\' + DataFolderName + '/2020/01\Data_0122\\'
+    DataPath = 'C:/SC Lab\\Labber\\' + DataFolderName + '/2020/01\Data_0128\\'
     BackgroundFolder = 'C:\SC Lab\Projects\Fluxonium\data_process/ziggy4/'
     BackgroundFile = []
     Plus50MHzBackgroundFile = 'one_tone_4.05GHz_to_4.3GHz_-15dBm_4.9mA_10us integration_100Kavg_50KHz step_020419.dat'
     Minus50MHzBackgroundFile = 'one_tone_4.05GHz_to_4.3GHz_-15dBm_4.9mA_10us integration_100Kavg_50KHz step_020419.dat'
-    BackgroundFile = 'power spectroscopy_105.hdf5'
-    RabiFile = 't1_P2_P1_30.hdf5'
+    BackgroundFile = 'power spectroscopy_116.hdf5'
+    RabiFile = 't1_P2_P1_34.hdf5'
     IQModFreq = 0.05
-    CircleCorrection = True
+    CircleCorrection = False
     CorrectionParam = [1, 0.044, 0.737, 0.037]
     PhaseSlope = 326.7041108065019
     PhaseReferenceFreq = 4.105
@@ -371,7 +402,9 @@ if __name__ == '__main__':
     ShowFig = True
     StartTime = 0.5e3
     EndTime = 40e3
-    PopulationConversionConst = [1., 1. / 0.8694655525612803]
+    # PopulationConversionConst = [1., 1. / 0.9234825050081049]
+    PopulationConversionConst = [1., 1.0313730525455056]
+
     FitDict = plotMultiPopulationTSweep(DataPath, RabiFile, BackgroundFolder=BackgroundFolder,
                                         BackgroundFile=BackgroundFile,
                                         IQModFreq=IQModFreq, PopulationConversionConst=PopulationConversionConst,
