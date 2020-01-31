@@ -260,7 +260,7 @@ def plotReferencedTSweep(DataPath, RabiFile, BackgroundFolder='', BackgroundFile
         T1_guess = x_data[-1]
         MaxInd = y_data.argmax()
         MinInd = y_data.argmin()
-        FitTwoExpRabi = False
+        FitTwoExpRabi = True
         if MeasurementType == 't2':
             Tpi_guess = np.abs(x_data[MaxInd] - x_data[MinInd])
         else:
@@ -275,8 +275,8 @@ def plotReferencedTSweep(DataPath, RabiFile, BackgroundFolder='', BackgroundFile
             #     (2, np.inf, 1, np.inf, np.pi / 2)
             # )
             bounds = (
-                (- np.inf, 1, - 1e-5, 1, - np.pi / 2, - np.inf, - np.inf),
-                (np.inf, np.inf, 0, np.inf, np.pi / 2, np.inf, np.inf)
+                (- np.inf, 1, - 1, 1, - np.pi / 2, - np.inf, 0.),
+                (np.inf, np.inf, 1, np.inf, np.pi / 2, np.inf, 1)
             )
             # print(guess)
             try:
@@ -501,7 +501,7 @@ if __name__ == '__main__':
     Plus50MHzBackgroundFile = 'one_tone_4.05GHz_to_4.3GHz_-15dBm_4.9mA_10us integration_100Kavg_50KHz step_020419.dat'
     Minus50MHzBackgroundFile = 'one_tone_4.05GHz_to_4.3GHz_-15dBm_4.9mA_10us integration_100Kavg_50KHz step_020419.dat'
     BackgroundFile = 'power spectroscopy_116.hdf5'
-    RabiFile = 't2_ramsey_Drive1_2.hdf5'
+    RabiFile = 'rabi_Drive1_14.hdf5'
     IQModFreq = 0.05
     CircleCorrection = False
     CorrectionParam = [1.1, 0.044, 0.737, 0.037]

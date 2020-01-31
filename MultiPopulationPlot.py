@@ -41,14 +41,23 @@ def plotMultiPopulationTSweep(DataPath, RabiFile, BackgroundFolder='', Backgroun
             Minus50MHzBackComplex = Plus50MHzBackComplex
 
     # read data file
+    InterleavedMeasurement = False
+    if 'interleaved' in RabiFile.split('_'):
+        InterleavedMeasurement = True
     ReadoutPower = edf.readReadoutPowerLabber(DataPath + RabiFile)
     ReadoutFreq = edf.readReadoutFreqLabber(DataPath + RabiFile)
     if RabiFile.startswith('transient'):
         MeasurementType = 'transient no ref'
-        [Time, Complex] = edf.readMultiRabiLabber(DataPath + RabiFile)
+        if InterleavedMeasurement:
+            [Time, Complex] = edf.readMultiRabiInterleavedLabber(DataPath + RabiFile)
+        else:
+            [Time, Complex] = edf.readMultiRabiLabber(DataPath + RabiFile)
     elif RabiFile.startswith('t1'):
         MeasurementType = 't1 no ref'
-        [Time, Complex] = edf.readMultiT1Labber(DataPath + RabiFile)
+        if InterleavedMeasurement:
+            [Time, Complex] = edf.readMultiT1InterleavedLabber(DataPath + RabiFile)
+        else:
+            [Time, Complex] = edf.readMultiT1Labber(DataPath + RabiFile)
 
     if LimitTimeRange:
         TimeInd = (EndTime >= Time) == (Time >= StartTime)
@@ -77,6 +86,7 @@ def plotMultiPopulationTSweep(DataPath, RabiFile, BackgroundFolder='', Backgroun
 
     x_data = np.array(Time, dtype='float64')
     num_curve = RComplex.shape[1]
+    # print(num_curve)
     for i in range(num_curve):
         y_data = np.array(RComplex[:, i].real, dtype='float64')
         # y_data = np.sum(np.array(RComplex[:, [0, 1, 3]].real, dtype='float64'), axis=1)
@@ -218,15 +228,22 @@ def plotMultiPopulationTSweep(DataPath, RabiFile, BackgroundFolder='', Backgroun
         CorrectP2 = False
         CorrectP1 = False
         PlotErrBar = False
-        if CorrectP2 and num_curve == 4:
-            P2PiPulse = 108
+        if CorrectP2 and num_curve > 2:
+            P2PiPulse = 189
             # P2RabiT1 = 604
             P2RabiT1 = 1080
             k = np.exp(- P2PiPulse / P2RabiT1)
-            P0 = np.mean(Population[:, [0, 2]], axis=1)
-            P2 = Population[:, 3]
+            if num_curve == 3:
+                P0 = Population[:, 0]
+                P2 = Population[:, 2]
+                Population[:, 2] = 2 / (k + 1) * (P2 + (k - 1) / 2 * P0)
+
+            else:
+                P0 = np.mean(Population[:, [0, 2]], axis=1)
+                P2 = Population[:, 3]
+                Population[:, 3] = 2 / (k + 1) * (P2 + (k - 1) / 2 * P0)
+
             print(P2[0])
-            Population[:, 3] = 2 / (k + 1) * (P2 + (k - 1) / 2 * P0)
             print(P2[0])
             # print(Population[:, 3][0])
 
@@ -242,10 +259,15 @@ def plotMultiPopulationTSweep(DataPath, RabiFile, BackgroundFolder='', Backgroun
             print(P1[0])
             # print(Population[:, 3][0])
 
-        if num_curve == 4:
-            P0 = np.mean(Population[:, [0, 2]], axis=1)
-            P1 = Population[:, 1]
-            P2 = Population[:, 3]
+        if num_curve > 2:
+            if num_curve == 3:
+                P0 = Population[:, 0]
+                P1 = Population[:, 1]
+                P2 = Population[:, 2]
+            else:
+                P0 = np.mean(Population[:, [0, 2]], axis=1)
+                P1 = Population[:, 1]
+                P2 = Population[:, 3]
             P_sum = P0 + P1 + P2
             P01 = P0 + P1
             print('std:', [P0.std(), P1.std(), P2.std(), P_sum.std(), P01.std()])
@@ -379,13 +401,13 @@ def plotMultiPopulationTSweep(DataPath, RabiFile, BackgroundFolder='', Backgroun
 
 if __name__ == '__main__':
     DataFolderName = '11112019_back to waveguide'
-    DataPath = 'C:/SC Lab\\Labber\\' + DataFolderName + '/2020/01\Data_0128\\'
+    DataPath = 'C:/SC Lab\\Labber\\' + DataFolderName + '/2020/01\Data_0130\\'
     BackgroundFolder = 'C:\SC Lab\Projects\Fluxonium\data_process/ziggy4/'
     BackgroundFile = []
     Plus50MHzBackgroundFile = 'one_tone_4.05GHz_to_4.3GHz_-15dBm_4.9mA_10us integration_100Kavg_50KHz step_020419.dat'
     Minus50MHzBackgroundFile = 'one_tone_4.05GHz_to_4.3GHz_-15dBm_4.9mA_10us integration_100Kavg_50KHz step_020419.dat'
     BackgroundFile = 'power spectroscopy_116.hdf5'
-    RabiFile = 't1_P2_P1_34.hdf5'
+    RabiFile = 't1_P2_P1_interleaved_4.hdf5'
     IQModFreq = 0.05
     CircleCorrection = False
     CorrectionParam = [1, 0.044, 0.737, 0.037]

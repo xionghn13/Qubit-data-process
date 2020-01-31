@@ -279,6 +279,24 @@ def readMultiRabiLabber(file):
 
     return [rabi_time, rabi_complex]
 
+def readMultiRabiInterleavedLabber(file):
+    # for Labber data
+    LogData = Labber.LogFile(file)
+    Entries = LogData.getEntry()
+    ATS_var = 'Alazar - Channel A - Average buffer demodulated values'
+    Time_var = 'Pulse Generator - Width #1'
+    if Time_var not in Entries:
+        Time_var = 'Pulse Generator - Plateau #1'
+    if ATS_var not in Entries:
+        ATS_var = 'Alazar - Channel A - Average demodulated value'
+    rabi_complex = np.conj((LogData.getData(ATS_var)))
+    rabi_time = np.unique(LogData.getData(Time_var)) * 1e9
+    if np.unique(rabi_time).__len__() == 1:
+        Time_var = 'Pulse Generator - Plateau #1'
+        rabi_time = np.unique(LogData.getData(Time_var)) * 1e9
+
+    return [rabi_time, rabi_complex]
+
 
 def readRepeatedRabiSweepLabber(file):
     # for Labber data
@@ -402,10 +420,22 @@ def readMultiT1Labber(file):
     if ATS_var not in Entries:
         ATS_var = 'Alazar - Channel A - Average demodulated value'
     t1_complex = np.conj(np.transpose(LogData.getData(ATS_var)))[:, :]
-    t1_time = np.transpose(LogData.getData(Time_var))[:, 0] * 1e9
+    t1_time = np.unique(LogData.getData(Time_var)) * 1e9
 
     return [t1_time, t1_complex]
 
+def readMultiT1InterleavedLabber(file):
+    # for Labber data
+    ATS_var = 'Alazar - Channel A - Average buffer demodulated values'
+    Time_var = 'Pulse Generator - Readout delay'
+    LogData = Labber.LogFile(file)
+    Entries = LogData.getEntry()
+    if ATS_var not in Entries:
+        ATS_var = 'Alazar - Channel A - Average demodulated value'
+    t1_complex = np.conj((LogData.getData(ATS_var)))
+    t1_time = np.unique(LogData.getData(Time_var)) * 1e9
+
+    return [t1_time, t1_complex]
 
 def readIntegratedT1Labber(file):
     # for Labber data
