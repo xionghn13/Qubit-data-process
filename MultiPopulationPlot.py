@@ -41,9 +41,8 @@ def plotMultiPopulationTSweep(DataPath, RabiFile, BackgroundFolder='', Backgroun
             Minus50MHzBackComplex = Plus50MHzBackComplex
 
     # read data file
-    InterleavedMeasurement = False
-    if 'interleaved' in RabiFile.split('_'):
-        InterleavedMeasurement = True
+    InterleavedMeasurement = 'interleaved' in RabiFile.split('_')
+    ContrastMeasurement = 'contrast' in RabiFile.split('_')
     ReadoutPower = edf.readReadoutPowerLabber(DataPath + RabiFile)
     ReadoutFreq = edf.readReadoutFreqLabber(DataPath + RabiFile)
     if RabiFile.startswith('transient'):
@@ -58,14 +57,18 @@ def plotMultiPopulationTSweep(DataPath, RabiFile, BackgroundFolder='', Backgroun
             [Time, Complex] = edf.readMultiT1InterleavedLabber(DataPath + RabiFile)
         else:
             [Time, Complex] = edf.readMultiT1Labber(DataPath + RabiFile)
-
+    if ContrastMeasurement:
+        num_t = Complex.shape[0] // 3
+        Complex = np.concatenate((Complex[:, 0].reshape((num_t, 3)), Complex[:, 1].reshape((num_t, 3))), axis=1)
     if LimitTimeRange:
         TimeInd = (EndTime >= Time) == (Time >= StartTime)
         Time = Time[TimeInd]
         if len(Complex.shape) == 1:
             Complex = Complex[TimeInd]
-        else:
+        elif len(Complex.shape) == 2:
             Complex = Complex[TimeInd, :]
+        elif len(Complex.shape) == 3:
+            Complex = Complex[TimeInd, :, :]
 
     if MeasurementType in ('transient no ref', 't1 no ref'):
         ComplexNormalized = Complex * 10 ** (- ReadoutPower / 20)
@@ -83,7 +86,20 @@ def plotMultiPopulationTSweep(DataPath, RabiFile, BackgroundFolder='', Backgroun
             RComplex /= (amp_cor_re_fit + amp_cor_im_fit * 1j)
             RComplex = (RComplex - 1) / (P0_fit + P0_im_fit * 1j) * np.abs(
                 P0_fit + P0_im_fit * 1j) + 1
+    if ContrastMeasurement:
+        PlotMultiPopulation(Time, RComplex[:, :3], MeasurementType)
+        PlotMultiPopulation(Time, RComplex[:, 3:], MeasurementType)
+    else:
+        PlotMultiPopulation(Time, RComplex, MeasurementType)
 
+    if ShowFig:
+        plt.show()
+    else:
+        plt.close('all')
+
+    return {'opt': opt, 'cov': cov, 'ParamList': ParamList}
+
+def PlotMultiPopulation(Time, RComplex, MeasurementType):
     x_data = np.array(Time, dtype='float64')
     num_curve = RComplex.shape[1]
     # print(num_curve)
@@ -226,17 +242,24 @@ def plotMultiPopulationTSweep(DataPath, RabiFile, BackgroundFolder='', Backgroun
 
         Population = (PopulationConversionConst[0] - RComplex.real) * PopulationConversionConst[1]
         CorrectP2 = False
+        CorrectTwoExpRabi = True
         CorrectP1 = False
         PlotErrBar = False
         if CorrectP2 and num_curve > 2:
-            P2PiPulse = 189
+            P2PiPulse = 196
             # P2RabiT1 = 604
-            P2RabiT1 = 1080
+            P2RabiT1 = 831
             k = np.exp(- P2PiPulse / P2RabiT1)
             if num_curve == 3:
                 P0 = Population[:, 0]
                 P2 = Population[:, 2]
-                Population[:, 2] = 2 / (k + 1) * (P2 + (k - 1) / 2 * P0)
+                if CorrectTwoExpRabi:
+                    P2RabiTout = 1860
+                    C = 0
+                    k2 = np.exp(- P2PiPulse / P2RabiTout)
+                    Population[:, 2] = 2 / (k + k2) * (P2 + (k - k2) / 2 * P0 + C * (k2 - 1))
+                else:
+                    Population[:, 2] = 2 / (k + 1) * (P2 + (k - 1) / 2 * P0)
 
             else:
                 P0 = np.mean(Population[:, [0, 2]], axis=1)
@@ -391,23 +414,18 @@ def plotMultiPopulationTSweep(DataPath, RabiFile, BackgroundFolder='', Backgroun
             if LogScale:
                 ax.set_yscale('log')
 
-    if ShowFig:
-        plt.show()
-    else:
-        plt.close('all')
-
-    return {'opt': opt, 'cov': cov, 'ParamList': ParamList}
 
 
 if __name__ == '__main__':
     DataFolderName = '11112019_back to waveguide'
-    DataPath = 'C:/SC Lab\\Labber\\' + DataFolderName + '/2020/01\Data_0130\\'
+    DataPath = 'C:/SC Lab\\Labber\\' + DataFolderName + '/2020/02\Data_0204\\'
+    # DataPath = 'C:/SC Lab\\Labber\\' + DataFolderName + '/2020/01\Data_0131\\'
     BackgroundFolder = 'C:\SC Lab\Projects\Fluxonium\data_process/ziggy4/'
     BackgroundFile = []
     Plus50MHzBackgroundFile = 'one_tone_4.05GHz_to_4.3GHz_-15dBm_4.9mA_10us integration_100Kavg_50KHz step_020419.dat'
     Minus50MHzBackgroundFile = 'one_tone_4.05GHz_to_4.3GHz_-15dBm_4.9mA_10us integration_100Kavg_50KHz step_020419.dat'
     BackgroundFile = 'power spectroscopy_116.hdf5'
-    RabiFile = 't1_P2_P1_interleaved_4.hdf5'
+    RabiFile = 't1_P2_P1_interleaved_contrast_2.hdf5'
     IQModFreq = 0.05
     CircleCorrection = False
     CorrectionParam = [1, 0.044, 0.737, 0.037]
@@ -425,7 +443,7 @@ if __name__ == '__main__':
     StartTime = 0.5e3
     EndTime = 40e3
     # PopulationConversionConst = [1., 1. / 0.9234825050081049]
-    PopulationConversionConst = [1., 1.0313730525455056]
+    PopulationConversionConst = [1., 0.9644806897533738]
 
     FitDict = plotMultiPopulationTSweep(DataPath, RabiFile, BackgroundFolder=BackgroundFolder,
                                         BackgroundFile=BackgroundFile,

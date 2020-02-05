@@ -150,14 +150,16 @@ f.close()
 
 # figure 4
 
-BackgroundFile = 'power spectroscopy_105.hdf5'
+# BackgroundFile = 'power spectroscopy_105.hdf5'
+BackgroundFile = 'power spectroscopy_116.hdf5'
 RabiFileList = [
     # 'transient_9.hdf5',
     # 'transient_36.hdf5',
     # 'transient_27.hdf5',
     # 'transient_28.hdf5',
     # 'transient_29.hdf5',
-    'transient_32.hdf5',
+    # 'transient_32.hdf5',
+    'transient_40.hdf5',
 ]
 
 PopulationConversionConst = [1, 0.973600492844838]
@@ -199,7 +201,7 @@ for i, RabiFile in enumerate(RabiFileList):
         TimeList.append(list(Time))
         y_dataList.append(list((PopulationConversionConst[0] - RComplex[:, j].real) * PopulationConversionConst[1]))
 
-f = h5py.File(DataPath + 'transient_data.hdf5', 'w')
+f = h5py.File(DataPath + 'transient_data_0203.hdf5', 'w')
 # timeset0 = f.create_dataset('time0', data=TimeList[:1])
 # Yset0 = f.create_dataset('y0', data=y_dataList[:1])
 timeset = f.create_dataset('time', data=TimeList)
@@ -208,35 +210,41 @@ Pset = f.create_dataset('power', data=DrivePowerArray)
 f.close()
 
 # population measurement
-BackgroundFile = 'power spectroscopy_105.hdf5'
+# BackgroundFile = 'power spectroscopy_105.hdf5'
+BackgroundFile = 'power spectroscopy_116.hdf5'
+
 RabiFileList = [
-    'transient_P2_P1_24.hdf5',
-    'transient_P2_P1_26.hdf5',
-    'transient_P2_P1_31.hdf5',
-    't1_P2_P1_23.hdf5',
-    't1_P2_P1_30.hdf5',
+    # 'transient_P2_P1_24.hdf5',
+    # 'transient_P2_P1_26.hdf5',
+    # 'transient_P2_P1_31.hdf5',
+    # 't1_P2_P1_23.hdf5',
+    # 't1_P2_P1_30.hdf5',
+    't1_P2_P1_interleaved_5.hdf5',
 ]
 OutFileList = [
-    'optimal_power_transient_population.hdf5',
-    'high_power_transient_population.hdf5',
-    'low_power_transient_population.hdf5',
-    '02_pi_pulse_decay.hdf5',
-    '02_pi_pulse_decay_0122.hdf5',
+    # 'optimal_power_transient_population.hdf5',
+    # 'high_power_transient_population.hdf5',
+    # 'low_power_transient_population.hdf5',
+    # '02_pi_pulse_decay.hdf5',
+    # '02_pi_pulse_decay_0122.hdf5',
+    '02_pi_pulse_decay_interleaved.hdf5',
 
 ]
 PopulationConversionConstList = [
-    [1., 1 / 1.0789138211341804],
-    [1., 1 / 1.0282720690126486],
-    [1., 1. / 1.0621686624421236],
-    [1, 1. / 0.9761871987220584],
-    [1., 1. / 0.8694655525612803],
+    # [1., 1 / 1.0789138211341804],
+    # [1., 1 / 1.0282720690126486],
+    # [1., 1. / 1.0621686624421236],
+    # [1, 1. / 0.9761871987220584],
+    # [1., 1. / 0.8694655525612803],
+    [1., 0.990518111679814]
 ]
 P2CorrectionList = [
-    [108, 604],
-    [108, 604],
-    [108, 604],
-    [108, 604],
-    [108, 674],
+    # [108, 604],
+    # [108, 604],
+    # [108, 604],
+    # [108, 604],
+    # [108, 674],
+    [0, 674],
 ]
 [BackFreq, BackComplex] = edf.readFSweepLabber(DataPath + BackgroundFile)
 BackPower = edf.readReadoutPowerLabber(DataPath + BackgroundFile)
@@ -247,26 +255,56 @@ for i in range(len(RabiFileList)):
     ReadoutPower = edf.readReadoutPowerLabber(DataPath + RabiFile)
     ReadoutFreq = edf.readReadoutFreqLabber(DataPath + RabiFile)
     TransientPower = edf.readDrive1PowerLabber(DataPath + RabiFile)
+    InterleavedMeasurement = 'interleaved' in RabiFile.split('_')
     if RabiFile.startswith('transient'):
-        [Time, Complex] = edf.readMultiRabiLabber(DataPath + RabiFile)
+        if InterleavedMeasurement:
+            [Time, Complex] = edf.readMultiRabiInterleavedLabber(DataPath + RabiFile)
+        else:
+            [Time, Complex] = edf.readMultiRabiLabber(DataPath + RabiFile)
     else:
-        [Time, Complex] = edf.readMultiT1Labber(DataPath + RabiFile)
+        if InterleavedMeasurement:
+            [Time, Complex] = edf.readMultiT1InterleavedLabber(DataPath + RabiFile)
+        else:
+            [Time, Complex] = edf.readMultiT1Labber(DataPath + RabiFile)
     ComplexNormalized = Complex * 10 ** (- ReadoutPower / 20)
     RComplex = sbf.FPSweepBackgroundCalibrate(ReadoutFreq, ReadoutPower, Complex, BackFreq, BackComplex, BackPower)
     num_curve = RComplex.shape[1]
     Population = (PopulationConversionConst[0] - RComplex.real) * PopulationConversionConst[1]
-    CorrectP2 = True
+    CorrectP2 = False
+    CorrectTwoExpRabi = True
     if CorrectP2:
         P2PiPulse = P2CorrectionList[i][0]
         P2RabiT1 = P2CorrectionList[i][1]
-        k = np.exp(- P2PiPulse / P2RabiT1)
-        P0 = np.mean(Population[:, [0, 2]], axis=1)
-        P2 = Population[:, 3]
-        Population[:, 3] = 2 / (k + 1) * (P2 + (k - 1) / 2 * P0)
+        if CorrectP2 and num_curve > 2:
+            P2PiPulse = 190
+            # P2RabiT1 = 604
+            P2RabiT1 = 1030
+            k = np.exp(- P2PiPulse / P2RabiT1)
+            if num_curve == 3:
+                P0 = Population[:, 0]
+                P2 = Population[:, 2]
+                if CorrectTwoExpRabi:
+                    P2RabiTout = 1860
+                    C = 0
+                    k2 = np.exp(- P2PiPulse / P2RabiTout)
+                    Population[:, 2] = 2 / (k + k2) * (P2 + (k - k2) / 2 * P0 + C * (k2 - 1))
+                else:
+                    Population[:, 2] = 2 / (k + 1) * (P2 + (k - 1) / 2 * P0)
 
-    P0 = np.mean(Population[:, [0, 2]], axis=1)
-    P1 = Population[:, 1]
-    P2 = Population[:, 3]
+            else:
+                P0 = np.mean(Population[:, [0, 2]], axis=1)
+                P2 = Population[:, 3]
+                Population[:, 3] = 2 / (k + 1) * (P2 + (k - 1) / 2 * P0)
+
+    if num_curve > 2:
+        if num_curve == 3:
+            P0 = Population[:, 0]
+            P1 = Population[:, 1]
+            P2 = Population[:, 2]
+        else:
+            P0 = np.mean(Population[:, [0, 2]], axis=1)
+            P1 = Population[:, 1]
+            P2 = Population[:, 3]
     PList = [P0, P1, P2]
 
     f = h5py.File(DataPath + OutFileList[i], 'w')
