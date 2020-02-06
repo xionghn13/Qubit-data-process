@@ -1,6 +1,6 @@
 import numpy as np
-import sys
-sys.path.append('C:\Program Files (x86)\Labber\Script')
+# import sys
+# sys.path.append('C:\Program Files (x86)\Labber\Script')
 import Labber
 from matplotlib import pyplot as plt
 from qutip import*
@@ -21,7 +21,7 @@ kB = 1.38e-23
 h = 6.626e-34
 ############################################################
 #Vary heralding wait time
-f = Labber.LogFile('Z:\Projects\Fluxonium\Data\Augustus 18\\2020\\01\Data_0115\Rabi_heralded_IQRF_CZlower_3.hdf5')
+f = Labber.LogFile('Z:\Projects\Fluxonium\Data\Augustus 18\\2020\\02\Data_0204\Rabi_heralded_AWG_qubitA.hdf5')
 # d = f.getEntry(0)
 # for (channel, value) in d.items():
 #     print(channel, ":", value)
