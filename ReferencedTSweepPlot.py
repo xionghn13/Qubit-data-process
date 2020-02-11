@@ -416,7 +416,7 @@ def plotReferencedTSweep(DataPath, RabiFile, BackgroundFolder='', BackgroundFile
                                   TR_fit / 1000, TR_std / 1000, A_fit, B_fit, Tqp_fit / 1000, Tqp_std / 1000, lamb_fit,
                                   lamb_std))
                 else:
-                    plt.plot(Time, y_guess, ':')
+                    # plt.plot(Time, y_guess, ':')
                     plt.title('T1=%.3G$\pm$%.2Gus, A=%.3G, B=%.3G' % (
                         T1_fit / 1000, T1_std / 1000, A_fit, B_fit))
             elif MeasurementType in ('transient', 'transient no ref'):
@@ -492,7 +492,7 @@ def plotReferencedTSweep(DataPath, RabiFile, BackgroundFolder='', BackgroundFile
 
 if __name__ == '__main__':
     DataFolderName = '11112019_back to waveguide'
-    DataPath = 'C:/SC Lab\\Labber\\' + DataFolderName + '/2020/02\Data_0202\\'
+    DataPath = 'C:/SC Lab\\Labber\\' + DataFolderName + '/2020/02\Data_0207\\'
     # DataPath = 'C:/SC Lab\\Labber\\' + DataFolderName + '/2019/11\Data_1123\\'
     BackgroundFolder = 'C:\SC Lab\Projects\Fluxonium\data_process/ziggy4/'
     BackgroundFile = []
@@ -501,7 +501,7 @@ if __name__ == '__main__':
     Plus50MHzBackgroundFile = 'one_tone_4.05GHz_to_4.3GHz_-15dBm_4.9mA_10us integration_100Kavg_50KHz step_020419.dat'
     Minus50MHzBackgroundFile = 'one_tone_4.05GHz_to_4.3GHz_-15dBm_4.9mA_10us integration_100Kavg_50KHz step_020419.dat'
     BackgroundFile = 'power spectroscopy_116.hdf5'
-    RabiFile = 'rabi_Drive1_15.hdf5'
+    RabiFile = 't1_9.hdf5'
     IQModFreq = 0.05
     CircleCorrection = False
     CorrectionParam = [1.1, 0.044, 0.737, 0.037]
@@ -515,8 +515,8 @@ if __name__ == '__main__':
     LogScale = False
     SaveFig = False
     ShowFig = True
-    StartTime = 0
-    EndTime = 30e3
+    StartTime = 10e3
+    EndTime = 300e3
     PopulationConversionConst = [1, 1. / 1]
     FitDict = plotReferencedTSweep(DataPath, RabiFile, BackgroundFolder=BackgroundFolder, BackgroundFile=BackgroundFile,
                                    Plus50MHzBackgroundFile=Plus50MHzBackgroundFile,

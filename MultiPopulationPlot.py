@@ -243,7 +243,7 @@ def PlotMultiPopulation(Time, RComplex, MeasurementType):
         Population = (PopulationConversionConst[0] - RComplex.real) * PopulationConversionConst[1]
         CorrectP2 = False
         CorrectTwoExpRabi = True
-        CorrectP1 = False
+        CorrectP1 = True
         PlotErrBar = False
         if CorrectP2 and num_curve > 2:
             P2PiPulse = 196
@@ -273,7 +273,7 @@ def PlotMultiPopulation(Time, RComplex, MeasurementType):
         if CorrectP1:
             P2PiPulse = 86
             # P2RabiT1 = 604
-            P2RabiT1 = 9360
+            P2RabiT1 = 2570
             k = np.exp(- P2PiPulse / P2RabiT1)
             P0 = np.mean(Population[:, [0, 2]], axis=1)
             P1 = Population[:, 1]
@@ -343,17 +343,26 @@ def PlotMultiPopulation(Time, RComplex, MeasurementType):
             plt.tick_params(axis='both', which='major', labelsize='x-large')
             plt.tight_layout()
 
-        if num_curve == 4:
+        if num_curve > 2:
             plot_level = 'P0'
 
             if plot_level == 'P0':
-                plot_ind = [0, 2]
+                if num_curve == 4:
+                    plot_ind = [0, 2]
+                else:
+                    plot_ind = [0]
             elif plot_level == 'P1':
                 plot_ind = [1]
             elif plot_level == 'P2':
-                plot_ind = [3]
+                if num_curve == 4:
+                    plot_ind = [3]
+                else:
+                    plot_ind = [2]
             elif plot_level == 'P_sum':
-                plot_ind = [0, 1, 3]
+                if num_curve == 4:
+                    plot_ind = [0, 1, 3]
+                else:
+                    plot_ind = [0, 1, 2]
             P_plot = (PopulationConversionConst[0] - np.mean(np.array(RComplexList).transpose()[:, plot_ind].real,
                                                              axis=1)) * PopulationConversionConst[1]
             fit_plot = (PopulationConversionConst[0] - np.mean(np.array(FitRList).transpose()[:, plot_ind], axis=1)) * \
@@ -418,14 +427,14 @@ def PlotMultiPopulation(Time, RComplex, MeasurementType):
 
 if __name__ == '__main__':
     DataFolderName = '11112019_back to waveguide'
-    DataPath = 'C:/SC Lab\\Labber\\' + DataFolderName + '/2020/02\Data_0204\\'
-    # DataPath = 'C:/SC Lab\\Labber\\' + DataFolderName + '/2020/01\Data_0131\\'
+    DataPath = 'C:/SC Lab\\Labber\\' + DataFolderName + '/2020/02\Data_0211\\'
+    # DataPath = 'C:/SC Lab\\Labber\\' + DataFolderName + '/2020/01\Data_0130\\'
     BackgroundFolder = 'C:\SC Lab\Projects\Fluxonium\data_process/ziggy4/'
     BackgroundFile = []
     Plus50MHzBackgroundFile = 'one_tone_4.05GHz_to_4.3GHz_-15dBm_4.9mA_10us integration_100Kavg_50KHz step_020419.dat'
     Minus50MHzBackgroundFile = 'one_tone_4.05GHz_to_4.3GHz_-15dBm_4.9mA_10us integration_100Kavg_50KHz step_020419.dat'
     BackgroundFile = 'power spectroscopy_116.hdf5'
-    RabiFile = 't1_P2_P1_interleaved_contrast_2.hdf5'
+    RabiFile = 'transient_P2_P1_interleaved_2020-02-11-06-48-32.hdf5'
     IQModFreq = 0.05
     CircleCorrection = False
     CorrectionParam = [1, 0.044, 0.737, 0.037]
@@ -443,7 +452,7 @@ if __name__ == '__main__':
     StartTime = 0.5e3
     EndTime = 40e3
     # PopulationConversionConst = [1., 1. / 0.9234825050081049]
-    PopulationConversionConst = [1., 0.9644806897533738]
+    PopulationConversionConst = [1., 0.9684277144489823]
 
     FitDict = plotMultiPopulationTSweep(DataPath, RabiFile, BackgroundFolder=BackgroundFolder,
                                         BackgroundFile=BackgroundFile,

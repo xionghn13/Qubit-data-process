@@ -12,9 +12,9 @@ DataPath = 'C:\SC Lab\Projects\Fluxonium\data_process/ziggy4/'
 # BackgroundFile = 'power spectroscopy_76.hdf5'
 # OneToneFile = 'power spectroscopy_82.hdf5'
 BackgroundFile = 'power spectroscopy_116.hdf5'
-OneToneFile = 'power spectroscopy_120.hdf5'
-# BackgroundFile = 'power spectroscopy_65.hdf5'
-# OneToneFile = 'power spectroscopy_66.hdf5'
+OneToneFile = 'power spectroscopy_125.hdf5'
+# BackgroundFile = 'power spectroscopy_76.hdf5'
+# OneToneFile = 'power spectroscopy_77.hdf5'
 
 Calibration = True
 UseOneToneRange = True
@@ -40,8 +40,11 @@ amp_cor_re_guess = 1
 P0_im_guess = 0.
 
 bounds = (
-    [1, 1.693e-3 - 1e-12, 0.75768 - 1e-9, 1e2, 1 - 1e-9, -1e-9, -1e-9],
+    [1, 1.693e-4 - 1e-12, 0.75768 - 1e-9, 1e2, 1 - 1e-9, -1e-9, -1e-9],
     [20, 1.693e-2 + 1e-12, 0.75768 + 1e-9, np.inf, 1 + 1e-9, 1e-9, 1e-9])  # f0, gamma_f, P0, A, amp_cor_re, amp_cor_im, P0_im
+# bounds = (
+#     [1, 1.693e-4 - 1e-12, 0.1, 1e2, 1 - 1e-9, -1e-9, -1e-9],
+#     [20, 1.693e-2 + 1e-12, 1, np.inf, 1 + 1e-9, 1e-9, 1e-9])  # f0, gamma_f, P0, A, amp_cor_re, amp_cor_im, P0_im
 ########################################################################################################################
 NotUsePowerSpectroscopyCalibrate = BackgroundFile.startswith('one_tone') or BackgroundFile.startswith('calibration')
 if OneToneFile.endswith('.dat'):

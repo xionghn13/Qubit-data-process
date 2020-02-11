@@ -792,14 +792,14 @@ def plotLabberRepeatedTSweepPlot(DataPath, RabiFileList, BackgroundFolder='', Ba
 
 if __name__ == '__main__':
     # DataPath = 'E:/Projects\Fluxonium\data_process/Fluxonium042619/'
-    DataFolderName = '11112019_back to waveguide'
+    DataFolderName = '10092019_wg5 in 8.5GHz cavity (add coax atts, eccosorb ...)'
     # DataFolderName = 'Data'
-    DataPath = 'C:/SC Lab\\Labber\\' + DataFolderName + '/2020/01\Data_0111\\'
+    DataPath = 'C:/SC Lab\\Labber\\labber_data\\' + DataFolderName + '/2019/10\Data_1014\\'
     # DataPath = 'Z:\Projects\Transmon_Palmer\\2019\\10\Data_1017\\'
     BackgroundFolder = 'C:\SC Lab\Projects\Fluxonium\data_process/ziggy4/'
     BackgroundFile = 'power spectroscopy_105.hdf5'
     RabiFileList = [
-        't1_t2_interleaved_12.hdf5',
+        't1_ramsey_echo_interleaved_2019-10-14-14-53-39_7.hdf5',
     ]
 
     IQModFreq = 0.05
@@ -807,7 +807,7 @@ if __name__ == '__main__':
     Gamma_r = 2.5 * np.pi * 2
     FitCorrectedR = False
     LogScale = False
-    Calibration = True
+    Calibration = False
     RotateComplex = False
     FitDoubleExponential = False
     PlotNumber = 2  # fit plot

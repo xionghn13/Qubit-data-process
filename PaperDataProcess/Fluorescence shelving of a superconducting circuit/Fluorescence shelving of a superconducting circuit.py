@@ -5,7 +5,9 @@ from QubitDataProcessPackages import *
 DataPath = 'C:\SC Lab\GitHubRepositories\Qubit-data-process\PaperDataProcess\Fluorescence shelving of a superconducting circuit\Fluorescence/'
 # DataPath = 'D:\GitHubRepository\Qubit-data-process\PaperDataProcess\Fluorescence shelving of a superconducting circuit\Fluorescence/'
 BackgroundFile = 'power spectroscopy_116.hdf5'
-OneToneFile = 'power spectroscopy_117.hdf5'
+# OneToneFile = 'power spectroscopy_117.hdf5'
+OneToneFile = 'power spectroscopy_125.hdf5'
+
 
 Calibration = True
 UseOneToneRange = True
@@ -63,7 +65,7 @@ BackComplexNormalizedTrunc = BackComplexNormalized[BackFreqInd]
 RComplexTrunc = RComplex[FreqInd, :]
 RComplexTrunc = RComplexTrunc[:, PowerInd]
 
-f = h5py.File(DataPath + 'circles_data_0125.hdf5', 'w')
+f = h5py.File(DataPath + 'circles_data_0209.hdf5', 'w')
 fset = f.create_dataset('freq', data=OneFreqUniqTrunc)
 pset = f.create_dataset('power', data=OnePowerUniqTrunc)
 r_re_set = f.create_dataset('R_real', data=RComplexTrunc.real)
@@ -152,17 +154,18 @@ f.close()
 
 # BackgroundFile = 'power spectroscopy_105.hdf5'
 BackgroundFile = 'power spectroscopy_116.hdf5'
+BackgroundFile = 'power spectroscopy_76.hdf5'
 RabiFileList = [
-    # 'transient_9.hdf5',
+    'transient_9.hdf5',
     # 'transient_36.hdf5',
     # 'transient_27.hdf5',
     # 'transient_28.hdf5',
     # 'transient_29.hdf5',
     # 'transient_32.hdf5',
-    'transient_40.hdf5',
+    # 'transient_40.hdf5',
 ]
 
-PopulationConversionConst = [1, 0.973600492844838]
+PopulationConversionConst = [1, 1.]
 NumFile = len(RabiFileList)
 
 [BackFreq, BackComplex] = edf.readFSweepLabber(DataPath + BackgroundFile)
@@ -201,7 +204,7 @@ for i, RabiFile in enumerate(RabiFileList):
         TimeList.append(list(Time))
         y_dataList.append(list((PopulationConversionConst[0] - RComplex[:, j].real) * PopulationConversionConst[1]))
 
-f = h5py.File(DataPath + 'transient_data_0203.hdf5', 'w')
+f = h5py.File(DataPath + 'transient_data_final.hdf5', 'w')
 # timeset0 = f.create_dataset('time0', data=TimeList[:1])
 # Yset0 = f.create_dataset('y0', data=y_dataList[:1])
 timeset = f.create_dataset('time', data=TimeList)
@@ -219,7 +222,14 @@ RabiFileList = [
     # 'transient_P2_P1_31.hdf5',
     # 't1_P2_P1_23.hdf5',
     # 't1_P2_P1_30.hdf5',
-    't1_P2_P1_interleaved_5.hdf5',
+    # 't1_P2_P1_interleaved_5.hdf5',
+    # 'transient_P2_P1_interleaved_7.hdf5',
+    # 'transient_P2_P1_interleaved_8.hdf5',
+    # 'transient_P2_P1_interleaved_2020-02-07-21-39-28.hdf5',
+    # 't1_P2_P1_interleaved_2020-02-08-02-41-26.hdf5',
+    'transient_P2_P1_interleaved_2020-02-10-09-40-10.hdf5',
+    't1_P2_P1_interleaved_2020-02-10-04-07-55.hdf5',
+
 ]
 OutFileList = [
     # 'optimal_power_transient_population.hdf5',
@@ -227,7 +237,13 @@ OutFileList = [
     # 'low_power_transient_population.hdf5',
     # '02_pi_pulse_decay.hdf5',
     # '02_pi_pulse_decay_0122.hdf5',
-    '02_pi_pulse_decay_interleaved.hdf5',
+    # '02_pi_pulse_decay_interleaved.hdf5',
+    # 'transient_P2_P1_interleaved.hdf5',
+    # 'transient_P2_P1_interleaved_more_points.hdf5',
+    # 'transient_population_2020-02-07-21-39-28.hdf5',
+    # 't1_population_2020-02-08-02-41-26.hdf5',
+    'transient_population_2020-02-10-09-40-10.hdf5',
+    't1_population_2020-02-10-04-07-55.hdf5',
 
 ]
 PopulationConversionConstList = [
@@ -236,7 +252,14 @@ PopulationConversionConstList = [
     # [1., 1. / 1.0621686624421236],
     # [1, 1. / 0.9761871987220584],
     # [1., 1. / 0.8694655525612803],
-    [1., 0.990518111679814]
+    # [1., 0.990518111679814],
+    # [1., 0.9680912467700123],
+    # [1., 0.9680912467700123],
+    # [1., 0.9507761023676382],
+    # [1., 0.9507761023676382],
+    [1., 0.9684277144489823],
+    [1., 0.9684277144489823],
+
 ]
 P2CorrectionList = [
     # [108, 604],
@@ -244,6 +267,12 @@ P2CorrectionList = [
     # [108, 604],
     # [108, 604],
     # [108, 674],
+    # [0, 674],
+    # [0, 674],
+    # [0, 674],
+    # [0, 674],
+    # [0, 674],
+    [0, 674],
     [0, 674],
 ]
 [BackFreq, BackComplex] = edf.readFSweepLabber(DataPath + BackgroundFile)

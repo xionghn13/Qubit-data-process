@@ -257,6 +257,9 @@ def readRabiLabber(file):
         Time_var = 'Pulse Generator - Width #2'
     rabi_complex = np.conj(np.transpose(LogData.getData(ATS_var)))[:, 0]
     rabi_time = np.transpose(LogData.getData(Time_var))[:, 0] * 1e9
+    if np.unique(rabi_time).__len__() == 1:
+        Time_var = 'Pulse Generator - Plateau #1'
+        rabi_time = np.transpose(LogData.getData(Time_var))[:, 0] * 1e9
 
     return [rabi_time, rabi_complex]
 

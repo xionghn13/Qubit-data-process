@@ -237,7 +237,7 @@ h = 6.626e-34
 
 
 ###################################################################################
-f = Labber.LogFile('Z:\Projects\Fluxonium\Data\Augustus 18\\2020\\01\Data_0114\Histogram_correlation_delayTime_sweep.hdf5')
+f = Labber.LogFile('C:\SC Lab\Labber\labber_data\Augustus 18\\2020\\02\Data_0205\Histogram_heralded_sweep_3.hdf5')
 # d = f.getEntry(0)
 # for (channel, value) in d.items():
 #     print(channel, ":", value)

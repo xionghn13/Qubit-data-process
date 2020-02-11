@@ -23,7 +23,7 @@ def Wait(sec, remind_interval=1):
 def RunMeasurement(ConfigName, MeasLabel, ItemDict={},
                    DataFolderName='10092019_wg5 in 8.5GHz cavity (add coax atts, eccosorb ...)'):
     # set path to executable
-    ScriptTools.setExePath('C:\Program Files (x86)\Labber\Program')
+    ScriptTools.setExePath('C:\Program Files\Labber\Program')
 
     TimeNow = datetime.now().strftime('%Y-%m-%d-%H-%M-%S')
     TimeStr = str(TimeNow)

@@ -3,57 +3,60 @@ from qutip import *
 from matplotlib import pyplot as plt
 from scipy.optimize import minimize
 import sys
+
 sys.path.append('C:\Program Files (x86)\Labber\Script')
 import Labber
 
 ##############single qubit tomography##############
-#beta calibration
+# beta calibration
 
-#Gate sequence in Labber is I, X2p, Y2m
-f = Labber.LogFile('C:\Data\Projects\Fluxonium\Data\Augustus 18\\2020\\01\Data_0105\SingleQubit_tomo_qubitB.hdf5')
+# Gate sequence in Labber is I, X2p, Y2m
+f = Labber.LogFile('C:\SC Lab\Labber\labber_data\Augustus 18\\2020\\02\Data_0209\SingleQubit_tomo_qubitB.hdf5')
 signal = f.getData('AlazarTech Signal Demodulator - Channel A - Demodulated values')
-preselected_data = np.zeros(len(signal[:,0]), dtype = complex)
-xmin = 172
-xmax = 340
-ymin = -20
+# print(signal.shape)
+preselected_data = np.zeros(len(signal[:, 0]), dtype=complex)
+xmin = 152
+xmax = 270
+ymin = 22
 ymax = 160
 
-for pulse_idx in range(len(signal[:,0])):
+for pulse_idx in range(len(signal[:, 0])):
     preselected_signal = []
-    herald_signal = signal[pulse_idx, 0::2]*1e6
-    select_signal = signal[pulse_idx, 1::2]*1e6
+    herald_signal = signal[pulse_idx, 0::2] * 1e6
+    select_signal = signal[pulse_idx, 1::2] * 1e6
     for record_idx in range(len(herald_signal)):
-        if (xmin <= np.real(herald_signal[record_idx]) <= xmax) and (ymin <= np.imag(herald_signal[record_idx]) <= ymax):
+        if (xmin <= np.real(herald_signal[record_idx]) <= xmax) and (
+                ymin <= np.imag(herald_signal[record_idx]) <= ymax):
             preselected_signal = np.append(preselected_signal, select_signal[record_idx])
     preselected_data[pulse_idx] = np.average(preselected_signal)
 
 s0 = preselected_data[0]
 sz = preselected_data[6]
-# print (s0,sz)
+print (s0,sz)
 betaI = s0 + sz
 betaZ = s0 - sz
-#Start in ground state
+# Start in ground state
 m = preselected_data[0:3]
 
-measurement_matrix = 0.5*np.array([[0, 0, betaZ], [0, betaZ, 0], [betaZ, 0, 0]])
-avgX, avgY, avgZ = np.linalg.inv(measurement_matrix).dot(m.transpose()-0.5*betaI).transpose()
-rho_reconstructed = 0.5*(qeye(2) + avgX*sigmax() + avgY*sigmay() + avgZ*sigmaz())
+measurement_matrix = 0.5 * np.array([[0, 0, betaZ], [0, betaZ, 0], [betaZ, 0, 0]])
+avgX, avgY, avgZ = np.linalg.inv(measurement_matrix).dot(m.transpose() - 0.5 * betaI).transpose()
+rho_reconstructed = 0.5 * (qeye(2) + avgX * sigmax() + avgY * sigmay() + avgZ * sigmaz())
 matrix_histogram_complex(rho_reconstructed)
 # rho_ideal = ket2dm(basis(2,0))
 # plt.title(fidelity(rho_ideal, rho_reconstructed))
 # matrix_histogram_complex(rho_ideal)
-#Start in excited state
+# Start in excited state
 m = preselected_data[6:9]
-avgX, avgY, avgZ = np.linalg.inv(measurement_matrix).dot(m.transpose()-0.5*betaI).transpose()
-rho_reconstructed = 0.5*(qeye(2) + avgX*sigmax() + avgY*sigmay() + avgZ*sigmaz())
+avgX, avgY, avgZ = np.linalg.inv(measurement_matrix).dot(m.transpose() - 0.5 * betaI).transpose()
+rho_reconstructed = 0.5 * (qeye(2) + avgX * sigmax() + avgY * sigmay() + avgZ * sigmaz())
 matrix_histogram_complex(rho_reconstructed)
 # rho_ideal = ket2dm(basis(2,1))
 # plt.title(fidelity(rho_ideal, rho_reconstructed))
 # matrix_histogram_complex(rho_ideal)
-#Start in superposition state
+# Start in superposition state
 m = preselected_data[9:]
-avgX, avgY, avgZ = np.linalg.inv(measurement_matrix).dot(m.transpose()-0.5*betaI).transpose()
-rho_reconstructed = 0.5*(qeye(2) + avgX*sigmax() + avgY*sigmay() + avgZ*sigmaz())
+avgX, avgY, avgZ = np.linalg.inv(measurement_matrix).dot(m.transpose() - 0.5 * betaI).transpose()
+rho_reconstructed = 0.5 * (qeye(2) + avgX * sigmax() + avgY * sigmay() + avgZ * sigmaz())
 matrix_histogram_complex(rho_reconstructed)
 # rho_ideal = ket2dm(rx(phi=np.pi/2)*basis(2,0))
 # plt.title(fidelity(rho_ideal, rho_reconstructed))
