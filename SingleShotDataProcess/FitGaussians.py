@@ -36,7 +36,7 @@ def multi_gaussian(X, Y, param_mat):
 
 def fitgaussian(X, Y, data, param_mat):
     """Returns the gaussian parameters of a 2D distribution found by a fit"""
-    print(param_mat.shape)
+    # print(param_mat.shape)
     n_gaussian = param_mat.shape[0]
     param = param_mat.ravel()
     def error_func(param):
