@@ -12,7 +12,7 @@ DataPath = 'C:\SC Lab\Projects\Fluxonium\data_process/ziggy4/'
 # BackgroundFile = 'power spectroscopy_76.hdf5'
 # OneToneFile = 'power spectroscopy_82.hdf5'
 BackgroundFile = 'power spectroscopy_116.hdf5'
-OneToneFile = 'power spectroscopy_125.hdf5'
+OneToneFile = 'power spectroscopy_119.hdf5'
 # BackgroundFile = 'power spectroscopy_76.hdf5'
 # OneToneFile = 'power spectroscopy_77.hdf5'
 
@@ -41,7 +41,8 @@ P0_im_guess = 0.
 
 bounds = (
     [1, 1.693e-4 - 1e-12, 0.75768 - 1e-9, 1e2, 1 - 1e-9, -1e-9, -1e-9],
-    [20, 1.693e-2 + 1e-12, 0.75768 + 1e-9, np.inf, 1 + 1e-9, 1e-9, 1e-9])  # f0, gamma_f, P0, A, amp_cor_re, amp_cor_im, P0_im
+    [20, 1.693e-2 + 1e-12, 0.75768 + 1e-9, np.inf, 1 + 1e-9, 1e-9,
+     1e-9])  # f0, gamma_f, P0, A, amp_cor_re, amp_cor_im, P0_im
 # bounds = (
 #     [1, 1.693e-4 - 1e-12, 0.1, 1e2, 1 - 1e-9, -1e-9, -1e-9],
 #     [20, 1.693e-2 + 1e-12, 1, np.inf, 1 + 1e-9, 1e-9, 1e-9])  # f0, gamma_f, P0, A, amp_cor_re, amp_cor_im, P0_im
@@ -202,8 +203,8 @@ if Calibration:
         guess = [f0_guess, gamma_f_guess, P0_guess, A_guess, amp_cor_re_guess, amp_cor_im_guess, P0_im_guess]
         try:
             opt, cov, LargerFreqRange, FittedComplex = qsf.fitReflectionCircles(OneFreqUniqTrunc, OnePowerUniqTrunc,
-                                                                            RComplexTrunc,
-                                                                            guess, bounds)
+                                                                                RComplexTrunc,
+                                                                                guess, bounds)
             f0_fit, gamma_f_fit, P0_fit, A_fit, amp_cor_re_fit, amp_cor_im_fit, P0_im_fit = opt
         except ValueError:
             f0_fit, gamma_f_fit, P0_fit, A_fit, amp_cor_re_fit, amp_cor_im_fit, P0_im_fit = guess
@@ -220,6 +221,8 @@ if Calibration:
             FittedComplex = (FittedComplex - 1) / (P0_fit + P0_im_fit * 1j) * np.abs(P0_fit + P0_im_fit * 1j) + 1
             P0_fit = np.abs(P0_fit + P0_im_fit * 1j)
             P0_im_fit = 0
+
+print('(1+%.5G*1e-3*10**(4.13/10))/2=%.5G' % (A_fit, (1 + A_fit * 1e-3 * 10 ** (4.13 / 10)) / 2))
 ########################################################################################################################
 
 if Calibration:
@@ -237,7 +240,7 @@ if Calibration:
         else:
             plt.plot(LargerFreqRange[:-1], np.real(FittedComplex[:-1, i]), 'r')
     plt.xlim(StartFreq, EndFreq)
-    plt.xlabel('freq/GHz', fontsize='x-large')
+    plt.xlabel('freq(GHz)', fontsize='x-large')
     plt.ylabel('Re(r)', fontsize='x-large')
     plt.legend(leg)
     plt.tick_params(axis='both', which='major', labelsize='x-large')
@@ -261,7 +264,7 @@ if Calibration:
         else:
             plt.plot(LargerFreqRange[:-1], np.imag(FittedComplex[:-1, i]), 'r')
     plt.xlim(StartFreq, EndFreq)
-    plt.xlabel('freq/GHz', fontsize='x-large')
+    plt.xlabel('freq(GHz)', fontsize='x-large')
     plt.ylabel('Im(r)', fontsize='x-large')
     plt.tick_params(axis='both', which='major', labelsize='x-large')
     plt.tight_layout()
@@ -280,7 +283,7 @@ for i in range(NumPowerTrunc):
 if UseOnePowerCalibrate and Calibration:
     plt.plot(BackFreqUniqTrunc, np.imag(BackComplexNormalizedTrunc), '--')
     leg += ('Background ' + BackPowerStr + 'dBm',)
-plt.xlabel('freq/GHz', fontsize='x-large')
+plt.xlabel('freq(GHz)', fontsize='x-large')
 plt.ylabel('imag', fontsize='x-large')
 plt.tick_params(axis='both', which='major', labelsize='x-large')
 plt.tight_layout()
@@ -292,7 +295,7 @@ if not UseOnePowerCalibrate:
     for i in range(NumPowerTrunc):
         plt.plot(BackFreqUniqTrunc, np.abs(BackComplexNormalizedTrunc[:, i]), '--')
         leg += ('Background ' + str(OnePowerUniqTrunc[i]) + 'dBm',)
-    plt.xlabel('freq/GHz', fontsize='x-large')
+    plt.xlabel('freq(GHz)', fontsize='x-large')
     plt.ylabel('Abs', fontsize='x-large')
     plt.tick_params(axis='both', which='major', labelsize='x-large')
     plt.tight_layout()
@@ -318,7 +321,7 @@ if UseOnePowerCalibrate and Calibration:
     phase = phase % (2 * np.pi)
     plt.plot(BackFreqUniqTrunc, phase, '--')
     leg += ('Background ' + BackPowerStr + 'dBm',)
-plt.xlabel('freq/GHz', fontsize='x-large')
+plt.xlabel('freq(GHz)', fontsize='x-large')
 plt.ylabel('Phase', fontsize='x-large')
 plt.tick_params(axis='both', which='major', labelsize='x-large')
 plt.tight_layout()
@@ -334,7 +337,7 @@ plt.legend(leg)
 # if UseOnePowerCalibrate and Calibration:
 #     plt.plot(BackFreqUniqTrunc, np.real(BackComplexNormalizedTrunc), '--')
 #     leg += ('Background ' + BackPowerStr + 'dBm',)
-# plt.xlabel('freq/GHz', fontsize='x-large')
+# plt.xlabel('freq(GHz)', fontsize='x-large')
 # plt.ylabel('Re(r)', fontsize='x-large')
 # plt.tick_params(axis='both', which='major', labelsize='x-large')
 # plt.tight_layout()
@@ -355,7 +358,7 @@ plt.legend(leg)
 #         plt.plot(BackFreqUniqTrunc, BackPhaseNormalizedTrunc - PhaseSlope * (BackFreqUniqTrunc - BackFreqUniqTrunc[0]),
 #                  '--')
 #         leg += ('Background ' + BackPowerStr + 'dBm',)
-#     plt.xlabel('freq/GHz', fontsize='x-large')
+#     plt.xlabel('freq(GHz)', fontsize='x-large')
 #     plt.ylabel('Phase', fontsize='x-large')
 #     plt.tick_params(axis='both', which='major', labelsize='x-large')
 #     plt.tight_layout()
@@ -366,7 +369,7 @@ if Calibration:
         fig, ax = plt.subplots()
         for i in range(NumPowerTrunc):
             plt.plot(BackFreqUniqTrunc, np.abs(BackComplexNormalizedTrunc[:, i]), LineSpec)
-        plt.xlabel('freq/GHz', fontsize='x-large')
+        plt.xlabel('freq(GHz)', fontsize='x-large')
         plt.ylabel('Abs', fontsize='x-large')
         plt.tick_params(axis='both', which='major', labelsize='x-large')
         plt.tight_layout()

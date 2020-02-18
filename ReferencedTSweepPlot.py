@@ -260,7 +260,7 @@ def plotReferencedTSweep(DataPath, RabiFile, BackgroundFolder='', BackgroundFile
         T1_guess = x_data[-1]
         MaxInd = y_data.argmax()
         MinInd = y_data.argmin()
-        FitTwoExpRabi = True
+        FitTwoExpRabi = False
         if MeasurementType == 't2':
             Tpi_guess = np.abs(x_data[MaxInd] - x_data[MinInd])
         else:
@@ -492,7 +492,7 @@ def plotReferencedTSweep(DataPath, RabiFile, BackgroundFolder='', BackgroundFile
 
 if __name__ == '__main__':
     DataFolderName = '11112019_back to waveguide'
-    DataPath = 'C:/SC Lab\\Labber\\' + DataFolderName + '/2020/02\Data_0207\\'
+    DataPath = 'C:/SC Lab\\Labber\\' + DataFolderName + '/2020/02\Data_0215\\'
     # DataPath = 'C:/SC Lab\\Labber\\' + DataFolderName + '/2019/11\Data_1123\\'
     BackgroundFolder = 'C:\SC Lab\Projects\Fluxonium\data_process/ziggy4/'
     BackgroundFile = []
@@ -501,16 +501,16 @@ if __name__ == '__main__':
     Plus50MHzBackgroundFile = 'one_tone_4.05GHz_to_4.3GHz_-15dBm_4.9mA_10us integration_100Kavg_50KHz step_020419.dat'
     Minus50MHzBackgroundFile = 'one_tone_4.05GHz_to_4.3GHz_-15dBm_4.9mA_10us integration_100Kavg_50KHz step_020419.dat'
     BackgroundFile = 'power spectroscopy_116.hdf5'
-    RabiFile = 't1_9.hdf5'
+    RabiFile = 'rabi_87.hdf5'
     IQModFreq = 0.05
     CircleCorrection = False
     CorrectionParam = [1.1, 0.044, 0.737, 0.037]
     PhaseSlope = 326.7041108065019
     PhaseReferenceFreq = 4.105
-    Calibration = True
+    Calibration = False
     FitCorrectedR = False
     LimitTimeRange = False
-    RotateComplex = False
+    RotateComplex = True
     FitDoubleExponential = False
     LogScale = False
     SaveFig = False

@@ -427,14 +427,14 @@ def PlotMultiPopulation(Time, RComplex, MeasurementType):
 
 if __name__ == '__main__':
     DataFolderName = '11112019_back to waveguide'
-    DataPath = 'C:/SC Lab\\Labber\\' + DataFolderName + '/2020/02\Data_0211\\'
+    DataPath = 'C:/SC Lab\\Labber\\' + DataFolderName + '/2020/02\Data_0212\\'
     # DataPath = 'C:/SC Lab\\Labber\\' + DataFolderName + '/2020/01\Data_0130\\'
     BackgroundFolder = 'C:\SC Lab\Projects\Fluxonium\data_process/ziggy4/'
     BackgroundFile = []
     Plus50MHzBackgroundFile = 'one_tone_4.05GHz_to_4.3GHz_-15dBm_4.9mA_10us integration_100Kavg_50KHz step_020419.dat'
     Minus50MHzBackgroundFile = 'one_tone_4.05GHz_to_4.3GHz_-15dBm_4.9mA_10us integration_100Kavg_50KHz step_020419.dat'
     BackgroundFile = 'power spectroscopy_116.hdf5'
-    RabiFile = 'transient_P2_P1_interleaved_2020-02-11-06-48-32.hdf5'
+    RabiFile = 't1_P2_P1_interleaved_2020-02-12-04-30-46.hdf5'
     IQModFreq = 0.05
     CircleCorrection = False
     CorrectionParam = [1, 0.044, 0.737, 0.037]
@@ -452,7 +452,7 @@ if __name__ == '__main__':
     StartTime = 0.5e3
     EndTime = 40e3
     # PopulationConversionConst = [1., 1. / 0.9234825050081049]
-    PopulationConversionConst = [1., 0.9684277144489823]
+    PopulationConversionConst = [1., 0.92307]
 
     FitDict = plotMultiPopulationTSweep(DataPath, RabiFile, BackgroundFolder=BackgroundFolder,
                                         BackgroundFile=BackgroundFile,

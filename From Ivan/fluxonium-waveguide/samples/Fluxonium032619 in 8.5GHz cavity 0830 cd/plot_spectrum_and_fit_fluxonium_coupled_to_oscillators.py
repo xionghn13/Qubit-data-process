@@ -39,8 +39,8 @@ def main():
 
     utilities.print_params(params)
 
-    plot_spectrum.plot_spectrum()
-    plot_anchor_points.plot_anchor_points(params['data_set'])
+    # plot_spectrum.plot_spectrum()
+    # plot_anchor_points.plot_anchor_points(params['data_set'])
     # plot_anchor_points.plot_anchor_points('data2')
 
     str_freq = ', '.join(['%.3f' % freq for freq in params['frequencies']])
@@ -65,9 +65,9 @@ def main():
     for idx in range(params['num_tot']-1):
         plt.gca().add_collection(lines[idx])
 
-    lines = colored_lines(phi_ext, levels, weights, 1, num_tot)
-    for idx in range(params['num_tot']-2):
-        plt.gca().add_collection(lines[idx], '-')
+    # lines = colored_lines(phi_ext, levels, weights, 1, num_tot)
+    # for idx in range(params['num_tot']-2):
+    #     plt.gca().add_collection(lines[idx], '-')
 
     # lines = colored_lines(phi_ext, levels, weights, 2, num_tot)
     # for idx in range(params['num_tot']-3):

@@ -1,6 +1,6 @@
 import MeasurementControlFunc as mcf
 
-WaitHour = 3.2  # hr
+WaitHour = 0  # hr
 Avg = 200e3
 DutyCyclePoints = 3000e3
 
