@@ -49,11 +49,16 @@ for ind in range(num_sweep_quantity):
     param_mat = np.concatenate((heights.reshape(num_blob, 1), centers, sigmas), axis=1)
 
     params, params_err = fg.fitgaussian(X, Y, H, param_mat)
-    print('-----')
-    print(params)
+
     centers_fit = params[:, 1:3]
     sigmas_fit = params[:, 3:]
     heights_fit = params[:, 0]
+
+    print('-----')
+    print(params)
+    print(params_err)
+    print('-----')
+
     most_pts_ind = np.argmax(heights_fit)
     # most_pts_ind = 0
     # print(centers_fit)
