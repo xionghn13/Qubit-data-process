@@ -13,7 +13,10 @@ def lorenztian(f, f0, kappa, A, B):
     return t
 
 
-def two_lorenztian()
+def two_lorenztian(f, param_mat):
+    t = lorenztian(f, *param_mat[0, :]) + lorenztian(f, *param_mat[1, :])
+    return t
+
 
 # DataPath = 'E:/Projects\Fluxonium\data_process/cavity/8.5GHz/'
 DataPath = 'C:\SC Lab\Projects\Fluxonium\data_process\Fluxonium032619/'
