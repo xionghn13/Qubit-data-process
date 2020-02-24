@@ -12,7 +12,7 @@ kB = 1.38e-23
 h = 6.626e-34
 
 # Read file
-f = Labber.LogFile('C:\SC Lab\Labber\data\Augustus 18\\2020\\02\Data_0213\Histogram_heralded.hdf5')
+f = Labber.LogFile('C:\SC Lab\Labber\data\Augustus 18\\2020\\02\Data_0224\Histogram_heralded.hdf5')
 
 
 # guess2D = np.array([4350, -800, 7150, -500, 13000, -200, 14000, 200, 20])
@@ -117,10 +117,10 @@ print(temperatures)
 # Pre-selection
 selected_signal = []
 preselected_signal = []
-xmin = -700
-xmax = -300
-ymin = -1400
-ymax = -1200
+xmin = 40
+xmax = 160
+ymin = 80
+ymax = 200
 
 # xmax = 250e-6
 # xmin = 50e-6
@@ -157,6 +157,17 @@ guess = np.array([0, -2800, 13150, -1800, 0, -700, 0, 100, 20])
 opt,cov = curve_fit(gaussian4, edges[:-1],counts, guess)
 axis_nice = np.linspace(edges[0], edges[-1], 1001)
 plt.plot(axis_nice, gaussian4(axis_nice,*opt), label = 'fit')
+
+
+plt.figure(6)
+counts, edges = np.histogram(sImag, bins = 100)
+plt.plot(edges[:-1], counts, label = 'Preselected signal')
+# guess = np.array([0, -2800, 13150, -1800, 0, -700, 0, 100, 20])
+# opt,cov = curve_fit(gaussian4, edges[:-1], counts, guess)
+# axis_nice = np.linspace(edges[0], edges[-1], 1001)
+# plt.plot(axis_nice, gaussian4(axis_nice,*opt), label = 'fit')
+
+
 a1,x1,a2,x2,a3,x3,a4,x4,sigma = opt
 pgg = a4/(a1+a2+a3+a4)
 peg = a3/(a1+a2+a3+a4)
