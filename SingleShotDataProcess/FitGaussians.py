@@ -48,6 +48,7 @@ def fitgaussian(X, Y, data, param_mat):
     p_cov = res[1]
     p = np.reshape(p, (n_gaussian, 5))
     p_err = np.sqrt(p_cov.diagonal())
+    p_err = np.reshape(p_err, (n_gaussian, 5))
     return p, p_err
 
 if __name__ == '__main__':
