@@ -492,7 +492,7 @@ def plotReferencedTSweep(DataPath, RabiFile, BackgroundFolder='', BackgroundFile
 
 if __name__ == '__main__':
     DataFolderName = '11112019_back to waveguide'
-    DataPath = 'C:/SC Lab\\Labber\\' + DataFolderName + '/2020/02\Data_0215\\'
+    DataPath = 'C:/SC Lab\\Labber\\' + DataFolderName + '/2020/02\Data_0222\\'
     # DataPath = 'C:/SC Lab\\Labber\\' + DataFolderName + '/2019/11\Data_1123\\'
     BackgroundFolder = 'C:\SC Lab\Projects\Fluxonium\data_process/ziggy4/'
     BackgroundFile = []
@@ -500,14 +500,14 @@ if __name__ == '__main__':
     # Plus50MHzBackgroundFile = '012819_rabi_CH2(AWG1Vpp)_no pump_readout_4.146GHz__-20dBm_qubit4.096GHz_-25dBm_4.9_mA_I cos Q sin mod true interleafing_odd readout even ref_avg100k_Rabi100000_duty150000readout3us.h5'
     Plus50MHzBackgroundFile = 'one_tone_4.05GHz_to_4.3GHz_-15dBm_4.9mA_10us integration_100Kavg_50KHz step_020419.dat'
     Minus50MHzBackgroundFile = 'one_tone_4.05GHz_to_4.3GHz_-15dBm_4.9mA_10us integration_100Kavg_50KHz step_020419.dat'
-    BackgroundFile = 'power spectroscopy_116.hdf5'
-    RabiFile = 'rabi_87.hdf5'
+    BackgroundFile = 'power spectroscopy_138.hdf5'
+    RabiFile = 'rabi_88.hdf5'
     IQModFreq = 0.05
     CircleCorrection = False
     CorrectionParam = [1.1, 0.044, 0.737, 0.037]
     PhaseSlope = 326.7041108065019
     PhaseReferenceFreq = 4.105
-    Calibration = False
+    Calibration = True
     FitCorrectedR = False
     LimitTimeRange = False
     RotateComplex = True
@@ -518,6 +518,7 @@ if __name__ == '__main__':
     StartTime = 10e3
     EndTime = 300e3
     PopulationConversionConst = [1, 1. / 1]
+    PopulationConversionConst = [1, 0.77928]
     FitDict = plotReferencedTSweep(DataPath, RabiFile, BackgroundFolder=BackgroundFolder, BackgroundFile=BackgroundFile,
                                    Plus50MHzBackgroundFile=Plus50MHzBackgroundFile,
                                    PopulationConversionConst=PopulationConversionConst,

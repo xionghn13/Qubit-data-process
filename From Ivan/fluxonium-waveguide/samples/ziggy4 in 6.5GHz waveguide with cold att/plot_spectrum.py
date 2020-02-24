@@ -27,14 +27,14 @@ def plot_spectrum():
     hI = 2.505 - 0.209  # mA
     I0 = 0.209 - hI  # mA
     path_filenames = [
-        # 'one tone_2.hdf5',
-        # 'one tone_3.hdf5',
+        'one tone_2.hdf5',
+        'one tone_3.hdf5',
         # 'one tone_12.hdf5',
         # 'one tone_6.hdf5',
         # 'one tone_7.hdf5',
         # 'one tone_8.hdf5',
-        # 'two tone_40.hdf5',
-        # 'two tone_41.hdf5',
+        'two tone_40.hdf5',
+        'two tone_41.hdf5',
 
     ]
     no_spec_files = [

@@ -37,7 +37,8 @@ def main():
     utilities.print_params(params)
 
     plot_spectrum.plot_spectrum()
-    
+    plot_anchor_points.plot_anchor_points(params['data_set'])
+
     title = ('\n$E_L/h=$%.3f GHz, $E_C/h=$%.3f GHz, $E_J/h=$%.3f GHz\n'
            % (params['E_L'], params['E_C'], params['E_J']))
     plot_spectrum.label_axes(title, title_color='w')

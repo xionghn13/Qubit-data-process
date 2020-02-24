@@ -3,7 +3,7 @@ import numpy as np
 from datetime import datetime
 from Labber import ScriptTools
 import MeasurementControlFunc as mcf
-from ReferencedTSweepPlot import plotReferencedTSweep
+from TSweepPlot import plotReferencedTSweep
 from LabberRepeatedTSweepPlot import plotLabberRepeatedTSweepPlot
 
 

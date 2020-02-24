@@ -40,7 +40,7 @@ def main():
     utilities.print_params(params)
 
     # plot_spectrum.plot_spectrum()
-    # plot_anchor_points.plot_anchor_points(params['data_set'])
+    plot_anchor_points.plot_anchor_points(params['data_set'])
     # plot_anchor_points.plot_anchor_points('data2')
 
     str_freq = ', '.join(['%.3f' % freq for freq in params['frequencies']])
@@ -80,7 +80,7 @@ def main():
     # for idx in range(params['num_tot']-1):
         # plt.gca().add_collection(lines[idx])
 
-    plot_spectrum.label_axes(title, title_color='k')
+    plot_spectrum.label_axes(title='', title_color='k')
     plt.tight_layout()
     fig_path = os.path.join(pltpath, '%s_spectrum_fit.png' % filename_out)
     plt.savefig(fig_path, dpi=600)

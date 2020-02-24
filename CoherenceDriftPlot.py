@@ -1,6 +1,7 @@
 from QubitDataProcessPackages import *
 from datetime import timedelta
 from LabberRepeatedTSweepPlot import plotLabberRepeatedTSweepPlot
+import matplotlib.dates as mdates
 
 # DataFolderName = '10092019_wg5 in 8.5GHz cavity (add coax atts, eccosorb ...)'
 # DataFolderName = 'Data'
@@ -20,13 +21,13 @@ FileList = [
     # 't1_ramsey_echo_interleaved_10.hdf5',
     # 't1_ramsey_echo_interleaved_11.hdf5',
 
-    't1_t2_interleaved_2019-10-11-23-41-22_2.hdf5',
-    't1_t2_interleaved_2019-10-12-14-11-02.hdf5',
-    't1_t2_interleaved_2019-10-13-03-08-16.hdf5',
+    # 't1_t2_interleaved_2019-10-11-23-41-22_2.hdf5',
+    # 't1_t2_interleaved_2019-10-12-14-11-02.hdf5',
+    # 't1_t2_interleaved_2019-10-13-03-08-16.hdf5',
     't1_ramsey_echo_interleaved_2019-10-14-14-53-39_7.hdf5',
-    't1_ramsey_echo_interleaved_2019-10-17.hdf5',
-    't1_ramsey_echo_interleaved_2019-10-17_7.hdf5',
-    't1_ramsey_echo_interleaved_2019-10-18_3.hdf5',
+    # 't1_ramsey_echo_interleaved_2019-10-17.hdf5',
+    # 't1_ramsey_echo_interleaved_2019-10-17_7.hdf5',
+    # 't1_ramsey_echo_interleaved_2019-10-18_3.hdf5',
 
 ]
 Setup2DataPath = 'Z:\Projects\Transmon_Palmer\\2019\\10\Data_1017\\'
@@ -37,7 +38,7 @@ Setup2FileList = [
 
 FitDoubleExp = False
 PlotSetup2Data = False
-NoErrorBar = True
+NoErrorBar = False
 SetTimeLimit = False
 TimeLimit = (-1, 30)
 MarkerSize = 1
@@ -107,13 +108,14 @@ for i, file in enumerate(FileList):
     if file.startswith('t1_t2_interleaved') or file.startswith('t1_ramsey_echo_interleaved'):
         num_meas = len(Opt)
         for ind in range(num_meas):
-            if NoErrorBar:
-                plt.plot(t_monitor, Opt[ind][1, :] / 1000, fmt_list[ind], ms=MarkerSize)
-            else:
-                ax.errorbar(t_monitor, Opt[ind][1, :] / 1000, yerr=Err[ind][1, :] / 1000,
-                            fmt=fmt_list[color_map_dic[meas_names[ind]]])
-            if FitDoubleExp and ind == 0:
-                ax.errorbar(t_monitor, Opt[ind][3, :] / 1000, yerr=Err[ind][3, :] / 1000, fmt='go')
+            if ind != 1:
+                if NoErrorBar:
+                    plt.plot(t_monitor, Opt[ind][1, :] / 1000, fmt_list[ind], ms=MarkerSize)
+                else:
+                    ax.errorbar(t_monitor, Opt[ind][1, :] / 1000, yerr=Err[ind][1, :] / 1000,
+                                fmt=fmt_list[color_map_dic[meas_names[ind]]], label=meas_names[ind])
+                if FitDoubleExp and ind == 0:
+                    ax.errorbar(t_monitor, Opt[ind][3, :] / 1000, yerr=Err[ind][3, :] / 1000, fmt='go')
     else:
         fmt_list = ['bo', 'ro']
         ax.errorbar(t_monitor, Opt[1, :] / 1000, yerr=Err[1, :] / 1000, fmt=fmt_list[0])
@@ -132,20 +134,23 @@ for i, file in enumerate(FileList):
     #             plt.legend(['T1', 'T2ramsey', 'T2echo', 'T_phi'])
     #         else:
     #             plt.legend(['T1'])
-    fmt_list = ['royalblue', 'violet', 'grey']
-    if file.startswith('t1_t2_interleaved') or file.startswith('t1_ramsey_echo_interleaved'):
-        for ind in range(num_meas):
-            if i == len(FileList) - 1:
-                plt.plot(t_monitor, Opt[ind][1, :] / 1000, LineSpec, label=meas_names[ind],
-                         color=fmt_list[color_map_dic[meas_names[ind]]])
-            else:
-                plt.plot(t_monitor, Opt[ind][1, :] / 1000, LineSpec, color=fmt_list[color_map_dic[meas_names[ind]]])
-            if FitDoubleExp and ind == 0:
-                plt.plot(t_monitor, Opt[ind][3, :] / 1000, 'g' + LineSpec)
-    else:
-        plt.plot(t_monitor, Opt[1, :] / 1000, LineSpec, color=fmt_list[0])
-        if FitDoubleExp:
-            plt.plot(t_monitor, Opt[3, :] / 1000, 'g' + LineSpec)
+
+
+    # fmt_list = ['royalblue', 'violet', 'grey']
+    # if file.startswith('t1_t2_interleaved') or file.startswith('t1_ramsey_echo_interleaved'):
+    #     for ind in range(num_meas):
+    #         if i == len(FileList) - 1:
+    #             plt.plot(t_monitor, Opt[ind][1, :] / 1000, LineSpec, label=meas_names[ind],
+    #                      color=fmt_list[color_map_dic[meas_names[ind]]])
+    #         else:
+    #             plt.plot(t_monitor, Opt[ind][1, :] / 1000, LineSpec, color=fmt_list[color_map_dic[meas_names[ind]]])
+    #         if FitDoubleExp and ind == 0:
+    #             plt.plot(t_monitor, Opt[ind][3, :] / 1000, 'g' + LineSpec)
+    # else:
+    #     plt.plot(t_monitor, Opt[1, :] / 1000, LineSpec, color=fmt_list[0])
+    #     if FitDoubleExp:
+    #         plt.plot(t_monitor, Opt[3, :] / 1000, 'g' + LineSpec)
+
     TimeList += [t_monitor]
     OptList += [Opt]
     ErrList += [Err]
@@ -158,8 +163,11 @@ if SetTimeLimit:
 if FitDoubleExp:
     ax.set_yscale('log')
     plt.ylim([10, 1e3])
+# ax.format_xdata = mdates.DateFormatter('%H-%M')
+x_fmt = mdates.DateFormatter('%H:%M')
+ax.xaxis.set_major_formatter(x_fmt)
 plt.gcf().autofmt_xdate()
-plt.gcf().set_size_inches(15, 5, forward=True)
+plt.gcf().set_size_inches(18, 4, forward=True)
 plt.tight_layout()
 
 if file.startswith('t1_t2_interleaved') or file.startswith('t1_ramsey_echo_interleaved'):

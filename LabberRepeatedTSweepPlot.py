@@ -502,6 +502,7 @@ def plotLabberRepeatedTSweepPlot(DataPath, RabiFileList, BackgroundFolder='', Ba
         if LogScale:
             ax.set_yscale('log')
 
+        fmt_list = ['bo', 'ro', 'ko', 'go']
         if max(PlotIndex) < NumPoints:
             for i in PlotIndex:
                 fig, ax = plt.subplots()
@@ -510,22 +511,24 @@ def plotLabberRepeatedTSweepPlot(DataPath, RabiFileList, BackgroundFolder='', Ba
                                        'ref_t1_ramsey_echo_interleaved'):
                     num_meas = len(OptMatrixList)
                     for ind in range(num_meas):
-                        if ind == 1 and T2MaxTime > 0:
-                            plt.plot(TimeT2, np.real(RComplexList[i][ind]))
-                            if MeasurementType.startswith('ref'):
-                                plt.plot(TimeT2, np.real(RefRComplexList[i][ind]))
-                        else:
-                            plt.plot(TimeList[i], np.real(RComplexList[i][ind]))
-                            if MeasurementType.startswith('ref'):
-                                plt.plot(TimeList[i], np.real(RefRComplexList[i][ind]))
-                        plt.plot(TimeFitList[i], FitRList[i][ind], '--')
+                        if ind != 1:
+                            if ind == 1 and T2MaxTime > 0:
+                                plt.plot(TimeT2 / 1000, np.real(RComplexList[i][ind]), fmt_list[ind])
+                                if MeasurementType.startswith('ref'):
+                                    plt.plot(TimeT2 / 1000, np.real(RefRComplexList[i][ind]), fmt_list[ind])
+                            else:
+                                plt.plot(TimeList[i] / 1000, np.real(RComplexList[i][ind]), fmt_list[ind])
+                                if MeasurementType.startswith('ref'):
+                                    plt.plot(TimeList[i] / 1000, np.real(RefRComplexList[i][ind]), fmt_list[ind])
+                            plt.plot(TimeFitList[i] / 1000, FitRList[i][ind], '--')
                 else:
-                    plt.plot(TimeList[i], np.real(RComplexList[i]), 'o')
-                    plt.plot(TimeFitList[i], FitRList[i])
-                plt.xlabel('Time(ns)', fontsize='x-large')
+                    plt.plot(TimeList[i] / 1000, np.real(RComplexList[i]), fmt_list[ind])
+                    plt.plot(TimeFitList[i] / 1000, FitRList[i])
+                plt.xlabel('Time(us)', fontsize='x-large')
                 plt.ylabel('Re', fontsize='x-large')
                 plt.title('Plot index=%d' % i)
                 plt.tick_params(axis='both', which='major', labelsize='x-large')
+                plt.gcf().set_size_inches(8, 3, forward=True)
                 plt.tight_layout()
 
         if MeasurementType in ('t1t2interleaved', 'ref_t1_t2_interleaved'):
@@ -794,7 +797,7 @@ if __name__ == '__main__':
     # DataPath = 'E:/Projects\Fluxonium\data_process/Fluxonium042619/'
     DataFolderName = '10092019_wg5 in 8.5GHz cavity (add coax atts, eccosorb ...)'
     # DataFolderName = 'Data'
-    DataPath = 'C:/SC Lab\\Labber\\labber_data\\' + DataFolderName + '/2019/10\Data_1014\\'
+    DataPath = 'C:/SC Lab\\Labber\\data\\' + DataFolderName + '/2019/10\Data_1014\\'
     # DataPath = 'Z:\Projects\Transmon_Palmer\\2019\\10\Data_1017\\'
     BackgroundFolder = 'C:\SC Lab\Projects\Fluxonium\data_process/ziggy4/'
     BackgroundFile = 'power spectroscopy_105.hdf5'
@@ -808,12 +811,12 @@ if __name__ == '__main__':
     FitCorrectedR = False
     LogScale = False
     Calibration = False
-    RotateComplex = False
+    RotateComplex = True
     FitDoubleExponential = False
     PlotNumber = 2  # fit plot
     MinPlotInd = 0
     MaxPlotInd = 8000
-    PlotIndex = [0, 1]
+    PlotIndex = [6, 25, 87]
     T2MaxTime = 1100e3  # ns
 
     # thermal photon

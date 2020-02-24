@@ -1,6 +1,6 @@
 from openpyxl import Workbook
 from QubitDataProcessPackages import *
-from ReferencedTSweepPlot import plotReferencedTSweep
+from TSweepPlot import plotReferencedTSweep
 from QubitSpectrumFunc import printPercent
 
 

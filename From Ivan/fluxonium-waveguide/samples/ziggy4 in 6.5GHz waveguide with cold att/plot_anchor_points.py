@@ -26,6 +26,7 @@ def plot_anchor_points(points, offset=.1):
     phi_ext = []
     freqs = []
     labels = []
+    plot_labels = False
     for point in points:
         phi_ext.append(point['external flux quanta'])
         freqs.append(point['frequency'])
@@ -35,11 +36,12 @@ def plot_anchor_points(points, offset=.1):
             labels.append('%d-%d' %point['transition'])
     
     plt.scatter(phi_ext, freqs, color='k')
-    for idx in range(len(phi_ext)):
-        plt.gca().text(phi_ext[idx], freqs[idx] + offset, labels[idx],
-               color='k', fontsize=12,
-               horizontalalignment='center',
-               bbox=dict(boxstyle='round', fc='w', alpha=.5))
+    if plot_labels:
+        for idx in range(len(phi_ext)):
+            plt.gca().text(phi_ext[idx], freqs[idx] + offset, labels[idx],
+                   color='k', fontsize=12,
+                   horizontalalignment='center',
+                   bbox=dict(boxstyle='round', fc='w', alpha=.5))
 
 
 def show_labels(points, offset=.1):
