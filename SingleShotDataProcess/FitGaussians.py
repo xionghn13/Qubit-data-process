@@ -76,7 +76,9 @@ if __name__ == '__main__':
 
     params, params_err = fitgaussian(Xin, Yin, data, param_mat)
     print('-----')
-    print(params.shape)
+    print(params)
+    print(params_err)
+
     fit = multi_gaussian(Xin, Yin, params)
 
     plt.contour(fit, cmap=plt.cm.copper)
