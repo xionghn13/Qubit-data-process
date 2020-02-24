@@ -10,7 +10,7 @@ import Labber
 # beta calibration
 
 # Gate sequence in Labber is I, X2p, Y2m
-f = Labber.LogFile('C:\SC Lab\Labber\data\Augustus 18\\2020\\02\Data_0217\SingleQubit_tomo_qubitB_2.hdf5')
+f = Labber.LogFile('C:\SC Lab\Labber\data\Augustus 18\\2020\\02\Data_0220\SingleQubit_tomo_qubitA.hdf5')
 
 num_blob = 4
 gg_estimate = [0, -2000]
@@ -52,10 +52,9 @@ for pulse_idx in range(len(signal[:, 0])):
     select_signal = signal[pulse_idx, 1::2] * 1e6
     sReal = np.real(herald_signal)
     sImag = np.imag(herald_signal)
-    for record_idx in range(len(herald_signal)):
-        if ((sReal[record_idx] - centers_fit[gg_ind, 0]) / sigmas_fit[gg_ind, 0] / 2) ** 2 + (
-                (sImag[record_idx] - centers_fit[gg_ind, 1]) / sigmas_fit[gg_ind, 1] / 2) ** 2 < 1:
-            preselected_signal = np.append(preselected_signal, select_signal[record_idx])
+    ind = ((sReal - centers_fit[gg_ind, 0]) / sigmas_fit[gg_ind, 0] / 2) ** 2 + (
+            (sImag - centers_fit[gg_ind, 1]) / sigmas_fit[gg_ind, 1] / 2) ** 2 < 1
+    preselected_signal = select_signal[ind]
     preselected_data[pulse_idx] = np.average(preselected_signal)
 
 s0 = preselected_data[0]
@@ -74,8 +73,8 @@ matrix_histogram_complex(rho_reconstructed)
 # plt.title(fidelity(rho_ideal, rho_reconstructed))
 # matrix_histogram_complex(rho_ideal)
 # Start in excited state
-print('ground state')
-print(m)
+# print('ground state')
+# print(m)
 m = preselected_data[6:9]
 avgX, avgY, avgZ = np.linalg.inv(measurement_matrix).dot(m.transpose() - 0.5 * betaI).transpose()
 rho_reconstructed = 0.5 * (qeye(2) + avgX * sigmax() + avgY * sigmay() + avgZ * sigmaz())
@@ -84,8 +83,8 @@ matrix_histogram_complex(rho_reconstructed)
 # plt.title(fidelity(rho_ideal, rho_reconstructed))
 # matrix_histogram_complex(rho_ideal)
 # Start in superposition state
-print('pi pulse')
-print(m)
+# print('pi pulse')
+# print(m)
 m = preselected_data[9:]
 avgX, avgY, avgZ = np.linalg.inv(measurement_matrix).dot(m.transpose() - 0.5 * betaI).transpose()
 rho_reconstructed = 0.5 * (qeye(2) + avgX * sigmax() + avgY * sigmay() + avgZ * sigmaz())
@@ -93,8 +92,8 @@ matrix_histogram_complex(rho_reconstructed)
 # rho_ideal = ket2dm(rx(phi=np.pi/2)*basis(2,0))
 # plt.title(fidelity(rho_ideal, rho_reconstructed))
 # matrix_histogram_complex(rho_ideal)
-print('pi/2 pulse')
-print(m)
+# print('pi/2 pulse')
+# print(m)
 #####################################################################################################
 # sI = np.array([[1,0],[0,1]])
 # sX = np.array([[0,1],[1,0]])

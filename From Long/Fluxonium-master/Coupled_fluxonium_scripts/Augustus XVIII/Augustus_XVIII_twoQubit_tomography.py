@@ -8,7 +8,7 @@ import Labber
 
 ##############single qubit tomography##############
 #beta calibration
-f = Labber.LogFile('C:\SC Lab\Labber\data\Augustus 18\\2020\\02\Data_0210\Tomography_twoQubits_ROCal.hdf5')
+f = Labber.LogFile('C:\SC Lab\Labber\data\Augustus 18\\2020\\02\Data_0221\Tomography_twoQubits_ROCal.hdf5')
 signal = f.getData('AlazarTech Signal Demodulator - Channel A - Demodulated values')
 s = np.zeros(4, dtype = complex)
 #old data
@@ -23,10 +23,10 @@ s = np.zeros(4, dtype = complex)
 # ymax = -300
 
 #00
-xmin = 100
-xmax = 300
-ymin = 20
-ymax = 160
+xmin = 50
+xmax = 150
+ymin = 70
+ymax = 220
 
 
 for pulse_idx in range(4):
@@ -55,7 +55,7 @@ sII, sZI, sIZ, sZZ = s
 sMatrix = np.array([[1, 1, 1, 1], [1, -1, 1, -1], [1, 1, -1, -1], [1, -1, -1, 1]])
 betaII, betaZI, betaIZ, betaZZ = np.linalg.inv(sMatrix).dot(np.array([sII,sZI,sIZ,sZZ]).transpose()).transpose()
 #Gate sequence in Labber is I, X2p, Y2m
-f = Labber.LogFile('C:\SC Lab\Labber\data\Augustus 18\\2020\\02\Data_0212\Tomography_twoQubit_supcheck.hdf5')
+f = Labber.LogFile('C:\SC Lab\Labber\data\Augustus 18\\2020\\02\Data_0221\Tomography_twoQubit_cz_2.hdf5')
 signal = f.getData('AlazarTech Signal Demodulator - Channel A - Demodulated values')
 m = np.zeros(15, dtype = complex)
 guess_mle = np.zeros(15)
