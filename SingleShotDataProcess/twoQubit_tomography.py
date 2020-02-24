@@ -5,10 +5,11 @@ from scipy.optimize import minimize
 import Labber
 import SingleShotDataProcess.SingleShotFunc as ssf
 import SingleShotDataProcess.FitGaussians as fg
+import scipy
 
 
-file_calibration = 'C:\SC Lab\Labber\data\Augustus 18\\2020\\02\Data_0221\Tomography_twoQubits_ROCal_2.hdf5'
-file_tomography = 'C:\SC Lab\Labber\data\Augustus 18\\2020\\02\Data_0221\Tomography_twoQubit_bell_2 (2).hdf5'
+file_calibration = 'C:\SC Lab\Labber\data\Augustus 18\\2020\\02\Data_0223\Tomography_twoQubits_ROCal.hdf5'
+file_tomography = 'C:\SC Lab\Labber\data\Augustus 18\\2020\\02\Data_0224\Tomography_twoQubit_bell_2.hdf5'
 
 # beta calibration
 f = Labber.LogFile(file_calibration)
@@ -75,6 +76,7 @@ for pulse_idx in range(15):
             (sImag - centers_fit[gg_ind, 1]) / sigmas_fit[gg_ind, 1] / 2) ** 2 < 1
     preselected_signal = select_signal[ind]
     m[pulse_idx] = np.average(preselected_signal)
+    print('pulse_idx', pulse_idx)
 
 # Linear reconstruction
 measurement_matrix = np.array([[0, 0, betaIZ, 0, 0, 0, 0, 0, 0, 0, 0, betaZI, 0, 0, betaZZ],
@@ -186,6 +188,10 @@ ZI = np.kron(sZ, sI)
 ZX = np.kron(sZ, sX)
 ZY = np.kron(sZ, sY)
 ZZ = np.kron(sZ, sZ)
+CZ = np.array([[1,0,0,0], [0,1,0,0],[0,0,1,0],[0,0,0,-1]])
+X2 = np.cos(np.pi/4)*sI - 1j*np.sin(np.pi/4)*sX
+X2X2 = np.kron(X2,X2)
+X2I = np.kron(X2,sI)
 
 M = np.zeros((len(gate_sequence), 4, 4), dtype=complex)
 M[0, :, :] = betaII * II + betaZI * ZI + betaIZ * IZ + betaZZ * ZZ
@@ -227,16 +233,21 @@ def likelihood(x):
 
 
 def fidelity(rho, rho_ideal):
-    return abs(np.trace(np.sqrt(np.sqrt(rho_ideal).dot(rho).dot(np.sqrt(rho_ideal)))))
-
+    f = abs(np.trace(scipy.linalg.sqrtm(scipy.linalg.sqrtm(rho_ideal).dot(rho).dot(scipy.linalg.sqrtm(rho_ideal)))))
+    return f
 
 res = minimize(likelihood, guess_mle, method='powell', tol=1.e-10,
                options={'maxiter': 10000})
 t = res.x
 rho_reconstructed_mle = Qobj(density_matrix(*t))
+initial_state = np.array([[1,0,0,0], [0,0,0,0], [0,0,0,0], [0,0,0,0]])
+rho_ideal = X2X2.dot(initial_state).dot(np.conj(X2X2.transpose()))
+rho_ideal = CZ.dot(rho_ideal).dot(np.conj(CZ.transpose()))
+rho_ideal = X2I.dot(rho_ideal).dot(np.conj(X2I.transpose()))
 
 matrix_histogram_complex(rho_reconstructed_mle)
-# print (fidelity(rho_reconstructed_mle, rho_ideal))
+matrix_histogram_complex(rho_ideal)
+print('fidelity', fidelity(rho_reconstructed_mle, rho_ideal))
 # matrix_histogram_complex(density_matrix(*guess_mle))
 # matrix_histogram(np.real(rho_reconstructed_mle))
 # matrix_histogram(np.imag(rho_reconstructed_mle), limits = [-1,1])
