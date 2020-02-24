@@ -21,12 +21,11 @@ kB = 1.38e-23
 h = 6.626e-34
 ############################################################
 # Vary heralding wait time
-f = Labber.LogFile('C:\SC Lab\Labber\data\Augustus 18\\2020\\02\Data_0223\RB_twoQubits_2.hdf5')
+f = Labber.LogFile('C:\SC Lab\Labber\data\Augustus 18\\2020\\02\Data_0224\RB_twoQubits_2.hdf5')
 num_blob = 4
 
 width_threshold = 2  # sigma
 gg_estimate = [100, 150]
-
 
 signal = f.getData('AlazarTech Signal Demodulator - Channel A - Demodulated values')[:, :]
 pulse_num = f.getData('Multi-Qubit Pulse Generator - Number of Cliffords')[0]
@@ -105,7 +104,6 @@ avg_signal = np.average(rb_signal, axis=2)
 fig, ax = plt.subplots()
 ax.grid(linestyle='--')
 
-
 gate_list = ['no interleaved', 'interleaved']
 n = 2
 d = 2 ** n
@@ -131,15 +129,17 @@ for ind_pulse_type in range(len(pulse_type)):
     if ind_pulse_type == 0:
         p_no_interleaving = parameter
         p_err_no_interleaving = parameter_err
+        name_p = 'p'
     else:
         parameter /= p_no_interleaving
         parameter_err = parameter * np.sqrt((err[0] / opt[0]) ** 2 + (p_err_no_interleaving / p_no_interleaving) ** 2)
+        name_p = 'p_C/p'
     error = abs((d - 1) * (1 - parameter) / d)
     error_err = (d - 1) * parameter_err / d
     error = error / 1.875
     error_err = error_err / 1.875
-    print('For %s measurement, p_C/p=%.4G\u00B1%.4G, 0-order model fidelity %.4G\u00B1%.4G' % (gate_list[ind_pulse_type],
-    parameter, parameter_err, 1 - error, error_err))
+    print( ('For %s measurement, ' + name_p + '=%.4G\u00B1%.4G, 0-order model fidelity %.4G\u00B1%.4G') % (
+        gate_list[ind_pulse_type], parameter, parameter_err, 1 - error, error_err))
 
 fig, ax = plt.subplots()
 x_blob = []
