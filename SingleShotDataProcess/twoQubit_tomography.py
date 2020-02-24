@@ -33,7 +33,7 @@ for pulse_idx in range(4):
         heights = ssf.getCenterHeights(X, Y, H, centers)
         param_mat = np.concatenate((heights.reshape(num_blob, 1), centers, sigmas), axis=1)
 
-        params = fg.fitgaussian(X, Y, H, param_mat)
+        params, params_err = fg.fitgaussian(X, Y, H, param_mat)
         print('-----')
         print(params)
         centers_fit = params[:, 1:3]

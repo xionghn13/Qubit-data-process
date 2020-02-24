@@ -43,9 +43,10 @@ def fitgaussian(X, Y, data, param_mat):
         param_matrix = np.reshape(param, (n_gaussian, 5))
         data_sim = multi_gaussian(X, Y, param_matrix)
         return np.ravel((data_sim - data) ** 2)
-    p, success = optimize.leastsq(error_func, param)
+    p, p_cov = optimize.leastsq(error_func, param, full_output=1)
     p = np.reshape(p, (n_gaussian, 5))
-    return p
+    p_err = np.sqrt(p_cov.diagonal())
+    return p, p_err
 
 if __name__ == '__main__':
     # Create the gaussian data
@@ -71,7 +72,7 @@ if __name__ == '__main__':
         param_list += [[height_guess] + pt + [width_x_guess, width_y_guess]]
     param_mat = np.array(param_list)
 
-    params = fitgaussian(Xin, Yin, data, param_mat)
+    params, params_err = fitgaussian(Xin, Yin, data, param_mat)
     print('-----')
     print(params.shape)
     fit = multi_gaussian(Xin, Yin, params)

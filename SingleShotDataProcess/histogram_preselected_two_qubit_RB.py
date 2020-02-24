@@ -58,7 +58,7 @@ for ind_pulse_type in range(len(pulse_type)):
                 heights = ssf.getCenterHeights(X, Y, H, centers)
                 param_mat = np.concatenate((heights.reshape(num_blob, 1), centers, sigmas), axis=1)
 
-                params = fg.fitgaussian(X, Y, H, param_mat)
+                params, params_err = fg.fitgaussian(X, Y, H, param_mat)
                 fit = fg.multi_gaussian(X, Y, params)
 
                 if ind_pulse_randomize + ind_pulse_type == 0:

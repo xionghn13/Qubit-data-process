@@ -15,8 +15,8 @@ kB = 1.38e-23
 h = 6.626e-34
 ############################################################
 # Vary heralding wait time
-file_path = 'C:\SC Lab\Labber\data\Augustus 18\\2020\\02\Data_0221\\'
-file_name = 'Rabi_heralded_CZ_6.hdf5'
+file_path = 'C:\SC Lab\Labber\\11112019_back to waveguide\\2020\\02\Data_0224\\'
+file_name = 'rabi_histogram_2.hdf5'
 f = Labber.LogFile(file_path + file_name)
 num_blob = 1
 width_threshold = 2
@@ -24,17 +24,18 @@ measurement_type = file_name.split('_')[0]
 
 sweep_quantity_dict = {
     # 'Rabi': 'Multi-Qubit Pulse Generator - Amplitude #1',
-    'Rabi': 'Pulse Generator - Width #1',
+    'rabi': 'Pulse Generator - Width #1',
     # 'Ramsey': 'Multi-Qubit Pulse Generator - Pulse spacing',
 }
 signal = f.getData('Alazar - Channel A - Demodulated values')
 # signal = f.getData('AlazarTech Signal Demodulator - Channel A - Demodulated values')
 
 sweep_quantity = f.getData(sweep_quantity_dict[measurement_type])[0]
-rabi_signal = np.zeros(len(sweep_quantity), dtype=complex)
+num_sweep_quantity = len(sweep_quantity)
+rabi_signal = np.zeros(num_sweep_quantity, dtype=complex)
 
 
-for ind in range(2):
+for ind in range(num_sweep_quantity):
     signal_array = signal[ind, :] * 1e6
     rabi_signal[ind] = np.average(signal_array)
     sReal = np.real(signal_array)
@@ -47,7 +48,7 @@ for ind in range(2):
     heights = ssf.getCenterHeights(X, Y, H, centers)
     param_mat = np.concatenate((heights.reshape(num_blob, 1), centers, sigmas), axis=1)
 
-    params = fg.fitgaussian(X, Y, H, param_mat)
+    params, params_err = fg.fitgaussian(X, Y, H, param_mat)
     print('-----')
     print(params)
     centers_fit = params[:, 1:3]
