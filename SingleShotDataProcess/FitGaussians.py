@@ -43,7 +43,9 @@ def fitgaussian(X, Y, data, param_mat):
         param_matrix = np.reshape(param, (n_gaussian, 5))
         data_sim = multi_gaussian(X, Y, param_matrix)
         return np.ravel((data_sim - data) ** 2)
-    p, p_cov = optimize.leastsq(error_func, param, full_output=1)
+    res = optimize.leastsq(error_func, param, full_output=1)
+    p = res[0]
+    p_cov = res[1]
     p = np.reshape(p, (n_gaussian, 5))
     p_err = np.sqrt(p_cov.diagonal())
     return p, p_err
