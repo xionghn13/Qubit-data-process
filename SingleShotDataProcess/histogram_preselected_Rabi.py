@@ -16,7 +16,7 @@ h = 6.626e-34
 ############################################################
 # Vary heralding wait time
 file_path = 'C:\SC Lab\Labber\data\Augustus 18\\2020\\02\Data_0224\\'
-file_name = 'Rabi_heralded_CZ_2.hdf5'
+file_name = 'Rabi_heralded_CZ_3.hdf5'
 f = Labber.LogFile(file_path + file_name)
 num_blob = 4
 width_threshold = 2

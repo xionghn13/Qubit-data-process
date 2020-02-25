@@ -53,23 +53,24 @@ def fitgaussian(X, Y, data, param_mat):
 
 if __name__ == '__main__':
     # Create the gaussian data
-    Xin, Yin = np.mgrid[0:201, 0:201]
+    Xin, Yin = np.mgrid[0:301, 0:301]
     data = gaussian(3, 50, 50, 10, 10)(Xin, Yin) \
-           + gaussian(3, 50, 150, 10, 10)(Xin, Yin) \
-           + gaussian(3, 150, 50, 10, 10)(Xin, Yin) \
-           + gaussian(3, 150, 150, 10, 10)(Xin, Yin) \
+           + gaussian(3, 50, 250, 10, 10)(Xin, Yin) \
+           + gaussian(3, 250, 50, 10, 10)(Xin, Yin) \
+           + gaussian(3, 280, 280, 10, 10)(Xin, Yin) \
            + np.random.random(Xin.shape)
 
     plt.matshow(data, cmap=plt.cm.gist_earth_r)
     print(Xin.shape)
     print(data.shape)
     height_guess = np.max(data)
-    width_x_guess = (np.max(Xin) - np.min(Xin)) / 5
+    print(height_guess)
+    width_x_guess = (np.max(Xin) - np.min(Xin)) / 10
     width_y_guess = width_x_guess
     center_guess = [[40, 40],
-                    [40, 160],
-                    [160, 40],
-                    [160, 160]]
+                    [40, 260],
+                    [260, 40],
+                    [280, 280]]
     param_list = []
     for pt in center_guess:
         param_list += [[height_guess] + pt + [width_x_guess, width_y_guess]]

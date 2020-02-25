@@ -9,7 +9,7 @@ import scipy
 
 
 file_calibration = 'C:\SC Lab\Labber\data\Augustus 18\\2020\\02\Data_0223\Tomography_twoQubits_ROCal.hdf5'
-file_tomography = 'C:\SC Lab\Labber\data\Augustus 18\\2020\\02\Data_0224\Tomography_twoQubit_bell_2.hdf5'
+file_tomography = 'C:\SC Lab\Labber\data\Augustus 18\\2020\\02\Data_0224\Tomography_twoQubit_bell_4.hdf5'
 
 # beta calibration
 f = Labber.LogFile(file_calibration)

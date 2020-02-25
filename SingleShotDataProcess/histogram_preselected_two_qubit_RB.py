@@ -21,7 +21,7 @@ kB = 1.38e-23
 h = 6.626e-34
 ############################################################
 # Vary heralding wait time
-f = Labber.LogFile('C:\SC Lab\Labber\data\Augustus 18\\2020\\02\Data_0224\RB_twoQubits_2.hdf5')
+f = Labber.LogFile('C:\SC Lab\Labber\data\Augustus 18\\2020\\02\Data_0224\RB_twoQubits_4.hdf5')
 num_blob = 4
 
 width_threshold = 2  # sigma
@@ -98,7 +98,10 @@ plt.xlabel('I (uV)')
 plt.ylabel('Q (uV)')
 
 avg_signal = np.average(rb_signal, axis=2)
+std_signal = np.std(rb_signal, axis=2)
 
+# print(avg_signal)
+# print(std_signal)
 # p_array = np.zeros(1)
 # p_err_array = np.zeros_like(p_array)
 fig, ax = plt.subplots()
@@ -121,8 +124,9 @@ for ind_pulse_type in range(len(pulse_type)):
     # p_array[ind_blob] = opt[0]
     # p_err_array[ind_blob] = err[0]
     # if ind_pulse_type == 0:
-    plt.plot(pulse_num, np.real(V_complex))
-    plt.plot(pulse_num, randomized_benchmarking_0(pulse_num, *opt), label='Zeroth order fit')
+    # plt.plot(pulse_num, np.real(V_complex))
+    ax.errorbar(pulse_num, np.real(V_complex), yerr=std_signal[ind_blob, :, ind_pulse_type], fmt='o')
+    plt.plot(pulse_num, randomized_benchmarking_0(pulse_num, *opt), '--', label='Zeroth order fit')
 
     parameter = opt[0]
     parameter_err = err[0]
