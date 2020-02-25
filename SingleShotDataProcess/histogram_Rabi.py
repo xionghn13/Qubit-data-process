@@ -16,7 +16,7 @@ h = 6.626e-34
 ############################################################
 # Vary heralding wait time
 file_path = 'C:\SC Lab\Labber\\11112019_back to waveguide\\2020\\02\Data_0224\\'
-file_name = 'rabi_histogram_2.hdf5'
+file_name = 'rabi_histogram_3.hdf5'
 f = Labber.LogFile(file_path + file_name)
 num_blob = 1
 width_threshold = 2
