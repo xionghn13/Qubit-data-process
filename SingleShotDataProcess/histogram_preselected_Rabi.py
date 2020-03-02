@@ -15,19 +15,29 @@ kB = 1.38e-23
 h = 6.626e-34
 ############################################################
 # Vary heralding wait time
-file_path = 'C:\SC Lab\Labber\data\Augustus 18\\2020\\02\Data_0224\\'
-file_name = 'Rabi_heralded_CZ_3.hdf5'
+file_path = 'C:\SC Lab\Labber\data\Augustus 18\\2020\\02\Data_0228\\'
+file_name = 'Rabi_heralded_AWG_qubitB_4.hdf5'
 f = Labber.LogFile(file_path + file_name)
+
 num_blob = 4
 width_threshold = 2
 measurement_type = file_name.split('_')[0]
 
 sweep_quantity_dict = {
     'Rabi': 'Multi-Qubit Pulse Generator - Amplitude #1',
-    'Ramsey': 'Multi-Qubit Pulse Generator - Pulse spacing',
+    # 'Rabi': 'Multi-Qubit Pulse Generator - Width',
+    # 'Ramsey': 'Multi-Qubit Pulse Generator - Pulse spacing',
+    'Ramsey': 'Multi-Qubit Pulse Generator - Parameter #1',
+
 }
+sweep_quantity_name = sweep_quantity_dict[measurement_type]
 signal = f.getData('AlazarTech Signal Demodulator - Channel A - Demodulated values')
-sweep_quantity = f.getData(sweep_quantity_dict[measurement_type])[0]
+sweep_quantity = f.getData(sweep_quantity_name)[0]
+if measurement_type == 'Ramsey':
+    sweep_quantity *= 1e6
+if sweep_quantity_name == 'Multi-Qubit Pulse Generator - Width':
+    sweep_quantity *= 1e6
+# print(sweep_quantity)
 rabi_signal = np.zeros(len(sweep_quantity), dtype=complex)
 rabi_signal_preselected = np.zeros((len(sweep_quantity), num_blob), dtype=complex)
 
@@ -98,14 +108,25 @@ V_real = V_complex.real
 fig, ax = plt.subplots()
 ax.grid(linestyle='--')
 plt.plot(sweep_quantity, V_real)
-guess = ([np.max(V_real) - np.min(V_real), freq_guess, 0,
-          (np.max(V_real) + np.min(V_real)) / 2])
-print(guess)
-opt, cov = curve_fit(osc_func, ydata=V_real, xdata=sweep_quantity, p0=guess)
-axis_nice = np.linspace(sweep_quantity[0], sweep_quantity[-1], 1001)
-plt.plot(axis_nice, osc_func(axis_nice, *opt))
-plt.title('Pi pulse: %.3G' % (0.5 / opt[1]))
-
+A_guess = np.max(V_real) - np.min(V_real)
+B_guess = (np.max(V_real) + np.min(V_real)) / 2
+T1_guess = sweep_quantity[-1]
+Tpi_guess = sweep_quantity[-1] / 10
+phi0_guess = 0
+try:
+    guess = [A_guess, T1_guess, B_guess, Tpi_guess, phi0_guess]
+    opt, cov = curve_fit(qdf.rabi_curve, ydata=V_real, xdata=sweep_quantity, p0=guess)
+    err = np.sqrt(np.diag(cov))
+    axis_nice = np.linspace(sweep_quantity[0], sweep_quantity[-1], 1001)
+    plt.plot(axis_nice, qdf.rabi_curve(axis_nice, *opt))
+    plt.title('half period: %.5G\u00B1%.4G, decay constant: %.5G\u00B1%.4G' % (opt[3], err[3], opt[1], err[1]))
+except RuntimeError:
+    guess = [A_guess, T1_guess, B_guess]
+    opt, cov = curve_fit(qdf.T1_curve, ydata=V_real, xdata=sweep_quantity, p0=guess)
+    err = np.sqrt(np.diag(cov))
+    axis_nice = np.linspace(sweep_quantity[0], sweep_quantity[-1], 1001)
+    plt.plot(axis_nice, qdf.T1_curve(axis_nice, *opt))
+    plt.title('decay constant: %.5G\u00B1%.4G' % (opt[1], err[1]))
 
 #
 plt.show()

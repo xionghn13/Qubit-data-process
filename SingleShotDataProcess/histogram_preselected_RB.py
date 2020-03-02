@@ -16,12 +16,17 @@ def randomized_benchmarking_0(x, p, a, b):
     return a * p ** x + b
 
 
+def randomized_benchmarking_1(x, p, a, b, c):
+    return a * p ** x + c * (x - 1) * p ** (x - 2) + b
+
+
 # constants
 kB = 1.38e-23
 h = 6.626e-34
 ############################################################
 # Vary heralding wait time
-f = Labber.LogFile('C:\SC Lab\Labber\data\Augustus 18\\2020\\02\Data_0222\RB_heralded_AWG_qubitB.hdf5')
+f = Labber.LogFile('C:\SC Lab\Labber\data\Augustus 18\\2020\\03\Data_0301\RB_heralded_AWG_qubitB_2.hdf5')
+
 num_blob = 4
 
 width_threshold = 2  # sigma
@@ -103,36 +108,86 @@ plt.xlabel('I (uV)')
 plt.ylabel('Q (uV)')
 
 avg_signal = np.average(rb_signal, axis=2)
-
+std_signal = np.std(rb_signal, axis=2)
 
 n = 1
 d = 2 ** n
 p_array = np.zeros(num_blob)
 p_err_array = np.zeros_like(p_array)
-fig, ax = plt.subplots()
-ax.grid(linestyle='--')
+p1_array = np.zeros_like(p_array)
+p1_err_array = np.zeros_like(p_array)
+
 for ind_blob in range(num_blob):
+    fig = plt.figure(2)
+    ax = fig.add_subplot(111)
+    ax.grid(linestyle='--')
     V_complex = qdf.AutoRotate(avg_signal[ind_blob, :])
-    plt.plot(pulse_num, np.real(V_complex))
+    ax.errorbar(pulse_num, np.real(V_complex), yerr=std_signal[ind_blob, :], fmt='o',
+                label='preselect blob ' + str(ind_blob))
     toFit = np.real(V_complex)
+    # 0th order
     guess = ([0.9, np.max(toFit) - np.min(toFit), np.min(toFit)])
+
     opt, cov = curve_fit(randomized_benchmarking_0, ydata=toFit, xdata=pulse_num, p0=guess)
     err = (np.sqrt(np.diag(cov)))
     p_array[ind_blob] = opt[0]
     p_err_array[ind_blob] = err[0]
-    plt.plot(pulse_num, randomized_benchmarking_0(pulse_num, *opt), label='Zeroth order fit')
+    plt.plot(pulse_num, randomized_benchmarking_0(pulse_num, *opt))
+    plt.legend()
 
-print('p and p_err for different blobs')
-print(p_array)
-print(p_err_array)
-parameter = np.average(p_array)
-parameter_err = parameter * np.sqrt(np.sum((p_err_array / p_array) ** 2))
-error = abs((d - 1) * (1 - parameter) / d)
-error_err = (d - 1) * parameter_err / d
-error = error / 1.875
-error_err = error_err / 1.875
+    fig = plt.figure(3)
+    ax = fig.add_subplot(111)
+    ax.grid(linestyle='--')
+    ax.errorbar(pulse_num, np.real(V_complex), yerr=std_signal[ind_blob, :], fmt='o',
+                label='preselect blob ' + str(ind_blob))
+    # 1st order
+    A_guess = toFit[0] - toFit[-1]
+    guess = ([0.9, A_guess, np.min(toFit), A_guess * 0.035])
+    bound = ((0, - 10 * abs(A_guess), -np.inf, -np.inf),
+             (1, 10 * abs(A_guess), np.inf, np.inf))
+    opt, cov = curve_fit(randomized_benchmarking_1, ydata=toFit, xdata=pulse_num, p0=guess)
+    print(opt)
+    err = (np.sqrt(np.diag(cov)))
+    p1_array[ind_blob] = opt[0]
+    p1_err_array[ind_blob] = err[0]
+    plt.plot(pulse_num, randomized_benchmarking_1(pulse_num, *opt))
+    plt.legend()
+
+
+def p_to_fidelity(p_arr, p_err_arr, dim):
+    parameter = np.average(p_arr)
+    parameter_err = parameter * np.sqrt(np.sum((p_err_arr / p_arr) ** 2))
+    error = abs((dim - 1) * (1 - parameter) / dim)
+    error_err = (dim - 1) * parameter_err / dim
+    error = error
+    error_err = error_err
+    return [parameter, parameter_err, error, error_err]
+
+
+def individual_p_to_fidelity(p_arr, p_err_arr, dim):
+    for i in range(len(p_arr)):
+        parameter = p_arr[i]
+        parameter_err = p_err_arr[i]
+        error = abs((dim - 1) * (1 - parameter) / dim)
+        error_err = (dim - 1) * parameter_err / dim
+        print('for blob %d, p=%.4G\u00B1%.4G, fidelity %.4G\u00B1%.4G' % (
+        i, parameter, parameter_err, 1 - error, error_err))
+
+
+print('blob centers')
+print(centers_fit)
+print('p and p_err for different blobs 0-order model')
+individual_p_to_fidelity(p_array, p_err_array, d)
+[parameter, parameter_err, error, error_err] = p_to_fidelity(p_array, p_err_array, d)
 print('p=%.4G\u00B1%.4G, 0-order model fidelity %.4G\u00B1%.4G' % (parameter, parameter_err, 1 - error, error_err))
 
+
+print('p and p_err for different blobs 1-order model')
+individual_p_to_fidelity(p1_array, p1_err_array, d)
+[parameter, parameter_err, error, error_err] = p_to_fidelity(p1_array, p1_err_array, d)
+print('p=%.4G\u00B1%.4G, 1-order model fidelity %.4G\u00B1%.4G' % (parameter, parameter_err, 1 - error, error_err))
+
+# blob drift
 fig, ax = plt.subplots()
 x_blob = []
 y_blob = []
