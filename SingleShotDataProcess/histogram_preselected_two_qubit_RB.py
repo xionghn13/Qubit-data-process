@@ -21,7 +21,7 @@ kB = 1.38e-23
 h = 6.626e-34
 ############################################################
 # Vary heralding wait time
-f = Labber.LogFile('C:\SC Lab\Labber\data\Augustus 18\\2020\\02\Data_0224\RB_twoQubits_4.hdf5')
+f = Labber.LogFile('C:\SC Lab\Labber\data\Augustus 18\\2020\\02\Data_0229\RB_twoQubits_2.hdf5')
 num_blob = 4
 
 width_threshold = 2  # sigma
@@ -125,8 +125,9 @@ for ind_pulse_type in range(len(pulse_type)):
     # p_err_array[ind_blob] = err[0]
     # if ind_pulse_type == 0:
     # plt.plot(pulse_num, np.real(V_complex))
-    ax.errorbar(pulse_num, np.real(V_complex), yerr=std_signal[ind_blob, :, ind_pulse_type], fmt='o')
-    plt.plot(pulse_num, randomized_benchmarking_0(pulse_num, *opt), '--', label='Zeroth order fit')
+    ax.errorbar(pulse_num, np.real(V_complex), yerr=std_signal[ind_blob, :, ind_pulse_type], fmt='o',
+                label=gate_list[ind_pulse_type] + ' measurement')
+    plt.plot(pulse_num, randomized_benchmarking_0(pulse_num, *opt), '--')
 
     parameter = opt[0]
     parameter_err = err[0]
@@ -140,10 +141,9 @@ for ind_pulse_type in range(len(pulse_type)):
         name_p = 'p_C/p'
     error = abs((d - 1) * (1 - parameter) / d)
     error_err = (d - 1) * parameter_err / d
-    error = error / 1.875
-    error_err = error_err / 1.875
-    print( ('For %s measurement, ' + name_p + '=%.4G\u00B1%.4G, 0-order model fidelity %.4G\u00B1%.4G') % (
+    print(('For %s measurement, ' + name_p + '=%.4G\u00B1%.4G, 0-order model fidelity %.4G\u00B1%.4G') % (
         gate_list[ind_pulse_type], parameter, parameter_err, 1 - error, error_err))
+plt.legend()
 
 fig, ax = plt.subplots()
 x_blob = []

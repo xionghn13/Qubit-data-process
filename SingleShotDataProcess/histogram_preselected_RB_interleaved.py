@@ -16,18 +16,28 @@ def randomized_benchmarking_0(x, p, a, b):
     return a * p ** x + b
 
 
+def randomized_benchmarking_1(x, p, a, b, c):
+    return a * p ** x + c * (x - 1) * p ** (x - 2) + b
+
+
 # constants
 kB = 1.38e-23
 h = 6.626e-34
 ############################################################
 # Vary heralding wait time
-f = Labber.LogFile('C:\SC Lab\Labber\data\Augustus 18\\2020\\02\Data_0222\RB_heralded_AWG_qubitB_interleaved.hdf5')
+f = Labber.LogFile('C:\SC Lab\Labber\data\Augustus 18\\2020\\03\Data_0301\RB_heralded_AWG_qubitB_interleaved.hdf5')
+
 num_blob = 4
 
 width_threshold = 2  # sigma
 
-p_no_interleaving = 0.9748
-p_err_no_interleaving = 0.003257
+gg_estimate = [100, 150]
+
+p_no_interleaving = 0.971
+p_err_no_interleaving = 0.00178
+
+p1_no_interleaving = 0.944
+p1_err_no_interleaving = 0.001516
 
 signal = f.getData('AlazarTech Signal Demodulator - Channel A - Demodulated values')[:, :]
 pulse_num = f.getData('Multi-Qubit Pulse Generator - Number of Cliffords')[0]
@@ -74,6 +84,8 @@ for ind_pulse_type in range(len(pulse_type)):
                     sigmas_fit = params[:, 3:]
                     heights_fit = params[:, 0]
                     most_pts_ind = np.argmax(heights_fit)
+                    gg_ind = np.argmin(np.sum((centers_fit - gg_estimate) ** 2, axis=1))
+                    print(gg_ind)
                     # most_pts_ind = 0
                     # print(most_pts_ind)
                     # print(centers_fit)
@@ -103,11 +115,22 @@ plt.xlabel('I (uV)')
 plt.ylabel('Q (uV)')
 
 avg_signal = np.average(rb_signal, axis=2)
+std_signal = np.std(rb_signal, axis=2)
 
 p_array = np.zeros(num_blob)
 p_err_array = np.zeros_like(p_array)
-fig, ax = plt.subplots()
-ax.grid(linestyle='--')
+p1_array = np.zeros_like(p_array)
+p1_err_array = np.zeros_like(p_array)
+
+
+def p_to_fidelity_interleaved(p_arr, p_err_arr, dim, p, p_err):
+    parameter_0 = p_arr[gg_ind]
+    parameter_0_err = p_err_arr[gg_ind]
+    parameter = parameter_0 / p
+    parameter_err = parameter * np.sqrt((parameter_0_err / parameter_0) ** 2 + (p_err / p) ** 2)
+    error = abs((dim - 1) * (1 - parameter) / dim)
+    error_err = (dim - 1) * parameter_err / dim
+    return [parameter, parameter_err, error, error_err]
 
 
 gate_list = ['Xp', 'Xm', 'X2p', 'X2m', 'Yp', 'Ym', 'Y2p', 'Y2m', 'I']
@@ -117,25 +140,52 @@ for ind_pulse_type in range(len(pulse_type)):
     for ind_blob in range(num_blob):
         V_complex = qdf.AutoRotate(avg_signal[ind_blob, :, ind_pulse_type])
         toFit = np.real(V_complex)
+        # 0th order
         guess = ([0.9, np.max(toFit) - np.min(toFit), np.min(toFit)])
         opt, cov = curve_fit(randomized_benchmarking_0, ydata=toFit, xdata=pulse_num, p0=guess)
         err = (np.sqrt(np.diag(cov)))
         p_array[ind_blob] = opt[0]
         p_err_array[ind_blob] = err[0]
+
         if ind_pulse_type == 0:
-            plt.plot(pulse_num, np.real(V_complex))
+            fig = plt.figure(2)
+            ax = fig.add_subplot(111)
+            ax.grid(linestyle='--')
+            ax.errorbar(pulse_num, np.real(V_complex), yerr=std_signal[ind_blob, :, ind_pulse_type], fmt='o')
             plt.plot(pulse_num, randomized_benchmarking_0(pulse_num, *opt), label='Zeroth order fit')
 
-    parameter = np.average(p_array)
-    parameter_err = parameter * np.sqrt(np.sum((p_err_array / p_array) ** 2))
-    parameter /= p_no_interleaving
-    parameter_err = parameter * np.sqrt((err[0] / opt[0]) ** 2 + (p_err_no_interleaving / p_no_interleaving) ** 2)
-    error = abs((d - 1) * (1 - parameter) / d)
-    error_err = (d - 1) * parameter_err / d
-    error = error / 1.875
-    error_err = error_err / 1.875
+    [parameter, parameter_err, error, error_err] = p_to_fidelity_interleaved(p_array, p_err_array, d, p_no_interleaving,
+                                                                             p_err_no_interleaving)
     print('For gate %s, p_C/p=%.4G\u00B1%.4G, 0-order model fidelity %.4G\u00B1%.4G' % (gate_list[ind_pulse_type],
-    parameter, parameter_err, 1 - error, error_err))
+                                                                                        parameter, parameter_err,
+                                                                                        1 - error, error_err))
+
+
+for ind_pulse_type in range(len(pulse_type)):
+    for ind_blob in range(num_blob):
+        V_complex = qdf.AutoRotate(avg_signal[ind_blob, :, ind_pulse_type])
+        toFit = np.real(V_complex)
+
+        # 1st order
+        guess = ([0.9, np.max(toFit) - np.min(toFit), np.min(toFit), np.min(toFit)])
+        opt, cov = curve_fit(randomized_benchmarking_1, ydata=toFit, xdata=pulse_num, p0=guess)
+        err = (np.sqrt(np.diag(cov)))
+        p1_array[ind_blob] = opt[0]
+        p1_err_array[ind_blob] = err[0]
+
+
+        if ind_pulse_type == 0:
+            fig = plt.figure(3)
+            ax = fig.add_subplot(111)
+            ax.grid(linestyle='--')
+            ax.errorbar(pulse_num, np.real(V_complex), yerr=std_signal[ind_blob, :, ind_pulse_type], fmt='o')
+            plt.plot(pulse_num, randomized_benchmarking_1(pulse_num, *opt), label='Zeroth order fit')
+
+    [parameter, parameter_err, error, error_err] = p_to_fidelity_interleaved(p1_array, p1_err_array, d, p1_no_interleaving,
+                                                                             p1_err_no_interleaving)
+    print('For gate %s, p_C/p=%.4G\u00B1%.4G, 1-order model fidelity %.4G\u00B1%.4G' % (gate_list[ind_pulse_type],
+                                                                                        parameter, parameter_err,
+                                                                                        1 - error, error_err))
 
 fig, ax = plt.subplots()
 x_blob = []
