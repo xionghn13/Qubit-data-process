@@ -405,6 +405,7 @@ def readT1Labber(file):
     # for Labber data
     ATS_var = 'Alazar - Channel A - Average buffer demodulated values'
     Time_var = 'Pulse Generator - Readout delay'
+    # Time_var = 'Pulse Generator - Demodulation - Length'
     LogData = Labber.LogFile(file)
     Entries = LogData.getEntry()
     if ATS_var not in Entries:
@@ -563,6 +564,8 @@ def readT2Labber(file):
     Entries = LogData.getEntry()
     if ATS_var not in Entries:
         ATS_var = 'Alazar - Channel A - Average demodulated value'
+    if Time_var not in Entries:
+        Time_var = 'Pulse Generator - Demodulation - Length'
     t2_complex = np.conj(np.transpose(LogData.getData(ATS_var)))[:, 0]
     t2_time = np.transpose(LogData.getData(Time_var))[:, 0] * 1e9
 

@@ -120,6 +120,7 @@ def plotReferencedTSweep(DataPath, RabiFile, BackgroundFolder='', BackgroundFile
                 ComplexHigherFreq = ComplexHigherFreq[TimeInd]
         elif MeasurementType == 't1':
             [Time, ComplexLowerFreq, ComplexHigherFreq] = edf.readT1H5(DataPath + RabiFile)
+            # print(Time)
             if LimitTimeRange:
                 TimeInd = (EndTime >= Time) == (Time >= StartTime)
                 Time = Time[TimeInd]
@@ -150,9 +151,11 @@ def plotReferencedTSweep(DataPath, RabiFile, BackgroundFolder='', BackgroundFile
         elif RabiFile.startswith('int_t1'):
             MeasurementType = 't1 no ref'
             [Time, Complex] = edf.readIntegratedT1Labber(DataPath + RabiFile)
+            # print(Time)
         elif RabiFile.startswith('t1'):
             MeasurementType = 't1 no ref'
             [Time, Complex] = edf.readT1Labber(DataPath + RabiFile)
+            # print(Time)
         elif RabiFile.startswith('t2_ramsey'):
             MeasurementType = 't2'
             [Time, Complex] = edf.readT2Labber(DataPath + RabiFile)
@@ -492,7 +495,7 @@ def plotReferencedTSweep(DataPath, RabiFile, BackgroundFolder='', BackgroundFile
 
 if __name__ == '__main__':
     DataFolderName = '11112019_back to waveguide'
-    DataPath = 'C:/SC Lab\\Labber\\' + DataFolderName + '/2020/02\Data_0222\\'
+    DataPath = 'C:/SC Lab\\Labber\\' + DataFolderName + '/2020/02\Data_0227\\'
     # DataPath = 'C:/SC Lab\\Labber\\' + DataFolderName + '/2019/11\Data_1123\\'
     BackgroundFolder = 'C:\SC Lab\Projects\Fluxonium\data_process/ziggy4/'
     BackgroundFile = []
@@ -501,7 +504,7 @@ if __name__ == '__main__':
     Plus50MHzBackgroundFile = 'one_tone_4.05GHz_to_4.3GHz_-15dBm_4.9mA_10us integration_100Kavg_50KHz step_020419.dat'
     Minus50MHzBackgroundFile = 'one_tone_4.05GHz_to_4.3GHz_-15dBm_4.9mA_10us integration_100Kavg_50KHz step_020419.dat'
     BackgroundFile = 'power spectroscopy_138.hdf5'
-    RabiFile = 'rabi_88.hdf5'
+    RabiFile = 't1_pumped_5.hdf5'
     IQModFreq = 0.05
     CircleCorrection = False
     CorrectionParam = [1.1, 0.044, 0.737, 0.037]
@@ -517,8 +520,8 @@ if __name__ == '__main__':
     ShowFig = True
     StartTime = 10e3
     EndTime = 300e3
-    PopulationConversionConst = [1, 1. / 1]
-    PopulationConversionConst = [1, 0.77928]
+    # PopulationConversionConst = [1, 1. / 1]
+    PopulationConversionConst = [1, 0.90941]
     FitDict = plotReferencedTSweep(DataPath, RabiFile, BackgroundFolder=BackgroundFolder, BackgroundFile=BackgroundFile,
                                    Plus50MHzBackgroundFile=Plus50MHzBackgroundFile,
                                    PopulationConversionConst=PopulationConversionConst,
