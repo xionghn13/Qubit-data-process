@@ -21,7 +21,7 @@ kB = 1.38e-23
 h = 6.626e-34
 ############################################################
 # Vary heralding wait time
-f = Labber.LogFile('C:\SC Lab\Labber\data\Augustus 18\\2020\\03\Data_0302\RB_heralded_AWG_qubitB_sweep_5.hdf5')
+f = Labber.LogFile('C:\SC Lab\Labber\data\Augustus 18\\2020\\03\Data_0302\RB_heralded_AWG_qubitB_sweep_11.hdf5')
 num_blob = 4
 
 width_threshold = 2  # sigma
@@ -29,10 +29,13 @@ gg_estimate = [100, 150]
 
 signal = f.getData('AlazarTech Signal Demodulator - Channel A - Demodulated values')[:, :]
 pulse_randomize = np.unique(f.getData('Multi-Qubit Pulse Generator - Randomize'))
-# sweep_quantity = np.unique(f.getData('IQ 1 - Frequency'))
-# sweep_quantity = np.unique(f.getData('Multi-Qubit Pulse Generator - Amplitude, 2QB #12'))
-sweep_quantity = np.unique(f.getData('Multi-Qubit Pulse Generator - Frequency #1'))
-# sweep_quantity = np.unique(f.getData('Multi-Qubit Pulse Generator - Amplitude #1'))
+sweep_quantity = np.unique(f.getData('IQ 1 - Frequency'))
+# if len(sweep_quantity) == 1:
+#         sweep_quantity = np.unique(f.getData('Multi-Qubit Pulse Generator - Amplitude, 2QB #12'))
+if len(sweep_quantity) == 1:
+    sweep_quantity = np.unique(f.getData('Multi-Qubit Pulse Generator - Frequency #1'))
+if len(sweep_quantity) == 1:
+    sweep_quantity = np.unique(f.getData('Multi-Qubit Pulse Generator - Amplitude #1'))
 
 
 blobs_matrix = np.zeros((len(pulse_randomize), 4, 5))

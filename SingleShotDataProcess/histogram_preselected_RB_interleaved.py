@@ -33,11 +33,11 @@ width_threshold = 2  # sigma
 
 gg_estimate = [100, 150]
 
-p_no_interleaving = 0.971
-p_err_no_interleaving = 0.00178
+p_no_interleaving = 0.9807
+p_err_no_interleaving = 0.00145
 
-p1_no_interleaving = 0.944
-p1_err_no_interleaving = 0.001516
+p1_no_interleaving = 0.9583
+p1_err_no_interleaving = 0.000905
 
 signal = f.getData('AlazarTech Signal Demodulator - Channel A - Demodulated values')[:, :]
 pulse_num = f.getData('Multi-Qubit Pulse Generator - Number of Cliffords')[0]

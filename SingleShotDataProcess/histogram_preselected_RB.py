@@ -25,7 +25,7 @@ kB = 1.38e-23
 h = 6.626e-34
 ############################################################
 # Vary heralding wait time
-f = Labber.LogFile('C:\SC Lab\Labber\data\Augustus 18\\2020\\03\Data_0301\RB_heralded_AWG_qubitB_2.hdf5')
+f = Labber.LogFile('C:\SC Lab\Labber\data\Augustus 18\\2020\\03\Data_0302\RB_heralded_AWG_qubitB.hdf5')
 
 num_blob = 4
 
