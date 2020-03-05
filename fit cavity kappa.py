@@ -8,11 +8,15 @@ from scipy.optimize import curve_fit
 import ExtractDataFunc as edf
 
 
-def fit_lorenztian(frequency, V_abs):
-    V_sq_abs = V_abs ** 2
-    MaxAbs = np.max(V_sq_abs)
-    # V_sq_abs_fit = V_sq_abs / MaxAbs
-    V_sq_abs_fit = V_sq_abs
+def lorenztian(f, f0, kappa, A, B):
+    t = A / ((f - f0) ** 2 + (kappa / 2) ** 2) + B
+    return t
+
+
+def fit_lorenztian(frequency, V_sq_abs):
+    MaxAbs_0 = np.max(V_sq_abs)
+    V_sq_abs_fit = V_sq_abs / MaxAbs_0
+    # V_sq_abs_fit = V_sq_abs
     MaxAbs = np.max(V_sq_abs_fit)
     MinAbs = np.min(V_sq_abs_fit)
     MaxInd = V_sq_abs_fit.argmax()
@@ -22,21 +26,23 @@ def fit_lorenztian(frequency, V_abs):
     B_guess = MinAbs
     A_guess = (MaxAbs - MinAbs) * (kappa_guess / 2) ** 2
 
-    def lorenztian(f, f0, kappa, A, B):
-        t = A / ((f - f0) ** 2 + (kappa / 2) ** 2) + B
-        return t
-
     guess = ([f0_guess, kappa_guess, A_guess, B_guess])
+    # print(guess)
     bounds = (
         (Freq[0], 0, 0, 0),
         (Freq[-1], kappa_guess * 4, MaxAbs * 10, MaxAbs)
     )
 
-    qopt, qcov = curve_fit(lorenztian, frequency, V_sq_abs_fit, guess, bounds=bounds)
-    f0_fit, kappa_fit, A_fit, B_fit = qopt
-    fit_abs = np.sqrt(lorenztian(frequency, f0_fit, kappa_fit, A_fit, B_fit))
+    opt, cov = curve_fit(lorenztian, frequency, V_sq_abs_fit, guess, bounds=bounds)
+    # f0_fit, kappa_fit, A_fit, B_fit = qopt
+    # print(qopt)
+    err = np.sqrt(np.diag(cov))
+    opt[2:] *= MaxAbs_0
+    err[2:] *= MaxAbs_0
+    # print(qopt)
+    fit_abs = lorenztian(frequency, *opt)
 
-    return [qopt, qcov, fit_abs]
+    return [opt, err, fit_abs]
 
 DataFolderName = '10092019_wg5 in 8.5GHz cavity (add coax atts, eccosorb ...)'
 DataPath = 'C:/SC Lab\\Labber\\data\\' + DataFolderName + '/2019/10\Data_1023/'
@@ -67,8 +73,9 @@ if TruncateFreq:
 else:
     FreqTrunc = Freq
     ComplexTrunc = Complex
-
-[qopt, qcov, fit_abs] = fit_lorenztian(FreqTrunc, ComplexTrunc)
+AbsComplex = abs(ComplexTrunc)
+AbsComplex = AbsComplex ** 2
+[qopt, qcov, fit_abs] = fit_lorenztian(FreqTrunc, AbsComplex)
 #
 # AbsComplex = np.abs(ComplexTrunc ** 2)
 # MaxAbs = np.max(AbsComplex)
@@ -109,7 +116,7 @@ f0_fit, kappa_fit, A_fit, B_fit = qopt
 
 fig, ax = plt.subplots()
 leg = ()
-plt.plot(FreqTrunc, ComplexTrunc, '.')
+plt.plot(FreqTrunc, AbsComplex, '.')
 plt.plot(FreqTrunc, fit_abs, 'r')
 # plt.plot(FreqTrunc, AbsGuess, 'y')
 plt.xlabel('freq/GHz', fontsize='x-large')
