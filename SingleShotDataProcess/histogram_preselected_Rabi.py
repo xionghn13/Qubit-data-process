@@ -121,7 +121,7 @@ def histogram_preselected_single_parameter_sweep(sweep_quantity, signal, gg_esti
 
 if __name__ == '__main__':
     file_path = 'C:\SC Lab\Labber\data\Augustus 18\\2020\\03\Data_0305\\'
-    file_name = 'T1_interleaved_heralded_AWG_9.hdf5'
+    file_name = 'T1_interleaved_heralded_AWG_10.hdf5'
     f = Labber.LogFile(file_path + file_name)
 
     gg_estimate = [200, 100]
