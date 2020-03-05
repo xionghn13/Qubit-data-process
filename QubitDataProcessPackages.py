@@ -9,6 +9,7 @@ import ExtractDataFunc as edf
 import h5py
 import time
 import calendar
+import Labber
 
 e = 1.60217662e-19 # C
 hbar = 1.0545718e-34 # m^2 * kg / s
