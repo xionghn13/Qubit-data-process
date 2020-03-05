@@ -4,12 +4,14 @@ import matplotlib.pyplot as plt
 import SubtractBackgroundFunc as sbf
 import QubitSpectrumFunc as qsf
 from scipy.optimize import curve_fit
-import QubitDecayFunc
+import FunctionLib
 import ExtractDataFunc as edf
 import h5py
 import time
 import calendar
 import Labber
+import FittingFunc as ff
+
 
 e = 1.60217662e-19 # C
 hbar = 1.0545718e-34 # m^2 * kg / s

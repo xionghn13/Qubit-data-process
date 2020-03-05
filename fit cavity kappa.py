@@ -6,43 +6,8 @@ import SubtractBackgroundFunc as sbf
 import QubitSpectrumFunc as qsf
 from scipy.optimize import curve_fit
 import ExtractDataFunc as edf
+from FittingFunc import fit_lorenztian
 
-
-def lorenztian(f, f0, kappa, A, B):
-    t = A / ((f - f0) ** 2 + (kappa / 2) ** 2) + B
-    return t
-
-
-def fit_lorenztian(frequency, V_sq_abs):
-    MaxAbs_0 = np.max(V_sq_abs)
-    V_sq_abs_fit = V_sq_abs / MaxAbs_0
-    # V_sq_abs_fit = V_sq_abs
-    MaxAbs = np.max(V_sq_abs_fit)
-    MinAbs = np.min(V_sq_abs_fit)
-    MaxInd = V_sq_abs_fit.argmax()
-    # print(MaxInd)
-    f0_guess = frequency[MaxInd]
-    kappa_guess = (frequency[-1] - frequency[0]) / 4
-    B_guess = MinAbs
-    A_guess = (MaxAbs - MinAbs) * (kappa_guess / 2) ** 2
-
-    guess = ([f0_guess, kappa_guess, A_guess, B_guess])
-    # print(guess)
-    bounds = (
-        (Freq[0], 0, 0, 0),
-        (Freq[-1], kappa_guess * 4, MaxAbs * 10, MaxAbs)
-    )
-
-    opt, cov = curve_fit(lorenztian, frequency, V_sq_abs_fit, guess, bounds=bounds)
-    # f0_fit, kappa_fit, A_fit, B_fit = qopt
-    # print(qopt)
-    err = np.sqrt(np.diag(cov))
-    opt[2:] *= MaxAbs_0
-    err[2:] *= MaxAbs_0
-    # print(qopt)
-    fit_abs = lorenztian(frequency, *opt)
-
-    return [opt, err, fit_abs]
 
 DataFolderName = '10092019_wg5 in 8.5GHz cavity (add coax atts, eccosorb ...)'
 DataPath = 'C:/SC Lab\\Labber\\data\\' + DataFolderName + '/2019/10\Data_1023/'

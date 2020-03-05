@@ -4,7 +4,7 @@ from matplotlib import pyplot as plt
 import SingleShotDataProcess.SingleShotFunc as ssf
 import SingleShotDataProcess.FitGaussians as fg
 from scipy.optimize import curve_fit
-import QubitDecayFunc as qdf
+import FunctionLib as qdf
 
 def osc_func(x, amp, freq, offset1, offset2):
     return amp * np.cos(2 * np.pi * freq * (x - offset1)) - offset2

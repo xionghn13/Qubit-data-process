@@ -1,5 +1,5 @@
 from QubitDataProcessPackages import *
-from QubitDecayFunc import T1_curve, rabi_curve, AutoRotate, DoubleExp_curve, TwoExp_curve
+from FunctionLib import T1_curve, rabi_curve, AutoRotate, DoubleExp_curve, TwoExp_curve
 import os
 
 

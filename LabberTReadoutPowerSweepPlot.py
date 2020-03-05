@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import SubtractBackgroundFunc as sbf
 import QubitSpectrumFunc as qsf
 from scipy.optimize import curve_fit
-from QubitDecayFunc import T1_curve, rabi_curve, DoubleExp_curve, FitTransientTime, AutoRotate
+from FunctionLib import T1_curve, rabi_curve, DoubleExp_curve, FitTransientTime, AutoRotate
 import ExtractDataFunc as edf
 import h5py
 

@@ -5,255 +5,137 @@
       <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/Qubit-data-process.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Qubit-data-process.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CalculateQubitGeometry.py" beforeDir="false" afterPath="$PROJECT_DIR$/CalculateQubitGeometry.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CheckBackground.py" beforeDir="false" afterPath="$PROJECT_DIR$/CheckBackground.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CoherenceDriftPlot.py" beforeDir="false" afterPath="$PROJECT_DIR$/CoherenceDriftPlot.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CoherenceVSFluxQuantaPlot.py" beforeDir="false" afterPath="$PROJECT_DIR$/CoherenceVSFluxQuantaPlot.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CoherenceVSFreqPlot.py" beforeDir="false" afterPath="$PROJECT_DIR$/CoherenceVSFreqPlot.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DirectDispersiveShiftMeasurement.py" beforeDir="false" afterPath="$PROJECT_DIR$/DirectDispersiveShiftMeasurement.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dispersive_shifts.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dispersive_shifts.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DoubleSingleExpFitInOnePlot.py" beforeDir="false" afterPath="$PROJECT_DIR$/DoubleSingleExpFitInOnePlot.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ExtractDataFunc.py" beforeDir="false" afterPath="$PROJECT_DIR$/ExtractDataFunc.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ExtractFileNames.py" beforeDir="false" afterPath="$PROJECT_DIR$/ExtractFileNames.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FISweepPlot.py" beforeDir="false" afterPath="$PROJECT_DIR$/FISweepPlot.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FPSweepPlot.py" beforeDir="false" afterPath="$PROJECT_DIR$/FPSweepPlot.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FitGaussians.py" beforeDir="false" afterPath="$PROJECT_DIR$/FitGaussians.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FluxDriftPlot0628.py" beforeDir="false" afterPath="$PROJECT_DIR$/FluxDriftPlot0628.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Fluxonium022319_energies.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Fluxonium022319_energies.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/constants.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/constants.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/devices.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/devices.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/model_hamiltonians.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/model_hamiltonians.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/plotting.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/plotting.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity 0612 cd/anchor_points.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity 0612 cd/anchor_points.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity 0612 cd/current to flux quanta.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity 0612 cd/current to flux quanta.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity 0612 cd/fit_fluxonium.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity 0612 cd/fit_fluxonium.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity 0612 cd/fit_fluxonium_coupled_to_oscillators.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity 0612 cd/fit_fluxonium_coupled_to_oscillators.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity 0612 cd/fit_fluxonium_coupled_to_oscillators_no_parallel.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity 0612 cd/fit_fluxonium_coupled_to_oscillators_no_parallel.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity 0612 cd/plot_anchor_points.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity 0612 cd/plot_anchor_points.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity 0612 cd/plot_spectrum.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity 0612 cd/plot_spectrum.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity 0612 cd/plot_spectrum_and_fit_fluxonium.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity 0612 cd/plot_spectrum_and_fit_fluxonium.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity 0612 cd/plot_spectrum_and_fit_fluxonium_coupled_to_oscillators.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity 0612 cd/plot_spectrum_and_fit_fluxonium_coupled_to_oscillators.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity 0710 cd/anchor_points.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity 0710 cd/anchor_points.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity 0710 cd/current to flux quanta.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity 0710 cd/current to flux quanta.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity 0710 cd/fit_fluxonium.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity 0710 cd/fit_fluxonium.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity 0710 cd/fit_fluxonium_coupled_to_oscillators.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity 0710 cd/fit_fluxonium_coupled_to_oscillators.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity 0710 cd/fit_fluxonium_coupled_to_oscillators_no_parallel.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity 0710 cd/fit_fluxonium_coupled_to_oscillators_no_parallel.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity 0710 cd/plot_anchor_points.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity 0710 cd/plot_anchor_points.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity 0710 cd/plot_spectrum.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity 0710 cd/plot_spectrum.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity 0710 cd/plot_spectrum_and_fit_fluxonium.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity 0710 cd/plot_spectrum_and_fit_fluxonium.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity 0710 cd/plot_spectrum_and_fit_fluxonium_coupled_to_oscillators.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity 0710 cd/plot_spectrum_and_fit_fluxonium_coupled_to_oscillators.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity 0803 cd/anchor_points.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity 0803 cd/anchor_points.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity 0803 cd/current to flux quanta.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity 0803 cd/current to flux quanta.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity 0803 cd/fit_fluxonium.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity 0803 cd/fit_fluxonium.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity 0803 cd/fit_fluxonium_coupled_to_oscillators.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity 0803 cd/fit_fluxonium_coupled_to_oscillators.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity 0803 cd/fit_fluxonium_coupled_to_oscillators_no_parallel.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity 0803 cd/fit_fluxonium_coupled_to_oscillators_no_parallel.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity 0803 cd/plot_anchor_points.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity 0803 cd/plot_anchor_points.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity 0803 cd/plot_spectrum.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity 0803 cd/plot_spectrum.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity 0803 cd/plot_spectrum_and_fit_fluxonium.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity 0803 cd/plot_spectrum_and_fit_fluxonium.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity 0803 cd/plot_spectrum_and_fit_fluxonium_coupled_to_oscillators.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity 0803 cd/plot_spectrum_and_fit_fluxonium_coupled_to_oscillators.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity 0830 cd/anchor_points.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity 0830 cd/anchor_points.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity 0830 cd/current to flux quanta.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity 0830 cd/current to flux quanta.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity 0830 cd/fit_fluxonium.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity 0830 cd/fit_fluxonium.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity 0830 cd/fit_fluxonium_coupled_to_oscillators.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity 0830 cd/fit_fluxonium_coupled_to_oscillators.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity 0830 cd/fit_fluxonium_coupled_to_oscillators_no_parallel.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity 0830 cd/fit_fluxonium_coupled_to_oscillators_no_parallel.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity 0830 cd/plot_anchor_points.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity 0830 cd/plot_anchor_points.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity 0830 cd/plot_spectrum.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity 0830 cd/plot_spectrum.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity 0830 cd/plot_spectrum_and_fit_fluxonium.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity 0830 cd/plot_spectrum_and_fit_fluxonium.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity 0830 cd/plot_spectrum_and_fit_fluxonium_coupled_to_oscillators.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity 0830 cd/plot_spectrum_and_fit_fluxonium_coupled_to_oscillators.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity off center/anchor_points.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity off center/anchor_points.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity off center/current to flux quanta.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity off center/current to flux quanta.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity off center/fit_fluxonium.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity off center/fit_fluxonium.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity off center/fit_fluxonium_coupled_to_oscillators.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity off center/fit_fluxonium_coupled_to_oscillators.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity off center/fit_fluxonium_coupled_to_oscillators_no_parallel.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity off center/fit_fluxonium_coupled_to_oscillators_no_parallel.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity off center/plot_anchor_points.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity off center/plot_anchor_points.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity off center/plot_spectrum.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity off center/plot_spectrum.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity off center/plot_spectrum_and_fit_fluxonium.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity off center/plot_spectrum_and_fit_fluxonium.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity off center/plot_spectrum_and_fit_fluxonium_coupled_to_oscillators.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity off center/plot_spectrum_and_fit_fluxonium_coupled_to_oscillators.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity/anchor_points.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity/anchor_points.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity/current to flux quanta.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity/current to flux quanta.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity/fit_fluxonium.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity/fit_fluxonium.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity/fit_fluxonium_coupled_to_oscillators.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity/fit_fluxonium_coupled_to_oscillators.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity/fit_fluxonium_coupled_to_oscillators_no_parallel.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity/fit_fluxonium_coupled_to_oscillators_no_parallel.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity/plot_anchor_points.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity/plot_anchor_points.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity/plot_spectrum.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity/plot_spectrum.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity/plot_spectrum_and_fit_fluxonium.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity/plot_spectrum_and_fit_fluxonium.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity/plot_spectrum_and_fit_fluxonium_coupled_to_oscillators.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619 in 8.5GHz cavity/plot_spectrum_and_fit_fluxonium_coupled_to_oscillators.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619/anchor_points.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619/anchor_points.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619/current to flux quanta.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619/current to flux quanta.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619/fit_fluxonium.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619/fit_fluxonium.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619/fit_fluxonium_coupled_to_oscillators.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619/fit_fluxonium_coupled_to_oscillators.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619/fit_fluxonium_coupled_to_oscillators_no_parallel.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619/fit_fluxonium_coupled_to_oscillators_no_parallel.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619/plot_anchor_points.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619/plot_anchor_points.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619/plot_spectrum.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619/plot_spectrum.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619/plot_spectrum_and_fit_fluxonium.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619/plot_spectrum_and_fit_fluxonium.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619/plot_spectrum_and_fit_fluxonium_coupled_to_oscillators.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium032619/plot_spectrum_and_fit_fluxonium_coupled_to_oscillators.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium042619/anchor_points.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium042619/anchor_points.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium042619/current to flux quanta.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium042619/current to flux quanta.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium042619/fit_fluxonium.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium042619/fit_fluxonium.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium042619/fit_fluxonium_coupled_to_oscillators.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium042619/fit_fluxonium_coupled_to_oscillators.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium042619/fit_fluxonium_coupled_to_oscillators_no_parallel.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium042619/fit_fluxonium_coupled_to_oscillators_no_parallel.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium042619/plot_anchor_points.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium042619/plot_anchor_points.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium042619/plot_spectrum.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium042619/plot_spectrum.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium042619/plot_spectrum_and_fit_fluxonium.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium042619/plot_spectrum_and_fit_fluxonium.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium042619/plot_spectrum_and_fit_fluxonium_coupled_to_oscillators.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/Fluxonium042619/plot_spectrum_and_fit_fluxonium_coupled_to_oscillators.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/QD2 in 12GHz cavity/anchor_points.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/QD2 in 12GHz cavity/anchor_points.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/QD2 in 12GHz cavity/current to flux quanta.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/QD2 in 12GHz cavity/current to flux quanta.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/QD2 in 12GHz cavity/fit_fluxonium.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/QD2 in 12GHz cavity/fit_fluxonium.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/QD2 in 12GHz cavity/fit_fluxonium_coupled_to_oscillators.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/QD2 in 12GHz cavity/fit_fluxonium_coupled_to_oscillators.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/QD2 in 12GHz cavity/fit_fluxonium_coupled_to_oscillators_no_parallel.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/QD2 in 12GHz cavity/fit_fluxonium_coupled_to_oscillators_no_parallel.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/QD2 in 12GHz cavity/plot_anchor_points.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/QD2 in 12GHz cavity/plot_anchor_points.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/QD2 in 12GHz cavity/plot_spectrum.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/QD2 in 12GHz cavity/plot_spectrum.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/QD2 in 12GHz cavity/plot_spectrum_and_fit_fluxonium.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/QD2 in 12GHz cavity/plot_spectrum_and_fit_fluxonium.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/QD2 in 12GHz cavity/plot_spectrum_and_fit_fluxonium_coupled_to_oscillators.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/QD2 in 12GHz cavity/plot_spectrum_and_fit_fluxonium_coupled_to_oscillators.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/fluxonium022319/anchor_points.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/fluxonium022319/anchor_points.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/fluxonium022319/current to flux quanta.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/fluxonium022319/current to flux quanta.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/fluxonium022319/fit_fluxonium.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/fluxonium022319/fit_fluxonium.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/fluxonium022319/fit_fluxonium_coupled_to_oscillators.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/fluxonium022319/fit_fluxonium_coupled_to_oscillators.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/fluxonium022319/fit_fluxonium_coupled_to_oscillators_no_parallel.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/fluxonium022319/fit_fluxonium_coupled_to_oscillators_no_parallel.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/fluxonium022319/plot_anchor_points.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/fluxonium022319/plot_anchor_points.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/fluxonium022319/plot_spectrum.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/fluxonium022319/plot_spectrum.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/fluxonium022319/plot_spectrum_and_fit_fluxonium.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/fluxonium022319/plot_spectrum_and_fit_fluxonium.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/fluxonium022319/plot_spectrum_and_fit_fluxonium_coupled_to_oscillators.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/fluxonium022319/plot_spectrum_and_fit_fluxonium_coupled_to_oscillators.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/simple_hamiltonians.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/simple_hamiltonians.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/utilities.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/utilities.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/ziggy4 in 6.5GHz waveguide with cold att/anchor_points.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/ziggy4 in 6.5GHz waveguide with cold att/anchor_points.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/ziggy4 in 6.5GHz waveguide with cold att/current to flux quanta.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/ziggy4 in 6.5GHz waveguide with cold att/current to flux quanta.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/ziggy4 in 6.5GHz waveguide with cold att/fit_fluxonium.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/ziggy4 in 6.5GHz waveguide with cold att/fit_fluxonium.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/ziggy4 in 6.5GHz waveguide with cold att/fit_fluxonium_coupled_to_oscillators.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/ziggy4 in 6.5GHz waveguide with cold att/fit_fluxonium_coupled_to_oscillators.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/ziggy4 in 6.5GHz waveguide with cold att/fit_fluxonium_coupled_to_oscillators_no_parallel.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/ziggy4 in 6.5GHz waveguide with cold att/fit_fluxonium_coupled_to_oscillators_no_parallel.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/ziggy4 in 6.5GHz waveguide with cold att/plot_anchor_points.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/ziggy4 in 6.5GHz waveguide with cold att/plot_anchor_points.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/ziggy4 in 6.5GHz waveguide with cold att/plot_spectrum.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/ziggy4 in 6.5GHz waveguide with cold att/plot_spectrum.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/ziggy4 in 6.5GHz waveguide with cold att/plot_spectrum_and_fit_fluxonium.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/ziggy4 in 6.5GHz waveguide with cold att/plot_spectrum_and_fit_fluxonium.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/ziggy4 in 6.5GHz waveguide with cold att/plot_spectrum_and_fit_fluxonium_coupled_to_oscillators.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples/ziggy4 in 6.5GHz waveguide with cold att/plot_spectrum_and_fit_fluxonium_coupled_to_oscillators.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Long/Data_analysis-master/.idea/Data analysis.iml" beforeDir="false" afterPath="$PROJECT_DIR$/From Long/Data_analysis-master/.idea/Data analysis.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Long/Data_analysis-master/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/From Long/Data_analysis-master/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Long/Data_analysis-master/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/From Long/Data_analysis-master/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Long/Data_analysis-master/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/From Long/Data_analysis-master/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Long/Data_analysis-master/Data extraction step 1.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Long/Data_analysis-master/Data extraction step 1.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Long/Data_analysis-master/Data extraction step 2.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Long/Data_analysis-master/Data extraction step 2.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Long/Data_analysis-master/Data vs theory.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Long/Data_analysis-master/Data vs theory.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Long/Data_analysis-master/Intensity plot plasmon line alt.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Long/Data_analysis-master/Intensity plot plasmon line alt.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Long/Data_analysis-master/Intensity plot plasmon line.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Long/Data_analysis-master/Intensity plot plasmon line.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Long/Data_analysis-master/Intensity slicing.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Long/Data_analysis-master/Intensity slicing.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Long/Data_analysis-master/One_tone_fixedCurr_plot.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Long/Data_analysis-master/One_tone_fixedCurr_plot.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Long/Data_analysis-master/Plasmon line data extraction step 1.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Long/Data_analysis-master/Plasmon line data extraction step 1.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Long/Data_analysis-master/Plasmon line data extraction step 2 coupled.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Long/Data_analysis-master/Plasmon line data extraction step 2 coupled.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Long/Data_analysis-master/Plasmon line data extraction step 2.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Long/Data_analysis-master/Plasmon line data extraction step 2.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Long/Data_analysis-master/T1_automation_code.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Long/Data_analysis-master/T1_automation_code.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Long/Data_analysis-master/T1_loop_fit.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Long/Data_analysis-master/T1_loop_fit.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Long/Data_analysis-master/Time_meas_summary.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Long/Data_analysis-master/Time_meas_summary.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Long/Data_analysis-master/Two_tone_spec_intensity_plot.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Long/Data_analysis-master/Two_tone_spec_intensity_plot.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Long/Data_analysis-master/Two_tone_spec_intensity_slice.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Long/Data_analysis-master/Two_tone_spec_intensity_slice.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Long/Data_analysis-master/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Long/Data_analysis-master/test.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Long/Data_analysis-master/test1.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Long/Data_analysis-master/test1.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Long/Fluxonium-master/.idea/Fluxonium.iml" beforeDir="false" afterPath="$PROJECT_DIR$/From Long/Fluxonium-master/.idea/Fluxonium.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Long/Fluxonium-master/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/From Long/Fluxonium-master/.idea/encodings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Long/Fluxonium-master/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/From Long/Fluxonium-master/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Long/Fluxonium-master/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/From Long/Fluxonium-master/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Long/Fluxonium-master/Fluxonium_hamiltonians/Single_small_junction.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Long/Fluxonium-master/Fluxonium_hamiltonians/Single_small_junction.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Long/Fluxonium-master/Fluxonium_hamiltonians/Squid_small_junctions.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Long/Fluxonium-master/Fluxonium_hamiltonians/Squid_small_junctions.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Long/Fluxonium-master/Paper plots/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Long/Fluxonium-master/Paper plots/test.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Long/Fluxonium-master/Paper plots/test0.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Long/Fluxonium-master/Paper plots/test0.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Long/Fluxonium-master/Paper plots/test1.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Long/Fluxonium-master/Paper plots/test1.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Long/Fluxonium-master/Paper plots/test10.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Long/Fluxonium-master/Paper plots/test10.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Long/Fluxonium-master/Paper plots/test2.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Long/Fluxonium-master/Paper plots/test2.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Long/Fluxonium-master/Paper plots/test3.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Long/Fluxonium-master/Paper plots/test3.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Long/Fluxonium-master/Paper plots/test4.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Long/Fluxonium-master/Paper plots/test4.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Long/Fluxonium-master/Paper plots/test5.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Long/Fluxonium-master/Paper plots/test5.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Long/Fluxonium-master/Paper plots/test6.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Long/Fluxonium-master/Paper plots/test6.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Long/Fluxonium-master/Paper plots/test7.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Long/Fluxonium-master/Paper plots/test7.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Long/Fluxonium-master/Paper plots/test8.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Long/Fluxonium-master/Paper plots/test8.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Long/Fluxonium-master/Paper plots/test9.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Long/Fluxonium-master/Paper plots/test9.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Long/Fluxonium-master/Plotting/Angmar.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Long/Fluxonium-master/Plotting/Angmar.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Long/Fluxonium-master/Plotting/Mordor.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Long/Fluxonium-master/Plotting/Mordor.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Long/Fluxonium-master/Plotting/Rivendell.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Long/Fluxonium-master/Plotting/Rivendell.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Long/Fluxonium-master/Plotting/Shire.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Long/Fluxonium-master/Plotting/Shire.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Long/Fluxonium-master/Scripts/Dispersive_shifts.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Long/Fluxonium-master/Scripts/Dispersive_shifts.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Long/Fluxonium-master/Scripts/Dispersive_shifts_scan.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Long/Fluxonium-master/Scripts/Dispersive_shifts_scan.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Long/Fluxonium-master/Scripts/Dispersive_shifts_wDrive.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Long/Fluxonium-master/Scripts/Dispersive_shifts_wDrive.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Long/Fluxonium-master/Scripts/Dispersive_shifts_wSquid.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Long/Fluxonium-master/Scripts/Dispersive_shifts_wSquid.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Long/Fluxonium-master/Scripts/Matrix_element_wSquid.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Long/Fluxonium-master/Scripts/Matrix_element_wSquid.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Long/Fluxonium-master/Scripts/Matrix_elements.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Long/Fluxonium-master/Scripts/Matrix_elements.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Long/Fluxonium-master/Scripts/Plotting.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Long/Fluxonium-master/Scripts/Plotting.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Long/Fluxonium-master/Scripts/Rabi_wSquid.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Long/Fluxonium-master/Scripts/Rabi_wSquid.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Long/Fluxonium-master/Scripts/Relaxation.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Long/Fluxonium-master/Scripts/Relaxation.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Long/Fluxonium-master/Scripts/Relaxation_wSquid.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Long/Fluxonium-master/Scripts/Relaxation_wSquid.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Long/Fluxonium-master/Scripts/Sensitivity.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Long/Fluxonium-master/Scripts/Sensitivity.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Long/Fluxonium-master/Scripts/Sensitivity_wSquid.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Long/Fluxonium-master/Scripts/Sensitivity_wSquid.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Long/Fluxonium-master/Scripts/Spec_potential.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Long/Fluxonium-master/Scripts/Spec_potential.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Long/Fluxonium-master/Scripts/Spec_potential_wSquid.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Long/Fluxonium-master/Scripts/Spec_potential_wSquid.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Long/Fluxonium-master/Scripts/Spec_potential_wSquid_gif.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Long/Fluxonium-master/Scripts/Spec_potential_wSquid_gif.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Long/Fluxonium-master/Scripts/Spectroscopy_fit.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Long/Fluxonium-master/Scripts/Spectroscopy_fit.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Long/Fluxonium-master/Scripts/Spectroscopy_fit_wSquid.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Long/Fluxonium-master/Scripts/Spectroscopy_fit_wSquid.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Long/Fluxonium-master/Scripts/Spectroscopy_fit_wSquid_coupled.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Long/Fluxonium-master/Scripts/Spectroscopy_fit_wSquid_coupled.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Long/Fluxonium-master/Scripts/Spectrum.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Long/Fluxonium-master/Scripts/Spectrum.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Long/Fluxonium-master/Scripts/Spectrum_coupled.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Long/Fluxonium-master/Scripts/Spectrum_coupled.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Long/Fluxonium-master/Scripts/Spectrum_wDrive.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Long/Fluxonium-master/Scripts/Spectrum_wDrive.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Long/Fluxonium-master/Scripts/Spectrum_wSquid.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Long/Fluxonium-master/Scripts/Spectrum_wSquid.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Long/Fluxonium-master/Scripts/Spectrum_wSquid_coupled.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Long/Fluxonium-master/Scripts/Spectrum_wSquid_coupled.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Long/Fluxonium-master/Scripts/Wave_function.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Long/Fluxonium-master/Scripts/Wave_function.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/From Long/Fluxonium-master/Scripts/Wave_function_wSquid.py" beforeDir="false" afterPath="$PROJECT_DIR$/From Long/Fluxonium-master/Scripts/Wave_function_wSquid.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/LabberRepeatedTSweepPlot.py" beforeDir="false" afterPath="$PROJECT_DIR$/LabberRepeatedTSweepPlot.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/LabberTPSweepPlot.py" beforeDir="false" afterPath="$PROJECT_DIR$/LabberTPSweepPlot.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/LabberTReadoutPowerSweepPlot.py" beforeDir="false" afterPath="$PROJECT_DIR$/LabberTReadoutPowerSweepPlot.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LoadFittingOutput.py" beforeDir="false" afterPath="$PROJECT_DIR$/LoadFittingOutput.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MLE.py" beforeDir="false" afterPath="$PROJECT_DIR$/MLE.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MasterEqSimulation.py" beforeDir="false" afterPath="$PROJECT_DIR$/MasterEqSimulation.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MeasurementControlFunc.py" beforeDir="false" afterPath="$PROJECT_DIR$/MeasurementControlFunc.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MultiPopulationPlot.py" beforeDir="false" afterPath="$PROJECT_DIR$/MultiPopulationPlot.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MultiTrialCoherenceVSFreqPlot.py" beforeDir="false" afterPath="$PROJECT_DIR$/MultiTrialCoherenceVSFreqPlot.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PaperDataProcess/Fluorescence shelving of a superconducting circuit/Fluorescence shelving of a superconducting circuit.py" beforeDir="false" afterPath="$PROJECT_DIR$/PaperDataProcess/Fluorescence shelving of a superconducting circuit/Fluorescence shelving of a superconducting circuit.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PaperDataProcess/Fluorescence shelving of a superconducting circuit/plot.nb" beforeDir="false" afterPath="$PROJECT_DIR$/PaperDataProcess/Fluorescence shelving of a superconducting circuit/plot.nb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PaperDataProcess/Fluorescence shelving of a superconducting circuit/rerefinishingthepaper/Data analysis for Rabi 01 and Rabi02 with 02 pumping.nb" beforeDir="false" afterPath="$PROJECT_DIR$/PaperDataProcess/Fluorescence shelving of a superconducting circuit/rerefinishingthepaper/Data analysis for Rabi 01 and Rabi02 with 02 pumping.nb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PaperDataProcess/Fluorescence shelving of a superconducting circuit/rerefinishingthepaper/Data analysis for T1 of 01 with 02 pumping.nb" beforeDir="false" afterPath="$PROJECT_DIR$/PaperDataProcess/Fluorescence shelving of a superconducting circuit/rerefinishingthepaper/Data analysis for T1 of 01 with 02 pumping.nb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PaperDataProcess/Fluorescence shelving of a superconducting circuit/rerefinishingthepaper/Data analysis for T2 echo with 02 pumping.nb" beforeDir="false" afterPath="$PROJECT_DIR$/PaperDataProcess/Fluorescence shelving of a superconducting circuit/rerefinishingthepaper/Data analysis for T2 echo with 02 pumping.nb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PaperDataProcess/Fluorescence shelving of a superconducting circuit/rerefinishingthepaper/Data analysis for branching ratio.nb" beforeDir="false" afterPath="$PROJECT_DIR$/PaperDataProcess/Fluorescence shelving of a superconducting circuit/rerefinishingthepaper/Data analysis for branching ratio.nb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PaperDataProcess/Fluorescence shelving of a superconducting circuit/rerefinishingthepaper/Data analysis for circles.nb" beforeDir="false" afterPath="$PROJECT_DIR$/PaperDataProcess/Fluorescence shelving of a superconducting circuit/rerefinishingthepaper/Data analysis for circles.nb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PlotFridgeTemp.py" beforeDir="false" afterPath="$PROJECT_DIR$/PlotFridgeTemp.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PlotJPMagnet.py" beforeDir="false" afterPath="$PROJECT_DIR$/PlotJPMagnet.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PrintCoherenceToExcel.py" beforeDir="false" afterPath="$PROJECT_DIR$/PrintCoherenceToExcel.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PrintRabiInfoToExcel.py" beforeDir="false" afterPath="$PROJECT_DIR$/PrintRabiInfoToExcel.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Quantum_state_tomography.py" beforeDir="false" afterPath="$PROJECT_DIR$/Quantum_state_tomography.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PaperDataProcess/Fluorescence shelving of a superconducting circuit/average_population_measurements.py" beforeDir="false" afterPath="$PROJECT_DIR$/PaperDataProcess/Fluorescence shelving of a superconducting circuit/average_population_measurements.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/QubitDataProcessPackages.py" beforeDir="false" afterPath="$PROJECT_DIR$/QubitDataProcessPackages.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/QubitDecayFunc.py" beforeDir="false" afterPath="$PROJECT_DIR$/QubitDecayFunc.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/QubitDecayRateSimulation.py" beforeDir="false" afterPath="$PROJECT_DIR$/QubitDecayRateSimulation.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/QubitSpectrumFunc.py" beforeDir="false" afterPath="$PROJECT_DIR$/QubitSpectrumFunc.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/RabiAmpVSDelayPlot.py" beforeDir="false" afterPath="$PROJECT_DIR$/RabiAmpVSDelayPlot.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/RabiAmpVSFreqPlot.py" beforeDir="false" afterPath="$PROJECT_DIR$/RabiAmpVSFreqPlot.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/QubitDecayFunc.py" beforeDir="false" afterPath="$PROJECT_DIR$/FunctionLib.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ReferencedTPSweepPlot.py" beforeDir="false" afterPath="$PROJECT_DIR$/ReferencedTPSweepPlot.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ReferencedTSweepPlot.py" beforeDir="false" afterPath="$PROJECT_DIR$/ReferencedTSweepPlot.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Sandbox.py" beforeDir="false" afterPath="$PROJECT_DIR$/Sandbox.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Script_TimeDomain.py" beforeDir="false" afterPath="$PROJECT_DIR$/Script_TimeDomain.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Script_TwoTone-TimeDomain.py" beforeDir="false" afterPath="$PROJECT_DIR$/Script_TwoTone-TimeDomain.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Script_TwoTone.py" beforeDir="false" afterPath="$PROJECT_DIR$/Script_TwoTone.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SimulateCircle.py" beforeDir="false" afterPath="$PROJECT_DIR$/SimulateCircle.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Single_small_junction.py" beforeDir="false" afterPath="$PROJECT_DIR$/Single_small_junction.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SpectrumFit.py" beforeDir="false" afterPath="$PROJECT_DIR$/SpectrumFit.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Spectrum_coupled.py" beforeDir="false" afterPath="$PROJECT_DIR$/Spectrum_coupled.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SubtractBackgroundFunc.py" beforeDir="false" afterPath="$PROJECT_DIR$/SubtractBackgroundFunc.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SingleShotDataProcess/histogram_Rabi.py" beforeDir="false" afterPath="$PROJECT_DIR$/SingleShotDataProcess/histogram_Rabi.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SingleShotDataProcess/histogram_preselected_RB.py" beforeDir="false" afterPath="$PROJECT_DIR$/SingleShotDataProcess/histogram_preselected_RB.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SingleShotDataProcess/histogram_preselected_RB_interleaved.py" beforeDir="false" afterPath="$PROJECT_DIR$/SingleShotDataProcess/histogram_preselected_RB_interleaved.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SingleShotDataProcess/histogram_preselected_RB_tune_up.py" beforeDir="false" afterPath="$PROJECT_DIR$/SingleShotDataProcess/histogram_preselected_RB_tune_up.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SingleShotDataProcess/histogram_preselected_Rabi.py" beforeDir="false" afterPath="$PROJECT_DIR$/SingleShotDataProcess/histogram_preselected_Rabi.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SingleShotDataProcess/histogram_preselected_two_qubit_RB.py" beforeDir="false" afterPath="$PROJECT_DIR$/SingleShotDataProcess/histogram_preselected_two_qubit_RB.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SingleShotDataProcess/pulse_train_tune_up_histogram_preselected.py" beforeDir="false" afterPath="$PROJECT_DIR$/SingleShotDataProcess/pulse_train_tune_up_histogram_preselected.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/T1VSSaturationPulseLength.py" beforeDir="false" afterPath="$PROJECT_DIR$/T1VSSaturationPulseLength.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ThermalPhotonDephasing.py" beforeDir="false" afterPath="$PROJECT_DIR$/ThermalPhotonDephasing.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/VNAExcelPlot.py" beforeDir="false" afterPath="$PROJECT_DIR$/VNAExcelPlot.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/anti-crossing fit.py" beforeDir="false" afterPath="$PROJECT_DIR$/anti-crossing fit.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fit cavity Q.py" beforeDir="false" afterPath="$PROJECT_DIR$/fit cavity Q.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TSweepPlot.py" beforeDir="false" afterPath="$PROJECT_DIR$/TSweepPlot.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/fit cavity kappa.py" beforeDir="false" afterPath="$PROJECT_DIR$/fit cavity kappa.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fluxonium parameters.py" beforeDir="false" afterPath="$PROJECT_DIR$/fluxonium parameters.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/get  file list.py" beforeDir="false" afterPath="$PROJECT_DIR$/get  file list.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/temperature simulation.py" beforeDir="false" afterPath="$PROJECT_DIR$/temperature simulation.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/temperature.py" beforeDir="false" afterPath="$PROJECT_DIR$/temperature.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test curve_fit.py" beforeDir="false" afterPath="$PROJECT_DIR$/test curve_fit.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test image to string.py" beforeDir="false" afterPath="$PROJECT_DIR$/test image to string.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test python.py" beforeDir="false" afterPath="$PROJECT_DIR$/test python.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test time.py" beforeDir="false" afterPath="$PROJECT_DIR$/test time.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FUSProjectUsageTrigger">
+    <session id="-742135209">
+      <usages-collector id="statistics.file.extensions.open">
+        <counts>
+          <entry key="py" value="4" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.open">
+        <counts>
+          <entry key="Python" value="4" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.edit">
+        <counts>
+          <entry key="dummy" value="11" />
+          <entry key="py" value="149" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.edit">
+        <counts>
+          <entry key="PLAIN_TEXT" value="11" />
+          <entry key="Python" value="149" />
+        </counts>
+      </usages-collector>
+    </session>
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/fit cavity kappa.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="170">
+              <caret line="10" selection-start-line="10" selection-end-line="10" />
+              <folding>
+                <element signature="e#0#19#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/FunctionLib.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="772">
+              <caret line="46" column="41" selection-start-line="46" selection-start-column="41" selection-end-line="46" selection-end-column="41" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/SingleShotDataProcess/histogram_preselected_Rabi.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="58">
+              <caret line="17" column="56" selection-start-line="17" selection-end-line="18" />
+              <folding>
+                <element signature="e#0#18#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/DataManipulationFunc.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state>
+              <caret column="18" selection-start-column="18" selection-end-column="18" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/FittingFunc.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="459">
+              <caret line="27" column="18" selection-start-line="27" selection-start-column="4" selection-end-line="27" selection-end-column="18" />
+              <folding>
+                <element signature="e#0#25#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/QubitDataProcessPackages.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="187">
+              <caret line="11" column="13" lean-forward="true" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/ExtractDataFunc.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="442">
+              <caret line="56" column="34" selection-start-line="56" selection-start-column="34" selection-end-line="56" selection-end-column="34" />
+              <folding>
+                <element signature="e#0#18#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -265,11 +147,52 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/QubitDecayFunc.py" />
+        <option value="$PROJECT_DIR$/FittingFunc.py" />
+        <option value="$PROJECT_DIR$/DataManipulationFunc.py" />
+        <option value="$PROJECT_DIR$/FunctionLib.py" />
+        <option value="$PROJECT_DIR$/QubitDataProcessPackages.py" />
+        <option value="$PROJECT_DIR$/fit cavity kappa.py" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="-7" />
+    <option name="width" value="974" />
+    <option name="height" value="1047" />
+  </component>
   <component name="ProjectId" id="1Ryu3cYqO02LTnSGbS2vqw1UcbT" />
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="Qubit-data-process" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Qubit-data-process" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Qubit-data-process" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Qubit-data-process" type="462c0819:PsiDirectoryNode" />
+              <item name="SingleShotDataProcess" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="Scope" />
+    </panes>
+  </component>
   <component name="PropertiesComponent">
     <property name="last_opened_file_path" value="$PROJECT_DIR$/From Ivan/fluxonium-waveguide" />
     <property name="restartRequiresConfirmation" value="false" />
-    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -400,6 +323,13 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <list>
+      <item itemvalue="Python.FPSweepPlot" />
+      <item itemvalue="Python.Fluorescence shelving of a superconducting circuit (1)" />
+      <item itemvalue="Python.LabberTPSweepPlot" />
+      <item itemvalue="Python.MultiPopulationPlot" />
+      <item itemvalue="Python.ReferencedTSweepPlot" />
+    </list>
     <recent_temporary>
       <list>
         <item itemvalue="Python.Fluorescence shelving of a superconducting circuit (1)" />
@@ -423,12 +353,41 @@
     </task>
     <servers />
   </component>
+  <component name="ToolWindowManager">
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <editor active="true" />
+    <layout>
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24973656" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Run" order="2" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Version Control" order="7" />
+      <window_info anchor="bottom" id="Terminal" order="8" />
+      <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
+      <window_info anchor="bottom" id="Python Console" order="10" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+    </layout>
+  </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
       <map>
         <entry key="MAIN">
           <value>
             <State>
+              <option name="RECENTLY_FILTERED_USER_GROUPS">
+                <collection />
+              </option>
+              <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
+                <collection />
+              </option>
               <option name="COLUMN_ORDER" />
             </State>
           </value>
@@ -446,5 +405,68 @@
         </breakpoint>
       </default-breakpoints>
     </breakpoint-manager>
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/ExtractDataFunc.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="442">
+          <caret line="56" column="34" selection-start-line="56" selection-start-column="34" selection-end-line="56" selection-end-column="34" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fit cavity kappa.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="10" selection-start-line="10" selection-end-line="10" />
+          <folding>
+            <element signature="e#0#19#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/FittingFunc.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="459">
+          <caret line="27" column="18" selection-start-line="27" selection-start-column="4" selection-end-line="27" selection-end-column="18" />
+          <folding>
+            <element signature="e#0#25#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/QubitDataProcessPackages.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="11" column="13" lean-forward="true" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DataManipulationFunc.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="18" selection-start-column="18" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/FunctionLib.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="772">
+          <caret line="46" column="41" selection-start-line="46" selection-start-column="41" selection-end-line="46" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SingleShotDataProcess/histogram_preselected_Rabi.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="58">
+          <caret line="17" column="56" selection-start-line="17" selection-end-line="18" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
   </component>
 </project>

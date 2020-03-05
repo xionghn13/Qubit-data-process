@@ -5,7 +5,7 @@ import Labber
 from matplotlib import pyplot as plt
 from qutip import *
 from scipy.optimize import curve_fit
-import QubitDecayFunc as qdf
+import FunctionLib as qdf
 
 
 def osc_func(x, amp, freq, offset1, offset2):
