@@ -57,6 +57,7 @@ sII, sZI, sIZ, sZZ = s
 
 sMatrix = np.array([[1, 1, 1, 1], [1, -1, 1, -1], [1, 1, -1, -1], [1, -1, -1, 1]])
 betaII, betaZI, betaIZ, betaZZ = np.linalg.inv(sMatrix).dot(np.array([sII, sZI, sIZ, sZZ]).transpose()).transpose()
+print('betaII, betaZI, betaIZ, betaZZ = ', [betaII, betaZI, betaIZ, betaZZ])
 # Gate sequence in Labber is I, X2p, Y2m
 f = Labber.LogFile(file_tomography)
 signal = f.getData('AlazarTech Signal Demodulator - Channel A - Demodulated values')

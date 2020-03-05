@@ -116,7 +116,6 @@ q_internal = qopt[2]
 tau_final1 = qopt[3]
 tau_final2 = qopt[4]
 tau_final3 = qopt[5]
-q_ext_error = sqrt(diag(qcov))[2]
 
 # Check
 

@@ -21,7 +21,7 @@ h = 6.626e-34
 # d = f.getEntry(0)
 # for (channel, value) in d.items():
 #     print(channel, ":", value)
-
+#
 # signal = f.getData('AlazarTech Signal Demodulator - Channel A - Demodulated values')
 # time = f.getData('Multi-Qubit Pulse Generator - Delay after heralding')[:,0]
 # repetition = 10
