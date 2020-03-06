@@ -4,7 +4,9 @@ from matplotlib import pyplot as plt
 import SingleShotDataProcess.SingleShotFunc as ssf
 import SingleShotDataProcess.FitGaussians as fg
 from scipy.optimize import curve_fit
-import QubitDecayFunc as qdf
+import DataManipulationFunc as dmf
+import FunctionLib as fl
+
 
 def osc_func(x, amp, freq, offset1, offset2):
     return amp * np.cos(2 * np.pi * freq * (x - offset1)) - offset2
@@ -83,7 +85,7 @@ def histogram_preselected_single_parameter_sweep(sweep_quantity, signal, gg_esti
     plt.ylabel('Q (uV)')
 
     freq_guess = 4 / sweep_quantity[-1]
-    V_complex = qdf.AutoRotate(rabi_signal_preselected[:, gg_ind])
+    V_complex = dmf.AutoRotate(rabi_signal_preselected[:, gg_ind])
     V_real = V_complex.real
     fig, ax = plt.subplots()
     ax.grid(linestyle='--')
@@ -95,22 +97,22 @@ def histogram_preselected_single_parameter_sweep(sweep_quantity, signal, gg_esti
     phi0_guess = 0
     try:
         guess = [A_guess, T1_guess, B_guess, Tpi_guess, phi0_guess]
-        opt, cov = curve_fit(qdf.rabi_curve, ydata=V_real, xdata=sweep_quantity, p0=guess)
+        opt, cov = curve_fit(fl.rabi_curve, ydata=V_real, xdata=sweep_quantity, p0=guess)
         err = np.sqrt(np.diag(cov))
         axis_nice = np.linspace(sweep_quantity[0], sweep_quantity[-1], 1001)
-        plt.plot(axis_nice, qdf.rabi_curve(axis_nice, *opt))
+        plt.plot(axis_nice, fl.rabi_curve(axis_nice, *opt))
         plt.title('half period: %.5G\u00B1%.4G, decay constant: %.5G\u00B1%.4G' % (opt[3], err[3], opt[1], err[1]))
     except RuntimeError:
         guess = [A_guess, T1_guess / 5, V_real[-1]]
         print(guess)
         try:
-            opt, cov = curve_fit(qdf.T1_curve, ydata=V_real, xdata=sweep_quantity, p0=guess)
+            opt, cov = curve_fit(fl.T1_curve, ydata=V_real, xdata=sweep_quantity, p0=guess)
             err = np.sqrt(np.diag(cov))
         except RuntimeError:
             opt = guess
             err = np.zeros_like(opt)
         axis_nice = np.linspace(sweep_quantity[0], sweep_quantity[-1], 1001)
-        plt.plot(axis_nice, qdf.T1_curve(axis_nice, *opt))
+        plt.plot(axis_nice, fl.T1_curve(axis_nice, *opt))
         plt.title('decay constant: %.5G\u00B1%.4G' % (opt[1], err[1]))
 
     #
@@ -120,8 +122,8 @@ def histogram_preselected_single_parameter_sweep(sweep_quantity, signal, gg_esti
 ############################################################
 
 if __name__ == '__main__':
-    file_path = 'C:\SC Lab\Labber\data\Augustus 18\\2020\\03\Data_0305\\'
-    file_name = 'T1_interleaved_heralded_AWG_10.hdf5'
+    file_path = 'G:\Projects\Fluxonium\Data\Augustus 18\\2020\\03\Data_0305\\'
+    file_name = 'T1_interleaved_heralded_AWG_12.hdf5'
     f = Labber.LogFile(file_path + file_name)
 
     gg_estimate = [200, 100]
