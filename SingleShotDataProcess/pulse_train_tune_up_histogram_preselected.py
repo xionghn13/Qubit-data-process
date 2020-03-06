@@ -47,11 +47,11 @@ H, xedges, yedges = np.histogram2d(sReal, sImag, bins=[100, 100])
 X, Y = np.meshgrid(xedges[1:], yedges[1:])
 H = H.T
 
-centers, sigmas = ssf.getBlobCenters(sReal, sImag, num_blob)
-heights = ssf.getCenterHeights(X, Y, H, centers)
+centers, sigmas = ssf.get_blob_centers(sReal, sImag, num_blob)
+heights = ssf.get_center_heights(X, Y, H, centers)
 param_mat = np.concatenate((heights.reshape(num_blob, 1), centers, sigmas), axis=1)
 
-params, params_err = fg.fitgaussian(X, Y, H, param_mat)
+params, params_err = fg.fit_gaussian(X, Y, H, param_mat)
 print('-----')
 print(params)
 centers_fit = params[:, 1:3]

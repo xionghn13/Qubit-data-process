@@ -17,34 +17,24 @@ kB = 1.38e-23
 h = 6.626e-34
 
 
-def histogram_preselected_single_parameter_sweep(sweep_quantity, signal, gg_estimate=[0, 0]):
+
+def histogram_preselected_single_parameter_sweep(sweep_quantity, signal, gg_estimate=[0, 0], num_blob=4):
     rabi_signal = np.zeros(len(sweep_quantity), dtype=complex)
     rabi_signal_preselected = np.zeros((len(sweep_quantity), num_blob), dtype=complex)
 
     herald_signal = signal[0, 0::2] * 1e6
     select_signal = signal[0, 1::2] * 1e6
 
-    sReal = np.real(herald_signal)
-    sImag = np.imag(herald_signal)
-    H, xedges, yedges = np.histogram2d(sReal, sImag, bins=[100, 100])
-    X, Y = np.meshgrid(xedges[1:], yedges[1:])
-    H = H.T
+    X, Y, H = ssf.complex_array_to_2d_histogram(herald_signal)
 
-    centers, sigmas = ssf.getBlobCenters(sReal, sImag, num_blob)
-    heights = ssf.getCenterHeights(X, Y, H, centers)
-    param_mat = np.concatenate((heights.reshape(num_blob, 1), centers, sigmas), axis=1)
-
-    params, params_err = fg.fitgaussian(X, Y, H, param_mat)
+    params, params_err = ssf.full_blob_analysis(herald_signal, num_blob=num_blob)
     print('-----')
     print(params)
-    centers_fit = params[:, 1:3]
-    sigmas_fit = params[:, 3:]
-    heights_fit = params[:, 0]
-    most_pts_ind = np.argmax(heights_fit)
-    gg_ind = np.argmin(np.sum((centers_fit - gg_estimate) ** 2, axis=1))
+
+    heights_fit, centers_fit, sigmas_fit = ssf.unwrap_blob_parameters(params)
+    gg_ind = ssf.closest_blob_index(centers_fit, gg_estimate)
+
     print(gg_ind)
-    # most_pts_ind = 0
-    # print(centers_fit)
     fit = fg.multi_gaussian(X, Y, params)
 
     fig, ax = plt.subplots()
@@ -60,16 +50,10 @@ def histogram_preselected_single_parameter_sweep(sweep_quantity, signal, gg_esti
         sReal = np.real(herald_signal)
         sImag = np.imag(herald_signal)
         if ind_sweep_quantity == 0:
-            H, xedges, yedges = np.histogram2d(sReal, sImag, bins=[100, 100])
-            H = H.T
-            X, Y = np.meshgrid(xedges, yedges)
+            X, Y, H = ssf.complex_array_to_2d_histogram(herald_signal)
             plt.pcolormesh(X, Y, H, cmap='GnBu')
             # plt.colorbar()
         rabi_signal[ind_sweep_quantity] = np.average(select_signal)
-        preselected_signal1 = []
-        preselected_signal2 = []
-        preselected_signal3 = []
-        preselected_signal4 = []
         for ind_blob in range(num_blob):
             ind = ((sReal - centers_fit[ind_blob, 0]) / sigmas_fit[ind_blob, 0] / width_threshold) ** 2 + (
                     (sImag - centers_fit[ind_blob, 1]) / sigmas_fit[ind_blob, 1] / width_threshold) ** 2 < 1
@@ -88,7 +72,6 @@ def histogram_preselected_single_parameter_sweep(sweep_quantity, signal, gg_esti
     V_complex = dmf.AutoRotate(rabi_signal_preselected[:, gg_ind])
     V_real = V_complex.real
     fig, ax = plt.subplots()
-    ax.grid(linestyle='--')
     plt.plot(sweep_quantity, V_real)
     A_guess = V_real[0] - V_real[-1]
     B_guess = (V_real[0] + V_real[-1]) / 2
@@ -114,6 +97,7 @@ def histogram_preselected_single_parameter_sweep(sweep_quantity, signal, gg_esti
         axis_nice = np.linspace(sweep_quantity[0], sweep_quantity[-1], 1001)
         plt.plot(axis_nice, fl.T1_curve(axis_nice, *opt))
         plt.title('decay constant: %.5G\u00B1%.4G' % (opt[1], err[1]))
+        ax.grid(linestyle='--')
 
     #
     plt.show()
@@ -122,7 +106,7 @@ def histogram_preselected_single_parameter_sweep(sweep_quantity, signal, gg_esti
 ############################################################
 
 if __name__ == '__main__':
-    file_path = 'G:\Projects\Fluxonium\Data\Augustus 18\\2020\\03\Data_0305\\'
+    file_path = 'Z:\Projects\Fluxonium\Data\Augustus 18\\2020\\03\Data_0305\\'
     file_name = 'T1_interleaved_heralded_AWG_12.hdf5'
     f = Labber.LogFile(file_path + file_name)
 

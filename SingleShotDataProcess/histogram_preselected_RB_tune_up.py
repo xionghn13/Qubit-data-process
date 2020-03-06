@@ -56,11 +56,11 @@ for ind_sweep_quantity in range(len(sweep_quantity)):
         X, Y = np.meshgrid(xedges[1:], yedges[1:])
         H = H.T
 
-        centers, sigmas = ssf.getBlobCenters(sReal, sImag, num_blob)
-        heights = ssf.getCenterHeights(X, Y, H, centers)
+        centers, sigmas = ssf.get_blob_centers(sReal, sImag, num_blob)
+        heights = ssf.get_center_heights(X, Y, H, centers)
         param_mat = np.concatenate((heights.reshape(num_blob, 1), centers, sigmas), axis=1)
 
-        params, params_err = fg.fitgaussian(X, Y, H, param_mat)
+        params, params_err = fg.fit_gaussian(X, Y, H, param_mat)
         fit = fg.multi_gaussian(X, Y, params)
 
         if ind_pulse_randomize + ind_sweep_quantity == 0:

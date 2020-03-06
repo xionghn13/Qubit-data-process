@@ -34,7 +34,7 @@ def multi_gaussian(X, Y, param_mat):
 #     return height, x, y, width_x, width_y
 
 
-def fitgaussian(X, Y, data, param_mat):
+def fit_gaussian(X, Y, data, param_mat):
     """Returns the gaussian parameters of a 2D distribution found by a fit"""
     # print(param_mat.shape)
     n_gaussian = param_mat.shape[0]
@@ -76,7 +76,7 @@ if __name__ == '__main__':
         param_list += [[height_guess] + pt + [width_x_guess, width_y_guess]]
     param_mat = np.array(param_list)
 
-    params, params_err = fitgaussian(Xin, Yin, data, param_mat)
+    params, params_err = fit_gaussian(Xin, Yin, data, param_mat)
     print('-----')
     print(params)
     print(params_err)
