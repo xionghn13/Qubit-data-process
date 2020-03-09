@@ -68,6 +68,9 @@ def closest_blob_index(centers, position_estimate):
 
 
 def data_point_index_for_blob(heralding_signal, blob_center, blob_sigma, width_threshold=2):
-    # data points
-
+    # data index is in the form of boolean array
+    sReal = heralding_signal.real
+    sImag = heralding_signal.imag
+    data_index = ((sReal - blob_center[0]) / blob_sigma[0] / width_threshold) ** 2 + (
+            (sImag - blob_center[1]) / blob_sigma[1] / width_threshold) ** 2 < 1
     return data_index

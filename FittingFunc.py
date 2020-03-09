@@ -3,7 +3,7 @@ from scipy.optimize import curve_fit
 
 
 
-def FitTransientTime(DrivePowerArray, Gamma_r, OptMatrix, power_for_plot=[]):
+def fit_transient_time(DrivePowerArray, Gamma_r, OptMatrix, power_for_plot=[]):
     if len(power_for_plot) == 0:
         power_for_plot = DrivePowerArray
     x_data = [DrivePowerArray, Gamma_r]
@@ -55,3 +55,29 @@ def fit_lorenztian(frequency, V_sq_abs):
     fit_abs = lorenztian(frequency, *opt)
 
     return opt, err, fit_abs
+
+def fit_rabi(x_data, y_data):
+    B_guess = y_data.mean()
+    A_guess = y_data[0] - B_guess
+    T1_guess = x_data[-1]
+
+    Tpi_guess = T1_guess / 4
+    phi0_guess = 0
+    guess = ([A_guess, T1_guess, B_guess, Tpi_guess, phi0_guess])
+    bounds = (
+        (-np.inf, 0, -np.inf, 0, - np.pi / 2),
+        (np.inf, np.inf, np.inf, np.inf, np.pi / 2)
+    )
+
+    try:
+        opt, cov = curve_fit(rabi_curve, x_data, y_data, p0=guess, bounds=bounds)
+    except RuntimeError:
+        print("Error - curve_fit failed")
+        opt = guess
+        cov = np.zeros([len(opt), len(opt)])
+    A_fit, T1_fit, B_fit, Tpi_fit, phi0_fit = opt
+    err = np.sqrt(cov.diagonal())
+    fit_time = np.linspace(x_data.min(), x_data.max(), 200)
+    fit_curve = rabi_curve(fit_time, A_fit, T1_fit, B_fit, Tpi_fit, phi0_fit)
+
+    return opt, err, fit_time, fit_curve
