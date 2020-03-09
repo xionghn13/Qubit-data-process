@@ -5,7 +5,7 @@ import Labber
 from matplotlib import pyplot as plt
 from qutip import *
 from scipy.optimize import curve_fit
-import FunctionLib as qdf
+import DataManipulationFunc as dmf
 
 
 def osc_func(x, amp, freq, offset1, offset2):
@@ -32,6 +32,7 @@ num_blob = 4
 width_threshold = 2  # sigma
 
 gg_estimate = [100, 150]
+
 
 p_no_interleaving = 0.9807
 p_err_no_interleaving = 0.00145
@@ -138,7 +139,7 @@ n = 1
 d = 2 ** n
 for ind_pulse_type in range(len(pulse_type)):
     for ind_blob in range(num_blob):
-        V_complex = qdf.AutoRotate(avg_signal[ind_blob, :, ind_pulse_type])
+        V_complex = dmf.AutoRotate(avg_signal[ind_blob, :, ind_pulse_type])
         toFit = np.real(V_complex)
         # 0th order
         guess = ([0.9, np.max(toFit) - np.min(toFit), np.min(toFit)])
@@ -152,7 +153,7 @@ for ind_pulse_type in range(len(pulse_type)):
             ax = fig.add_subplot(111)
             ax.grid(linestyle='--')
             ax.errorbar(pulse_num, np.real(V_complex), yerr=std_signal[ind_blob, :, ind_pulse_type], fmt='o')
-            plt.plot(pulse_num, randomized_benchmarking_0(pulse_num, *opt), label='Zeroth order fit')
+            plt.plot(pulse_num, randomized_benchmarking_0(pulse_num, *opt), label='0-order fit')
 
     [parameter, parameter_err, error, error_err] = p_to_fidelity_interleaved(p_array, p_err_array, d, p_no_interleaving,
                                                                              p_err_no_interleaving)
@@ -163,7 +164,7 @@ for ind_pulse_type in range(len(pulse_type)):
 
 for ind_pulse_type in range(len(pulse_type)):
     for ind_blob in range(num_blob):
-        V_complex = qdf.AutoRotate(avg_signal[ind_blob, :, ind_pulse_type])
+        V_complex = dmf.AutoRotate(avg_signal[ind_blob, :, ind_pulse_type])
         toFit = np.real(V_complex)
 
         # 1st order
@@ -179,7 +180,7 @@ for ind_pulse_type in range(len(pulse_type)):
             ax = fig.add_subplot(111)
             ax.grid(linestyle='--')
             ax.errorbar(pulse_num, np.real(V_complex), yerr=std_signal[ind_blob, :, ind_pulse_type], fmt='o')
-            plt.plot(pulse_num, randomized_benchmarking_1(pulse_num, *opt), label='Zeroth order fit')
+            plt.plot(pulse_num, randomized_benchmarking_1(pulse_num, *opt), label='1-order fit')
 
     [parameter, parameter_err, error, error_err] = p_to_fidelity_interleaved(p1_array, p1_err_array, d, p1_no_interleaving,
                                                                              p1_err_no_interleaving)

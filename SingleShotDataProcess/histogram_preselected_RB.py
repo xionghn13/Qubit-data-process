@@ -5,7 +5,7 @@ import Labber
 from matplotlib import pyplot as plt
 from qutip import *
 from scipy.optimize import curve_fit
-import FunctionLib as qdf
+import DataManipulationFunc as dmf
 
 
 def osc_func(x, amp, freq, offset1, offset2):
@@ -25,7 +25,7 @@ kB = 1.38e-23
 h = 6.626e-34
 ############################################################
 # Vary heralding wait time
-f = Labber.LogFile('C:\SC Lab\Labber\data\Augustus 18\\2020\\03\Data_0302\RB_heralded_AWG_qubitB.hdf5')
+f = Labber.LogFile('C:\SC Lab\Labber\data\Augustus 18\\2020\\02\Data_0227\RB_heralded_AWG_qubitA.hdf5')
 
 num_blob = 4
 
@@ -121,7 +121,7 @@ for ind_blob in range(num_blob):
     fig = plt.figure(2)
     ax = fig.add_subplot(111)
     ax.grid(linestyle='--')
-    V_complex = qdf.AutoRotate(avg_signal[ind_blob, :])
+    V_complex = dmf.AutoRotate(avg_signal[ind_blob, :])
     ax.errorbar(pulse_num, np.real(V_complex), yerr=std_signal[ind_blob, :], fmt='o',
                 label='preselect blob ' + str(ind_blob))
     toFit = np.real(V_complex)
@@ -133,6 +133,7 @@ for ind_blob in range(num_blob):
     p_array[ind_blob] = opt[0]
     p_err_array[ind_blob] = err[0]
     plt.plot(pulse_num, randomized_benchmarking_0(pulse_num, *opt))
+    plt.title('0-order model fit')
     plt.legend()
 
     fig = plt.figure(3)
@@ -151,6 +152,7 @@ for ind_blob in range(num_blob):
     p1_array[ind_blob] = opt[0]
     p1_err_array[ind_blob] = err[0]
     plt.plot(pulse_num, randomized_benchmarking_1(pulse_num, *opt))
+    plt.title('1-order model fit')
     plt.legend()
 
 

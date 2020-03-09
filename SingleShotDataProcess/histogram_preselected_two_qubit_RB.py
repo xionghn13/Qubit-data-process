@@ -5,7 +5,7 @@ import Labber
 from matplotlib import pyplot as plt
 from qutip import *
 from scipy.optimize import curve_fit
-import FunctionLib as qdf
+import DataManipulationFunc as dmf
 
 
 def osc_func(x, amp, freq, offset1, offset2):
@@ -21,7 +21,8 @@ kB = 1.38e-23
 h = 6.626e-34
 ############################################################
 # Vary heralding wait time
-f = Labber.LogFile('C:\SC Lab\Labber\data\Augustus 18\\2020\\02\Data_0229\RB_twoQubits_2.hdf5')
+f = Labber.LogFile('C:\SC Lab\Labber\data\Augustus 18\\2020\\02\Data_0223\RB_twoQubits_2.hdf5')
+
 num_blob = 4
 
 width_threshold = 2  # sigma
@@ -112,7 +113,7 @@ n = 2
 d = 2 ** n
 for ind_pulse_type in range(len(pulse_type)):
     ind_blob = gg_ind
-    V_complex = qdf.AutoRotate(avg_signal[ind_blob, :, ind_pulse_type])
+    V_complex = dmf.AutoRotate(avg_signal[ind_blob, :, ind_pulse_type])
     toFit = np.real(V_complex)
     guess = ([0.7, np.max(toFit) - np.min(toFit), np.min(toFit)])
     try:
