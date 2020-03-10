@@ -69,7 +69,7 @@ def histogram_preselected_single_parameter_sweep(sweep_quantity, signal, gg_esti
     plt.ylabel('Q (uV)')
 
     freq_guess = 4 / sweep_quantity[-1]
-    V_complex = dmf.AutoRotate(rabi_signal_preselected[:, gg_ind])
+    V_complex = dmf.rotate(rabi_signal_preselected[:, gg_ind])
     V_real = V_complex.real
     fig, ax = plt.subplots()
     plt.plot(sweep_quantity, V_real)

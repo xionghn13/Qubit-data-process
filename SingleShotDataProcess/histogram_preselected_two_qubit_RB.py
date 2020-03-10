@@ -113,7 +113,7 @@ n = 2
 d = 2 ** n
 for ind_pulse_type in range(len(pulse_type)):
     ind_blob = gg_ind
-    V_complex = dmf.AutoRotate(avg_signal[ind_blob, :, ind_pulse_type])
+    V_complex = dmf.rotate(avg_signal[ind_blob, :, ind_pulse_type])
     toFit = np.real(V_complex)
     guess = ([0.7, np.max(toFit) - np.min(toFit), np.min(toFit)])
     try:

@@ -139,7 +139,7 @@ n = 1
 d = 2 ** n
 for ind_pulse_type in range(len(pulse_type)):
     for ind_blob in range(num_blob):
-        V_complex = dmf.AutoRotate(avg_signal[ind_blob, :, ind_pulse_type])
+        V_complex = dmf.rotate(avg_signal[ind_blob, :, ind_pulse_type])
         toFit = np.real(V_complex)
         # 0th order
         guess = ([0.9, np.max(toFit) - np.min(toFit), np.min(toFit)])
@@ -164,7 +164,7 @@ for ind_pulse_type in range(len(pulse_type)):
 
 for ind_pulse_type in range(len(pulse_type)):
     for ind_blob in range(num_blob):
-        V_complex = dmf.AutoRotate(avg_signal[ind_blob, :, ind_pulse_type])
+        V_complex = dmf.rotate(avg_signal[ind_blob, :, ind_pulse_type])
         toFit = np.real(V_complex)
 
         # 1st order

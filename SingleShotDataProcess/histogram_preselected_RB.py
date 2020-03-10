@@ -121,7 +121,7 @@ for ind_blob in range(num_blob):
     fig = plt.figure(2)
     ax = fig.add_subplot(111)
     ax.grid(linestyle='--')
-    V_complex = dmf.AutoRotate(avg_signal[ind_blob, :])
+    V_complex = dmf.rotate(avg_signal[ind_blob, :])
     ax.errorbar(pulse_num, np.real(V_complex), yerr=std_signal[ind_blob, :], fmt='o',
                 label='preselect blob ' + str(ind_blob))
     toFit = np.real(V_complex)

@@ -11,6 +11,7 @@ import time
 import calendar
 import Labber
 import FittingFunc as ff
+from DataManipulationFunc import *
 
 
 e = 1.60217662e-19 # C
