@@ -4,7 +4,9 @@ import matplotlib.pyplot as plt
 import SubtractBackgroundFunc as sbf
 import QubitSpectrumFunc as qsf
 from scipy.optimize import curve_fit
-from FunctionLib import T1_curve, DoubleExp_curve, rabi_curve, FitTransientTime, AutoRotate
+from FunctionLib import T1_curve, DoubleExp_curve, rabi_curve
+from FittingFunc import fit_transient_time
+from DataManipulationFunc import rotate
 import ExtractDataFunc as edf
 import h5py
 import sklearn.metrics
@@ -155,14 +157,14 @@ def plotLabberRepeatedTSweepPlot(DataPath, RabiFileList, BackgroundFolder='', Ba
         for j, trial in enumerate(Counter):
             if RotateComplex:
                 if MeasurementType == 't1t2interleaved':
-                    RComplexT1[:, j] = AutoRotate(RComplexT1[:, j])
-                    RComplexT2[:, j] = AutoRotate(RComplexT2[:, j])
+                    RComplexT1[:, j] = rotate(RComplexT1[:, j]) / 1j
+                    RComplexT2[:, j] = rotate(RComplexT2[:, j]) / 1j
                 elif MeasurementType == 't1_ramsey_echo_interleaved':
-                    RComplexT1[:, j] = AutoRotate(RComplexT1[:, j])
-                    RComplexRamsey[:, j] = AutoRotate(RComplexRamsey[:, j])
-                    RComplexEcho[:, j] = AutoRotate(RComplexEcho[:, j])
+                    RComplexT1[:, j] = rotate(RComplexT1[:, j]) / 1j
+                    RComplexRamsey[:, j] = rotate(RComplexRamsey[:, j]) / 1j
+                    RComplexEcho[:, j] = rotate(RComplexEcho[:, j]) / 1j
                 else:
-                    RComplex[:, j] = AutoRotate(RComplex[:, j])
+                    RComplex[:, j] = rotate(RComplex[:, j]) / 1j
             if MeasurementType == 't1t2interleaved':
                 y_dataList = [np.array(RComplexT1[:, j].real, dtype='float64'),
                               np.array(RComplexT2[:, j].real, dtype='float64')]
@@ -795,14 +797,15 @@ def plotLabberRepeatedTSweepPlot(DataPath, RabiFileList, BackgroundFolder='', Ba
 
 if __name__ == '__main__':
     # DataPath = 'E:/Projects\Fluxonium\data_process/Fluxonium042619/'
-    DataFolderName = '10092019_wg5 in 8.5GHz cavity (add coax atts, eccosorb ...)'
+    # DataFolderName = '10092019_wg5 in 8.5GHz cavity (add coax atts, eccosorb ...)'
     # DataFolderName = 'Data'
-    DataPath = 'C:/SC Lab\\Labber\\data\\' + DataFolderName + '/2019/10\Data_1014\\'
+    # DataPath = 'C:/SC Lab\\Labber\\data\\' + DataFolderName + '/2019/10\Data_1014\\'
     # DataPath = 'Z:\Projects\Transmon_Palmer\\2019\\10\Data_1017\\'
+    DataPath = 'C:\SC Lab\Projects\Fluxonium\data_process/ziggy4/'
     BackgroundFolder = 'C:\SC Lab\Projects\Fluxonium\data_process/ziggy4/'
-    BackgroundFile = 'power spectroscopy_105.hdf5'
+    BackgroundFile = 'power spectroscopy_138.hdf5'
     RabiFileList = [
-        't1_ramsey_echo_interleaved_2019-10-14-14-53-39_7.hdf5',
+        't1_ramsey_echo_interleaved_16.hdf5',
     ]
 
     IQModFreq = 0.05

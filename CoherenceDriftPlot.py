@@ -6,8 +6,8 @@ import matplotlib.dates as mdates
 # DataFolderName = '10092019_wg5 in 8.5GHz cavity (add coax atts, eccosorb ...)'
 # DataFolderName = 'Data'
 # DataPath = 'C:/SC Lab\\Labber\\' + DataFolderName + '/2019/10\Data_1029\\'
-DataPath = 'C:\SC Lab\Projects\Fluxonium\data_process\Fluxonium032619\\'
-# DataPath = 'D:\GitHubRepository\Qubit-data-process\\temporary_data\\'
+# DataPath = 'C:\SC Lab\Projects\Fluxonium\data_process\Fluxonium032619\\'
+DataPath = 'C:\SC Lab\Projects\Fluxonium\data_process\ziggy4\\'
 FileList = [
     # 't1_ramsey_echo_interleaved_1.hdf5',
     # 't1_ramsey_echo_interleaved_2.hdf5',
@@ -24,10 +24,12 @@ FileList = [
     # 't1_t2_interleaved_2019-10-11-23-41-22_2.hdf5',
     # 't1_t2_interleaved_2019-10-12-14-11-02.hdf5',
     # 't1_t2_interleaved_2019-10-13-03-08-16.hdf5',
-    't1_ramsey_echo_interleaved_2019-10-14-14-53-39_7.hdf5',
+    # 't1_ramsey_echo_interleaved_2019-10-14-14-53-39_7.hdf5',
     # 't1_ramsey_echo_interleaved_2019-10-17.hdf5',
     # 't1_ramsey_echo_interleaved_2019-10-17_7.hdf5',
     # 't1_ramsey_echo_interleaved_2019-10-18_3.hdf5',
+
+    't1_ramsey_echo_interleaved_15.hdf5',
 
 ]
 Setup2DataPath = 'Z:\Projects\Transmon_Palmer\\2019\\10\Data_1017\\'
