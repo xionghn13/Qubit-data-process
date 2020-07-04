@@ -79,12 +79,12 @@ def fit(qubit, params):
     return params
 
 def main():
-    sample = 'fluxonium022319'
+    sample = 'ziggy4'
     subpath = 'Processed Data/Fluxonium/'
     path = os.path.join(samples_path, sample, subpath)
 
     filename_in = 'ziggy4_in_6.5GHz_waveguide_1.hdf5'
-    filename_fit = 'ziggy4_in_6.5GHz_waveguide_1.hdf5'
+    filename_fit = 'ziggy4_in_6.5GHz_waveguide_0628.hdf5'
     
     params = utilities.load_fit(os.path.join(path, filename_in))
 
@@ -99,10 +99,10 @@ def main():
              
     # params['num_osc'] = 50
     # params['error_type'] = 'absolute_error'
-    # params['data_set'] = 'data1'
+    params['data_set'] = 'data2'
     
     # params['E_L'] = .1
-    phi_ext1 = np.linspace(0.501, 0.51, 101)
+    phi_ext1 = np.linspace(0.495, 0.535, 101)
     phi_ext = np.linspace(0.4, 1.35, 96)
     phi_ext = np.sort(np.concatenate((phi_ext1, phi_ext)))
 

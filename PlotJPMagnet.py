@@ -2,10 +2,11 @@ from QubitDataProcessPackages import*
 from datetime import timedelta
 
 FolderName = 'C:\SC Lab\Projects\Fluxonium\data_process\Fluxonium032619\Shared Log\\'
-FileName = 'magnet_20191101.txt'
+FileName = 'loaner_ips_2020620.txt'
 
-time_origin = [1, 12, 48, 17]
-TimeLimit = (-0.5, 60)
+time_origin = [23, 0, 0, 0]
+
+TimeLimit = (-0.5, 48)
 
 
 DataTable = np.genfromtxt(FolderName + FileName, skip_header=23, delimiter=',')

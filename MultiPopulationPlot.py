@@ -1,5 +1,6 @@
 from QubitDataProcessPackages import *
-from FunctionLib import T1_curve, rabi_curve, AutoRotate, DoubleExp_curve, TwoExp_curve
+from FunctionLib import T1_curve, rabi_curve, DoubleExp_curve, TwoExp_curve
+from DataManipulationFunc import rotate
 import os
 
 
@@ -79,7 +80,7 @@ def plotMultiPopulationTSweep(DataPath, RabiFile, BackgroundFolder='', Backgroun
             RComplex = ComplexNormalized
 
         if RotateComplex:
-            RComplex = AutoRotate(RComplex)
+            RComplex = rotate(RComplex)
 
         [amp_cor_re_fit, amp_cor_im_fit, P0_fit, P0_im_fit] = CorrectionParam
         if CircleCorrection:
@@ -428,14 +429,14 @@ def PlotMultiPopulation(Time, RComplex, MeasurementType):
 
 if __name__ == '__main__':
     DataFolderName = '11112019_back to waveguide'
-    DataPath = 'C:/SC Lab\\Labber\\' + DataFolderName + '/2020/02\Data_0203\\'
+    DataPath = 'C:/SC Lab\\Labber\\' + DataFolderName + '/2019/12\Data_1212\\'
     # DataPath = 'C:/SC Lab\\Labber\\' + DataFolderName + '/2020/01\Data_0130\\'
     BackgroundFolder = 'C:\SC Lab\Projects\Fluxonium\data_process/ziggy4/'
     BackgroundFile = []
     Plus50MHzBackgroundFile = 'one_tone_4.05GHz_to_4.3GHz_-15dBm_4.9mA_10us integration_100Kavg_50KHz step_020419.dat'
     Minus50MHzBackgroundFile = 'one_tone_4.05GHz_to_4.3GHz_-15dBm_4.9mA_10us integration_100Kavg_50KHz step_020419.dat'
-    BackgroundFile = 'power spectroscopy_116.hdf5'
-    RabiFile = 't1_P2_P1_interleaved_contrast_1.hdf5'
+    BackgroundFile = 'power spectroscopy_101.hdf5'
+    RabiFile = 'transient_P2_P1_12.hdf5'
     IQModFreq = 0.05
     CircleCorrection = False
     CorrectionParam = [1, 0.044, 0.737, 0.037]
@@ -453,7 +454,9 @@ if __name__ == '__main__':
     StartTime = 0.5e3
     EndTime = 40e3
     # PopulationConversionConst = [1., 1. / 0.9234825050081049]
-    PopulationConversionConst = [1., 0.9644806897533738]
+    # PopulationConversionConst = [1., 0.9644806897533738]
+    PopulationConversionConst = [1., 1 / 0.8060933338798614]
+
 
     FitDict = plotMultiPopulationTSweep(DataPath, RabiFile, BackgroundFolder=BackgroundFolder,
                                         BackgroundFile=BackgroundFile,

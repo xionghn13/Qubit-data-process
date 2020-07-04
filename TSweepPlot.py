@@ -4,7 +4,8 @@ import matplotlib.pyplot as plt
 import SubtractBackgroundFunc as sbf
 import QubitSpectrumFunc as qsf
 from scipy.optimize import curve_fit
-from FunctionLib import T1_curve, rabi_curve, AutoRotate, DoubleExp_curve, rabi_two_exp_curve
+from FunctionLib import T1_curve, rabi_curve, DoubleExp_curve, rabi_two_exp_curve
+from DataManipulationFunc import rotate
 import ExtractDataFunc as edf
 import os
 
@@ -185,7 +186,7 @@ def plotReferencedTSweep(DataPath, RabiFile, BackgroundFolder='', BackgroundFile
             RComplex = ComplexNormalized
 
         if RotateComplex:
-            RComplex = AutoRotate(RComplex)
+            RComplex = rotate(RComplex) / 1j
         y_data = np.array(RComplex.real, dtype='float64')
         # y_data = np.array(RComplex.imag, dtype='float64')
 
@@ -495,7 +496,7 @@ def plotReferencedTSweep(DataPath, RabiFile, BackgroundFolder='', BackgroundFile
 
 if __name__ == '__main__':
     DataFolderName = '11112019_back to waveguide'
-    DataPath = 'C:/SC Lab\\Labber\\' + DataFolderName + '/2020/03\Data_0302\\'
+    DataPath = 'C:/SC Lab\\Labber\\' + DataFolderName + '/2020/02\Data_0202\\'
     # DataPath = 'C:/SC Lab\\Labber\\' + DataFolderName + '/2019/11\Data_1123\\'
     BackgroundFolder = 'C:\SC Lab\Projects\Fluxonium\data_process/ziggy4/'
     BackgroundFile = []
@@ -503,8 +504,8 @@ if __name__ == '__main__':
     # Plus50MHzBackgroundFile = '012819_rabi_CH2(AWG1Vpp)_no pump_readout_4.146GHz__-20dBm_qubit4.096GHz_-25dBm_4.9_mA_I cos Q sin mod true interleafing_odd readout even ref_avg100k_Rabi100000_duty150000readout3us.h5'
     Plus50MHzBackgroundFile = 'one_tone_4.05GHz_to_4.3GHz_-15dBm_4.9mA_10us integration_100Kavg_50KHz step_020419.dat'
     Minus50MHzBackgroundFile = 'one_tone_4.05GHz_to_4.3GHz_-15dBm_4.9mA_10us integration_100Kavg_50KHz step_020419.dat'
-    BackgroundFile = 'power spectroscopy_138.hdf5'
-    RabiFile = 't1_Drive1.hdf5'
+    BackgroundFile = 'power spectroscopy_116.hdf5'
+    RabiFile = 't2_ramsey_Drive1_6.hdf5'
     IQModFreq = 0.05
     CircleCorrection = False
     CorrectionParam = [1.1, 0.044, 0.737, 0.037]
@@ -521,7 +522,7 @@ if __name__ == '__main__':
     StartTime = 10e3
     EndTime = 300e3
     # PopulationConversionConst = [1, 1. / 1]
-    PopulationConversionConst = [1, 0.90941]
+    PopulationConversionConst = [1, 0.990518111679814]
     FitDict = plotReferencedTSweep(DataPath, RabiFile, BackgroundFolder=BackgroundFolder, BackgroundFile=BackgroundFile,
                                    Plus50MHzBackgroundFile=Plus50MHzBackgroundFile,
                                    PopulationConversionConst=PopulationConversionConst,

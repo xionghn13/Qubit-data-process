@@ -11,13 +11,13 @@ DataPath = 'C:\SC Lab\Projects\Fluxonium\data_process/ziggy4/'
 # BackgroundFile = 'calibration_5.hdf5'
 # BackgroundFile = 'power spectroscopy_76.hdf5'
 # OneToneFile = 'power spectroscopy_82.hdf5'
-BackgroundFile = 'power spectroscopy_138.hdf5'
-OneToneFile = 'power spectroscopy_140.hdf5'
+BackgroundFile = 'power spectroscopy_105.hdf5'
+OneToneFile = 'power spectroscopy_108.hdf5'
 # BackgroundFile = 'power spectroscopy_76.hdf5'
 # OneToneFile = 'power spectroscopy_77.hdf5'
 
 Calibration = True
-UseOneToneRange = False
+UseOneToneRange = True
 FitSeparately = False
 PlotParamVSPower = False
 PlotUnfittedCircle = False
@@ -32,8 +32,8 @@ EndPower = 5
 SelectPower = np.array([])
 # SelectPower = np.array([-10, -5, 2.5, 5])
 
-gamma_f_guess = 1.9027e-3
-P0_guess = 0.86229
+gamma_f_guess = 1.82e-3
+P0_guess = 0.757
 A_guess = 3e3
 amp_cor_re_guess = 1
 # amp_cor_im_guess = -0.3
@@ -393,7 +393,7 @@ if Calibration:
     plt.plot([1], [0], 'ro')
     plt.xlim(-limit, limit)
     plt.ylim(-limit, limit)
-    plt.title('f0=%.6GGHz, gamma_f=%.5GMHz, P0=%.5G, A=%.5G,\n amp_cor_re=%0.2G, amp_cor_im=%0.2G, P0_im=%0.2G' % (
+    plt.title('f0=%.6GGHz, gamma_f=%.5GMHz, P0=%.5G, A=%.5G,\n amp_cor_re=%0.3G, amp_cor_im=%0.2G, P0_im=%0.2G' % (
         f0_fit, gamma_f_fit * 1e3, P0_fit, A_fit, amp_cor_re_fit, amp_cor_im_fit, P0_im_fit))
     plt.xlabel('Re(r)', fontsize='x-large')
     plt.ylabel('Im(r)', fontsize='x-large')

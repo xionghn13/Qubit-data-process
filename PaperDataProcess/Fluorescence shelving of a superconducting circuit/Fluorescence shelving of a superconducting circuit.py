@@ -4,9 +4,9 @@ from QubitDataProcessPackages import *
 
 DataPath = 'C:\SC Lab\GitHubRepositories\Qubit-data-process\PaperDataProcess\Fluorescence shelving of a superconducting circuit\Fluorescence/'
 # DataPath = 'D:\GitHubRepository\Qubit-data-process\PaperDataProcess\Fluorescence shelving of a superconducting circuit\Fluorescence/'
-BackgroundFile = 'power spectroscopy_116.hdf5'
-# OneToneFile = 'power spectroscopy_117.hdf5'
-OneToneFile = 'power spectroscopy_125.hdf5'
+BackgroundFile = 'power spectroscopy_105.hdf5'
+OneToneFile = 'power spectroscopy_108.hdf5'
+# OneToneFile = 'power spectroscopy_125.hdf5'
 
 
 Calibration = True
@@ -65,7 +65,7 @@ BackComplexNormalizedTrunc = BackComplexNormalized[BackFreqInd]
 RComplexTrunc = RComplex[FreqInd, :]
 RComplexTrunc = RComplexTrunc[:, PowerInd]
 
-f = h5py.File(DataPath + 'circles_data_0209.hdf5', 'w')
+f = h5py.File(DataPath + 'circles_data_1227.hdf5', 'w')
 fset = f.create_dataset('freq', data=OneFreqUniqTrunc)
 pset = f.create_dataset('power', data=OnePowerUniqTrunc)
 r_re_set = f.create_dataset('R_real', data=RComplexTrunc.real)
@@ -214,7 +214,9 @@ f.close()
 
 # population measurement
 # BackgroundFile = 'power spectroscopy_105.hdf5'
-BackgroundFile = 'power spectroscopy_116.hdf5'
+# BackgroundFile = 'power spectroscopy_116.hdf5'
+BackgroundFile = 'power spectroscopy_101.hdf5'
+
 
 RabiFileList = [
     # 'transient_P2_P1_24.hdf5',
@@ -227,8 +229,10 @@ RabiFileList = [
     # 'transient_P2_P1_interleaved_8.hdf5',
     # 'transient_P2_P1_interleaved_2020-02-07-21-39-28.hdf5',
     # 't1_P2_P1_interleaved_2020-02-08-02-41-26.hdf5',
-    'transient_P2_P1_interleaved_2020-02-10-09-40-10.hdf5',
-    't1_P2_P1_interleaved_2020-02-10-04-07-55.hdf5',
+    # 'transient_P2_P1_interleaved_2020-02-10-09-40-10.hdf5',
+    # 't1_P2_P1_interleaved_2020-02-10-04-07-55.hdf5',
+    'transient_P2_P1_12.hdf5',
+
 
 ]
 OutFileList = [
@@ -242,8 +246,9 @@ OutFileList = [
     # 'transient_P2_P1_interleaved_more_points.hdf5',
     # 'transient_population_2020-02-07-21-39-28.hdf5',
     # 't1_population_2020-02-08-02-41-26.hdf5',
-    'transient_population_2020-02-10-09-40-10.hdf5',
-    't1_population_2020-02-10-04-07-55.hdf5',
+    # 'transient_population_2020-02-10-09-40-10.hdf5',
+    # 't1_population_2020-02-10-04-07-55.hdf5',
+    'transient_1_3_pumping.hdf5',
 
 ]
 PopulationConversionConstList = [
@@ -257,8 +262,9 @@ PopulationConversionConstList = [
     # [1., 0.9680912467700123],
     # [1., 0.9507761023676382],
     # [1., 0.9507761023676382],
-    [1., 0.9684277144489823],
-    [1., 0.9684277144489823],
+    # [1., 0.9684277144489823],
+    # [1., 0.9684277144489823],
+    [1., 1 / 0.8060933338798614],
 
 ]
 P2CorrectionList = [
@@ -272,7 +278,8 @@ P2CorrectionList = [
     # [0, 674],
     # [0, 674],
     # [0, 674],
-    [0, 674],
+    # [0, 674],
+    # [0, 674],
     [0, 674],
 ]
 [BackFreq, BackComplex] = edf.readFSweepLabber(DataPath + BackgroundFile)
@@ -454,5 +461,113 @@ y_data = np.array(RComplex.real, dtype='float64')
 # population = (PopulationConversionConst[0] - y_data) * PopulationConversionConst[1]
 f = h5py.File(DataPath + 'sup_02_rabi_data.hdf5', 'w')
 yset = f.create_dataset('y', data=y_data)
+xset = f.create_dataset('x', data=Time)
+f.close()
+
+# sup 0-2 ramsey
+
+BackgroundFile = 'power spectroscopy_116.hdf5'
+RabiFile = 't2_ramsey_Drive1_6.hdf5'
+PopulationConversionConst = [1., 0.990518111679814]
+# use rabi to calibrate rabi. Plus or minus are merged in one array.
+[BackFreq, BackPower, BackComplex] = edf.readFPSweepLabber(DataPath + BackgroundFile)
+BackPower = BackPower[0, 0]
+BackFreq = BackFreq[:, 0]
+BackComplex = BackComplex[:, 0]
+Plus50MHzBackPower = BackPower
+Minus50MHzBackPower = BackPower
+Plus50MHzBackFreq = BackFreq
+Plus50MHzBackComplex = BackComplex
+Minus50MHzBackFreq = Plus50MHzBackFreq
+Minus50MHzBackComplex = Plus50MHzBackComplex
+# read data
+ReadoutPower = edf.readReadoutPowerLabber(DataPath + RabiFile)
+ReadoutFreq = edf.readReadoutFreqLabber(DataPath + RabiFile)
+MeasurementType = 't2'
+[Time, Complex] = edf.readT2Labber(DataPath + RabiFile)
+# print(BackFreq.shape)
+# print(BackComplex.shape)
+Complex = sbf.FPSweepBackgroundCalibrate(ReadoutFreq, ReadoutPower, Complex,
+                                                   Plus50MHzBackFreq,
+                                                   Plus50MHzBackComplex, Plus50MHzBackPower)
+
+
+
+y_data = np.array(Complex.real, dtype='float64')
+population = (PopulationConversionConst[0] - y_data) * PopulationConversionConst[1]
+f = h5py.File(DataPath + '02ramsey_data.hdf5', 'w')
+yset = f.create_dataset('y', data=population)
+xset = f.create_dataset('x', data=Time)
+f.close()
+
+
+# sup 0-2 rabi
+
+BackgroundFile = 'power spectroscopy_116.hdf5'
+RabiFile = 'rabi_Drive1_15.hdf5'
+PopulationConversionConst = [1., 0.990518111679814]
+# use rabi to calibrate rabi. Plus or minus are merged in one array.
+[BackFreq, BackPower, BackComplex] = edf.readFPSweepLabber(DataPath + BackgroundFile)
+BackPower = BackPower[0, 0]
+BackFreq = BackFreq[:, 0]
+BackComplex = BackComplex[:, 0]
+Plus50MHzBackPower = BackPower
+Minus50MHzBackPower = BackPower
+Plus50MHzBackFreq = BackFreq
+Plus50MHzBackComplex = BackComplex
+Minus50MHzBackFreq = Plus50MHzBackFreq
+Minus50MHzBackComplex = Plus50MHzBackComplex
+# read data
+ReadoutPower = edf.readReadoutPowerLabber(DataPath + RabiFile)
+ReadoutFreq = edf.readReadoutFreqLabber(DataPath + RabiFile)
+[Time, Complex] = edf.readRabiLabber(DataPath + RabiFile)
+# print(BackFreq.shape)
+# print(BackComplex.shape)
+Complex = sbf.FPSweepBackgroundCalibrate(ReadoutFreq, ReadoutPower, Complex,
+                                                   Plus50MHzBackFreq,
+                                                   Plus50MHzBackComplex, Plus50MHzBackPower)
+
+
+
+y_data = np.array(Complex.real, dtype='float64')
+population = (PopulationConversionConst[0] - y_data) * PopulationConversionConst[1]
+f = h5py.File(DataPath + '02rabi_data.hdf5', 'w')
+yset = f.create_dataset('y', data=population)
+xset = f.create_dataset('x', data=Time)
+f.close()
+
+
+# sup 0-1 rabi
+
+BackgroundFile = 'power spectroscopy_116.hdf5'
+RabiFile = 'rabi_87.hdf5'
+PopulationConversionConst = [1., 1]
+# use rabi to calibrate rabi. Plus or minus are merged in one array.
+[BackFreq, BackPower, BackComplex] = edf.readFPSweepLabber(DataPath + BackgroundFile)
+BackPower = BackPower[0, 0]
+BackFreq = BackFreq[:, 0]
+BackComplex = BackComplex[:, 0]
+Plus50MHzBackPower = BackPower
+Minus50MHzBackPower = BackPower
+Plus50MHzBackFreq = BackFreq
+Plus50MHzBackComplex = BackComplex
+Minus50MHzBackFreq = Plus50MHzBackFreq
+Minus50MHzBackComplex = Plus50MHzBackComplex
+# read data
+ReadoutPower = edf.readReadoutPowerLabber(DataPath + RabiFile)
+ReadoutFreq = edf.readReadoutFreqLabber(DataPath + RabiFile)
+[Time, Complex] = edf.readRabiLabber(DataPath + RabiFile)
+# print(BackFreq.shape)
+# print(BackComplex.shape)
+Complex = sbf.FPSweepBackgroundCalibrate(ReadoutFreq, ReadoutPower, Complex,
+                                                   Plus50MHzBackFreq,
+                                                   Plus50MHzBackComplex, Plus50MHzBackPower)
+
+
+
+y_data = np.array(Complex.real, dtype='float64')
+population = (PopulationConversionConst[0] - y_data) * PopulationConversionConst[1]
+f = h5py.File(DataPath + '01rabi_data.hdf5', 'w')
+yset = f.create_dataset('y', data=population)
 xset = f.create_dataset('x', data=Time)
 f.close()

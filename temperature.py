@@ -1,12 +1,12 @@
 import numpy as np
 
 h = 6.63e-34
-f = 7.96e9
+f = 1.152e9
 kB = 1.38e-23
 T0 = 46e-3
 
-P0 = 0.54
-P1 = 0.54 * 0.68
+P0 = 0.76
+P1 = 1 - P0
 T = h * f / kB / np.log(P0 / P1)
 print('T = %.3GmK' % (T * 1000))
 print(np.exp( - h * f / kB / T0))

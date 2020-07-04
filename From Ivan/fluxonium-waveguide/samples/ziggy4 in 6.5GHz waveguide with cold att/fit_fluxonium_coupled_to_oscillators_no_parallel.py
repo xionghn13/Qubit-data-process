@@ -121,26 +121,26 @@ def main():
     path = os.path.join(samples_path, sample, subpath)
 
     filename_in = 'ziggy4_in_6.5GHz_waveguide_1.hdf5'
-    filename_fit = 'ziggy4_in_6.5GHz_waveguide_1.hdf5'
+    filename_fit = 'ziggy4_in_6.5GHz_waveguide_0628.hdf5'
 
-    # params = utilities.load_fit(os.path.join(path, filename_in))
+    params = utilities.load_fit(os.path.join(path, filename_in))
 
     # Initial guess for the qubit parameters.
-    params = {'E_L': 0.617, # The inductive energy.
-              'E_C': 1.172, # The charging energy.
-              'E_J': 2.024, # The Josephson energy.
-              'phi_ext': [0.],
-              'frequencies': [], # Single mode frequencies.
-              'n_couplings': [], # Charge couplings.
-              'phi_couplings': [], # Flux couplings.
-              'num_mod': [],
-              'num_osc': 100,
-              'num_qbt': 10,
-              'num_tot': 10,
-              'num_cpl': 10,
-              'error_type': 'relative_error',
-              'data_set': 'data1'
-             }
+    # params = {'E_L': 0.617, # The inductive energy.
+    #           'E_C': 1.172, # The charging energy.
+    #           'E_J': 2.024, # The Josephson energy.
+    #           'phi_ext': [0.],
+    #           'frequencies': [], # Single mode frequencies.
+    #           'n_couplings': [], # Charge couplings.
+    #           'phi_couplings': [], # Flux couplings.
+    #           'num_mod': [],
+    #           'num_osc': 100,
+    #           'num_qbt': 10,
+    #           'num_tot': 10,
+    #           'num_cpl': 10,
+    #           'error_type': 'relative_error',
+    #           'data_set': 'data1'
+    #          }
 
     # params['E_L'] = 0.8
     # params['E_C'] = 2.26
@@ -153,7 +153,7 @@ def main():
     # params['n_couplings'] = np.array([0.])
     # params['phi_couplings'] = np.array([0.])
     params['error_type'] = 'absolute_error'
-    params['data_set'] = 'data1'
+    params['data_set'] = 'data2'
     
     phi_ext = np.linspace(0.4, 1.35, 281)
 

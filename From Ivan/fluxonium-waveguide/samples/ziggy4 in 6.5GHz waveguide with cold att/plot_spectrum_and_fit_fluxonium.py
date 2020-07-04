@@ -27,7 +27,7 @@ def main():
     pltpath = os.path.join(samples_path, sample, 'Plots/Fits/Fluxonium')
     if not os.path.exists(pltpath):
         os.makedirs(pltpath)
-    filename_in = 'ziggy4_in_6.5GHz_waveguide_1.hdf5'
+    filename_in = 'ziggy4_in_6.5GHz_waveguide_0628.hdf5'
     
     filename_out = os.path.splitext(filename_in)[0]
 
