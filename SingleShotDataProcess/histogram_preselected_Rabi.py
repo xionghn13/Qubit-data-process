@@ -70,7 +70,7 @@ def histogram_preselected_single_parameter_sweep(sweep_quantity, signal, gg_esti
 
     freq_guess = 4 / sweep_quantity[-1]
     V_complex = dmf.rotate(rabi_signal_preselected[:, gg_ind])
-    V_real = V_complex.real
+    V_real = V_complex.imag
     fig, ax = plt.subplots()
     plt.plot(sweep_quantity, V_real)
     A_guess = V_real[0] - V_real[-1]
@@ -106,18 +106,19 @@ def histogram_preselected_single_parameter_sweep(sweep_quantity, signal, gg_esti
 ############################################################
 
 if __name__ == '__main__':
-    file_path = 'Z:\Projects\Fluxonium\Data\Augustus 18\\2020\\03\Data_0305\\'
-    file_name = 'T1_interleaved_heralded_AWG_12.hdf5'
+    file_path = 'Z:\Projects\Fluxonium\Data\Augustus 18\\2020\\03\Data_0312\\'
+    file_name = 'rabi_A_heralding_2.hdf5'
     f = Labber.LogFile(file_path + file_name)
 
-    gg_estimate = [200, 100]
+    gg_estimate = [-100, 200]
 
     num_blob = 4
     width_threshold = 2
     measurement_type = file_name.split('_')[0]
 
     sweep_quantity_dict = {
-        'Rabi': 'Multi-Qubit Pulse Generator - Amplitude #1',
+        'rabi': 'Multi-Qubit Pulse Generator - Amplitude #1',
+        # 'rabi': 'Multi-Qubit Pulse Generator - Amplitude, 2QB #12',
         # 'Rabi': 'Multi-Qubit Pulse Generator - Width',
         # 'Ramsey': 'Multi-Qubit Pulse Generator - Pulse spacing',
         'Ramsey': 'Multi-Qubit Pulse Generator - Parameter #1',
