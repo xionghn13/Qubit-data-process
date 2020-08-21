@@ -1,7 +1,7 @@
 import numpy as np
 
 h = 6.63e-34
-f = 1.152e9
+f = 1.15e9
 kB = 1.38e-23
 T0 = 46e-3
 
@@ -45,17 +45,17 @@ print('ratio between P0 and end_point - r is', R2P)
 
 
 print('---------------Gamma to temp----------------------')
-Gamma = 2 * np.pi * 4.69
-Gamma_up = 0.0067
+Gamma = 2 * np.pi * 1.74
+Gamma_up = 1 / 50
 Time_up_std = 0.0
 Gamma_up_high = 1 / (1 / Gamma_up - Time_up_std)
 Gamma_up_low = 1 / (1 / Gamma_up + Time_up_std)
 Gamma_down = Gamma - Gamma_up
-Gamma_down = 1 / 60
+# Gamma_down = 1 / 60
 Time_down_std = 0.0
 Gamma_down_high = 1 / (1 / Gamma_down - Time_down_std)
 Gamma_down_low = 1 / (1 / Gamma_down + Time_down_std)
-f = 1.1518e9
+f = 6.544e9
 T = h * f / kB / np.log(Gamma_down / Gamma_up)
 T_high = h * f / kB / np.log(Gamma_down_high / Gamma_up_low)
 T_low = h * f / kB / np.log(Gamma_down_low / Gamma_up_high)
