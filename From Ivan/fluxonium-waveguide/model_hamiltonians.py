@@ -165,6 +165,11 @@ class TwoCoupledFluxoniums(Model):
         if 'num_wq2' in params:
             self._num_wq2 = int(params['num_wq2'])
 
+        num_tot = int(params['num_tot'])
+        if num_tot > fluxonium1.num_qbt * fluxonium2.num_qbt:
+            raise ValueError('The number of levels is too high.')
+        self._num_tot = num_tot
+
         H = qt.tensor(fluxonium1.H(), fluxonium2.eye())
         H += qt.tensor(fluxonium1.eye(), fluxonium2.H())
 
@@ -175,6 +180,12 @@ class TwoCoupledFluxoniums(Model):
             H += params['E_int_flx'] * qt.tensor(fluxonium1.phi(),
                                                  fluxonium2.phi())                                    
         self._hamiltonian = H
+        # eigvals, eigvecs = \
+        #     self._hamiltonian.eigenstates(sparse=True,
+        #                                   eigvals=4)
+        # print(eigvals)
+        # print(fluxonium1)
+        # print(fluxonium2)
         self._fluxonium1 = fluxonium1
         self._fluxonium2 = fluxonium2
         self._reset_cache()
@@ -210,9 +221,10 @@ class TwoCoupledFluxoniums(Model):
             qbt2 = self._fluxonium2._num_qbt
             wq1 = self._num_wq1
             wq2 = self._num_wq2
-            
-            weights = np.zeros((wq1*wq2, wq1, wq2), dtype=np.complex)
-            for idx in range(wq1 * wq2):
+
+            weights = np.zeros((self._num_tot, wq1, wq2), dtype=np.complex)
+            for idx in range(self._num_tot):
+                # print(evecs[idx].data.todense().shape)
                 weights[idx] = \
                         evecs[idx].data.todense().reshape(qbt1, qbt2)[:wq1,:wq2]
             self._weights = np.abs(weights)**2.
