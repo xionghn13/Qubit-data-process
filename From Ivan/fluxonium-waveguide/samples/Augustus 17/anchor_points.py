@@ -192,4 +192,69 @@ data = {
          },
         # 0:00, 1:10, 2:01, 3:11, 4:02, 5:12, 6:20, 7:21, 8:03, 9:13, 10:30, 11:31
     ],
+    'data3': [
+        {'transition': (0, 1),  # 00-10
+         'external flux quanta': 0.5,  # \Phi_\mathrm{ext}/\Phi_0
+         'frequency': 0.2184  # GHz
+         },
+        {'transition': (0, 2),  # 00-01
+         'external flux quanta': 0.5,  # \Phi_\mathrm{ext}/\Phi_0
+         'frequency': 0.4893  # GHz
+         },
+        {'transition': (0, 3),  # 00-11
+         'external flux quanta': 0.5,  # \Phi_\mathrm{ext}/\Phi_0
+         'frequency': 0.708  # GHz
+         },
+        {'transition': (3, 5),  # 11-12
+         'external flux quanta': 0.5,  # \Phi_\mathrm{ext}/\Phi_0
+         'frequency': 3.5028  # GHz
+         },
+        {'transition': (2, 4),  # 01-02
+         'external flux quanta': 0.5,  # \Phi_\mathrm{ext}/\Phi_0
+         'frequency': 3.5087  # GHz
+         },
+        {'transition': (1, 6),  # 10-20
+         'external flux quanta': 0.5,  # \Phi_\mathrm{ext}/\Phi_0
+         'frequency': 4.4858  # GHz
+         },
+        {'transition': (3, 7),  # 11-21
+         'external flux quanta': 0.5,  # \Phi_\mathrm{ext}/\Phi_0
+         'frequency': 4.4935  # GHz
+         },
+        {'transition': (0, 8),  # 00-03
+         'external flux quanta': 0.5,  # \Phi_\mathrm{ext}/\Phi_0
+         'frequency': 6.4126  # GHz
+         },
+        {'transition': (1, 10),  # 10-13
+         'external flux quanta': 0.5,  # \Phi_\mathrm{ext}/\Phi_0
+         'frequency': 6.4236  # GHz
+         },
+        {'transition': (2, 11),  # 01-31
+         'external flux quanta': 0.5,  # \Phi_\mathrm{ext}/\Phi_0
+         'frequency': 6.5954  # GHz
+         },
+        {'transition': (0, 9),  # 00-30
+         'external flux quanta': 0.5,  # \Phi_\mathrm{ext}/\Phi_0
+         'frequency': 6.6106  # GHz
+         },
+        # 0:00, 1:10, 2:01, 3:11, 4:02, 5:12, 6:20, 7:21, 8:03, 9:30, 10:13, 11:31
+
+        # 00 - 10 frequency: 0.2184 GHz @ 10 - 20 frequency: 4.4858 GHz @,  20 - 30: 1.9064 GHz @
+        #                                 10 - 13 frequency: 6.4236 GHz @,
+        # 00 - 01 frequency: 0.4893 GHz @ 01 - 02 frequency: 3.5087 GHz @
+        #                                 01 - 31 frequency: 6.5954 GHz
+        # 00 - 11 frequency: 0.7080 GHz @ 11 - 12 frequency: 3.5028 GHz @
+        #                                 11 - 21 frequency: 4.4935 GHz @,  21 - 31: 1.8832 GHz @
+
+        # 00 - 02 frequency: 3.9980 GHz
+        # 00 - 12 frequency: 4.2108 GHz
+        # 00 - 20 frequency: 4.7042 GHz
+        # 00 - 21 frequency: 5.2015 GHz
+
+        # 00 - 03 frequency: 6.4126 GHz
+        # 00 - 30 frequency: 6.6106 GHz
+        # 00 - 13 frequency: 6.6420 GHz
+        # 00 - 31 frequency: 7.0847 GHz
+    ]
+
 }

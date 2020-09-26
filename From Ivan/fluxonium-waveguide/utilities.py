@@ -155,7 +155,7 @@ def print_param(name, value, array=False):
         if unit != '':
             print('%s: %.4f%s%s' % (name, value, space, unit))
         else:
-            print('%s: %.4f' % (name, value))
+            print('%s: %.6f' % (name, value))
     elif isinstance(value, np.ndarray) and len(np.shape(value)) == 2:
         print('%s:\n%s%s%s' % (name, value, space, unit))
     elif len(value):

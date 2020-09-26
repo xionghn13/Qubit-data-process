@@ -145,8 +145,8 @@ def main():
     subpath = 'Processed Data/Two Coupled Fluxoniums/'
     path = os.path.join(samples_path, sample, subpath)
 
-    filename_in = 'Augustus_17_2.hdf5'
-    filename_fit = 'Augustus_17_2.hdf5'
+    filename_in = 'Augustus_17.hdf5'
+    filename_fit = 'Augustus_17_3.hdf5'
 
     params = utilities.load_fit(os.path.join(path, filename_in))
 
@@ -185,7 +185,7 @@ def main():
     # params['n_couplings'] = np.array([0.])
     # params['phi_couplings'] = np.array([0.])
     # params['error_type'] = 'absolute_error'
-    params['data_set'] = 'data2'
+    params['data_set'] = 'data3'
 
     # phi_ext = np.linspace(0., 1., 51)
     phi_ext = np.linspace(0.43, 0.57, 101)

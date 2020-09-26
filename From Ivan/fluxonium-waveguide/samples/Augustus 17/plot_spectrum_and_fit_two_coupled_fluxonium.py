@@ -27,7 +27,7 @@ def main():
     if not os.path.exists(pltpath):
         os.makedirs(pltpath)
 
-    filename_in = 'Augustus_17.hdf5'
+    filename_in = 'Augustus_17_3.hdf5'
     filename_out = os.path.splitext(filename_in)[0]
 
     filename = os.path.join(samples_path, sample, fitpath, filename_in)
@@ -56,25 +56,25 @@ def main():
     weights = params['weights']
     num_tot = params['num_tot']
 
-    # lines = colored_lines(phi_ext, levels, weights, 0, num_tot, color2QB=True)
-    # for idx in range(params['num_tot'] - 1):
-    #     plt.gca().add_collection(lines[idx])
-
-    # lines = colored_lines(phi_ext, levels, weights, 1, num_tot, color2QB=True)
-    # for idx in range(params['num_tot'] - 2):
-    #     plt.gca().add_collection(lines[idx])
-    #
-    # lines = colored_lines(phi_ext, levels, weights, 2, num_tot, color2QB=True)
-    # for idx in range(params['num_tot'] - 3):
-    #     plt.gca().add_collection(lines[idx])
-    #
-    # lines = colored_lines(phi_ext, levels, weights, 3, num_tot, color2QB=True)
-    # for idx in range(params['num_tot'] - 4):
-    #     plt.gca().add_collection(lines[idx])
-
-    lines = colored_lines(phi_ext, levels, weights, 7, num_tot, color2QB=True)
-    for idx in range(params['num_tot'] - 8):
+    lines = colored_lines(phi_ext, levels, weights, 0, num_tot, color2QB=True)
+    for idx in range(params['num_tot'] - 1):
         plt.gca().add_collection(lines[idx])
+
+    lines = colored_lines(phi_ext, levels, weights, 1, num_tot, color2QB=True)
+    for idx in range(params['num_tot'] - 2):
+        plt.gca().add_collection(lines[idx])
+
+    lines = colored_lines(phi_ext, levels, weights, 2, num_tot, color2QB=True)
+    for idx in range(params['num_tot'] - 3):
+        plt.gca().add_collection(lines[idx])
+
+    lines = colored_lines(phi_ext, levels, weights, 3, num_tot, color2QB=True)
+    for idx in range(params['num_tot'] - 4):
+        plt.gca().add_collection(lines[idx])
+
+    # lines = colored_lines(phi_ext, levels, weights, 7, num_tot, color2QB=True)
+    # for idx in range(params['num_tot'] - 8):
+    #     plt.gca().add_collection(lines[idx])
     #
     # lines = colored_lines(phi_ext, levels, weights, 3, num_tot)
     # for idx in range(params['num_tot']-4):
