@@ -27,16 +27,17 @@ def plot_spectrum():
     hI = (1.501 - 0.6675)  # mA
     I0 = 0.6675  # mA
     path_filenames = [
-        # '023bis.hdf5',
-        '024.hdf5',
-        # '024c.hdf5',
-        # '024d.hdf5',
-        # '062e.hdf5',
-        'Two_tone_check_0.hdf5',
-        'Two_tone_check.hdf5',
-        # 'Two_tone_check_2.hdf5',
-        # 'Two_tone_check_3.hdf5',
-        'Two_tone_check_4.hdf5',
+        # # '023bis.hdf5',
+        # # '024.hdf5',
+        # # '024c.hdf5',
+        # # '024d.hdf5',
+        # # '062e.hdf5',
+        # 'Two_tone_check_0.hdf5',
+        # 'Two_tone_check.hdf5',
+        # # 'Two_tone_check_2.hdf5',
+        # # 'Two_tone_check_3.hdf5',
+        # 'Two_tone_check_4.hdf5',
+        'two_tone_11.hdf5'
     ]
 
     path_filenames = [os.path.join(samples_path, sample, pf)
@@ -47,7 +48,10 @@ def plot_spectrum():
         f = Labber.LogFile(path_filename)
         # print(path_filename.split('\\')[-1])
         # freq_var = 'Drive2 - Frequency'
-        freq_var = 'Qubit1 - Frequency'
+        if path_filename.endswith('two_tone_11.hdf5'):
+            freq_var = 'Qubit2 - Frequency'
+        else:
+            freq_var = 'Qubit1 - Frequency'
         bias_var = 'Yoko2FluxoniumExperiment - Current'
         freq_2d = f.getData(freq_var) / 1.e9
         data_2d = data = f.getData(f.getLogChannels()[0]['name'])
@@ -145,7 +149,10 @@ def plot_spectrum():
             plot_2d = np.log(plot_2d)
             vmax = np.nanmax(plot_2d)
             vmin = np.nanmin(plot_2d)
+            vmin = -8
+        # print(filename)
         plt.pcolormesh(bias_2d, freq_2d, plot_2d, cmap=colormap, vmin=vmin, vmax=vmax)
+
         # plt.pcolormesh(bias_2d, freq_2d, plot_2d)
 
         # print(np.min(plot_2d))

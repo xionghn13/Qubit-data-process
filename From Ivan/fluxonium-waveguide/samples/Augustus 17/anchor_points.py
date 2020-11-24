@@ -255,6 +255,178 @@ data = {
         # 00 - 30 frequency: 6.6106 GHz
         # 00 - 13 frequency: 6.6420 GHz
         # 00 - 31 frequency: 7.0847 GHz
-    ]
+    ],
+    'data4': [
+        {'transition': (0, 1),  # 00-10
+         'external flux quanta': 0.43576,
+         'frequency': 1.5246,
+         },
+        {'transition': (0, 1),  # 00-10
+         'external flux quanta': 0.44272,
+         'frequency': 1.37,
+         },
+        {'transition': (0, 1),  # 00-10
+         'external flux quanta': 0.4477,
+         'frequency': 1.2681,
+         },
+        {'transition': (0, 1),  # 00-10
+         'external flux quanta': 0.45442,
+         'frequency': 1.1275,
+         },
+        {'transition': (0, 1),  # 00-10
+         'external flux quanta': 0.46238,
+         'frequency': 0.98702,
+         },
+        {'transition': (0, 1),  # 00-10
+         'external flux quanta': 0.47631,
+         'frequency': 0.68136,
+         },
+        {'transition': (0, 1),  # 00-10
+         'external flux quanta': 0.4895,
+         'frequency': 0.35813,
+         },
+        {'transition': (0, 1),  # 00-10
+         'external flux quanta': 0.49423,
+         'frequency': 0.2703,
+         },
+        {'transition': (0, 1),  # 00-10
+         'external flux quanta': 0.50642,
+         'frequency': 0.28435,
+         },
+        {'transition': (0, 1),  # 00-10
+         'external flux quanta': 0.51115,
+         'frequency': 0.36516,
+         },
+        {'transition': (0, 1),  # 00-10
+         'external flux quanta': 0.52856,
+         'frequency': 0.7727,
+         },
+        {'transition': (0, 1),  # 00-10
+         'external flux quanta': 0.55618,
+         'frequency': 1.3875,
+         },
+        {'transition': (0, 1),  # 00-10
+         'external flux quanta': 0.56613,
+         'frequency': 1.6124,
+         },
 
+        {'transition': (0, 2),  # 00-10
+         'external flux quanta': 0.44422,
+         'frequency': 1.4622,
+         },
+        {'transition': (0, 2),  # 00-10
+         'external flux quanta': 0.45012,
+         'frequency': 1.3233,
+         },
+        {'transition': (0, 2),  # 00-10
+         'external flux quanta': 0.46067,
+         'frequency': 1.0617,
+         },
+        {'transition': (0, 2),  # 00-10
+         'external flux quanta': 0.47588,
+         'frequency': 0.71609,
+         },
+        {'transition': (0, 2),  # 00-10
+         'external flux quanta': 0.48395,
+         'frequency': 0.61274,
+         },
+        {'transition': (0, 2),  # 00-10
+         'external flux quanta': 0.48891,
+         'frequency': 0.54815,
+         },
+        {'transition': (0, 2),  # 00-10
+         'external flux quanta': 0.50815,
+         'frequency': 0.55138,
+         },
+        {'transition': (0, 2),  # 00-10
+         'external flux quanta': 0.5215,
+         'frequency': 0.71932,
+         },
+        {'transition': (0, 2),  # 00-10
+         'external flux quanta': 0.53019,
+         'frequency': 0.87758,
+         },
+        {'transition': (0, 2),  # 00-10
+         'external flux quanta': 0.53981,
+         'frequency': 1.0778,
+         },
+
+        # -----------------------half flux quanta------------------------
+        {'transition': (0, 1),  # 00-10
+         'external flux quanta': 0.5,  # \Phi_\mathrm{ext}/\Phi_0
+         'frequency': 0.2184  # GHz
+         },
+        {'transition': (0, 2),  # 00-01
+         'external flux quanta': 0.5,  # \Phi_\mathrm{ext}/\Phi_0
+         'frequency': 0.4893  # GHz
+         },
+        # {'transition': (0, 3),  # 00-11
+        #  'external flux quanta': 0.5,  # \Phi_\mathrm{ext}/\Phi_0
+        #  'frequency': 0.708  # GHz
+        #  },
+        # {'transition': (3, 5),  # 11-12
+        #  'external flux quanta': 0.5,  # \Phi_\mathrm{ext}/\Phi_0
+        #  'frequency': 3.5028  # GHz
+        #  },
+        # {'transition': (2, 4),  # 01-02
+        #  'external flux quanta': 0.5,  # \Phi_\mathrm{ext}/\Phi_0
+        #  'frequency': 3.5087  # GHz
+        #  },
+        {'transition': (1, 6),  # 10-20
+         'external flux quanta': 0.5,  # \Phi_\mathrm{ext}/\Phi_0
+         'frequency': 4.4858  # GHz
+         },
+        {'transition': (3, 7),  # 11-21
+         'external flux quanta': 0.5,  # \Phi_\mathrm{ext}/\Phi_0
+         'frequency': 4.4935  # GHz
+         },
+        # 0:00, 1:10, 2:01, 3:11, 4:02, 5:12, 6:20, 7:21, 8:03, 9:30, 10:13, 11:31
+    ],
+    'data5': [
+        {'transition': (0, 1),  # 00-10
+         'external flux quanta': 0.5,  # \Phi_\mathrm{ext}/\Phi_0
+         'frequency': 0.2172  # GHz
+         },
+        {'transition': (0, 2),  # 00-01
+         'external flux quanta': 0.5,  # \Phi_\mathrm{ext}/\Phi_0
+         'frequency': 0.4889  # GHz
+         },
+        {'transition': (0, 3),  # 00-11
+         'external flux quanta': 0.5,  # \Phi_\mathrm{ext}/\Phi_0
+         'frequency': 0.2172 + 0.4889 - 0.357e-3  # GHz
+         },
+        {'transition': (3, 5),  # 11-12
+         'external flux quanta': 0.5,  # \Phi_\mathrm{ext}/\Phi_0
+         'frequency': 3.5033  # GHz
+         },
+        {'transition': (2, 4),  # 01-02
+         'external flux quanta': 0.5,  # \Phi_\mathrm{ext}/\Phi_0
+         'frequency': 3.5090  # GHz
+         },
+        {'transition': (1, 6),  # 10-20
+         'external flux quanta': 0.5,  # \Phi_\mathrm{ext}/\Phi_0
+         'frequency': 4.4876  # GHz
+         },
+        {'transition': (3, 7),  # 11-21
+         'external flux quanta': 0.5,  # \Phi_\mathrm{ext}/\Phi_0
+         'frequency': 4.4960  # GHz
+         },
+        {'transition': (0, 8),  # 00-03
+         'external flux quanta': 0.5,  # \Phi_\mathrm{ext}/\Phi_0
+         'frequency': 6.4121  # GHz
+         },
+        {'transition': (1, 10),  # 10-13
+         'external flux quanta': 0.5,  # \Phi_\mathrm{ext}/\Phi_0
+         'frequency': 6.4226  # GHz
+         },
+        {'transition': (2, 11),  # 01-31
+         'external flux quanta': 0.5,  # \Phi_\mathrm{ext}/\Phi_0
+         'frequency': 6.5950  # GHz
+         },
+        {'transition': (0, 9),  # 00-30
+         'external flux quanta': 0.5,  # \Phi_\mathrm{ext}/\Phi_0
+         'frequency': 6.6103  # GHz
+         },
+    ]
+    # 0:00, 1:10, 2:01, 3:11, 4:02, 5:12, 6:20, 7:21, 8:03, 9:30, 10:13, 11:31
 }

@@ -27,7 +27,7 @@ def main():
     if not os.path.exists(pltpath):
         os.makedirs(pltpath)
 
-    filename_in = 'Augustus_17_3.hdf5'
+    filename_in = 'Augustus_17_5.hdf5'
     filename_out = os.path.splitext(filename_in)[0]
 
     filename = os.path.join(samples_path, sample, fitpath, filename_in)
@@ -56,19 +56,21 @@ def main():
     weights = params['weights']
     num_tot = params['num_tot']
 
-    lines = colored_lines(phi_ext, levels, weights, 0, num_tot, color2QB=True)
+
+    number_photons = 2
+    lines = colored_lines(phi_ext, levels, weights, 0, num_tot, color2QB=True, num_photons=number_photons)
     for idx in range(params['num_tot'] - 1):
         plt.gca().add_collection(lines[idx])
 
-    lines = colored_lines(phi_ext, levels, weights, 1, num_tot, color2QB=True)
+    lines = colored_lines(phi_ext, levels, weights, 1, num_tot, color2QB=True, num_photons=number_photons)
     for idx in range(params['num_tot'] - 2):
         plt.gca().add_collection(lines[idx])
 
-    lines = colored_lines(phi_ext, levels, weights, 2, num_tot, color2QB=True)
+    lines = colored_lines(phi_ext, levels, weights, 2, num_tot, color2QB=True, num_photons=number_photons)
     for idx in range(params['num_tot'] - 3):
         plt.gca().add_collection(lines[idx])
 
-    lines = colored_lines(phi_ext, levels, weights, 3, num_tot, color2QB=True)
+    lines = colored_lines(phi_ext, levels, weights, 3, num_tot, color2QB=True, num_photons=number_photons)
     for idx in range(params['num_tot'] - 4):
         plt.gca().add_collection(lines[idx])
 

@@ -145,8 +145,8 @@ def main():
     subpath = 'Processed Data/Two Coupled Fluxoniums/'
     path = os.path.join(samples_path, sample, subpath)
 
-    filename_in = 'Augustus_17.hdf5'
-    filename_fit = 'Augustus_17_3.hdf5'
+    filename_in = 'Augustus_17_5.hdf5'
+    filename_fit = 'Augustus_17_5.hdf5'
 
     params = utilities.load_fit(os.path.join(path, filename_in))
 
@@ -174,26 +174,27 @@ def main():
     # params['E_L'] = 0.8
     # params['E_C'] = 2.26
     # params['E_J'] = 8
-    params['E_int_chg'] = 0.27
-    params['num_osc1'] = 50
-    params['num_osc2'] = 50
-    params['num_tot'] = 20
+    # params['E_int_chg'] = 0.27
+    # params['num_osc1'] = 50
+    # params['num_osc2'] = 50
+    params['num_qbt1'] = 20
+    params['num_qbt2'] = 20
+    params['num_tot'] = 40
     # params['dphi_ext'] = 0.0012
-    params['dphi_ext'] = 0
+    # params['dphi_ext'] = 0
     # params['num_mod'] = [10]
     # params['frequencies'] = np.array([10.898])
     # params['n_couplings'] = np.array([0.])
     # params['phi_couplings'] = np.array([0.])
     # params['error_type'] = 'absolute_error'
-    params['data_set'] = 'data3'
+    params['data_set'] = 'data5'
 
     # phi_ext = np.linspace(0., 1., 51)
-    phi_ext = np.linspace(0.43, 0.57, 101)
+    phi_ext = np.linspace(0.42, 0.58, 101)
     # phi_ext2 = np.linspace(0., 1, 51)
     # phi_ext = np.sort(np.concatenate((phi_ext, phi_ext2)))
 
-    utilities.print_params(params)
-    params = fit(params)
+    # params = fit(params)
     utilities.print_params(params)
     utilities.save_fit(os.path.join(path, filename_fit), params)
 
