@@ -53,20 +53,32 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/From Ivan/fluxonium-waveguide" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/From Ivan/fluxonium-waveguide/samples" />
     <property name="restartRequiresConfirmation" value="false" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\SC Lab\GitHubRepositories\Qubit-data-process\From Ivan\fluxonium-waveguide\samples" />
+      <recent name="C:\SC Lab\GitHubRepositories\Qubit-data-process\From Ivan\fluxonium-waveguide" />
+      <recent name="C:\SC Lab\GitHubRepositories\Qubit-data-process\From Ivan\fluxonium-waveguide\samples\QD2 in 12GHz cavity" />
+      <recent name="D:\GitHubRepository\Qubit-data-process" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\GitHubRepository\Qubit-data-process\From Ivan\fluxonium-waveguide\samples" />
     </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\SC Lab\GitHubRepositories\Qubit-data-process\From Ivan\fluxonium-waveguide" />
-      <recent name="C:\SC Lab\GitHubRepositories\Qubit-data-process\From Ivan\fluxonium-waveguide\samples\QD2 in 12GHz cavity" />
-      <recent name="C:\SC Lab\GitHubRepositories\Qubit-data-process\From Ivan\fluxonium-waveguide\samples" />
-      <recent name="D:\GitHubRepository\Qubit-data-process" />
-    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
   </component>
   <component name="RunManager" selected="Python.FluxDriftPlot0628">
     <configuration name="FPSweepPlot" type="PythonConfigurationType" factoryName="Python" temporary="true">
@@ -190,18 +202,6 @@
         <item itemvalue="Python.FPSweepPlot" />
       </list>
     </recent_temporary>
-  </component>
-  <component name="ServiceViewManager">
-    <option name="viewStates">
-      <list>
-        <serviceView>
-          <treeState>
-            <expand />
-            <select />
-          </treeState>
-        </serviceView>
-      </list>
-    </option>
   </component>
   <component name="SvnConfiguration">
     <configuration />
